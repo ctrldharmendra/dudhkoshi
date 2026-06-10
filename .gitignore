@@ -8,11 +8,14 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
+.env.local
 # OS
 .DS_Store
 .next/
 frontend/.next/
 /frontend/.next
 frontend/.next
+frontend/.env.local
+frontend/node_modules/
+
 .next
