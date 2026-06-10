@@ -28,8 +28,8 @@ export default function Hero() {
               <FiDroplet className="text-xl animate-pulse" style={{ color: 'var(--color-primary)' }} />
             </div>
             <div className="flex flex-col">
-              <span className="text-sm font-black tracking-wider uppercase leading-none text-[#1e3a8a]">North Summit</span>
-              <span className="text-[11px] font-bold tracking-widest uppercase text-sky-600">Hydro Limited</span>
+              <span className="text-sm font-black tracking-wider uppercase leading-none text-[#1e3a8a]">Dudhkoshi</span>
+              <span className="text-[11px] font-bold tracking-widest uppercase text-sky-600">Hydropower Ltv. Pvt.</span>
             </div>
           </Link>
 
