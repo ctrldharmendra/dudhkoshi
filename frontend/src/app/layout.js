@@ -1,22 +1,23 @@
 
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ToastProvider from "../components/toast/ToastProvider";
-import Footer from "@/components/Misc/Footer/Footer";
+// import myfont from "../font/KaTeX_Main-Regular.12644167.woff2";
+// import ToastProvider from "../components/toast/ToastProvider";
+// import Footer from "@/components/Misc/Footer/Footer";
 
 import localFont from "next/font/local";
-import AOSInit from "@/components/AOSInit";
-import Navbar from "@/components/Header/Navbar/Navbar";
+// import AOSInit from "@/components/AOSInit";
+// import Navbar from "@/components/Header/Navbar/Navbar";
 
 
 const myFont = localFont({
-  src: "../../src/font/OPTITimes-Roman.otf",
+  src: "../font/KaTeX_Main-Regular.12644167.woff2",
   variable: "--font-myfont",
 });
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
-  subsets: ["latin"],
+  subsets: ["latin"], 
 });
 
 const geistMono = Geist_Mono({
@@ -57,8 +58,8 @@ export default function RootLayout({ children }) {
 
 
         {/* <Navbar></Navbar> */}
-        <ToastProvider />
-        <AOSInit />
+        {/* <ToastProvider />
+        <AOSInit /> */}
         {children}
         {/* <Footer></Footer> */}
       </body>

@@ -1,33 +1,23 @@
+import Hero from '@/pages/landing/Hero'
+import AboutSection from '@/pages/landing/AboutSection'
+import React from 'react'
+import TeamSection from '@/pages/landing/Team'
+import ProjectTeam from '@/pages/landing/ProjectTeam'
+import TechnicalSpecifications from '@/pages/landing/TechnicalSpecification'
+import WaterToWireSystem from '@/pages/landing/WaterToWire'
+import FinancialOverview from '@/pages/landing/FinancialOverview'
 
-import Home1 from "./(home)/Home";
-import Carousel from "@/components/Misc/Carousel";
-import Mission from "./(home)/Middle/Mission";
-
-import CustomGallery from "@/components/Misc/Gallary/CustomGallery";
-import TeamProfile from "./(home)/Middle/TeamProfilePage";
-import FAQSection from "@/components/Misc/Faq/FAQSection";
-import FooterHero from "./(home)/FooterHero";
-import Footer from "@/components/Misc/Footer/Footer";
-import Navbar from "@/components/Header/Navbar/Navbar";
-import NewsAndCaseStudy from "./(home)/Middle/NewsAndCaseStudy";
-import ContactSection from "./(home)/Middle/ContactForm2";
-
-
-export default function Home() {
+const page = () => {
   return (
-    <div className="">
-      <Navbar></Navbar>
-      <Home1></Home1>
-  <Carousel></Carousel>
- <Mission></Mission>
-<TeamProfile></TeamProfile>
- <CustomGallery/>
-<NewsAndCaseStudy></NewsAndCaseStudy> 
-  <ContactSection></ContactSection>
-    <FAQSection></FAQSection>
-     <FooterHero></FooterHero>
-    <Footer></Footer>  
+   <>
+   <Hero></Hero>  
+   <AboutSection></AboutSection>
+   <TeamSection></TeamSection>
+   <ProjectTeam></ProjectTeam>
 
-    </div>
-  );
+   </>
+  )
 }
+
+
+export default page

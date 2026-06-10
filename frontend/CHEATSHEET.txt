@@ -1,0 +1,1 @@
+<FiCompass className="text-[length:var(--iconTextSize)]" /> --> for custom variable text size 
