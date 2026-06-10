@@ -1,1 +1,2 @@
 <FiCompass className="text-[length:var(--iconTextSize)]" /> --> for custom variable text size 
+# const uploadFolderPath = path.join(__dirname, '..', 'uploads'+"/"); -- get uploaded file base path 
