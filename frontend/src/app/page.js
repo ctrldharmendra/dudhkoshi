@@ -14,7 +14,9 @@ const page = () => {
    <AboutSection></AboutSection>
    <TeamSection></TeamSection>
    <ProjectTeam></ProjectTeam>
-
+ <TechnicalSpecifications></TechnicalSpecifications>
+  <WaterToWireSystem></WaterToWireSystem> 
+    <FinancialOverview></FinancialOverview> 
    </>
   )
 }

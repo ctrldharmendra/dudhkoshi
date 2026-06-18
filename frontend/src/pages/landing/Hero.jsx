@@ -11,7 +11,7 @@ export default function Hero() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <section className="relative min-h-screen w-full flex flex-col bg-gradient-to-b from-[#f0f9ff] via-[#f8fafc] to-[#ffffff] overflow-hidden">
+    <section className="relative min-h-screen w-full flex flex-col gradientBgHero overflow-hidden">
       
       {/* Dynamic Structural Ambient Backdrop Glow Spills */}
       <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full blur-[160px] pointer-events-none -z-10" style={{ backgroundColor: 'var(--glow-primary)' }} />

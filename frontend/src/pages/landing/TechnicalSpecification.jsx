@@ -160,7 +160,7 @@ export default function TechnicalSpecifications() {
   };
 
   return (
-    <section className="w-full max-w-[1300px] mx-auto px-6 py-16 bg-[var(--bg-lighter)]">
+    <section className="w-full max-w-[1300px] mx-auto px-6 py-16">
       
       {/* Structural Headers Stack */}
       <div className="flex flex-col items-center">

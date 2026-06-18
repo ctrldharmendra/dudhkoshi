@@ -26,15 +26,29 @@
   /* TEXT SIZE  */
   --iconTextSize: 23px;
 
-  --radius-md: 16px;
+  --radius-md: 16px; 
   --radius-lg: 32px;
 }
 
 body {
-  background-color: var(--bg-light);
+  /* background-color: var(--bg-light); */
   color: var(--text-primary);
   font-family: var(--font-myfont), sans-serif;
-}/* Chrome, Edge, Safari */
+
+    /* background: linear-gradient(
+    to top right,
+    #ff94f7c4,
+    #e1e7ec,
+    #ddf1f3,
+    #e1faef,
+    #ff94f7c4
+  ); */
+
+      background: linear-gradient(to top right, #ffffff, #e1e7ec, #ddf1f3, #e1faef, #fff89445) 0 0 / cover no-repeat fixed;
+  
+}
+
+/* Chrome, Edge, Safari */
 .my-scroll::-webkit-scrollbar {
   width: 6px;
 }
@@ -96,3 +110,9 @@ body {
   background-color: #5ca5ff;
   border-radius: 20px;
 }
+
+/* 
+.gradientBgHero{
+  background-image: linear-gradient(to right top, #dfdfdf, #e1e7ec, #ddf1f3, #e1faef, #f7ffe4);
+} */
+ 
