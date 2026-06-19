@@ -102,7 +102,7 @@ export default function WaterToWireSystem() {
   ];
 
   return (
-    <section className="w-full max-w-[1300px] mx-auto px-6 py-16 bg-[#f8fafc]">
+    <section className="w-full max-w-[1300px] mx-auto px-6 py-16 ">
       
       {/* Dynamic Schematic Headers */}
       <div className="flex flex-col items-center text-center">
@@ -112,7 +112,7 @@ export default function WaterToWireSystem() {
       </div>
 
       {/* Main Schematic Terminal Blueprint Box */}
-      <div className="w-full border border-slate-200/80 bg-white rounded-2xl shadow-sm p-6 md:p-8 mt-6">
+      <div className="w-full border border-slate-200/80 rounded-2xl shadow-sm p-6 md:p-8 mt-6">
         
         {/* Section Tag 1: Upper Flow */}
         <div className="text-[10px] font-black tracking-widest text-sky-600 uppercase mb-6 flex items-center gap-1.5">

@@ -47,7 +47,7 @@ export default function ProjectTeam() {
   ];
 
   return (
-    <section className="w-full max-w-[1300px] mx-auto px-6 py-16 bg-[var(--bg-light)]">
+    <section className="w-full max-w-[1300px] mx-auto px-6 py-16 ">
       
       {/* Centered Top Badge Header */}
       <div className="flex flex-col items-center mb-12">
