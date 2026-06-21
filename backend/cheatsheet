@@ -1,0 +1,84 @@
+    // const {password:_, ...userWithoutPassword} = user  -- separate any field 
+
+       //     'INSERT INTO users (name, email, gender, date_of_birth, password) VALUES (?,?,?,?,?)',
+        //     [name, email, gender, date_of_birth, hashedPassword]
+
+
+
+        // ---------------
+//         INSERT INTO user_permissions (user_id, permission_id, granted_by)
+// VALUES
+// (13, 1, 1),
+// (13, 2, 1),
+// (13, 3, 1);
+        // -------------------
+
+
+        // ###CHECK USER PERMISSION FROM MAP 
+        const hasCreateUserPermission = userWithPermission.some(
+    p => p.permission_name === 'create_user'
+);
+
+
+
+// ##### CHECK IN DB SYNTX
+const [isAlreadyCreated] = await pool.query(
+    'SELECT email, status FROM invitations WHERE email = ? AND status = ?',
+    [email, 'pending']
+);
+
+// ###  insert value in bulk valus is like this : [ [ '9', 1, 13 ], [ '9', 3, 13 ] ]
+await pool.query(
+    `
+    INSERT INTO user_permissions
+    (user_id, permission_id, granted_by)
+    VALUES ?
+    `,
+    [values]
+);
+
+### create flat array 
+const permissionIds = requestedPermissionContains.map(
+    p => p.permission_id
+);
+
+output = [1, 2, 3]
+
+#####STATUS CODE 
+409 Conflict
+403 forbidden
+500 internal error
+400 bad gaeway
+
+
+------------------------------------------------------------------------------------------
+// ######  dont want to delete role if it is assigned to any user
+ALTER TABLE users
+ADD CONSTRAINT fk_users_role
+FOREIGN KEY (role_id)
+REFERENCES roles(id)
+ON DELETE RESTRICT;
+
+// in backend code check if the roleid is used anywhere then dont delete the particular role 
+    const [usersUsingRole] = await db.query(
+  "SELECT COUNT(*) AS count FROM users WHERE role_id = ?",
+  [roleId]
+);
+
+if (usersUsingRole[0].count > 0) {
+  return res.status(400).json({
+    message: "Cannot delete role. This role is assigned to users."
+  });
+}
+------------------------------------------------------------------------------------------
+
+
+
+------------------------------------------------------------------------------------------
+// ###########UPDATE PARTICULAR FIELD IN TABLE
+
+    await pool.query(
+        "UPDATE users SET role_id = ? WHERE id = ?",
+        [role_id, id]
+    );
+------------------------------------------------------------------------------------------
