@@ -34,7 +34,7 @@ const response = await fetch(url, {
     Cookie: `${token.name}=${token.value}`,
   },
 });
-console.log(response, "res")
+// console.log(response, "res")
 
             if(!response.ok){
 

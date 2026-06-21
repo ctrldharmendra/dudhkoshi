@@ -24,6 +24,8 @@ import { GrUserAdmin } from "react-icons/gr";
 import { FaUserCheck } from "react-icons/fa";
 
 
+
+
 const menuItems = [
 
   {
@@ -43,7 +45,7 @@ const menuItems = [
       },
       {
         title:"Manage Users",
-        path:"/dasshboarmnd/bids/create"
+        path:"/dashboard/manage/user"
       },
     ]
   },
@@ -226,7 +228,6 @@ ${mobileOpen
 `}
 
 >
-
 
 {/* Header */}
 

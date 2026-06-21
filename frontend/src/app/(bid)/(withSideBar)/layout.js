@@ -10,6 +10,7 @@ import localFont from "next/font/local";
 // import Navbar from "@/components/Header/Navbar/Navbar";
 import ToastProvider from "@/lib/ToastProvider";
 import Sidebar from "@/components/adminComponents/Sidebar";
+import StoreProvider from "../redux/storeProvider/StoreProvider";
 
 const myFont = localFont({
   src: "../../../font/KaTeX_Main-Regular.12644167.woff2",
@@ -44,8 +45,10 @@ lg:ml-72
 p-6
 transition-all
 ">
-
-{children}
+ <StoreProvider>
+          {children}
+          </StoreProvider>
+    
 </main>
 
       <ToastProvider

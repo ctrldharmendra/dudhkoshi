@@ -7,26 +7,20 @@ import {
 } from "react-icons/fi";
 import Image from 'next/image';
 import axios from 'axios';
+import ProfileLoader from './ProfileLoader';
 
-
+import { formatDate } from "@/utils/formatDate";
 
 
 
 const ProfileSection = () => {
 
-    const user2 = {
-    profileImage:"https://randomuser.me/api/portraits/men/1.jpg",
-    name:"name11admin",
-    role:"Admin",
-    email:"email11",
-    dob:"12/12/2080"
-};
+    const baseContentUrl = process.env.NEXT_PUBLIC_BASE_CONTENT_URL; 
+
 
 
 
     const [user, setUser] = useState(null);
-    const [loading, setLoading] = useState(true);
-
 
        const fetchCurrentUser = async () => {
 
@@ -38,10 +32,7 @@ const ProfileSection = () => {
                     withCredentials: true,
                 }
             );
-
-
-            console.log("Current User:", data?.data[0]);
-
+setUser(data?.data[0])
         } catch(error){
 
             console.log(
@@ -50,21 +41,20 @@ const ProfileSection = () => {
             );
         } finally {
 
-            setLoading(false);
+
 
         }
 
     };
 
 
-    console.log(user)
+    console.log(user, "from profi")
 
     useEffect(()=>{
 
         fetchCurrentUser();
 
     },[]);
-
 
 
   return (
@@ -75,12 +65,12 @@ const ProfileSection = () => {
 
 
 <Image
+unoptimized
+src={baseContentUrl+'/'+user?.dp}
 
-src={user2.profileImage}
+width={100}
 
-width={110}
-
-height={110}
+height={100}
 
 alt="profile"
 
@@ -119,7 +109,7 @@ gap-2
 
 <FiShield/>
 
-{user2.role}
+{user?.userRole}
 
 </div>
 
@@ -160,7 +150,7 @@ Email
 </p>
 
 <p className="font-medium">
-{user2.email}
+{user?.email}
 </p>
 
 </div>
@@ -199,7 +189,7 @@ Date of Birth
 </p>
 
 <p className="font-medium">
-{user2.dob}
+{formatDate(user?.date_of_birth)}
 </p>
 
 </div>
