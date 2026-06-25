@@ -29,8 +29,24 @@
   --radius-md: 16px; 
   --radius-lg: 32px;
 
+
+
+
+--notFoundTextColor:#475569;
   /* -------- */
   --adminPrimaryColor : #8200db;
+  --addBtnBg: #155dfb;
+  --addBtnBgHover: #0744c9;
+  --iconBgColro:#dbeafe;
+  --iconColor:#155dfc;
+  --deleteIconColor:#e7000b;
+  --deleteIconBg:#fef2f2;
+  --deleteIconBgHOver:#ffb8b8;
+    --whiteText:white;
+    --whiteBg:white;
+    --greyText:grey;
+    --blackText:rgb(9, 9, 9);
+  --loadingMainBg: #dbdbdbde;
 }
 
 
@@ -114,7 +130,12 @@
   --danger: #ef4444;
 
 }
-
+table td, table span{
+font-size: 19px !important;
+}
+.viewParticularUser{
+  font-size: 25px;
+}
 body {
   /* background-color: var(--bg-light); */
   color: var(--text-primary);

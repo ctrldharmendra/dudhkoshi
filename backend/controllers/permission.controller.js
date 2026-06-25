@@ -150,7 +150,6 @@ const [result] = await pool.query(
 })
 
 
-
 const viewPermissionOfLoggedInUser = asyncHandler(async (req, res)=>{
     try {
 
@@ -186,10 +185,29 @@ const viewPermissionOfLoggedInUser = asyncHandler(async (req, res)=>{
 })
 
 
+const getAllPermission = asyncHandler(async (req, res)=>{
+             const roleWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
+        if(!roleWithPermission || roleWithPermission.length<=0) return res.json(new ApiResponse(403, "No Any Permission found!"))
+
+    // if no "view_Permission" permission then show error 
+const hasViewPermissionAccess = roleWithPermission.some(
+    p => p.permission_name === 'view_Permission'
+);
+if(!hasViewPermissionAccess) return res.json(new ApiError(403, [],"No Permission To View Permission."))
+
+    const [result] = await pool.query(
+        `SELECT * FROM permissions`
+    )
+
+    return res.json(new ApiResponse(200, result, "All Permissions"))
+
+})
+
 
 
 module.exports = {
     addPermission,
     deletePermission,
     viewPermissionOfLoggedInUser,
+    getAllPermission,
 }

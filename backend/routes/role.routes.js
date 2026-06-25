@@ -21,10 +21,10 @@ router.route('/:roleId/').delete(
     authenticateAccessToken,
    roleController.deleteRole
 )
-// router.route('/:roleId/permissions').delete(
-//     authenticateAccessToken,
-//    permissionController.deletePermission
-// )
+router.route('/:roleId/').patch(
+    authenticateAccessToken,
+   roleController.updateRoleName
+)
 
 
 

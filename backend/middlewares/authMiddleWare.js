@@ -11,14 +11,14 @@ const authenticateAccessToken = asyncHandler (async (req, res, next)=>{
 
    if(!token){
        if(!req?.cookies?.accessToken){
-           return res.json(new ApiError(401, '', "accessToken not found"))
+           return res.status(401).json(new ApiError(401, '', "accessToken not found"))
        }
        //    this extract token from browser cookies 
        token = req?.cookies?.accessToken;
    }
 
     if(!token){
-        return res.json(new ApiError(401, "", "Token Not Found"));
+        return res.status(401).json(new ApiError(401, "", "Token Not Found"));
     }
 
         try {
@@ -28,7 +28,7 @@ const authenticateAccessToken = asyncHandler (async (req, res, next)=>{
             // console.log(rows, "rows")
 
             if(!rows.length){
-        return res.json(new ApiError(401, "", "Token Invalid"));
+        return res.status(401).json(new ApiError(401, "", "Token Invalid"));
             }
 
         // console.log(rows, "rows")
@@ -39,7 +39,7 @@ const authenticateAccessToken = asyncHandler (async (req, res, next)=>{
 
 
         } catch (error) {
-                    return res.json(new ApiError(401, "", `AuthenticateAccesToken Catch error: ${error}`));
+                    return res.status(401).json(new ApiError(401, "", `AuthenticateAccesToken Catch error: ${error}`));
         }
 
 

@@ -22,6 +22,10 @@ router.route('/view/permissions').get(
     authenticateAccessToken,
    permissionController.viewPermissionOfLoggedInUser
 )
+router.route('/view/allpermissions').get(
+    authenticateAccessToken,
+   permissionController.getAllPermission
+)
 
 
 

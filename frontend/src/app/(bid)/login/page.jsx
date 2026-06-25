@@ -51,7 +51,7 @@ const { data } = await axios.post(
 );
 if(data?.statusCode == 200){
     toast.success("Login Successfull!")
-    router.push("/dashboard ");
+    router.push("/dashboard");
 }
 if(data?.statusCode == 401){
     toast.error("Incorrect Login Details!")

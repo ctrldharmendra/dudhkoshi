@@ -25,7 +25,7 @@ if(!hasCreateRoleAccess) return res.json(new ApiError(403, [],"No Permission To 
 
 
     const { roleName } = req?.body;  //receive from frontend
-    console.log(roleName)
+    // console.log(roleName)
 
     // check if role already exists in db 
 const [existingRole] = await pool.query(
@@ -38,11 +38,16 @@ if(existingRole?.length>=1){
 
 
 const [result] = await pool.query(
-    `INSERT INTO roles (name) VALUES (?)`,
-    [roleName]
+    `INSERT INTO roles (name, created_by) VALUES (?,?)`,
+    [roleName, req?.user?.id]
 )
 
-return res.json(new ApiResponse(201, result, `You Created a A Role: ${roleName}`))
+return res.json(new ApiResponse(201,
+             {
+            roleId: result.insertId,
+            roleName,
+              }
+        , `You Created a A Role: ${roleName}`))
 
 
         } catch (error) {
@@ -57,6 +62,40 @@ return res.json(new ApiResponse(201, result, `You Created a A Role: ${roleName}`
     }
     }
 
+})
+// UPDATE CREATED ROLE 
+const updateRoleName = asyncHandler(async (req, res)=>{
+    try {
+
+            const roleWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
+  if(!roleWithPermission || roleWithPermission.length<=0) return res.json(new ApiResponse(403, "No Any Permission found!"))
+
+    // if no "update_roleName" permission then show error 
+const hasUpdateNameRoleAccess = roleWithPermission.some(
+    p => p.permission_name === 'update_roleName'
+);
+if(!hasUpdateNameRoleAccess) return res.json(new ApiError(403, [],"No Permission To Update Role Name."))
+
+    const {roleId} = req?.params;  //role to be updated from url 
+    const roleName = req.body.roleName;
+
+const [result] = await pool.query(
+  `
+  UPDATE roles
+  SET
+    name = ?,
+    modified_by = ?,
+    modified_at = NOW()
+  WHERE id = ?
+  `,
+  [roleName, req?.user?.id, roleId]
+);
+
+return res.json(new ApiResponse(201, "Update Success", "Update Success"))
+
+    } catch (error) {
+        return res.json(new ApiError(500, "", error))
+    }
 })
 
 // DELETE A ROLE
@@ -93,13 +132,14 @@ const [row] = await pool.query(
     `DELETE FROM roles WHERE id = ?`,[roleId]
 ) 
 
-       return res.status(200).json(new ApiResponse(201, row, `Role Deletion Success.`))
+       return res.status(201).json(new ApiResponse(201, {roleId:roleId}, `Role Deletion Success.`))
 
 
     } catch (error) {
         
     }
 })
+
 
 // GET ALL ROLE 
 const getAllRole = asyncHandler(async (req,res)=>{
@@ -165,8 +205,11 @@ const getAllRole = asyncHandler(async (req,res)=>{
 })
 
 
+
+
 module.exports = {
     createRole,
     deleteRole,
     getAllRole,
+    updateRoleName,
 }

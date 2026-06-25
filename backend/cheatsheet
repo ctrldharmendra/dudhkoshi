@@ -81,4 +81,17 @@ if (usersUsingRole[0].count > 0) {
         "UPDATE users SET role_id = ? WHERE id = ?",
         [role_id, id]
     );
+
+
+    const [result] = await pool.query(
+  `
+  UPDATE roles
+  SET
+    name = ?,
+    modified_by = ?,
+    modified_at = NOW()
+  WHERE id = ?
+  `,
+  [roleName, req?.user?.id, id]
+);
 ------------------------------------------------------------------------------------------

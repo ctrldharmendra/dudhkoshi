@@ -22,6 +22,10 @@ import {
 import { SiCriticalrole } from "react-icons/si";
 import { GrUserAdmin } from "react-icons/gr";
 import { FaUserCheck } from "react-icons/fa";
+import Modal from "./modal/Modal";
+import { MdDeleteForever } from "react-icons/md";
+import { CiLogin } from "react-icons/ci";
+import TinyLoader from "../reusable/loader/TinyLoader";
 
 
 
@@ -40,12 +44,12 @@ const menuItems = [
     icon: FaUserCheck,
     children: [
       {
-        title:"View Users",
-        path:"/users/bids"
+        title:"Manage Users",
+        path:"/dashboard/manage/users"
       },
       {
-        title:"Manage Users",
-        path:"/dashboard/manage/user"
+        title:"Invite To",
+        path:"/dashboard/manage/invite"
       },
     ]
   },
@@ -54,27 +58,20 @@ const menuItems = [
     icon: SiCriticalrole,
     children: [
       {
-        title:"view Roles",
-        path:"/dashboard/bids"
-      },
-      {
-        title:"Create Roles",
-        path:"/dashboard/bids/create"
+        title:"Roles",
+        path:"/dashboard/manage/roles"
       },
     ]
   },
   {
-    title: "Permission",
+    title: "Permissions",
     icon: GrUserAdmin,
     children: [
       {
-        title:"view Permission",
-        path:"/dashboard/bids"
+        title:"Permissions",
+        path:"/dashboard/manage/permissions"
       },
-      {
-        title:"Manage Permission",
-        path:"/dashboard/bids/create"
-      },
+
     ]
   },
 
@@ -128,7 +125,6 @@ const menuItems = [
 
 
 export default function Sidebar(){
-
   const pathname = usePathname();
 
 
@@ -151,11 +147,66 @@ export default function Sidebar(){
   };
 
 
+// logout popup state 
+const [isLogoutPopupOpened, setisLogoutPopupOpened] = useState(false)
+
+
+const [logOutLoading, setLogOutLoading] = useState(false);
+
+const handleLogout = async () => {
+  try {
+    setLogOutLoading(true);
+
+    const response = await fetch("/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data?.message || "Logout failed");
+    }
+
+    console.log(data);
+
+    // redirect after logout
+    window.location.href = "/login";
+
+  } catch (error) {
+    console.error("Logout error:", error.message);
+
+  } finally {
+    setLogOutLoading(false);
+  }
+};
+
+
+if (logOutLoading) {
+  return (
+    <div className="bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center">
+      <TinyLoader />
+    </div>
+  );
+}
 
   return (
 
     <>
+      <Modal
+        isModalOpen={isLogoutPopupOpened}
+        onClose={() => setisLogoutPopupOpened(false)}
+        icon={<CiLogin />}
+        title="Are You Sure?"
+        description="Are You Sure to Perform this Deletion?"
+      >
 
+<div className="flex justify-center gap-[45px]">
+     <button onClick={()=>setisLogoutPopupOpened(false)} type="button" className="px-6 py-2 active:scale-95 transition bg-[var(--deleteIconColor)] rounded text-[var(--whiteText)] text-sm font-medium">No</button>
+       <button onClick={()=> handleLogout()} type="button" className="px-6 py-2 active:scale-95 transition bg-[var(--addBtnBg)] rounded text-[var(--whiteText)] text-sm font-medium">Yes</button>
+</div>
+
+      </Modal>
 
 {/* Mobile button */}
 
@@ -575,7 +626,7 @@ hover:bg-slate-800
 
 {
 !collapsed &&
-<span>
+<span onClick={()=>setisLogoutPopupOpened(true)} >
 Logout
 </span>
 }

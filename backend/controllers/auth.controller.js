@@ -39,8 +39,16 @@ const createRefreshToken = (user) => {
 const registerUser = asyncHandler(async (req, res) => {
 
     const role_id=2;  //here passing roleId 2 bydefault which is for bidders
-    const { name, gender, date_of_birth, password, tokenFromFrontend } = req?.body;  
-    if(!name || !gender || !date_of_birth || !password || !tokenFromFrontend) return res.json(new ApiError(400, "", "All Fields Required")) 
+    let { name, gender, date_of_birth, password, tokenFromFrontend } = req?.body;  
+
+    if(!date_of_birth) date_of_birth =null;
+    const {orgName, ownerName, phnNumber, panNo, vatNo, contactPerson, contactPersonsPhNo, contactPersonsEmail, physicalAddress } = req?.body;
+
+
+
+
+
+    if(!name || !password || !tokenFromFrontend) return res.json(new ApiError(400, "", "Required Name, Password and valid token. ")) 
       
       
       try {
@@ -60,6 +68,7 @@ const registerUser = asyncHandler(async (req, res) => {
         AND expires_at < NOW()
         `);
 
+
         // it means ki yadi token euta xa ra tyesko expiry time xain then you error return gardeu 
         if(isTokenExpired?.affectedRows >=1) return res.json(new ApiError(404, "", "Token Expired. Request Admin To Create new one."))
         
@@ -72,9 +81,16 @@ const registerUser = asyncHandler(async (req, res) => {
             'INSERT INTO users (name, email, gender, date_of_birth, password, role_id) VALUES (?,?,?,?,?,?)',
             [name, isTokenExistInDB?.[0]?.email, gender, date_of_birth, hashedPassword, role_id]
         )
+// now insert into organization table 
+        const [resultOrgTable] = await pool.query(
+          `INSERT INTO organizations (orgName, ownerName, phnNumber, panNo, vatNo, contactPerson, contactPersonsPhNo, contactPersonsEmail, physicalAddress, user_id)
+           VALUES(?,?,?,?,?,?,?,?,?,?)`,
+           [orgName, ownerName, phnNumber, panNo, vatNo, contactPerson, contactPersonsPhNo, contactPersonsEmail, physicalAddress, result?.insertId]
+        )
 
         // STEP 2: DB succeeded → now save the file to disk. If no file was uploaded, saved will be an empty object {}
         const saved = await saveFiles(req, 'users');
+        
 
         // STEP 3: Update the DB row with the file path (if a file was uploaded)
         if (saved?.dp) {
@@ -83,13 +99,38 @@ const registerUser = asyncHandler(async (req, res) => {
                 [saved?.dp, result?.insertId]
             )
         }
+// console.log(orgName, ownerName, phnNumber, panNo, vatNo, contactPerson, contactPersonsPhNo, contactPersonsEmail, physicalAddress,)
+// console.log( name, gender, date_of_birth, password, tokenFromFrontend )
 
-        return res.status(201).json(new ApiResponse(201, result, "Created Successfully!"))
+
+        return res.status(201).json(new ApiResponse(201, 
+          {
+                        userId: result.insertId,
+            organizationId: resultOrgTable.insertId
+          }, 
+          
+          "Created Successfully!"))
 
     } catch (error) {
-        res.status(500).json(new ApiError(false, "Failed to create.", error.message))
-    }
 
+  if (error.code === "ER_DUP_ENTRY") {
+    return res.status(409).json(
+      new ApiError(
+        409,
+        "",
+        "User already exists."
+      )
+    );
+  }
+
+  return res.status(500).json(
+    new ApiError(
+      500,
+      "",
+      error.message
+    )
+  );
+}
 
 })
 
@@ -319,11 +360,19 @@ try {
 
 // AUTH USER IS AUTHENTICATED OR NOT | CHECK IN FRONTEND PROXY JS
 const authMe = asyncHandler(async (req, res)=>{
-      return res.status(200).json({
+try{
+        return res.status(200).json({
         success: true,
         message: "Authenticated user",
         user: req.user,
     });
+}catch(err){
+  return res.status(500).json(
+  new ApiError(500, "", err.message)
+);
+}
+
+
 })
 
 

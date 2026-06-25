@@ -11,15 +11,16 @@ import {
 } from "@tanstack/react-table";
 import Link from "next/link";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { TbEyeSearch } from "react-icons/tb";
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function UserList({ users }) {
+export default function UserList({ users}) {
   const [sorting, setSorting] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
 
   const dispatch = useDispatch();
+
 
   const columns = useMemo(
     () => [
@@ -36,28 +37,27 @@ export default function UserList({ users }) {
   },
 },
       {
-        accessorKey: "name",
+        accessorKey: "Name",
         header: "Name",
         cell: ({ row }) => (
           <div className="flex items-center gap-3">
             <div>
-              <p className="font-medium">{row.original.name}</p>
-              <p className="text-xs text-gray-900">{row.original.email}</p>
+              <p className="font-medium">{row.original.Name}</p>         
             </div>
           </div>
         ),
       },
-      {
-        accessorKey: "email",
-        header: "Email",
-        cell: ({ row }) => (
-          <div className="flex items-center gap-3">
-            <div>
-              <p className="text-xs text-gray-900">{row.original.email}</p>
-            </div>
-          </div>
-        ),
-      },
+      // {
+      //   accessorKey: "email",
+      //   header: "Email",
+      //   cell: ({ row }) => (
+      //     <div className="flex items-center gap-3">
+      //       <div>
+      //         <p className="text-xs text-gray-900">{row.original.email}</p>
+      //       </div>
+      //     </div>
+      //   ),
+      // },
       {
         accessorKey: "gender",
         header: "Gender",
@@ -69,8 +69,8 @@ export default function UserList({ users }) {
           const role = getValue();
           return (
             <span
-              className={`px-3 py-1 rounded-full text-xs font-medium ${
-                role === "admin"
+              className={`px-3 py-1 rounded-full font-medium ${
+                role == "admin" || role == "Admin"
                   ? "bg-purple-100 text-purple-700"
                   : "bg-gray-100 text-gray-700"
               }`}
@@ -80,31 +80,30 @@ export default function UserList({ users }) {
           );
         },
       },
-      {
-        accessorKey: "date_of_birth",
-        header: "DOB",
-        cell: ({ getValue }) =>
-          new Date(getValue()).toLocaleDateString("en-GB"),
-      },
-      {
-        accessorKey: "created_at",
-        header: "Created",
-        cell: ({ getValue }) =>
-          new Date(getValue()).toLocaleDateString("en-GB"),
-      },
+      // {
+      //   accessorKey: "date_of_birth",
+      //   header: "DOB",
+      //   cell: ({ getValue }) =>
+      //     new Date(getValue()).toLocaleDateString("en-GB"),
+      // },
+      // {
+      //   accessorKey: "created_at",
+      //   header: "Created",
+      //   cell: ({ getValue }) =>
+      //     new Date(getValue()).toLocaleDateString("en-GB"),
+      // },
       {
   header: "Actions",
   cell: ({ row }) => {
     const user = row.original;
-console.log(user)
+// console.log(user)
     return (
       <Link
-        href={`/dashboard/manage/user/${user?.userId}`}
+        href={`/dashboard/manage/users/${user?.userId}`}
         onClick={() => dispatch(setSelectedUser(user))}
-        className="flex items-center gap-2.5 border border-gray-500/30 px-4 py-2 text-sm text-gray-800 rounded active:scale-95 transition"
+        className="flex items-center gap-2.5 viewParticularUser w-fit px-4 py-2 text-gray-800 rounded active:scale-95 transition"
       >
         <TbEyeSearch className="text-[var(--adminPrimaryColor)]" />
-    View
       </Link>
     );
   },
@@ -131,9 +130,8 @@ console.log(user)
 
 
 
-const selectedUserData = useSelector((state) => state?.userState);
+// const selectedUserData = useSelector((state) => state?.userState);
 
-console.log(selectedUserData)
 
   return (
     <div className="space-y-5">
@@ -155,7 +153,7 @@ console.log(selectedUserData)
                   <th
                     key={header.id}
                     onClick={header.column.getToggleSortingHandler()}
-                    className="px-5 py-3 text-left font-semibold text-gray-600 cursor-pointer select-none"
+                    className="px-1 py-3 text-left font-semibold text-gray-600 cursor-pointer select-none"
                   >
                     <div className="flex gap-2">
                       {flexRender(
@@ -184,7 +182,7 @@ console.log(selectedUserData)
                 className="border-t hover:bg-gray-50 transition"
               >
                 {row.getVisibleCells().map((cell) => (
-                  <td key={cell.id} className="px-5 py-4">
+                  <td key={cell.id} className="px-1 py-1">
                     {flexRender(
                       cell.column.columnDef.cell,
                       cell.getContext()

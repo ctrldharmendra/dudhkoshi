@@ -91,7 +91,7 @@ if(!hasDeleteUserAccess) return res.json(new ApiError(403, [],"No Permission To 
         })
        }
 
-       return res.status(200).json(new ApiResponse(200, dpToBeDeleted, "User deleted."))
+       return res.status(201).json(new ApiResponse(200, dpToBeDeleted, "User deleted."))
     } catch (error) {
         
     }

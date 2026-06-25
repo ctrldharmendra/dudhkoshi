@@ -1,55 +1,84 @@
 import { NextResponse } from "next/server";
 
 
-export async function proxy(request){
+export async function proxy(request) {
 
-    const token =
-        request.cookies.get("accessToken");
+    const token = request.cookies.get("accessToken");
 
-        // console.log(token.value)
-
-    const pathname =
-        request.nextUrl.pathname;
+    const pathname = request.nextUrl.pathname;
 
 
     // Protect dashboard routes
-    if(pathname.startsWith("/dashboard")){
+    if (
+        pathname.startsWith("/dashboard") ||
+        pathname.startsWith("/forbidden")
+    ) {
+
+        if (!token) {
+            return NextResponse.redirect(
+                new URL("/login", request.url)
+            );
+        }
 
 
-        if(!token){
+        try {
+
+            const url = new URL("/api/auth/authme", request.url);
+
+            const response = await fetch(url, {
+                headers: {
+                    Cookie: `${token.name}=${token.value}`,
+                },
+            });
+
+
+            if (!response.ok) {
+                return NextResponse.redirect(
+                    new URL("/login", request.url)
+                );
+            }
+
+
+        } catch(error) {
+
             return NextResponse.redirect(
                 new URL("/login", request.url)
             );
 
         }
+    }
 
 
-        try{
+
+    // Prevent logged-in users from accessing register page
+    if (pathname == "/register" || pathname == "/login") {
+        if (token) {
+// console.log(token, "Token")
+            try {
+
+                const url = new URL("/api/auth/authme", request.url);
+
+                const response = await fetch(url, {
+                    headers: {
+                        Cookie: `${token.name}=${token.value}`,
+                    },
+                });
 
 
-          const url = new URL("/api/auth/authme", request.url);
+                // token valid
+                if(response.ok) {
+                  return NextResponse.redirect(
+        new URL("/dashboard", request.url)
+    );
+                }
 
-const response = await fetch(url, {
-  headers: {
-    Cookie: `${token.name}=${token.value}`,
-  },
-});
-// console.log(response, "res")
 
-            if(!response.ok){
+            } catch(error) {
 
-                return NextResponse.redirect(
-                    new URL("/login",request.url)
-                );
+                // invalid token, allow register
+                return NextResponse.next();
 
             }
-
-
-        }catch(error){
-
-            return NextResponse.redirect(
-                new URL("/login",request.url)
-            );
 
         }
 
@@ -57,14 +86,15 @@ const response = await fetch(url, {
 
 
     return NextResponse.next();
-
 }
 
 
-export const config={
 
-    matcher:[
-        "/dashboard/:path*"
+export const config = {
+    matcher: [
+        "/dashboard/:path*",
+        "/forbidden/:path*",
+        "/register",
+        "/login"
     ]
-
 };

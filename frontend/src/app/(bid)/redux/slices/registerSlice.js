@@ -1,0 +1,177 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import toast from 'react-hot-toast';
+import { cache } from 'react';
+
+
+
+//POST | User registration function
+  export const registeruserFn = createAsyncThunk(
+  'registeruserFn',
+  async ({data}, thunkAPI) => {
+    try {
+      const res = await fetch(
+        `/api/auth/register`,
+        {
+          method: 'POST', 
+          headers: {
+            'Content-Type': 'application/json',
+          },
+            body: data,
+            // body: JSON.stringify({permissions}),
+        }
+      );
+
+      const data = await res.json();
+console.log(res, "res")
+console.log(data, "data")
+      if (!res.ok) {
+        toast.error(data.message || 'Failed Add');
+        return thunkAPI.rejectWithValue(data.message);
+      }
+      if(res.ok) {
+        toast.success("Role Add Scuccess.")
+        // thunkAPI.dispatch(setIsPermissisonOpened(false));
+      }
+      return data?.data;
+
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+
+// create invitaiton 
+  export const createInvitation = createAsyncThunk(
+  'createInvitation',
+  async ({email}, thunkAPI) => {
+    try {
+      const res = await fetch(
+        `/api/invite`,
+        {
+          method: 'POST', 
+          credentials: "include",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+            body: JSON.stringify({email}), 
+        }
+      );
+
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.message || 'Failed Add');
+        return thunkAPI.rejectWithValue(data.message);
+      }
+      if(res.ok && res.status==200 && data.statusCode!=403) {
+        toast.success("Invitation Link Createtion Success.")
+      }
+        
+    if(data.statusCode==403){
+      toast.error(data.message || "Something went wrong")
+    }
+      return data?.data ? data?.data : data;
+
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+
+// get emailContent to send | body and subject 
+  export const getEmailContents = createAsyncThunk(
+  'getEmailContents',
+  async ({}, thunkAPI) => {
+    try {
+      const res = await fetch(
+        `/api/emailcontents`,
+        {
+          method: 'GET', 
+          credentials: "include",
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const data = await res.json();
+      // console.log(data, "from registerslice email cont")
+      if (!res.ok) {
+        toast.error(data.message || 'Failed To Get Email Contents');
+        return thunkAPI.rejectWithValue(data.message);
+      }
+
+        
+    if(data.statusCode==403){
+      toast.error(data.message || "Something went wrong")
+    }
+      return data?.data ? data?.data : data;
+
+    } catch (err) {
+      toast.error(err.message);
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+
+
+const registrationSlice = createSlice({
+  name: 'registrationSlice',
+  initialState: {
+  registrationLoadingState:false,
+
+  invitationCreationLoading:false,
+
+  emailContentsLoading:false,
+  emailContents:[],
+
+    error: "",
+    lastFetched: "",
+  },
+  reducers: {},
+
+  extraReducers: (builder) => {
+      // POST | Add a new permission
+    builder
+      .addCase(registeruserFn.pending, (state) => {
+        state.addPermissionLoading = true;
+      })
+      .addCase(registeruserFn.fulfilled, (state, action) => {
+        state.addPermissionLoading = false;
+        // state.allPermissionFromDb = action.payload;
+      })
+      .addCase(registeruserFn.rejected, (state, action) => {
+        state.addPermissionLoading = false;
+        state.error = action.payload;
+      });
+      // POST | Create invitation 
+    builder
+      .addCase(createInvitation.pending, (state) => {
+        state.invitationCreationLoading = true;
+      })
+      .addCase(createInvitation.fulfilled, (state, action) => {
+        state.invitationCreationLoading = false;
+        // state.allPermissionFromDb = action.payload;
+      })
+      .addCase(createInvitation.rejected, (state, action) => {
+        state.invitationCreationLoading = false;
+        state.error = action.payload;
+      });
+      // GET email contens 
+    builder
+      .addCase(getEmailContents.pending, (state) => {
+        state.emailContentsLoading = true;
+      })
+      .addCase(getEmailContents.fulfilled, (state, action) => {
+        state.emailContentsLoading = false;
+        state.emailContents = action.payload;
+      })
+      .addCase(getEmailContents.rejected, (state, action) => {
+        state.emailContentsLoading = false;
+        state.error = action.payload;
+      });
+  },
+});
+
+export default registrationSlice.reducer;

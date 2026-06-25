@@ -1,2 +1,32 @@
 <FiCompass className="text-[length:var(--iconTextSize)]" /> --> for custom variable text size 
 # const uploadFolderPath = path.join(__dirname, '..', 'uploads'+"/"); -- get uploaded file base path 
+
+#####check if any obeject is empty 
+if (Object.keys(user).length === 0) {
+  console.log("Object is empty");
+}
+
+
+// if loading show loader 
+if (loading) {
+  return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+   <TinyLoader></TinyLoader>
+  </div>;
+}
+
+
+#### ROLEPERMISSION SLICE 
+const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
+#####from stateSlice
+  const user = useSelector((state) => state.userState.selectedUser);  //selectedUser object
+
+
+
+##########
+     const result = await dispatch(
+        deleteRole({id:selectedRoleId})
+      );
+  
+      // if (deleteRole.fulfilled.match(result)) {
+      //    router.refresh();
+      // }

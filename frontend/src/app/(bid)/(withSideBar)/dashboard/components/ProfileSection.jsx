@@ -48,7 +48,7 @@ setUser(data?.data[0])
     };
 
 
-    console.log(user, "from profi")
+    // console.log(user, "from profi")
 
     useEffect(()=>{
 
