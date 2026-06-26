@@ -2,7 +2,7 @@
 
 "use client"
 
-import { getAllRoleWithItsPermission } from "@/app/(bid)/redux/slices/rolesAndPermissionSlice";
+import { getAllRoleWithItsPermission, getRolePermissionLoggedInUser } from "@/app/(bid)/redux/slices/rolesAndPermissionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addPermissionFn, deletePermissionFn, getAllPermissionFromDbFn } from "@/app/(bid)/redux/slices/permissionSlice";
 import React, { useEffect, useRef, useState } from "react";
@@ -20,6 +20,7 @@ const PermissionPage = ({selectedRoleFromRolePage=null, isDropDownDisabled}) => 
 
   const allRoleWithPermission = useSelector((state) => state?.roleAndPermission?.RoleWithItsPermission);
   const allPermissionss = useSelector((state) => state?.permissions?.allPermissionFromDb);
+  // console.log(allPermissionss)
 
   // loading from reducx slice 
   const addPermissionLoading = useSelector((state) => state?.permissions?.addPermissionLoading);
@@ -77,23 +78,72 @@ useEffect(() => {
 
 // IS LOGGED IN Role HAS PERMISSION TO VIEW, DELETE, ADD?? 
 const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
-
     // if this loggedIn Role has add_permision acces or not | if not dont show in ui 
-      const isThisRoleHasAddRolePermission = hasPermission(permissionOfLoggedInRoleOfUser,"create_role");
-  
+      const isThisRoleHasAddPermissionAccess = hasPermission(permissionOfLoggedInRoleOfUser,"add_permission");
+      const isThisRoleHasDeletePermissionAccess = hasPermission(permissionOfLoggedInRoleOfUser,"delete_permission");
+
+// console.log(permissionOfLoggedInRoleOfUser)
+  //   useEffect(()=>{
+  //     if(!permissionOfLoggedInRoleOfUser || permissionOfLoggedInRoleOfUser == null || permissionOfLoggedInRoleOfUser == undefined){
+  //        const res = await = dispatch(getRolePermissionLoggedInUser({}))
+
+  //               if (getRolePermissionLoggedInUser.fulfilled.match(res)) {
+  // //                               if (!permissionOfLoggedInRoleOfUser?.length) {
+  // //             toast.error("No permission you have.");
+  // // }
+  //     }
+
+  //     }
+  //     if(!allRoleWithPermission || allRoleWithPermission == null || allRoleWithPermission == undefined){
+  //         dispatch(getAllRoleWithItsPermission({}))
+  //     }
+
+  //   },[]);
+
+  useEffect(() => {
+  const fetchData = async () => {
+    if (!permissionOfLoggedInRoleOfUser) {
+      const res = await dispatch(getRolePermissionLoggedInUser({}));
+
+      if (getRolePermissionLoggedInUser.fulfilled.match(res)) {
+        const permissions = res.payload;
+
+        if (!permissions || permissions.length === 0) {
+        return  toast.error("No any permission you have.");
+        }
+
+      const isThisRoleHasViewPermissionAccess = hasPermission(permissions,"view_Permission");
+
+        
+        if (isThisRoleHasViewPermissionAccess == false) {
+         return toast.error("You Don't have Permission to View Permission of Roles.");
+        }
+      }
+    }
+
+    if (!allRoleWithPermission) {
+      dispatch(getAllRoleWithItsPermission({}));
+    }
+  };
+
+  fetchData();
+}, [dispatch]);
+
+
+  // console.log(allRoleWithPermission, "allRoleWithPermission")
+  // console.log(permissionOfLoggedInRoleOfUser, "permissionOfLoggedInRoleOfUser")
+
 //IS LOGGED IN role HAS  PERMISSION TO VIEW, DELETE, ADD END?
   
 
-
-  
   const selectedRole = allRoleWithPermission?.find((r) => r.roleId === selectedRoleId) || selectedRoleFromRolePage || null;
 
 
   const allowedIds = selectedRole?.permissions.map((p) => p.permissionAssignedId) || [];
 
-  const notAllowedPermissions = allPermissionss?.filter(
+  const notAllowedPermissions = allPermissionss ? allPermissionss?.filter(
     (permission) => !allowedIds.includes(permission.id)
-  ) || [];
+  ) : [];
 
   const toggleToRemove = (id) => {
     setSelectedToRemove((prev) =>
@@ -115,7 +165,17 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
     dispatch(addPermissionFn({roleId:selectedRole?.roleId, permissions:selectedToAdd}))
   };
 
-  if(addPermissionLoading) return  <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+// show in ui selected to add permission
+const matchedPermissionsToAdd = allPermissionss.filter(permission =>
+  selectedToAdd.includes(permission.id)
+);
+// show in ui selected to remove permission 
+const matchedPermissionsToRemove = allPermissionss.filter(permission =>
+  selectedToRemove.includes(permission.id)
+);
+
+
+if(addPermissionLoading) return  <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
       <TinyLoader></TinyLoader>
       <div>Adding Permission</div>
     </div>;
@@ -184,6 +244,7 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
                     setSelectedRoleId(role.roleId);
                     setDropdownOpen(false);
                   }}
+                  
                   className="w-full flex items-center justify-between px-4 py-3 text-sm font-medium capitalize hover:bg-indigo-50 transition"
                   style={{ color: "var(--blackText, #1e293b)" }}
                 >
@@ -207,7 +268,10 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
         {selectedRole ? (
           <div className="flex flex-col gap-6">
 
-            {/* ALLOWED PERMISSIONS */}
+    {
+      // isThisRoleHasViewPermissionAccess == true && (
+        <>
+                {/* ALLOWED PERMISSIONS */}
             <div
               className="rounded-2xl border border-slate-200 shadow-sm p-5"
               style={{ background: "var(--whiteBg, #fff)" }}
@@ -219,7 +283,7 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
                     Click permissions to select, then hit Remove
                   </p>
                 </div>
-                {selectedToRemove.length > 0 && (
+                {selectedToRemove.length > 0 && isThisRoleHasDeletePermissionAccess == true && (
                   <button
                     onClick={handleRemovePermission}
                     className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white transition hover:opacity-90 active:scale-95"
@@ -237,6 +301,8 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
                     const isSelected = selectedToRemove.includes(permission.permissionAssignedId);
                     return (
                       <button
+                        title={permission?.permissionAssignedName}
+
                         key={permission.permissionAssignedId}
                         onClick={() => toggleToRemove(permission.permissionAssignedId)}
                         className="flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition hover:scale-[1.03] border-2"
@@ -264,9 +330,15 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
                   <p className="text-xs text-red-600 font-semibold mb-1">
                     Selected to remove ({selectedToRemove.length}):
                   </p>
-                  <p className="text-xs text-red-500 font-mono break-all">
-                    [{selectedToRemove.join(", ")}]
-                  </p>
+                  <div className="text-xs text-red-500 font-mono break-all">
+                    {/* [{selectedToRemove.join(", ")}] */}
+                    
+                         {
+                      matchedPermissionsToRemove?.map((elem, ind)=>{
+                        return <div key={ind}>{elem?.description}</div>
+                      })
+                    }
+                  </div>
                 </div>
               )}
             </div>
@@ -283,7 +355,7 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
                     Click permissions to select, then hit Add
                   </p>
                 </div>
-                {selectedToAdd.length > 0 && (
+                {selectedToAdd.length > 0 && isThisRoleHasAddPermissionAccess &&(
                   <button
                     onClick={handleAddPermission}
                     className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white transition hover:opacity-90 active:scale-95"
@@ -302,6 +374,7 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
                     return (
                       <button
                         key={permission.id}
+                        title={permission?.description}
                         onClick={() => toggleToAdd(permission.id)}
                         className="flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium transition hover:scale-[1.03] border-2"
                         style={{
@@ -331,12 +404,22 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
                   <p className="text-xs text-indigo-600 font-semibold mb-1">
                     Selected to add ({selectedToAdd.length}):
                   </p>
-                  <p className="text-xs text-indigo-500 font-mono break-all">
-                    [{selectedToAdd.join(", ")}]
-                  </p>
+                  <div className="text-xs text-indigo-500 font-mono break-all">
+                    {/* [{selectedToAdd.join(", ")}] */}
+                    {
+                      matchedPermissionsToAdd?.map((elem, ind)=>{
+                        return <div key={ind}>{elem?.description}</div>
+                      })
+                    }
+
+                  </div>
+       
                 </div>
               )}
             </div>
+        </>
+      // )
+    }
 
           </div>
         ) : (

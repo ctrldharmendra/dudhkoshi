@@ -73,7 +73,7 @@ const handleSubmit = async (e)=>{
   );
 
   if (changeRole.fulfilled.match(result)) {
-    router.push("/dashboard/manage/user");
+    router.push("/dashboard/manage/users");
   }
 }
 
