@@ -26,6 +26,7 @@ import Modal from "./modal/Modal";
 import { MdDeleteForever } from "react-icons/md";
 import { CiLogin } from "react-icons/ci";
 import TinyLoader from "../reusable/loader/TinyLoader";
+import axiosInstance from "@/lib/axiosInstance";
 
 
 
@@ -157,18 +158,13 @@ const handleLogout = async () => {
   try {
     setLogOutLoading(true);
 
-    const response = await fetch("/api/auth/logout", {
-      method: "POST",
-      credentials: "include",
-    });
+  const { data } = await axiosInstance.post(`/api/auth/logout`);
 
-    const data = await response.json();
 
-    if (!response.ok) {
+    if (!data.success == true) {
       throw new Error(data?.message || "Logout failed");
     }
 
-    console.log(data);
 
     // redirect after logout
     window.location.href = "/login";

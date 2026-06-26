@@ -275,13 +275,13 @@ await pool.query(
       httpOnly: process.env.NODE_ENV === 'production',
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV == 'production' ? 'none' : 'lax',
-      maxAge: ms(process.env.REFRESH_TOKEN_EXPIRATION)
+      // maxAge: ms(process.env.REFRESH_TOKEN_EXPIRATION)
     });
      res.cookie('accessToken', newAccessToken, {
       httpOnly: process.env.NODE_ENV === 'production',
       secure: process.env.NODE_ENV === 'production',
       sameSite: process.env.NODE_ENV == 'production' ? 'none' : 'lax',
-      maxAge: ms(process.env.ACCESS_TOKEN_EXPIRATION)
+      // maxAge: ms(process.env.ACCESS_TOKEN_EXPIRATION)
     });
 
     return res.json(new ApiResponse(201, {newAccessToken, newRefreshToken}, "Refresh Success."));

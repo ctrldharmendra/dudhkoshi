@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
 import { cache } from 'react';
+import axiosInstance from '@/lib/axiosInstance';
 
 
 
@@ -46,30 +47,9 @@ console.log(data, "data")
   'createInvitation',
   async ({email}, thunkAPI) => {
     try {
-      const res = await fetch(
-        `/api/invite`,
-        {
-          method: 'POST', 
-          credentials: "include",
-          headers: {
-            'Content-Type': 'application/json',
-          },
-            body: JSON.stringify({email}), 
-        }
-      );
 
-      const data = await res.json();
-      if (!res.ok) {
-        toast.error(data.message || 'Failed Add');
-        return thunkAPI.rejectWithValue(data.message);
-      }
-      if(res.ok && res.status==200 && data.statusCode!=403) {
-        toast.success("Invitation Link Createtion Success.")
-      }
-        
-    if(data.statusCode==403){
-      toast.error(data.message || "Something went wrong")
-    }
+      const { data } = await axiosInstance.post(`/api/invite`, {email});
+        toast.success("Created.")
       return data?.data ? data?.data : data;
 
     } catch (err) {

@@ -17,6 +17,8 @@ import {
 import ProfileSection from "./components/ProfileSection";
 import TinyLoader from "@/components/reusable/loader/TinyLoader";
 import ProfileLoader from "./components/ProfileLoader";
+import AllRoleUserCount from "./manage/users/components/AllRoleUserCount";
+import Link from "next/link";
 
 
 export default function Dashboard(){
@@ -75,7 +77,7 @@ return (
 <div>
 
 <h1 className="text-3xl font-bold text-slate-800">
-Welcome back, {user2.name} 
+Welcome back
 </h1>
 
 <p className="text-slate-500 mt-1">
@@ -126,6 +128,7 @@ grid
 sm:grid-cols-2
 gap-5
 ">
+
 
 
 {
@@ -384,8 +387,10 @@ transition
 
 >
 
+<Link href="/dashboard/profile">
 View Profile
 
+</Link>
 </button>
 
 

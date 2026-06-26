@@ -101,7 +101,7 @@ const [isDropDownDisabled, setisDropDownDisabled] = useState(true)
     const role = row.original;
 
     return (
-      <div className="flex gap-2">
+      <div className="flex gap-2 justify-end w-full">
 
 { isThisRoleHasUpdateRolePermission &&(
         <button
@@ -301,6 +301,14 @@ const [isDropDownDisabled, setisDropDownDisabled] = useState(true)
             ))}
           </tbody>
         </table>
+
+  <style jsx>{`
+        table > thead > tr > th:nth-child(3) {
+          display: flex;
+          justify-content: flex-end;
+        }
+      `}</style>
+
       </div>
 
       <div className="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -342,3 +350,4 @@ const [isDropDownDisabled, setisDropDownDisabled] = useState(true)
     </div>
   );
 }
+

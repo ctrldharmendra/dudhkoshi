@@ -2,6 +2,7 @@
 "use client"
 
 import axios from "axios";
+import axiosInstance from "@/lib/axiosInstance";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from 'next/navigation';
@@ -39,31 +40,28 @@ export default function Example() {
  try {
   setLoading(true);
 
-const { data } = await axios.post(
+const { data } = await axiosInstance.post(
   "/api/auth/login",
   {
     email,
     password,
   },
-  {
-    withCredentials: true,
-  }
+  // {
+  //   withCredentials: true,
+  // }
 );
 if(data?.statusCode == 200){
     toast.success("Login Successfull!")
     router.push("/dashboard");
 }
-if(data?.statusCode == 401){
-    toast.error("Incorrect Login Details!")
-}
+
+if(data?.success == false) setError(data?.message)
 
 
 } catch (err) {
 
-  console.log(err.response?.data);
-  setError(
-    err.response?.data?.message || "Login failed"
-  );
+  console.log(err);
+  setError("Something went wrong.");
 
 } finally {
 
@@ -108,6 +106,14 @@ if(data?.statusCode == 401){
      }
             
             </button>
+
+          <button
+            type="submit"
+            className="w-full text-red-700 py-3 rounded-lg font-semibold transition"
+          >
+            {error}
+          </button>
+
             <p className="text-center mt-4">Don't have an account? <a href="#" className="text-blue-500 underline">Signup</a></p>
         </form>
 

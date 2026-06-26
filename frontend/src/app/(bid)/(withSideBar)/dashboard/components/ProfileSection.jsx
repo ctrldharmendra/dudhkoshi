@@ -32,7 +32,7 @@ const ProfileSection = () => {
                     withCredentials: true,
                 }
             );
-setUser(data?.data[0])
+            setUser(data?.data[0])
         } catch(error){
 
             console.log(

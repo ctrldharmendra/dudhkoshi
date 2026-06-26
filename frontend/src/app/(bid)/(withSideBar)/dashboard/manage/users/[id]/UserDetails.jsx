@@ -87,7 +87,7 @@ export default function UserDetails({ id }) {
     );
 
     if (deleteUser.fulfilled.match(result)) {
-      router.push("/dashboard/manage/user");
+      router.push("/dashboard/manage/users");
     }
   }
 
