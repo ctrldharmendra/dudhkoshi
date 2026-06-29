@@ -9,6 +9,7 @@ import roleAndPermissionReducer from "../slices/rolesAndPermissionSlice"
 import userReducer from "../slices/users/userSlice"
 import permissionReducer from "../slices/permissionSlice"
 import registrationReducer from "../slices/registerSlice"
+import organizationReducer from "../slices/users/organizationsSlice"
 
 const rootReducer = combineReducers({
   userState: stateReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   users:userReducer,
   permissions:permissionReducer,
   registration:registrationReducer,
+  organization:organizationReducer,
 });
 
 const persistConfig = {

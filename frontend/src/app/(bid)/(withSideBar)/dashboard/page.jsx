@@ -23,13 +23,6 @@ import Link from "next/link";
 
 export default function Dashboard(){
 
-const user2 = {
-    profileImage:"https://randomuser.me/api/portraits/men/1.jpg",
-    name:"name11admin",
-    role:"Admin",
-    email:"email11",
-    dob:"12/12/2080"
-};
 
 
 
@@ -356,7 +349,7 @@ text-xl
 font-bold
 ">
 
-Admin Access
+View Your Details
 
 </h3>
 
@@ -366,10 +359,10 @@ mt-3
 text-blue-100
 ">
 
-You have full permission to manage bids, users and system settings.
-
+Manage your Details. 
 </p>
 
+<div className="flex gap-4 flex-col lg:flex-row">
 
 <button
 
@@ -388,11 +381,33 @@ transition
 >
 
 <Link href="/dashboard/profile">
-View Profile
+Change Profile Details
+
+</Link>
+</button>
+<button
+
+className="
+mt-6
+bg-white
+text-blue-700
+px-5
+py-2
+rounded-xl
+font-semibold
+hover:bg-blue-50
+transition
+"
+
+>
+
+<Link href="/dashboard/organizations">
+Change Organization Details
 
 </Link>
 </button>
 
+</div>
 
 </div>
 

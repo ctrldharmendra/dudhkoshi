@@ -16,11 +16,10 @@ import { formatDate } from "@/utils/formatDate";
 const ProfileSection = () => {
 
     const baseContentUrl = process.env.NEXT_PUBLIC_BASE_CONTENT_URL; 
-
-
-
-
     const [user, setUser] = useState(null);
+
+
+
 
        const fetchCurrentUser = async () => {
 
@@ -76,6 +75,8 @@ alt="profile"
 
 className="
 rounded-full
+w-[100px]
+h-[100px]
 border-4
 border-blue-100
 "

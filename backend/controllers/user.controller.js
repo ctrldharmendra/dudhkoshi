@@ -3,7 +3,7 @@ const ApiError = require("../utils/ApiErrors")
 const ApiResponse = require("../utils/ApiResponse")
 const { pool } = require("../db")
 const path = require('path')
-const fs = require('fs')
+const fs = require("fs/promises");
 const helper = require('../helper/helper');
 const { saveFiles } = require("../middlewares/upload")
 
@@ -138,7 +138,7 @@ if(!hasViewUserAccess) return res.json(new ApiError(403, [],"No Permission To Vi
 })
   
 
-// UPDATE USER DETAILS 
+// UPDATE USER DETAILS Basic
 const updateUserDetails = asyncHandler(async (req, res)=>{
        try {
          const {id} = req?.user;  //who is logged in 
@@ -154,23 +154,54 @@ const updateUserDetails = asyncHandler(async (req, res)=>{
          )
 
 
-
-        // STEP 2: DB succeeded → now save the file to disk. If no file was uploaded, saved will be an empty object {}
-        const saved = await saveFiles(req, 'users');
-
-              // STEP 3: Update the DB row with the file path (if a file was uploaded)
-        if (saved?.dp) {
-            await pool.query(
-                'UPDATE users SET dp = ? WHERE id = ?',
-                [saved?.dp, result?.insertId]
-            )
-        }
         return res.json(new ApiResponse(201, row,"Updated" ))
 
        } catch (error) {
         return res.json(new ApiError(500, "", error))
        }
 
+})
+// UPDATE LOGGED IN USER PROFILE IMAGE 
+const updateUserProfileImage = asyncHandler(async (req, res)=>{
+       try {
+         const {id} = req?.user;  //who is logged in 
+         
+const [rows] = await pool.query(
+  "SELECT dp FROM users WHERE id = ?",
+  [id]
+);
+
+const previousImgPath = rows[0]?.dp;
+
+
+if (previousImgPath) {
+  const fullImgPath = path.join(
+    process.cwd(),
+    "uploads",
+    previousImgPath
+  );
+try {
+  await fs.unlink(fullImgPath);
+} catch (err) {
+  if (err.code !== "ENOENT") {
+    throw err;
+  }
+}
+  }
+            
+         const saved = await saveFiles(req, 'users');
+        if (saved?.dp) {
+            const [dets] = await pool.query(
+                'UPDATE users SET dp = ? WHERE id = ?',
+                [saved?.dp, id]
+            )
+            return res.json(new ApiResponse(201, dets,"Updated" ))
+        }
+
+       } catch (error) {
+  console.error(error);
+  return res.json(new ApiError(500, "", error));
+}
 })
 
 // GET MY DETAILS : THE ONE WHO LOGGED IN 
@@ -182,6 +213,7 @@ const getMe = asyncHandler(async (req, res)=>{
              u.name AS name,
              r.id AS roleId,
              r.name AS userRole,
+             gender,
              email,
              date_of_birth,
              dp
@@ -241,4 +273,5 @@ module.exports = {
     updateUserDetails,
     getMe,
     changeUserRole,
+    updateUserProfileImage,
 }

@@ -20,12 +20,21 @@ router.route('/users/:id').delete(
     authenticateAccessToken,
     userController.deleteUser
 )
-// UPDATE USER DETAILS 
-router.route('/users/profile').put(
+// UPDATE USER DETAILS BASIC
+router.route('/myprofile').patch(
     authenticateAccessToken,
-    upload({folder: 'users'}).single('dp'),
+    // upload({folder: 'users'}).single('dp'),
     userController.updateUserDetails
 )
+// UPDATE USER PROFILE IMAGE 
+router.route('/myprofile/dp').patch(
+    authenticateAccessToken,
+    upload({folder: 'users'}).single('dp'),
+    userController.updateUserProfileImage
+)
+
+
+
 // MY DETAILS 
 router.route('/myprofile').get(
     authenticateAccessToken,

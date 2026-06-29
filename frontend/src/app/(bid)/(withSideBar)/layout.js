@@ -11,6 +11,7 @@ import localFont from "next/font/local";
 import ToastProvider from "@/lib/ToastProvider";
 import Sidebar from "@/components/adminComponents/Sidebar";
 import StoreProvider from "../redux/storeProvider/StoreProvider";
+import UpperNav from "@/components/adminComponents/UpperNav";
 
 const myFont = localFont({
   src: "../../../font/KaTeX_Main-Regular.12644167.woff2",
@@ -38,14 +39,22 @@ export default function RootLayout({ children }) {
   return (  
     <>
     <div className="min-h-screen bg-slate-100">
+
       <Sidebar/>
+
+
 
 <main className="
 lg:ml-72
 p-6
 transition-all
 ">
+
+
  <StoreProvider>
+<div className="hidden lg:flex justify-end w-full bg-[#0e172b]">
+  <UpperNav></UpperNav>
+</div>
           {children}
           </StoreProvider>
     

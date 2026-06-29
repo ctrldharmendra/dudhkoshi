@@ -1,21 +1,24 @@
 "use client";
 
 import { getRolePermissionLoggedInUser } from "@/app/(bid)/redux/slices/rolesAndPermissionSlice";
-import { getLoggedInUserBasicInfo } from "@/app/(bid)/redux/slices/users/userSlice";
+import { getLoggedInUserBasicInfo, updateLoggedInUserDP } from "@/app/(bid)/redux/slices/users/userSlice";
 import { formatDate } from "@/utils/formatDate";
 import React, { Suspense, useEffect, useState } from "react";
 import { BsCalendarDateFill } from "react-icons/bs";
-import { FiChevronDown, FiCamera, FiEdit2, FiMail, FiShield, FiUser } from "react-icons/fi";
+import { FiChevronDown, FiCamera, FiEdit2, FiMail, FiShield, FiUser, FiBarChart2 } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import ProfileLoader from "../components/ProfileLoader";
 import TinyLoader from "@/components/reusable/loader/TinyLoader";
 import Image from "next/image";
+import Modal from "@/components/adminComponents/modal/Modal";
+import BasicDetails from "./form/BasicDetails";
 
 const ProfilePage = () => {
   const [permissionOpen, setPermissionOpen] = useState(false);
   const [isChangingImage, setIsChangingImage] = useState(false);
-  const [isEditingBasic, setIsEditingBasic] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
+const [selectedImage, setSelectedImage] = useState(null);
+
 
 
 
@@ -24,38 +27,27 @@ const ProfilePage = () => {
 
   const dispatch=useDispatch();
 
-  const user = {
-    name: "John Doe",
-    email: "john.doe@gmail.com",
-    role: "Administrator",
-    image: "https://i.pravatar.cc/150?img=12",
-  };
 
-  const permissions = [
-    "view_users",
-    "delete_user",
-    "view_role",
-    "delete_role",
-    "add_permission",
-    "create_invite",
-    "bid_view",
-  ];
+const handleImageChange = (e) => {
+  const file = e.target.files[0];
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  if (!file) return;
 
-    if (file) {
-      setImagePreview(URL.createObjectURL(file));
-    }
-  };
+  setSelectedImage(file);              // actual File object
+  setImagePreview(URL.createObjectURL(file)); // preview
+};
+const handleImageSubmit = () => {
+  const formData = new FormData();
 
-  const handleImageSubmit = () => {
-    console.log(imagePreview);
-  };
+  formData.append("dp", selectedImage);
+dispatch(updateLoggedInUserDP({ formData }));
+};
 
 //   BASIC DATA OF USER GETTING 
   const userBasicData = useSelector((state) => state?.users?.loggedInUserBasicData);  //LoggedIn user basic ddata 
   const loggedInUserBasicDataLoading = useSelector((state) => state?.users?.loggedInUserBasicDataLoading);  //LoggedIn user basic ddata Loading
+    const updateLoggedInUserDPLoading = useSelector((state) => state.users.updateLoggedInUserDPLoading);  //loading of when user change DP
+  
 //   calling apis of get user basic detals  | email, name, etc
 useEffect(() => {
     dispatch(getLoggedInUserBasicInfo({}))
@@ -77,34 +69,20 @@ useEffect(() => {
 // GETTING LOGED IN ROLE PERMISION END
 
 
-// ORGANIZATION DATA | SHOWING LOGIC 
-const [organizationOpen, setOrganizationOpen] = useState(false);
-
-const organization = {
-  orgName: "Everest IT Solutions Pvt. Ltd.",
-  ownerName: "Ram Bahadur Shrestha",
-  phnNumber: "+977-9812345678",
-  panNo: "PAN-9845123",
-  vatNo: "VAT-7845123",
-  contactPerson: "Sita Karki",
-  contactPersonsPhNo: "+977-9856781234",
-  contactPersonsEmail: "sita@everestit.com",
-  physicalAddress: "New Baneshwor, Kathmandu, Nepal",
-};
-// ORGANIZATION DATA | SHOWING LOGIC END
 
 
-
-
-if (loadingOfGetRolePermission || loggedInUserBasicDataLoading) {
+if (loadingOfGetRolePermission || loggedInUserBasicDataLoading || updateLoggedInUserDPLoading) {
   return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
    <TinyLoader></TinyLoader>
   </div>;
 }
 
   return (
-<div className="max-w-6xl mx-auto  p-4 sm:p-6 lg:p-10" style={{ background: "var(--pageBg,#f8fafc)" }}> 
+<div className=" p-2 transition-all w-full " style={{ background: "var(--pageBg,#f8fafc)" }}> 
    
+
+
+
     <Suspense fallback={<ProfileLoader></ProfileLoader>}>
     <div>
 
@@ -136,15 +114,15 @@ if (loadingOfGetRolePermission || loggedInUserBasicDataLoading) {
               </p>
             </div>
 
-
+{/* 
             <button
-              onClick={() => setIsEditingBasic(!isEditingBasic)}
+              // onClick={() => setisUserBasicDetailsUpdatePopouOpened(true)}
               className="flex items-center justify-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold text-white"
               style={{ background:"var(--addBtnBg)" }}
             >
               <FiEdit2 size={15}/>
-              Change Information
-            </button>
+              Update Basic Information
+            </button> */}
 
           </div>
 
@@ -159,15 +137,18 @@ if (loadingOfGetRolePermission || loggedInUserBasicDataLoading) {
 
               <div className="relative">
 
-                <Image
-                alt="your Avatar"
-                  src={imagePreview || userBasicData ? process.env.NEXT_PUBLIC_BASE_CONTENT_URL+"/"+userBasicData?.[0]?.dp : ""}
-                  width={80}
-                  unoptimized
-                  height={80}
-                  className="w-32 h-32 rounded-full object-cover border-4"
-                  style={{ borderColor:"var(--adminPrimaryColor)" }}
-                />
+           <Image
+  alt="your Avatar"
+  src={
+    imagePreview 
+      ? imagePreview 
+      : `${process.env.NEXT_PUBLIC_BASE_CONTENT_URL}/${userBasicData?.[0]?.dp}`
+  }
+  width={80}
+  height={80}
+  unoptimized
+  className="w-32 h-32 rounded-full object-cover border-4"
+/>
 
                 <div
                   className="absolute bottom-1 right-1 w-9 h-9 rounded-full flex items-center justify-center text-white"
@@ -193,65 +174,8 @@ if (loadingOfGetRolePermission || loggedInUserBasicDataLoading) {
 
 
 
-            {/* DETAILS */}
-
-            <div className="flex-1 w-full grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-
-              <div className="p-4 rounded-xl" style={{ background:"var(--iconBgColro)" }}>
-                <div className="flex items-center gap-2 text-sm mb-2" style={{color:"var(--greyText)"}}>
-                  <FiUser/>
-                  Name
-                </div>
-
-                <p className="font-semibold" style={{color:"var(--blackText)"}}>
-                  {userBasicData ? userBasicData?.[0]?.name : ""}
-                </p>
-              </div>
-
-
-
-              <div className="p-4 rounded-xl" style={{ background:"var(--iconBgColro)" }}>
-                <div className="flex items-center gap-2 text-sm mb-2" style={{color:"var(--greyText)"}}>
-                  <FiMail/>
-                  Email
-                </div>
-
-                <p className="font-semibold break-all" style={{color:"var(--blackText)"}}>
-                                  {userBasicData ? userBasicData?.[0]?.email : ""}
-
-                </p>
-              </div>
-
-
-
-              <div className="p-4 rounded-xl" style={{ background:"var(--iconBgColro)" }}>
-                <div className="flex items-center gap-2 text-sm mb-2" style={{color:"var(--greyText)"}}>
-                  <FiShield/>
-                  Role
-                </div>
-
-                <p className="font-semibold" style={{color:"var(--blackText)"}}>
-                                  {userBasicData ? userBasicData?.[0]?.userRole : ""}
-
-                </p>
-              </div>
-
-              <div className="p-4 rounded-xl" style={{ background:"var(--iconBgColro)" }}>
-                <div className="flex items-center gap-2 text-sm mb-2" style={{color:"var(--greyText)"}}>
-                  <BsCalendarDateFill/>
-                  Date Of Birth
-                </div>
-
-                <p className="font-semibold" style={{color:"var(--blackText)"}}>
-                                  {userBasicData ? formatDate(userBasicData?.[0]?.date_of_birth) : ""}
-
-                </p>
-              </div>
-
-
-            </div>
-
+            {/*BASIC  DETAILS */}
+            <BasicDetails   userBasicData={userBasicData}></BasicDetails>
 
           </div>
 
@@ -359,87 +283,6 @@ if (loadingOfGetRolePermission || loggedInUserBasicDataLoading) {
 </Suspense>
 
 
-<div className="rounded-2xl mt-2 shadow-sm border overflow-hidden" style={{background:"var(--whiteBg)",borderColor:"#e5e7eb"}}>
-
-  <button
-    onClick={() => setOrganizationOpen(!organizationOpen)}
-    className="w-full flex justify-between items-center p-5 font-semibold"
-    style={{color:"var(--blackText)"}}
-  >
-    <span>Organization Information</span>
-
-    <span className={`${organizationOpen ? "rotate-180" : ""} transition-transform text-xl`}>
-      ▼
-    </span>
-  </button>
-
-  {organizationOpen && (
-
-    <div className="border-t p-5" style={{borderColor:"#e5e7eb"}}>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-        <div className="rounded-xl p-4" style={{background:"var(--iconBgColro)"}}>
-          <p className="text-sm font-medium mb-1" style={{color:"var(--greyText)"}}>Organization Name</p>
-          <p className="font-semibold break-words" style={{color:"var(--blackText)"}}>{organization.orgName}</p>
-        </div>
-
-        <div className="rounded-xl p-4" style={{background:"var(--iconBgColro)"}}>
-          <p className="text-sm font-medium mb-1" style={{color:"var(--greyText)"}}>Owner Name</p>
-          <p className="font-semibold break-words" style={{color:"var(--blackText)"}}>{organization.ownerName}</p>
-        </div>
-
-        <div className="rounded-xl p-4" style={{background:"var(--iconBgColro)"}}>
-          <p className="text-sm font-medium mb-1" style={{color:"var(--greyText)"}}>Phone Number</p>
-          <p className="font-semibold break-words" style={{color:"var(--blackText)"}}>{organization.phnNumber}</p>
-        </div>
-
-        <div className="rounded-xl p-4" style={{background:"var(--iconBgColro)"}}>
-          <p className="text-sm font-medium mb-1" style={{color:"var(--greyText)"}}>PAN Number</p>
-          <p className="font-semibold break-words" style={{color:"var(--blackText)"}}>{organization.panNo}</p>
-        </div>
-
-        <div className="rounded-xl p-4" style={{background:"var(--iconBgColro)"}}>
-          <p className="text-sm font-medium mb-1" style={{color:"var(--greyText)"}}>VAT Number</p>
-          <p className="font-semibold break-words" style={{color:"var(--blackText)"}}>{organization.vatNo}</p>
-        </div>
-
-        <div className="rounded-xl p-4" style={{background:"var(--iconBgColro)"}}>
-          <p className="text-sm font-medium mb-1" style={{color:"var(--greyText)"}}>Contact Person</p>
-          <p className="font-semibold break-words" style={{color:"var(--blackText)"}}>{organization.contactPerson}</p>
-        </div>
-
-        <div className="rounded-xl p-4" style={{background:"var(--iconBgColro)"}}>
-          <p className="text-sm font-medium mb-1" style={{color:"var(--greyText)"}}>Contact Person Phone</p>
-          <p className="font-semibold break-words" style={{color:"var(--blackText)"}}>{organization.contactPersonsPhNo}</p>
-        </div>
-
-        <div className="rounded-xl p-4" style={{background:"var(--iconBgColro)"}}>
-          <p className="text-sm font-medium mb-1" style={{color:"var(--greyText)"}}>Contact Person Email</p>
-          <p className="font-semibold break-all" style={{color:"var(--blackText)"}}>{organization.contactPersonsEmail}</p>
-        </div>
-
-        <div className="rounded-xl p-4 sm:col-span-2" style={{background:"var(--iconBgColro)"}}>
-          <p className="text-sm font-medium mb-1" style={{color:"var(--greyText)"}}>Physical Address</p>
-          <p className="font-semibold break-words" style={{color:"var(--blackText)"}}>{organization.physicalAddress}</p>
-        </div>
-
-      </div>
-
-      <div className="mt-6 flex justify-end">
-        <button
-          className="px-5 py-2 rounded-lg text-white font-semibold"
-          style={{background:"var(--addBtnBg)"}}
-        >
-          Change Organization Information
-        </button>
-      </div>
-
-    </div>
-
-  )}
-
-</div>
 </div>
 
   );

@@ -376,6 +376,39 @@ try{
 })
 
 
+const changePassword = asyncHandler(async (req, res)=>{
+  if(!req?.body) return res.json(new ApiError(409, "", "All filed Required"))
+  const {newPassword, oldPassword} = req?.body;
+
+         const {id} = req?.user;  //who is logged in 
+
+
+
+const [rows] = await pool.query(
+  `SELECT * FROM users where id = ?`,
+  [id]
+)
+
+      const user = rows[0];
+ 
+   const passwordMatches = await bcrypt.compare(oldPassword, user.password);
+
+    if (!passwordMatches) {
+      return res.json(new ApiResponse(401, [], 'Invalid Credential.'));
+    }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+
+    const [result] = await pool.query(
+      `UPDATE users SET password = ? WHERE id = ?`,
+      [hashedPassword, id]
+    )
+
+    return res.json(new ApiResponse(201, result, "Success."))
+
+})
+
 module.exports = {
     registerUser,
     loginUser,
@@ -383,4 +416,5 @@ module.exports = {
     logOut,
     logOutAll,
     authMe,
+    changePassword,
 }

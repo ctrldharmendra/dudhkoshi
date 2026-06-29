@@ -36,6 +36,7 @@ const invitationRoutes = require('../routes/invitation.routes')
 const permissionRoutes = require('../routes/permission.routes')
 const roleRoutes = require('../routes/role.routes')
 const emailContentRoutes = require('../routes/email.routes')
+const userOrganizationRoute = require('../routes/userOrganization.routes')
 
 
 // console.log("cwd:", process.cwd());
@@ -55,6 +56,7 @@ app.use('/api/invite', invitationRoutes);
 app.use('/api/roles', permissionRoutes)  //add or remove role's permission
 app.use('/api/manage/roles', roleRoutes)
 app.use('/api/emailcontents', emailContentRoutes)
+app.use('/api/userorg', userOrganizationRoute)
 
 
 

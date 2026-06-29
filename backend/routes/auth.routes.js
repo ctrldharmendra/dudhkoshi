@@ -32,6 +32,10 @@ router.route('/authme').get(
    authenticateAccessToken, 
     authController.authMe
 );
+router.route('/change-password').patch(
+   authenticateAccessToken, 
+    authController.changePassword
+);
 
 
 

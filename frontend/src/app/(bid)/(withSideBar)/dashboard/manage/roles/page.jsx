@@ -119,7 +119,7 @@ if (loadingGetAllRoleWithPermission) {
     <>
     
 
- <div className="max-w-7xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700 px-4 sm:px-6 lg:px-8 py-6">
+ <div className="mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700 px-4 sm:px-6 lg:px-8 py-6">
       <Modal
         isModalOpen={isAddOpened}
         onClose={() => dispatch(setIsAddOpened(false))}

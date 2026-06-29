@@ -7,13 +7,6 @@ if (Object.keys(user).length === 0) {
 }
 
 
-// if loading show loader 
-if (loading) {
-  return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
-   <TinyLoader></TinyLoader>
-  </div>;
-}
-
 
 #### ROLEPERMISSION SLICE 
 const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
@@ -23,10 +16,17 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
 
 
 ##########
-     const result = await dispatch(
-        deleteRole({id:selectedRoleId})
-      );
-  
-      // if (deleteRole.fulfilled.match(result)) {
-      //    router.refresh();
-      // }
+       const result = await dispatch(updateBasicDetailsloggedInUser({formData}));
+           if (updateBasicDetailsloggedInUser.fulfilled.match(result)) {
+                router.refresh();
+                toast.success("Update Success.")
+                setIsEditing(false)
+                }
+
+
+LOADING 
+if (loadingOfGetRolePermission) {
+  return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+   <TinyLoader></TinyLoader>
+  </div>;
+}
