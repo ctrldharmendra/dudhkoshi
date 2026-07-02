@@ -95,3 +95,5 @@ if (usersUsingRole[0].count > 0) {
   [roleName, req?.user?.id, id]
 );
 ------------------------------------------------------------------------------------------
+
+  const fullPath = path.join(process.cwd(), "uploads", row.value);

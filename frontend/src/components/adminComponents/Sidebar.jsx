@@ -27,6 +27,7 @@ import { MdDeleteForever } from "react-icons/md";
 import { CiLogin } from "react-icons/ci";
 import TinyLoader from "../reusable/loader/TinyLoader";
 import axiosInstance from "@/lib/axiosInstance";
+import { RiAuctionFill } from "react-icons/ri";
 
 
 
@@ -78,17 +79,18 @@ const menuItems = [
 
 
   {
-    title:"Applications",
-    icon:FiFileText,
+    title:"Bids",
+    icon:RiAuctionFill,
     children:[
       {
-        title:"All Applications",
-        path:"/dashboard/applications"
+        title:"Bids",
+        path:"/dashboard/bids"
       },
       {
-        title:"Pending",
-        path:"/dashboard/applications/pending"
+        title:"Your Applied Bids",
+        path:"/dashboard/bids/pending"
       }
+
     ]
   },
 
