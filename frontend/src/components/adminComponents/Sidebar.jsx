@@ -84,11 +84,11 @@ const menuItems = [
     children:[
       {
         title:"Bids",
-        path:"/dashboard/bids"
+        path:"/dashboard/manage/bids"
       },
       {
         title:"Your Applied Bids",
-        path:"/dashboard/bids/pending"
+        path:"/dashboard/manage/bids/pending"
       }
 
     ]

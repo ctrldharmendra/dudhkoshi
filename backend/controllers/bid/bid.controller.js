@@ -167,16 +167,18 @@ return res.status(200).json(new ApiResponse(200, {id, publishDate, openDate, tit
   }
 })
 
-// GET BID FORM 
+// GET BID FORM | TO LIST IN FRONTED SIDE 
 const getAllBids = asyncHandler(async (req, res) => {
     try {
         // Read query parameters
         const page = Number(req.query.page) || 1;
-        const limit = Number(req.query.limit) || 10;
+        const limit = Number(req.query.limit) || 4;
 
 
         const search = req.query.search || "";
         const status = req.query.status || "";
+        const fromDate = req.query.from || "";
+        const toDate = req.query.to || "";
 
         // Calculate offset
         const offset = (page - 1) * limit;
@@ -210,6 +212,17 @@ const getAllBids = asyncHandler(async (req, res) => {
             selectValues.push(status);
         }
 
+        // from and to date 
+        if (fromDate) {
+    selectQuery += ` AND created_at >= ?`;
+    selectValues.push(fromDate);
+        }
+
+      if (toDate) {
+    selectQuery += ` AND created_at <= ?`;
+    selectValues.push(toDate);
+        }
+
         // Latest bids first
         selectQuery += `
             ORDER BY created_at DESC
@@ -240,6 +253,16 @@ const getAllBids = asyncHandler(async (req, res) => {
             countQuery += ` AND status = ?`;
             countValues.push(status);
         }
+
+        if (fromDate) {
+    countQuery += ` AND created_at >= ?`;
+    countValues.push(fromDate);
+}
+
+if (toDate) {
+    countQuery += ` AND created_at <= ?`;
+    countValues.push(toDate);
+}
 
         const [[countResult]] = await pool.query(countQuery, countValues);
 
@@ -295,6 +318,7 @@ const getSingleBidForm = asyncHandler(async (req, res)=>{
                 id,
                 publishDate,
                 openDate,
+                closeDate,
                 title,
                 description,
                 status,

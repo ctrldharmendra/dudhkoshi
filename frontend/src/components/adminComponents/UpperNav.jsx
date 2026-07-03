@@ -43,7 +43,7 @@ export default function UpperNav() {
         <span className="text-white">{user?.[0]?.name || " "} </span>
           <button onClick={() => setOpen((prev) => !prev)} className="cursor-pointer">
         {
-            !open ?  <IoMenu className=" bg-slate-900 text-white p-2 rounded-lg shadow text-[50px] "></IoMenu > : <RiCloseLargeFill className=" bg-slate-900 text-white p-2 rounded-lg shadow text-[50px] "></RiCloseLargeFill>
+            !open ?  <IoMenu className=" bg-slate-900 text-white p-2 shadow text-[50px] "></IoMenu > : <RiCloseLargeFill className=" bg-slate-900 text-white p-2 shadow text-[50px] "></RiCloseLargeFill>
            
         }
       </button>
@@ -59,6 +59,18 @@ export default function UpperNav() {
         <li className=" py-2 text-[16px] hover:bg-gray-500/10 cursor-pointer hover:bg-gray-500/10 cursor-pointer" onClick={() => setOpen((prev) => !prev)}>
         <Link href="/dashboard/organizations" className="px-4 py-2">
          Update Organization
+        </Link>
+        </li>
+
+        <li className=" py-2 text-[16px] hover:bg-gray-500/10 cursor-pointer hover:bg-gray-500/10 cursor-pointer" onClick={() => setOpen((prev) => !prev)}>
+        <Link href="/dashboard/manage/bids" className="px-4 py-2">
+         My Applied Bids
+        </Link>
+        </li>
+
+        <li className=" py-2 text-[16px] hover:bg-gray-500/10 cursor-pointer hover:bg-gray-500/10 cursor-pointer" onClick={() => setOpen((prev) => !prev)}>
+        <Link href="/dashboard/manage/bids" className="px-4 py-2">
+         All Bids
         </Link>
         </li>
 
