@@ -11,6 +11,7 @@ import permissionReducer from "../slices/permissionSlice"
 import registrationReducer from "../slices/registerSlice"
 import organizationReducer from "../slices/users/organizationsSlice"
 import bidFormReducer from "../slices/bids/bidFormSlice"
+import bidApplicationSliceReducer from "../slices/bids/bidApplicationSlice"
 
 const rootReducer = combineReducers({
   userState: stateReducer,
@@ -20,7 +21,8 @@ const rootReducer = combineReducers({
   permissions:permissionReducer,
   registration:registrationReducer,
   organization:organizationReducer,
-  bidForm:bidFormReducer
+  bidForm:bidFormReducer,
+  bidApplication:bidApplicationSliceReducer,
 });
 
 const persistConfig = {

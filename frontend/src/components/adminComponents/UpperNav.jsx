@@ -38,10 +38,10 @@ export default function UpperNav() {
   
 
   return (
-    <div ref={menuRef} className="relative flex flex-col w-40 text-sm">
+    <div ref={menuRef} className="relative flex flex-col w-40  text-sm">
 <div className="flex items-center">
         <span className="text-white">{user?.[0]?.name || " "} </span>
-          <button onClick={() => setOpen((prev) => !prev)} className="cursor-pointer">
+          <button onClick={() => setOpen((prev) => !prev)} className="cursor-pointer overflow-hidden">
         {
             !open ?  <IoMenu className=" bg-slate-900 text-white p-2 shadow text-[50px] "></IoMenu > : <RiCloseLargeFill className=" bg-slate-900 text-white p-2 shadow text-[50px] "></RiCloseLargeFill>
            

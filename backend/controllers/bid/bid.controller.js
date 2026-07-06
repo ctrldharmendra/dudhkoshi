@@ -104,6 +104,8 @@ const editBidForm = asyncHandler(async (req, res)=>{
   const connection = await pool.getConnection();
   const {id} = req.params;  //particular bid ko id 
   const {publishDate, openDate, title, description, status, closeDate, fields} = req.body; 
+
+  // console.log(fields, " fields")
   try {
     
      // Basic validation
@@ -137,8 +139,8 @@ const editBidForm = asyncHandler(async (req, res)=>{
         }
 
   await connection.query(
-    `UPDATE bid_master SET publishDate = ?, openDate = ?, title = ?, description = ?, status = ?, closeDate = ? WHERE id = ?`,
-    [publishDate, openDate, title, description, status, closeDate, id]
+    `UPDATE bid_master SET publishDate = ?, openDate = ?, title = ?, description = ?, status = ?, closeDate = ?, updated_by = ? WHERE id = ?`,
+    [publishDate, openDate, title, description, status, closeDate, req.user.id, id]
   );
 
   // Delete existing fields
@@ -150,10 +152,25 @@ const editBidForm = asyncHandler(async (req, res)=>{
   // Insert new fields
   for (const field of fields) {
     await connection.query(
-      `INSERT INTO bid_fields (bid_id, field_name, created_by, field_type) VALUES (?, ?, ?, ?)`,
-      [id, field.fieldName, req.user.id, field.fieldType]
+      `INSERT INTO bid_fields (bid_id, field_name, created_by, modified_by, field_type) VALUES (?, ?, ?, ?, ?)`,
+      [id, field.field_name, req.user.id, req.user.id, field.field_type]
     );
   }
+
+  // update that particular fields 
+// for (const field of fields) {
+//   await connection.query(
+//     `UPDATE bid_fields
+//      SET field_name = ?, field_type = ?, modified_by = ?
+//      WHERE id = ?`,
+//     [
+//       field.field_name,
+//       field.field_type,
+//       req.user.id,
+//       field.id
+//     ]
+//   );
+// }
 
   await connection.commit();  
 return res.status(200).json(new ApiResponse(200, {id, publishDate, openDate, title, description, status, closeDate}, "Bid form edited successfully."))
@@ -323,7 +340,9 @@ const getSingleBidForm = asyncHandler(async (req, res)=>{
                 description,
                 status,
                 user_id,
-                created_at
+                created_at,
+                updated_at, 
+                updated_by
             FROM bid_master
             WHERE id = ?
             `,
@@ -760,9 +779,10 @@ try {
           bidApps.created_at AS applied_at,
           u.name AS applicant_name,
           u.email AS applicant_email,
+          u.gender as applicant_gender,
           org.orgName AS applicant_organization_name
     FROM bid_applications bidApps
-    LEFT JOIN users u ON bidApps.applicant_user_id = u.id
+    INNER JOIN users u ON bidApps.applicant_user_id = u.id
     LEFT JOIN organizations org ON u.id = org.user_id
            WHERE bidApps.bid_id = ?`,
     [selectedBidId]
@@ -784,6 +804,10 @@ const getBidApplicantDocument = asyncHandler(async (req, res)=>{
   try {
        const bidId = req.params.bidId;
     const applicationId = req.params.applicationId;
+
+
+    console.log(applicationId, "applicationId")
+
 if (!bidId || !applicationId || isNaN(bidId) || isNaN(applicationId)) {
   return res.status(400).json(new ApiError(400, "Invalid bid ID or application ID."));
 }

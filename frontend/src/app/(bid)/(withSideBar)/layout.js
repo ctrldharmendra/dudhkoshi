@@ -52,7 +52,7 @@ transition-all
 
 
  <StoreProvider>
-<div className="hidden lg:flex justify-end w-full bg-[#0e172b]">
+<div className="hidden lg:flex justify-end w-full bg-[#0e172b] px-2">
   <UpperNav></UpperNav>
 </div>
           {children}

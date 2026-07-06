@@ -41,7 +41,7 @@ export const createBidForm = createAsyncThunk(
   async ({bidData}, thunkAPI) => {
     try {
       const { data } = await axiosInstance.post(`/api/bid/bidform`, bidData);
-        console.log(data.data)
+        // console.log(data.data)
       return data?.data;
 
     } catch (err) {
@@ -70,26 +70,28 @@ export const getParticularBidForm = createAsyncThunk(
     }
   }
 );
-// DELETE | DELETE A BID FORM
-// export const deleteBidForm = createAsyncThunk(
-//   'deleteBidForm',
-//   async ({roleId, permissions}, thunkAPI) => {
-//     try {
-//       const { data } = await axiosInstance.delete(`/api/roles/${roleId}/permissions`, {
-//         data: { permissions }  // ← axios DELETE body goes inside { data: ... }
-//       });
 
-//       console.log(data, "data")
-//       toast.success("Role Add Scuccess.")
-//       thunkAPI.dispatch(setIsPermissisonOpened(false));
-//       return data?.data;
 
-//     } catch (err) {
-//       toast.error(err.response?.data?.message || 'Failed Add');
-//       return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
-//     }
-//   }
-// );
+// EDIT PARTICULAR BID FORM 
+export const editBidForm = createAsyncThunk(
+  'editBidForm',
+  async ({bidData, id}, thunkAPI) => {
+
+    console.log(bidData, "FTOM SLCIE")
+    try {
+      const { data } = await axiosInstance.put(`/api/bid/bidform/${id}`, bidData);
+        console.log(data.data)
+      return data?.data;
+
+    } catch (err) {
+          console.log("STATUS:", err.response?.status);
+  console.log("DATA:", err.response?.data);
+  console.log("MESSAGE:", err.message);
+      toast.error( 'Failed Add');
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
 
 
 const bidFormSlice = createSlice({

@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import TinyLoader from '@/components/reusable/loader/TinyLoader'
 import { hasPermission } from '@/helper/helper'
 import { getRolePermissionLoggedInUser } from '@/app/(bid)/redux/slices/rolesAndPermissionSlice'
-import { createBidForm, getParticularBidForm } from '@/app/(bid)/redux/slices/bids/bidFormSlice'
+import { createBidForm, editBidForm, getParticularBidForm } from '@/app/(bid)/redux/slices/bids/bidFormSlice'
 import toast from 'react-hot-toast'
 
 import { useParams } from 'next/navigation';
@@ -20,6 +20,7 @@ const Page = () => {
     const router = useRouter()
     const dispatch = useDispatch()
   const particularBidFormData = useSelector((state) => state?.bidForm?.particularBidForm);  //Selected BID Form data
+  const particularBidFormLoading = useSelector((state) => state?.bidForm?.particularBidFormLoading);  //Particular bid get Loading
 
 
   const params = useParams();
@@ -32,7 +33,6 @@ if(id){
     
 }
 
-console.log(particularBidFormData, "PAR")
 
   const [bidData, setBidData] = useState(
     {
@@ -54,9 +54,8 @@ console.log(particularBidFormData, "PAR")
 //   check if logged in role has permission to create bid or not 
 const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
 const loading  = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);  //loading state
-  const createBidFormLoading = useSelector((state) => state?.bidForm?.createBidFormLoading);  //create bid loading state
 
-  console.log(particularBidFormData, "pik")
+  // console.log(particularBidFormData, "pik")
 
 // get all permission in an array 
     useEffect(()=>{
@@ -100,9 +99,9 @@ useEffect(() => {
 
 const handleSubmit = async ()=>{
     if(!bidData.closeDate || !bidData.description || !bidData.fields || !bidData.openDate || !bidData.title || !bidData.publishDate) return toast.error("All Basic Fields Required")
-   const result = await dispatch(createBidForm({bidData}));
-               if (createBidForm.fulfilled.match(result)) {
-                toast.success("A Bid Created Success.")
+   const result = await dispatch(editBidForm({bidData, id}));
+               if (editBidForm.fulfilled.match(result)) {
+                toast.success("Update Success.")
                     setBidData({
     title: "",
     publishDate: "",
@@ -124,7 +123,7 @@ const handleSubmit = async ()=>{
 }
 
 
-if (loading || createBidFormLoading) {
+if (loading || particularBidFormLoading) {
   return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
    <TinyLoader></TinyLoader>
   </div>;
@@ -322,8 +321,8 @@ if (loading || createBidFormLoading) {
                       value={field.field_name}
                       placeholder="e.g., Core Capacity Spec"
                       onChange={(e) => {
-                        const updated = [...bidData.fields];
-                        updated[index].field_name = e.target.value;
+                        // const updated = [...bidData.fields];
+                        // updated[index].field_name = e.target.value;
                         setBidData(prev => ({
   ...prev,
   fields: prev.fields.map((field, i) =>
@@ -348,8 +347,8 @@ if (loading || createBidFormLoading) {
                     <select
                       value={field.field_type}
                       onChange={(e) => {
-                        const updated = [...bidData.fields];
-                        updated[index].field_type = e.target.value;
+                        // const updated = [...bidData.fields];
+                        // updated[index].field_type = e.target.value;
                setBidData(prev => ({
   ...prev,
   fields: prev.fields.map((field, i) =>

@@ -44,6 +44,8 @@ const [bidSearch, setbidSearch] = useState(
   const total = useSelector((state) => state?.bidForm?.allBidFormFromDb?.pagination?.total);  //Total Bid
   const hasNextPage = useSelector((state) => state?.bidForm?.allBidFormFromDb?.pagination?.hasNextPage);  //Has Nexdt
   const hasPreviousPage = useSelector((state) => state?.bidForm?.allBidFormFromDb?.pagination?.hasPreviousPage);  //Has Previous
+  const totalPages = useSelector((state) => state?.bidForm?.allBidFormFromDb?.pagination?.totalPages);  //Total page
+
 
     const [sorting, setSorting] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
@@ -106,11 +108,11 @@ dispatch(
       header: "Bid Title",
       cell: ({ row }) => (
         <div className="min-w-[220px]">
-          <p className="font-semibold text-[var(--blackText)]">
+          <p className="font-semibold twoLinePara text-[var(--blackText)]">
             {row.original.title}
           </p>
 
-          <p className="text-xs text-gray-500 line-clamp-2">
+          <p className="text-xs text-gray-500 twoLinePara">
             {row.original.description}
           </p>
         </div>
@@ -176,7 +178,8 @@ dispatch(
           <div className="flex items-center gap-2">
 
             <Link
-              href={`/dashboard/bids/${bid.id}`}
+              href={`/dashboard/manage/bids/bidders?bid=${bid.id}`}
+              // href={`/dashboard/manage/bids/${bid.id}/bidders`}
               className="h-9 w-9 rounded-full bg-[var(--iconBgColro)] hover:scale-105 flex items-center justify-center transition"
               title='See Bidders List'
             >
@@ -399,7 +402,7 @@ if (allBidsLoading) {
             {row.getVisibleCells().map((cell) => (
               <td
                 key={cell.id}
-                className="px-5 py-4 text-sm whitespace-nowrap"
+                className="px-5 py-4 max-w-[220px] text-sm whitespace-nowrap"
               >
                 {flexRender(
                   cell.column.columnDef.cell,
@@ -429,8 +432,8 @@ if (allBidsLoading) {
 <div className="mt-6 px-5 py-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
 
   <p className="text-sm text-[var(--greyText)]">
-    Page <span className="font-semibold text-black">1</span> of{" "}
-    <span className="font-semibold text-black">10</span>
+    Page <span className="font-semibold text-black">{bidPage}</span> of{" "}
+    <span className="font-semibold text-black">{totalPages}</span>
   </p>
 
   <div className="flex items-center gap-2">
