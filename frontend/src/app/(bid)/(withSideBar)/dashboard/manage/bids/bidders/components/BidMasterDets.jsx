@@ -49,16 +49,6 @@ export default function BidMasterDets({bid}) {
     const particularBidFormLoading = useSelector((state) => state?.bidForm?.particularBidFormLoading);  //Particular bid get Loading
   
 
-  const bidData = 
-    {
-      id: 1,
-      title: "Digital Infrastructure Development and Software Solution Implementation for Aayu Softtech",
-      description: "Aayu Softtech is inviting proposals from qualified technology service providers for the design, development, and implementation of a scalable digital infrastructure system. The objective of this project is to enhance operational efficiency, streamline internal workflows, and modernize existing software systems through secure and maintainable solutions.",
-      publishDate: "16 Jul 2026",
-      openDate: "25 Jul 2026",
-      status: "ACTIVE",
-      created: "06/07/2026",
-    }
 if(bid){
     useEffect(() => {
          dispatch(getParticularBidForm({id:bid}))

@@ -87,6 +87,10 @@ const menuItems = [
         path:"/dashboard/manage/bids"
       },
       {
+        title:"Apply For a Bid",
+        path:"/dashboard/manage/bids/apply"
+      },
+      {
         title:"Your Applied Bids",
         path:"/dashboard/manage/bids/pending"
       }

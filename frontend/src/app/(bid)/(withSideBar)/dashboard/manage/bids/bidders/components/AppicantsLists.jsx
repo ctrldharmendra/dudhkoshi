@@ -2,6 +2,7 @@
 
 import { getApplicantsToParticularBid } from "@/app/(bid)/redux/slices/bids/bidApplicationSlice";
 import { setSelectedUser } from "@/app/(bid)/redux/slices/stateSlice";
+import TinyLoader from "@/components/reusable/loader/TinyLoader";
 import {
   flexRender,
   getCoreRowModel,
@@ -94,11 +95,13 @@ export default function ApplicantsLists({ bid}) {
       {
   header: "Actions",
   cell: ({ row }) => {
+    console.log(row.original, "ROW ")
     const user = row.original;
 // console.log(user)
     return (
       <Link
-        href={`/dashboard/manage/users/${user?.userId}`}
+      // /dashboard/manage/bids/bidders?bid=${bid.id}
+        href={`/dashboard/manage/applicant/documents?bid=${bid}&id=${row?.original?.applicationId}`}
         onClick={() => dispatch(setSelectedUser(user))}
         className="flex items-center gap-2.5 viewParticularUser w-fit px-4 py-2 text-gray-800 rounded active:scale-95 transition"
       >
@@ -126,12 +129,19 @@ export default function ApplicantsLists({ bid}) {
     getPaginationRowModel: getPaginationRowModel(),
   });
 
-console.log(!applicantToParticularBid.length)
+// console.log(!applicantToParticularBid.length)
 if(!applicantToParticularBid?.length){
  return  <div className="flex justify-center items-center text-[22px] md:text-[20px] text-[var(--deleteIconColor)] min-h-[200px]">
 
     No Any Applicants To this Bid yet.
   </div>
+}
+
+
+if (applicantsToParticularBidLoading) {
+  return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+   <TinyLoader></TinyLoader>
+  </div>;
 }
 
 // const selectedUserData = useSelector((state) => state?.userState);

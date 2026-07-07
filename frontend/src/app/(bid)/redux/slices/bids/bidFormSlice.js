@@ -84,10 +84,12 @@ export const editBidForm = createAsyncThunk(
       return data?.data;
 
     } catch (err) {
-          console.log("STATUS:", err.response?.status);
-  console.log("DATA:", err.response?.data);
-  console.log("MESSAGE:", err.message);
-      toast.error( 'Failed Add');
+      if(err.response?.data?.errors){
+            console.log("STATUS:", err.response?.status);
+    console.log("DATA:", err.response?.data?.errors);
+          toast.error( err.response?.data?.errors);
+  }
+
       return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
     }
   }

@@ -432,15 +432,21 @@ if(!hasApplyBidPermission) return res.json(new ApiError(403, [],"No Permission T
     //   { field_id: 3, value: null, type: "file", fileIndex: 1 },
     // ]
     let values;
+
+    console.log(JSON.parse(req.body.values), "JSON.parse(req.body.values)")
     try {
       values = JSON.parse(req.body.values);
+      // console.log("json:", JSON.stringify(values));
     } catch (e) {
-      return res.status(400).json(new ApiError(400, "Invalid values format. Must be valid JSON."));
+      return res.status(400).json(new ApiError(400, "", "Invalid values format. Must be valid JSON."));
     }
+
+
 
     // req.files → array of file objects multer held in memory
     // multer has NOT saved them to disk yet at this point
     const files = req.files || [];
+
 
     // STEP 2 — BASIC VALIDATION
     if (!bid_id) {
@@ -455,6 +461,7 @@ if(!hasApplyBidPermission) return res.json(new ApiError(403, [],"No Permission T
     const isValid = values.every(item => {
       if (!item.field_id) return false;               // field_id missing
       if (item.type === "text" && !item.value) return false;  // text but no value
+      // if (item.type === "text" && item.value === undefined) return false;
       if (item.type === "file" && item.fileIndex === undefined) return false; // file but no fileIndex
       return true;
     });
@@ -858,6 +865,7 @@ if (bidDynamiDocumentDets.length === 0) {
       u.id AS user_id,
       u.name AS user_name,
       u.email AS user_email,
+      u.gender AS user_gender,
       org.orgName AS organization_name
   FROM bid_applications ba
   JOIN users u ON ba.applicant_user_id = u.id
