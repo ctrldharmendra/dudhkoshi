@@ -14,6 +14,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { HiOutlinePlus, HiOutlineUserGroup } from 'react-icons/hi';
 import { VscGitStashApply } from 'react-icons/vsc';
+import { getRolePermissionLoggedInUser } from '@/app/(bid)/redux/slices/rolesAndPermissionSlice';
+import { hasPermission } from '@/helper/helper';
+import { RiAuctionFill } from 'react-icons/ri';
 
 
 
@@ -25,6 +28,9 @@ const pathname = usePathname();
 
   const allBids = useSelector((state) => state?.bidForm?.allBidFormFromDb?.bids ??  []);  //all bids object
   const allBidsLoading = useSelector((state) => state?.bidForm?.allBidFormLoading);  //all loading state
+
+
+// console.log(allBids, "allBids")
 
   const searchParams = useSearchParams();
 
@@ -59,40 +65,82 @@ const [bidSearch, setbidSearch] = useState(
 
 
 //   debouncing search | only when user typing stop for 4 seconds 
-const debouncedSearch = useDebounce(bidSearch, 3000);
+const debouncedSearch = useDebounce(bidSearch, 2000);
 
-
-useEffect(() => {
-  const params = new URLSearchParams(searchParams.toString());
-
-  params.set("page", bidPage);
-
-  params.set("limit", limit);
-  if (debouncedSearch.trim()) {
-    params.set("search", debouncedSearch);
-  } else {
-    params.delete("search");
-  }
-
-  params.set("from", dateFilter.from);
-params.set("to", dateFilter.to);
-
-  router.replace(`${pathname}?${params.toString()}`, {
-    scroll: false,
-  });
-
-dispatch(
-  getAllBidForm({
+  //FIRST : check if logged in role has permission to view bid or not 
+  //FIRST : fetch permissions on mount
+  useEffect(() => {
+    dispatch(getRolePermissionLoggedInUser({}));
+  }, [dispatch]);
+  
+  const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);
+  const loading = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);
+  
+  const canViewBid = hasPermission(permissionOfLoggedInRoleOfUser, "view_bid");
+  const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "create_bid");
+  
+  // only "true" once permission data has actually arrived
+  const permissionChecked = !loading && !!permissionOfLoggedInRoleOfUser;
+  const hasBidAccess = canViewBid && canCreateBid;
+  
+  useEffect(() => {
+    if (!permissionChecked) return;
+    if (!hasBidAccess) {
+      router.replace("/forbidden");
+    }
+  }, [permissionChecked, hasBidAccess, router]);
+  //   check if logged in role has permission to view bid or not END
+  
+  // SECOND :Fetch only when permission exists
+  // SECOND: fetch bids only when access is confirmed
+  useEffect(() => {
+    if (!permissionChecked || !hasBidAccess) return;
+  
+    dispatch(
+      getAllBidForm({
+        bidPage,
+        bidSearch: debouncedSearch,
+        limit,
+        from: dateFilter.from,
+        to: dateFilter.to,
+      })
+    );
+  }, [
+    permissionChecked,
+    hasBidAccess,
     bidPage,
-    bidSearch: debouncedSearch,
+    debouncedSearch,
     limit,
-    from: dateFilter.from,
-    to: dateFilter.to,
-  })
-);
-}, [bidPage, debouncedSearch, limit, dateFilter.from, dateFilter.to]);
+    dateFilter.from,
+    dateFilter.to,
+    dispatch,
+  ]);
+  // Fetch only when permission exists END 
+  // -----------------------------------------------------
 
-    const columns = useMemo(
+  // CHANGE URL 
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+  
+    params.set("page", bidPage);
+  
+    params.set("limit", limit);
+    if (debouncedSearch.trim()) {
+      params.set("search", debouncedSearch);
+    } else {
+      params.delete("search");
+    }
+  
+    params.set("from", dateFilter.from);
+  params.set("to", dateFilter.to);
+  
+    router.replace(`${pathname}?${params.toString()}`, {
+      scroll: false,
+    });
+  }, [bidPage, debouncedSearch, limit, dateFilter.from, dateFilter.to]);
+  // CHANGE URL END
+
+const columns = useMemo(
   () => [
     {
       id: "serial",
@@ -173,12 +221,23 @@ dispatch(
     {
       header: "Actions",
       cell: ({ row }) => {
-        const bid = row.original;
+        const bid = row?.original;
 
         return (
           <div className="flex items-center gap-2">
 
-            <Link
+{
+  row?.original?.applicationStatus && row?.original?.applicationId && (
+<div className='flex flex-col gap-[3px]'>
+  <button className='bg-gray-300 px-2 text-[15px] py-0 rounded-md cursor-not-allowed opacity-50" disabled' title='You Already Applied'>Applied</button>
+  <button className='bg-gray-300 px-2 text-[15px] py-0 rounded-md cursor-not-allowed opacity-50" disabled' title='Neither Won nor Rejected'>{row?.original?.applicationStatus}</button>
+
+</div>    
+  )
+}
+{
+  !row?.original?.applicationStatus && !row?.original?.applicationId && (
+                <Link
               href={`/dashboard/manage/bids/apply/${bid.id}`}
               // href={`/dashboard/manage/bids/${bid.id}/bidders`}
               className="h-9 w-9 rounded-full bg-[var(--iconBgColro)] hover:scale-105 flex items-center justify-center transition"
@@ -188,6 +247,8 @@ dispatch(
                 className="text-lg text-[var(--iconColor)]"
               />
             </Link>
+  )
+}
 
           </div>
         );
@@ -197,7 +258,7 @@ dispatch(
   []
 );
 
-
+// table 
   const table = useReactTable({
     data: allBids,
     columns,
@@ -214,10 +275,25 @@ dispatch(
   });
 
 
+
+if (!permissionChecked) {
+  return (
+    <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+      <TinyLoader />
+    </div>
+  );
+}
+
+if (!hasBidAccess) {
+  // redirect is already in-flight via the effect above
+  return null;
+}
 if (allBidsLoading) {
-  return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
-   <TinyLoader></TinyLoader>
-  </div>;
+  return (
+    <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+      <TinyLoader />
+    </div>
+  );
 }
   return (
 
@@ -241,11 +317,11 @@ if (allBidsLoading) {
       
           {
             1==1 &&     <Link
-            href="ksak"
+            href="applied"
             
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl font-bold shadow-lg flex items-center gap-2 transition-all hover:scale-105 w-full sm:w-auto justify-center text-sm sm:text-base"
           >
-            <HiOutlinePlus className="w-5 h-5" />
+            <RiAuctionFill className="w-5 h-5" />
            View Your Applied
           </Link>
           }
@@ -315,13 +391,16 @@ if (allBidsLoading) {
   <div className="flex gap-3 flex-wrap">
 
 {
-    dateFilter.to || dateFilter.from && (
+    dateFilter.to || dateFilter.from ||  bidSearch && (
             <button
       onClick={() =>
-        setDateFilter({
+   {
+         setDateFilter({
           from: "",
           to: "",
         })
+        setbidSearch("")
+   }
       }
       className="h-11 text-[var(--deleteIconColor)] rounded-lg border border-gray-300 px-5 font-medium transitionbg-[var(--deleteIconBg)] hover:bg-[var(--deleteIconBgHOver)]"
     >

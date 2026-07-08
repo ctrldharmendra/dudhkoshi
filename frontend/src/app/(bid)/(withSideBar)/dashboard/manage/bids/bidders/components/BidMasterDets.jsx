@@ -10,6 +10,7 @@ import TinyLoader from "@/components/reusable/loader/TinyLoader";
 import { getRolePermissionLoggedInUser } from "@/app/(bid)/redux/slices/rolesAndPermissionSlice";
 import { useRouter } from 'next/navigation';
 import { hasPermission } from "@/helper/helper";
+import ApplicantsLists from "./AppicantsLists";
 
 
 
@@ -22,39 +23,48 @@ export default function BidMasterDets({bid}) {
 
 
 
-    // check if loggedn in user has permission to view "applicants"
-    const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
-    const loadingOfGetRolePermission  = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);  //loading state
-    
-      // console.log(particularBidFormData, "pik")
-    
-    // get all permission in an array 
-        useEffect(()=>{
-          dispatch(getRolePermissionLoggedInUser({}))
-        },[]);
 
-        useEffect(() => {
-          if (loadingOfGetRolePermission) return;
-          if (!permissionOfLoggedInRoleOfUser) return;
-        
-          const canViewApplicants = hasPermission(permissionOfLoggedInRoleOfUser, "view_applicants");
-          if (!canViewApplicants) {
-            router.replace("/forbidden");
-          }
-        }, [loadingOfGetRolePermission, permissionOfLoggedInRoleOfUser]);
-    // check if loggedn in user has permission to view "applicants" end
+
+
+
+
+          //FIRST : check if logged in role has permission to view bid or not 
+          //FIRST : fetch permissions on mount
+          useEffect(() => {
+            dispatch(getRolePermissionLoggedInUser({}));
+          }, [dispatch]);
+          
+          const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);
+          const loadingOfGetRolePermission = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);
+          
+          const view_applicants = hasPermission(permissionOfLoggedInRoleOfUser, "view_applicants");
+          
+          // only "true" once permission data has actually arrived
+          const permissionChecked = !loadingOfGetRolePermission && !!permissionOfLoggedInRoleOfUser;
+          const hasBidAccess = view_applicants;
+           
+          useEffect(() => {
+            if (!permissionChecked) return;
+            if (!hasBidAccess) {
+              router.replace("/forbidden");
+            }
+          }, [permissionChecked, hasBidAccess, router]);
+          //   check if logged in role has permission to view bid or not END
+          
+          // SECOND :Fetch only when permission exists
+          // SECOND: fetch bids only when access is confirmed
+          useEffect(() => {
+            if (!permissionChecked || !hasBidAccess) return;
+          
+            dispatch(getParticularBidForm({ id: bid }));}, [permissionChecked, hasBidAccess, dispatch]);
+          // Fetch only when permission exists END 
+          // -----------------------------------------------------
+    // check if loggedn in user has permission to view "applicants" end  
 
 
   const particularBidFormData = useSelector((state) => state?.bidForm?.particularBidForm);  //Selected BID Form data
     const particularBidFormLoading = useSelector((state) => state?.bidForm?.particularBidFormLoading);  //Particular bid get Loading
   
-
-if(bid){
-    useEffect(() => {
-         dispatch(getParticularBidForm({id:bid}))
-    }, [])
-    
-}
 
 // console.log(particularBidFormData)
 
@@ -63,9 +73,21 @@ if (particularBidFormLoading || loadingOfGetRolePermission) {
    <TinyLoader></TinyLoader>
   </div>;
 }
+if (!permissionChecked) {
+  return (
+    <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+      <TinyLoader />
+    </div>
+  );
+}
 
+if (!hasBidAccess) {
+  // redirect is already in-flight via the effect above
+  return null;
+}
 
   return (
+    <>
     <div className="bg-[var(--whiteBg)] text-[var(--blackText)] p-4 md:p-10">
 
 
@@ -133,5 +155,7 @@ if (particularBidFormLoading || loadingOfGetRolePermission) {
         </div>
       </div> */}
     </div>
+      <ApplicantsLists bid={bid}></ApplicantsLists>
+      </>
   );
 }

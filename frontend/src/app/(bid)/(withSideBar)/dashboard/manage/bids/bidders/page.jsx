@@ -1,4 +1,4 @@
-import ApplicantsLists from "./components/AppicantsLists";
+
 import BidMasterDets from "./components/BidMasterDets";
 
 const Page = async ({ searchParams }) => {
@@ -8,8 +8,6 @@ const Page = async ({ searchParams }) => {
 
     <>  
     <BidMasterDets bid={bid}></BidMasterDets>
-  <ApplicantsLists bid={bid}></ApplicantsLists>
-  
     </>
 
   )

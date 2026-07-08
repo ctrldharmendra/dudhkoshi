@@ -92,7 +92,7 @@ const menuItems = [
       },
       {
         title:"Your Applied Bids",
-        path:"/dashboard/manage/bids/pending"
+        path:"/dashboard/manage/bids/applied"
       }
 
     ]

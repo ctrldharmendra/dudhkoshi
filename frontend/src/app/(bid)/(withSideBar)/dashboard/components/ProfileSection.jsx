@@ -8,7 +8,7 @@ import {
 import Image from 'next/image';
 import axios from 'axios';
 import ProfileLoader from './ProfileLoader';
-
+import unknownDp from "../../../../../../public/profileDemo.jpeg"
 import { formatDate } from "@/utils/formatDate";
 
 
@@ -65,7 +65,7 @@ const ProfileSection = () => {
 
 <Image
 unoptimized
-src={baseContentUrl+'/'+user?.dp}
+src={user?.dp ? baseContentUrl+'/'+user?.dp : unknownDp}
 
 width={100}
 

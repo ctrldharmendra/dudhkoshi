@@ -185,137 +185,306 @@ return res.status(200).json(new ApiResponse(200, {id, publishDate, openDate, tit
 })
 
 // GET BID FORM | TO LIST IN FRONTED SIDE 
+// const getAllBids = asyncHandler(async (req, res) => {
+//     try {
+//         // Read query parameters
+//         const page = Number(req.query.page) || 1;
+//         const limit = Number(req.query.limit) || 4;
+
+
+//         const search = req.query.search || "";
+//         const status = req.query.status || "";
+//         const fromDate = req.query.from || "";
+//         const toDate = req.query.to || "";
+
+
+
+//     // first check if user has permission to view bid or not 
+//     const userWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
+// if(!userWithPermission || userWithPermission.length<=1) return res.json(new ApiResponse(403, "No Any Permission!"))
+
+//     // if no "crete_user" permission then show error 
+// const hasViewBidPermission = userWithPermission.some(
+//     p => p.permission_name === 'view_bid'
+// );
+
+// if(!hasViewBidPermission) return res.json(new ApiError(403, [],"No Permission To View Bid."))
+
+//         // Calculate offset
+//         const offset = (page - 1) * limit;
+
+//         //  SELECT query
+//         let selectQuery = `
+//             SELECT
+//                 id,
+//                 publishDate,
+//                 openDate,
+//                 title,
+//                 description,
+//                 status,
+//                 user_id,
+//                 created_at
+//             FROM bid_master
+//             WHERE 1=1
+//         `;
+        
+
+//         const selectValues = [];
+
+//         // Search by title
+//         if (search) {
+//             selectQuery += ` AND title LIKE ?`;
+//             selectValues.push(`%${search}%`);
+//         }
+
+//         // Filter by status
+//         if (status) {
+//             selectQuery += ` AND status = ?`;
+//             selectValues.push(status);
+//         }
+
+//         // from and to date 
+//         if (fromDate) {
+//     selectQuery += ` AND created_at >= ?`;
+//     selectValues.push(fromDate);
+//         }
+
+//       if (toDate) {
+//     selectQuery += ` AND created_at <= ?`;
+//     selectValues.push(toDate);
+//         }
+
+//         // Latest bids first
+//         selectQuery += `
+//             ORDER BY created_at DESC
+//             LIMIT ?
+//             OFFSET ?
+//         `;
+
+//         selectValues.push(limit);
+//         selectValues.push(offset);
+
+//         const [bids] = await pool.query(selectQuery, selectValues);
+
+//         //  COUNT query
+//         let countQuery = `
+//             SELECT COUNT(*) AS total
+//             FROM bid_master
+//             WHERE 1=1
+//         `;
+
+//         const countValues = [];
+
+//         if (search) {
+//             countQuery += ` AND title LIKE ?`;
+//             countValues.push(`%${search}%`);
+//         }
+
+//         if (status) {
+//             countQuery += ` AND status = ?`;
+//             countValues.push(status);
+//         }
+
+//         if (fromDate) {
+//     countQuery += ` AND created_at >= ?`;
+//     countValues.push(fromDate);
+// }
+
+// if (toDate) {
+//     countQuery += ` AND created_at <= ?`;
+//     countValues.push(toDate);
+// }
+
+//         const [[countResult]] = await pool.query(countQuery, countValues);
+
+//         const total = countResult.total;
+
+//         //  response
+//         return res.status(200).json(
+//             new ApiResponse(
+//                 200,
+//                 {
+//                     bids,
+//                     pagination: {
+//                         page,
+//                         limit,
+//                         total,
+//                         totalPages: Math.ceil(total / limit),
+//                         hasNextPage: page < Math.ceil(total / limit),
+//                         hasPreviousPage: page > 1
+//                     }
+//                 },
+//                 "Bids fetched successfully."
+//             )
+//         );
+
+//     } catch (error) {
+
+//         return res.status(500).json(
+//             new ApiError(
+//                 500,
+//                 "Failed to fetch bids.",
+//                 error.message
+//             )
+//         );
+//     }
+// });
 const getAllBids = asyncHandler(async (req, res) => {
-    try {
-        // Read query parameters
-        const page = Number(req.query.page) || 1;
-        const limit = Number(req.query.limit) || 4;
+  try {
+    // Read query parameters
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 4;
 
+    const search = req.query.search || "";
+    const status = req.query.status || "";
+    const fromDate = req.query.from || "";
+    const toDate = req.query.to || "";
 
-        const search = req.query.search || "";
-        const status = req.query.status || "";
-        const fromDate = req.query.from || "";
-        const toDate = req.query.to || "";
+    // Logged-in user
+    const loggedInUserId = req.user.id;
 
-        // Calculate offset
-        const offset = (page - 1) * limit;
+    // Check permission
+    const userWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
 
-        //  SELECT query
-        let selectQuery = `
-            SELECT
-                id,
-                publishDate,
-                openDate,
-                title,
-                description,
-                status,
-                user_id,
-                created_at
-            FROM bid_master
-            WHERE 1=1
-        `;
-
-        const selectValues = [];
-
-        // Search by title
-        if (search) {
-            selectQuery += ` AND title LIKE ?`;
-            selectValues.push(`%${search}%`);
-        }
-
-        // Filter by status
-        if (status) {
-            selectQuery += ` AND status = ?`;
-            selectValues.push(status);
-        }
-
-        // from and to date 
-        if (fromDate) {
-    selectQuery += ` AND created_at >= ?`;
-    selectValues.push(fromDate);
-        }
-
-      if (toDate) {
-    selectQuery += ` AND created_at <= ?`;
-    selectValues.push(toDate);
-        }
-
-        // Latest bids first
-        selectQuery += `
-            ORDER BY created_at DESC
-            LIMIT ?
-            OFFSET ?
-        `;
-
-        selectValues.push(limit);
-        selectValues.push(offset);
-
-        const [bids] = await pool.query(selectQuery, selectValues);
-
-        //  COUNT query
-        let countQuery = `
-            SELECT COUNT(*) AS total
-            FROM bid_master
-            WHERE 1=1
-        `;
-
-        const countValues = [];
-
-        if (search) {
-            countQuery += ` AND title LIKE ?`;
-            countValues.push(`%${search}%`);
-        }
-
-        if (status) {
-            countQuery += ` AND status = ?`;
-            countValues.push(status);
-        }
-
-        if (fromDate) {
-    countQuery += ` AND created_at >= ?`;
-    countValues.push(fromDate);
-}
-
-if (toDate) {
-    countQuery += ` AND created_at <= ?`;
-    countValues.push(toDate);
-}
-
-        const [[countResult]] = await pool.query(countQuery, countValues);
-
-        const total = countResult.total;
-
-        //  response
-        return res.status(200).json(
-            new ApiResponse(
-                200,
-                {
-                    bids,
-                    pagination: {
-                        page,
-                        limit,
-                        total,
-                        totalPages: Math.ceil(total / limit),
-                        hasNextPage: page < Math.ceil(total / limit),
-                        hasPreviousPage: page > 1
-                    }
-                },
-                "Bids fetched successfully."
-            )
-        );
-
-    } catch (error) {
-
-        return res.status(500).json(
-            new ApiError(
-                500,
-                "Failed to fetch bids.",
-                error.message
-            )
-        );
+    if (!userWithPermission || userWithPermission.length <= 1) {
+      return res
+        .status(403)
+        .json(new ApiError(403, "No Any Permission!"));
     }
-});
 
+    const hasViewBidPermission = userWithPermission.some(
+      (p) => p.permission_name === "view_bid"
+    );
+
+    if (!hasViewBidPermission) {
+      return res
+        .status(403)
+        .json(new ApiError(403, "No Permission To View Bid."));
+    }
+
+    const offset = (page - 1) * limit;
+
+    //SELECT QUERY 
+    // returns all from left table, matching from right --> Give me all bids, and if user 5 has an application for that bid, attach it.
+    let selectQuery = `
+      SELECT
+        bm.id,
+        bm.publishDate,
+        bm.openDate,
+        bm.title,
+        bm.description,
+        bm.status,
+        bm.user_id,
+        bm.created_at,
+
+        ba.id AS applicationId,
+        ba.status AS applicationStatus
+
+      FROM bid_master bm
+
+      LEFT JOIN bid_applications ba
+        ON ba.bid_id = bm.id
+       AND ba.applicant_user_id = ?
+
+      WHERE 1=1
+    `;
+
+    // First value is always logged-in user id
+    const selectValues = [loggedInUserId];
+
+    // Search
+    if (search) {
+      selectQuery += ` AND bm.title LIKE ?`;
+      selectValues.push(`%${search}%`);
+    }
+
+    // Status
+    if (status) {
+      selectQuery += ` AND bm.status = ?`;
+      selectValues.push(status);
+    }
+
+    // From date
+    if (fromDate) {
+      selectQuery += ` AND bm.created_at >= ?`;
+      selectValues.push(fromDate);
+    }
+
+    // To date
+    if (toDate) {
+      selectQuery += ` AND bm.created_at <= ?`;
+      selectValues.push(toDate);
+    }
+
+    // Pagination
+    selectQuery += `
+      ORDER BY bm.created_at DESC
+      LIMIT ?
+      OFFSET ?
+    `;
+
+    selectValues.push(limit);
+    selectValues.push(offset);
+
+    const [bids] = await pool.query(selectQuery, selectValues);
+
+    // ---------------- COUNT QUERY ----------------
+
+    let countQuery = `
+      SELECT COUNT(*) AS total
+      FROM bid_master
+      WHERE 1=1
+    `;
+
+    const countValues = [];
+
+    if (search) {
+      countQuery += ` AND title LIKE ?`;
+      countValues.push(`%${search}%`);
+    }
+
+    if (status) {
+      countQuery += ` AND status = ?`;
+      countValues.push(status);
+    }
+
+    if (fromDate) {
+      countQuery += ` AND created_at >= ?`;
+      countValues.push(fromDate);
+    }
+
+    if (toDate) {
+      countQuery += ` AND created_at <= ?`;
+      countValues.push(toDate);
+    }
+
+    const [[countResult]] = await pool.query(countQuery, countValues);
+
+    const total = countResult.total;
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          bids,
+          pagination: {
+            page,
+            limit,
+            total,
+            totalPages: Math.ceil(total / limit),
+            hasNextPage: page < Math.ceil(total / limit),
+            hasPreviousPage: page > 1,
+          },
+        },
+        "Bids fetched successfully."
+      )
+    );
+  } catch (error) {
+    return res.status(500).json(
+      new ApiError(500, "Failed to fetch bids.", error.message)
+    );
+  }
+});
 
 // GET A SINGLE BIDS WITH DETAILS || shows those fields as input boxes to the applicant so bidders can fill them and submit their bids
 const getSingleBidForm = asyncHandler(async (req, res)=>{
@@ -389,14 +558,13 @@ const getSingleBidForm = asyncHandler(async (req, res)=>{
     );  
            
    } catch (error) {
-    
-   }
-
-
-
-
-
-})
+     return res.status(500).json(
+        new ApiError(
+            500,
+            `error.message || Failed to fetch bid.`,`error.message || Failed to fetch bid.`,
+        )
+    );
+   }})
 
 
 // APPLY BID CONTROLLER || Apply to Bid Controller ||
@@ -433,7 +601,7 @@ if(!hasApplyBidPermission) return res.json(new ApiError(403, [],"No Permission T
     // ]
     let values;
 
-    console.log(JSON.parse(req.body.values), "JSON.parse(req.body.values)")
+    // console.log(JSON.parse(req.body.values), "JSON.parse(req.body.values)")
     try {
       values = JSON.parse(req.body.values);
       // console.log("json:", JSON.stringify(values));
@@ -448,7 +616,7 @@ if(!hasApplyBidPermission) return res.json(new ApiError(403, [],"No Permission T
     const files = req.files || [];
 
 
-    // STEP 2 — BASIC VALIDATION
+    // 2 — BASIC VALIDATION
     if (!bid_id) {
       return res.status(400).json(new ApiError(400, "Bid ID is required."));
     }
@@ -700,6 +868,10 @@ if(!hasApplyBidPermission) return res.json(new ApiError(403, [],"No Permission T
     // DELETE EXISTING (PREVIOUS) FILES FROM DISK
     const [existingFiles] = await connection.query(
       `SELECT * FROM bid_application_values`,
+
+//       SELECT value
+// FROM bid_application_values
+// WHERE application_id = ?
     );
     for (const row of existingFiles) {
       if (!row.value.startsWith("bid-applications/")) continue;  // if the value doenst start with bid-applications/ then skip it. its not file
@@ -813,7 +985,7 @@ const getBidApplicantDocument = asyncHandler(async (req, res)=>{
     const applicationId = req.params.applicationId;
 
 
-    console.log(applicationId, "applicationId")
+    // console.log(applicationId, "applicationId")
 
 if (!bidId || !applicationId || isNaN(bidId) || isNaN(applicationId)) {
   return res.status(400).json(new ApiError(400, "Invalid bid ID or application ID."));
@@ -889,7 +1061,119 @@ const applicantAllDets = {
   }
 });
 
-   
+
+// GET APPLIED BID OF LOGGED IN USER 
+const getAppliedBid = asyncHandler(async (req, res) => {
+  try {
+    const search = req?.query?.search || "";
+    const page = Number(req?.query?.page) || 1;
+    const limit = Number(req?.query?.limit) || 4;
+    const offset = (page - 1) * limit;
+
+    const from = req?.query?.from || null;
+    const to = req?.query?.to || null;
+
+
+    const searchValue = `%${search}%`;
+
+    // Get total count
+    const [countResult] = await pool.query(
+      `
+      SELECT COUNT(*) AS total
+      FROM bid_master bm
+      INNER JOIN bid_applications ba
+        ON bm.id = ba.bid_id
+      WHERE ba.applicant_user_id = ?
+        AND (
+          bm.title LIKE ?
+          OR bm.description LIKE ?
+        )
+        AND (? IS NULL OR bm.created_at >= ?)
+        AND (? IS NULL OR bm.created_at < DATE_ADD(?, INTERVAL 1 DAY))
+      `,
+      [
+        req.user.id,
+        searchValue,
+        searchValue,
+        from, from,
+        to, to
+      ]
+    );
+
+
+    const total = countResult[0].total;
+
+
+    // Get paginated data
+    const [rows] = await pool.query(
+      `
+      SELECT 
+        bm.id,
+        bm.title,
+        bm.description,
+        bm.publishDate,
+        bm.openDate,
+        bm.status,
+        bm.created_at,
+        ba.status AS applicationStatus,
+        ba.id AS applicationId
+      FROM bid_master bm
+      INNER JOIN bid_applications ba
+        ON bm.id = ba.bid_id
+      WHERE ba.applicant_user_id = ?
+        AND (
+          bm.title LIKE ?
+          OR bm.description LIKE ?
+        )
+        AND (? IS NULL OR bm.created_at >= ?)
+        AND (? IS NULL OR bm.created_at < DATE_ADD(?, INTERVAL 1 DAY))
+      LIMIT ? OFFSET ?
+      `,
+      [
+        req.user.id,
+        searchValue,
+        searchValue,
+        from, from,
+        to, to,
+        limit,
+        offset
+      ]
+    );
+
+
+    const totalPages = Math.ceil(total / limit);
+
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          bids: rows,
+          pagination: {
+            total,
+            page,
+            limit,
+            totalPages,
+            hasNextPage: page < totalPages,
+            hasPreviousPage: page > 1
+          }
+        },
+        "List Of Bid Applied By You."
+      )
+    );
+
+
+  } catch (error) {
+    return res.status(500).json(
+      new ApiError(
+        500,
+        "An error occurred while fetching Your Applied Bid.",
+        error.message
+      )
+    );
+  }
+});
+
 module.exports = {
     createBidForm,
     getAllBids,
@@ -899,4 +1183,5 @@ module.exports = {
     getBidApplicants,
     getBidApplicantDocument,
     editBidForm,
+    getAppliedBid,
 }

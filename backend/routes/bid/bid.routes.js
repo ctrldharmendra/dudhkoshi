@@ -66,4 +66,11 @@ router.get(
   bidControlller.getBidApplicantDocument
 );
 
+// APPLIED BID OF LOGGEDIN USER 
+router.get(
+  "/applied",
+  authenticateAccessToken,
+  bidControlller.getAppliedBid
+);
+
 module.exports = router;

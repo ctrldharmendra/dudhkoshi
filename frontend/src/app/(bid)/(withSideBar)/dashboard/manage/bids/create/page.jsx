@@ -47,8 +47,9 @@ useEffect(() => {
   if (!permissionOfLoggedInRoleOfUser) return;
 
   const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "create_bid");
-  if (!canCreateBid) {
-    router.replace("/forbidden");
+  const canViewBid = hasPermission(permissionOfLoggedInRoleOfUser, "view_bid");
+  if (!canCreateBid || !canViewBid) {
+    return router.replace("/forbidden");
   }
 }, [loading, permissionOfLoggedInRoleOfUser]);
 // -----------------------------------------------------

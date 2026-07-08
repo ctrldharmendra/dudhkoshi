@@ -39,45 +39,6 @@ export const getApplicantDocumentForParticularBid = createAsyncThunk(
 
 
 // APPLY A BID  
-
-// export const applyBid = createAsyncThunk(
-//   'applyBid',
-//   async ({ bid, values }, thunkAPI) => {
-//     try {
-//       // Convert the array payload to a JSON string wrapped inside an object key
-//       const payload = {
-//         values: JSON.stringify(values)
-//       };
-
-//       console.log("Payload sent to Backend Slice:", payload);
-
-//       const { data } = await axiosInstance.post(
-//         `/api/bid/bidform/${bid}/apply`,
-//         payload, 
-//         {
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//         }
-//       );
-
-//       console.log("Success Response Data:", data);
-//       toast.success('Application submitted successfully!');
-//       return data?.data;
-
-//     } catch (err) {
-//       console.error("Submission Error Response:", err.response?.data);
-      
-//       const errorMessage = err.response?.data?.message || err.message || 'Failed Add';
-//       toast.error(errorMessage);
-      
-//       return thunkAPI.rejectWithValue(errorMessage);
-//     }
-//   }
-// );
-
-
-// bidApplicationSlice.js
 export const applyBid = createAsyncThunk(
   'bidApplication/applyBid',
   async ({ bid, formDataToSend }, thunkAPI) => {
@@ -91,39 +52,55 @@ export const applyBid = createAsyncThunk(
         formDataToSend
       );
 
-      toast.success('Application submitted successfully.');
+
+      if(data?.statusCode === 400) return toast.error(data?.errors || data?.data?.errors)
+
+      // toast.success('Application submitted successfully.');
       return data?.data;
 
     } catch (err) {
       // With axios, error response body is at err.response.data
       // NOT at err.message like fetch
       console.log(err.response)
-      const message = err.response?.data?.message || 'Failed to apply.';
+      const message = err.response?.data?.errors || err.response?.data?.message ||  'Failed to apply.';
       toast.error(message);
       return thunkAPI.rejectWithValue(message);
     }
   }
 );
-// EDIT PARTICULAR BID FORM 
-// export const editBidForm = createAsyncThunk(
-//   'editBidForm',
-//   async ({bidData, id}, thunkAPI) => {
 
-//     console.log(bidData, "FTOM SLCIE")
-//     try {
-//       const { data } = await axiosInstance.put(`/api/bid/bidform/${id}`, bidData);
-//         console.log(data.data)
-//       return data?.data;
+// GET LOGGEDIN USER APPLIED BID LIST 
+export const getLoggedInUserBids = createAsyncThunk(
+  'getLoggedInUserBids',
+  async ({ bidPage, bidSearch, limit, from, to}, thunkAPI) => {
+    try {
+        const params = new URLSearchParams();
 
-//     } catch (err) {
-//           console.log("STATUS:", err.response?.status);
-//   console.log("DATA:", err.response?.data);
-//   console.log("MESSAGE:", err.message);
-//       toast.error( 'Failed Add');
-//       return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
-//     }
-//   }
-// );
+    params.set("page", bidPage);
+    params.set("limit", limit);
+
+    if (bidSearch) {
+      params.set("search", bidSearch);
+    }
+
+    if (from) {
+      params.set("from", from);
+    }
+
+    if (to) {
+      params.set("to", to);
+    }
+
+    const { data } = await axiosInstance.get(
+      `/api/bid/applied?${params.toString()}`
+    );
+      return data?.data;
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message);
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
 
 
 const bidApplicationSlice = createSlice({
@@ -137,6 +114,9 @@ const bidApplicationSlice = createSlice({
     particularApplicantDocumentsLoading:{},
 
     applyBidLoading:false,
+
+    loggedInUserBidsList: [],
+    loggedInUserBidsListLoading:false,
 
 
 
@@ -185,6 +165,19 @@ const bidApplicationSlice = createSlice({
       })
       .addCase(applyBid.rejected, (state, action) => {
         state.applyBidLoading = false;
+        state.error = action.payload;
+      });
+      // GET LOGGED IN USER BID LIST 
+    builder
+      .addCase(getLoggedInUserBids.pending, (state) => {
+        state.loggedInUserBidsListLoading = true;
+      })
+      .addCase(getLoggedInUserBids.fulfilled, (state, action) => {
+        state.loggedInUserBidsListLoading = false;
+        state.loggedInUserBidsList = action.payload;
+      })
+      .addCase(getLoggedInUserBids.rejected, (state, action) => {
+        state.loggedInUserBidsListLoading = false;
         state.error = action.payload;
       });
 

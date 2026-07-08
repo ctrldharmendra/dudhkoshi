@@ -166,11 +166,11 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
   };
 
 // show in ui selected to add permission
-const matchedPermissionsToAdd = allPermissionss.filter(permission =>
+const matchedPermissionsToAdd = allPermissionss?.filter(permission =>
   selectedToAdd.includes(permission.id)
 );
 // show in ui selected to remove permission 
-const matchedPermissionsToRemove = allPermissionss.filter(permission =>
+const matchedPermissionsToRemove = allPermissionss?.filter(permission =>
   selectedToRemove.includes(permission.id)
 );
 

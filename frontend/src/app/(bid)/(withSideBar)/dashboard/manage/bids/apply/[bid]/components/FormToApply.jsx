@@ -2,8 +2,12 @@
 
 import { applyBid } from '@/app/(bid)/redux/slices/bids/bidApplicationSlice';
 import { getParticularBidForm } from '@/app/(bid)/redux/slices/bids/bidFormSlice';
+import { getRolePermissionLoggedInUser } from '@/app/(bid)/redux/slices/rolesAndPermissionSlice';
+import TinyLoader from '@/components/reusable/loader/TinyLoader';
+import { hasPermission } from '@/helper/helper';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
+import toast from 'react-hot-toast';
 import { FiFileText, FiCalendar, FiUpload, FiX, FiCheckCircle } from 'react-icons/fi'
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,16 +16,47 @@ const dispatch = useDispatch();
 const router = useRouter();
   const bidFormData = useSelector((state) => state?.bidForm?.particularBidForm);  //Particular BId Data Form
   const particularBidFormLoading = useSelector((state) => state?.bidForm?.particularBidFormLoading);  //Particular BId Data Form Loading
+  const applyBidLoading = useSelector((state) => state?.bidApplication?.applyBidLoading);  //Applying loading
 //   console.log(bidFormData)
+console.log(applyBidLoading)
 
-
-// call api to get bid form 
+//FIRST : check if logged in role has permission to view bid or not 
+//FIRST : fetch permissions on mount
 useEffect(() => {
+  dispatch(getRolePermissionLoggedInUser({}));
+}, [dispatch]);
+
+const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);
+const loading = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);
+
+const canViewBid = hasPermission(permissionOfLoggedInRoleOfUser, "view_bid");
+const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "create_bid");
+
+// only "true" once permission data has actually arrived
+const permissionChecked = !loading && !!permissionOfLoggedInRoleOfUser;
+const hasBidAccess = canViewBid && canCreateBid;
+
+useEffect(() => {
+  if (!permissionChecked) return;
+  if (!hasBidAccess) {
+    router.replace("/forbidden");
+  }
+}, [permissionChecked, hasBidAccess, router]);
+//   check if logged in role has permission to view bid or not END
+
+// SECOND :Fetch only when permission exists
+useEffect(() => {
+  if (!permissionChecked || !hasBidAccess) return;
+
     dispatch(getParticularBidForm({id:bid}))
-}, [])
-
-
-
+}, [
+  permissionChecked,
+  hasBidAccess,
+  dispatch,
+]);
+// Fetch only when permission exists END 
+// -----------------------------------------------------
+ 
 
 
 
@@ -136,12 +171,9 @@ const handleInputChange = (fieldId, val, type) => {
 // //   console.log("Payload Output:", structuredSubmissionPayload);
 // };
 
-const handleSubmitForm = () => {
-
-  // ============================================================
-  // STEP 1 — Separate files from text values
+const handleSubmitForm = async () => {
+  //1 — Separate files from text values
   // Track fileIndex correctly — count only file-type fields
-  // ============================================================
   const files = [];      // actual File objects in order
   let fileCounter = 0;   // counts only files, not all fields
 
@@ -171,10 +203,8 @@ const handleSubmitForm = () => {
     };
   });
 
-  // ============================================================
-  // STEP 2 — Build FormData manually
+  // Build FormData manually
   // This is what actually sends files to the backend
-  // ============================================================
   const formDataToSend = new FormData();
 
   // values must be a JSON string — backend does JSON.parse(req.body.values)
@@ -186,10 +216,14 @@ const handleSubmitForm = () => {
     formDataToSend.append('files', file);
   });
 
-  // ============================================================
-  // STEP 3 — Dispatch with FormData, not plain object
-  // ============================================================
-  dispatch(applyBid({ bid, formDataToSend }));
+  //Dispatch with FormData, not plain object
+  // dispatch(applyBid({ bid, formDataToSend }));
+
+         const result = await dispatch(applyBid({ bid, formDataToSend }));
+           if (applyBid.fulfilled.match(result)) {
+             toast.success("Apply Success.")
+                router.push("/dashboard/manage/bids/apply");
+                }
 };
 
 
@@ -203,6 +237,35 @@ const handleSubmitForm = () => {
     });
   };
 
+
+// LOADING 
+if (!permissionChecked) {
+  return (
+    <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+      <TinyLoader />
+    </div>
+  );
+}
+
+if (!hasBidAccess) {
+  // redirect is already in-flight via the effect above
+  return null;
+}
+if (particularBidFormLoading) {
+  return (
+    <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+      <TinyLoader />
+    </div>
+  );
+}
+if (applyBidLoading) {
+  return (
+    <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+      <TinyLoader />
+    </div>
+  );
+}
+// LOADING END
   return (
     <div className="w-full max-w-4xl mx-auto p-4 md:p-8 bg-transparent">
       

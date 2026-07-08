@@ -63,7 +63,7 @@ export default function UpperNav() {
         </li>
 
         <li className=" py-2 text-[16px] hover:bg-gray-500/10 cursor-pointer hover:bg-gray-500/10 cursor-pointer" onClick={() => setOpen((prev) => !prev)}>
-        <Link href="/dashboard/manage/bids" className="px-4 py-2">
+        <Link href="/dashboard/manage/bids/applied" className="px-4 py-2">
          My Applied Bids
         </Link>
         </li>

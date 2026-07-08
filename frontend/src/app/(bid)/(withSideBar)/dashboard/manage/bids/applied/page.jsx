@@ -15,6 +15,8 @@ import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { HiOutlinePlus, HiOutlineUserGroup } from 'react-icons/hi';
 import { getRolePermissionLoggedInUser } from '@/app/(bid)/redux/slices/rolesAndPermissionSlice';
 import { hasPermission } from '@/helper/helper';
+import { getLoggedInUserBids } from '@/app/(bid)/redux/slices/bids/bidApplicationSlice';
+import { IoIosEye } from 'react-icons/io';
 
 
 
@@ -24,32 +26,8 @@ const dispatch = useDispatch();
 const router = useRouter();
 const pathname = usePathname();
 
-  const allBids = useSelector((state) => state?.bidForm?.allBidFormFromDb?.bids ??  []);  //all bids object
-  const allBidsLoading = useSelector((state) => state?.bidForm?.allBidFormLoading);  //all loading state
-
-
-//   check if logged in role has permission to view bid or not 
-// const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
-// const loading  = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);  //loading state
-
-
-// get all permission in an array 
-//     useEffect(()=>{
-//       dispatch(getRolePermissionLoggedInUser({}))
-//     },[]);
-
-// useEffect(() => {
-//   if (loading) return;
-//   if (!permissionOfLoggedInRoleOfUser) return;
-
-//   const canViewBid = hasPermission(permissionOfLoggedInRoleOfUser, "view_bid");
-//   const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "create_bid");
-//   if (!canViewBid || !canCreateBid) {
-//    return router.replace("/forbidden");
-//   }
-// }, [loading, permissionOfLoggedInRoleOfUser]);
-
-// -----------------------------------------------------
+  const allBids = useSelector((state) => state?.bidApplication?.loggedInUserBidsList?.bids ??  []);  //all bids object
+  const allBidsLoading = useSelector((state) => state?.bidApplication?.loggedInUserBidsListLoading);  //all loading state
   
 
   const searchParams = useSearchParams();
@@ -66,12 +44,10 @@ const [bidSearch, setbidSearch] = useState(
 );
 
 
-
-
-  const total = useSelector((state) => state?.bidForm?.allBidFormFromDb?.pagination?.total);  //Total Bid
-  const hasNextPage = useSelector((state) => state?.bidForm?.allBidFormFromDb?.pagination?.hasNextPage);  //Has Nexdt
-  const hasPreviousPage = useSelector((state) => state?.bidForm?.allBidFormFromDb?.pagination?.hasPreviousPage);  //Has Previous
-  const totalPages = useSelector((state) => state?.bidForm?.allBidFormFromDb?.pagination?.totalPages);  //Total page
+  const total = useSelector((state) => state?.bidApplication?.loggedInUserBidsList?.pagination?.total);  //Total Bid applied by logged in uszer
+  const hasNextPage = useSelector((state) => state?.bidApplication?.loggedInUserBidsList?.pagination?.hasNextPage);  //Has Nexdt
+  const hasPreviousPage = useSelector((state) => state?.bidApplication?.loggedInUserBidsList?.pagination?.hasPreviousPage);  //Has Previous
+  const totalPages = useSelector((state) => state?.bidApplication?.loggedInUserBidsList?.pagination?.totalPages);  //Total page
 
 
     const [sorting, setSorting] = useState([]);
@@ -81,7 +57,6 @@ const [bidSearch, setbidSearch] = useState(
   from: "",
   to: "",
 });
-
 
 
 //   debouncing search | only when user typing stop for 4 seconds 
@@ -118,7 +93,7 @@ useEffect(() => {
   if (!permissionChecked || !hasBidAccess) return;
 
   dispatch(
-    getAllBidForm({
+    getLoggedInUserBids({
       bidPage,
       bidSearch: debouncedSearch,
       limit,
@@ -248,36 +223,28 @@ params.set("to", dateFilter.to);
 
         return (
           <div className="flex items-center gap-2">
+  {/* const {bid:bidId} = await searchParams; // this is bid Id
+  const {id:applicationId} = await searchParams;  // this id is id of "bid_application" table */}
+{
+  row?.original?.applicationStatus && row?.original?.applicationId && (
+<div className='flex flex-col gap-[3px]'>
+  <button className='bg-gray-300 px-2 text-[15px] py-0 rounded-md cursor-not-allowed opacity-50" disabled' title='You Already Applied'>Applied</button>
+  <button className='bg-gray-300 px-2 text-[15px] py-0 rounded-md cursor-not-allowed opacity-50" disabled' title='Neither Won nor Rejected'>{row?.original?.applicationStatus}</button>
 
-            <Link
-              href={`/dashboard/manage/bids/bidders?bid=${bid.id}`}
-              // href={`/dashboard/manage/bids/${bid.id}/bidders`}
+</div>    
+  )
+}
+
+            <Link 
+              href={`/dashboard/manage/applicant/documents?bid=16&id=14`}
+            //   manage/applicant/documents?bid=16&id=14
               className="h-9 w-9 rounded-full bg-[var(--iconBgColro)] hover:scale-105 flex items-center justify-center transition"
-              title='See Bidders List'
+              title='See Your filled Documents'
             >
-              <FiUsers
+              <IoIosEye
                 className="text-lg text-[var(--iconColor)]"
               />
             </Link>
-
-            <Link
-            title='Edit'
-              href={`/dashboard/manage/bids/edit/${bid.id}`}
-              className="h-9 w-9 rounded-full bg-[var(--iconBgColro)] hover:scale-105 flex items-center justify-center transition"
-            >
-              <FiEdit2
-                className="text-lg text-[var(--iconColor)]"
-              />
-            </Link>
-
-            <button
-            title='Delete'
-              className="h-9 w-9 rounded-full bg-[var(--deleteIconBg)] hover:bg-[var(--deleteIconBgHOver)] flex items-center justify-center transition"
-            >
-              <FiTrash2
-                className="text-lg text-[var(--deleteIconColor)]"
-              />
-            </button>
 
           </div>
         );
@@ -331,18 +298,18 @@ if (allBidsLoading) {
           <div>
             <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 flex items-center gap-3">
               <HiOutlineUserGroup className="text-indigo-600 w-8 h-8" />
-              Manage Bids 
+             List Of Bids You Applied  
             </h1>
      <div>
                <p className="text-slate-500 mt-1 text-sm sm:text-base">
-              Manage system users and permissions 
+              You can View What You have applied
             </p>
                <p className="text-slate-500 mt-1 text-sm sm:text-base">
-           Total Bid Created So Far: <span className='text-[#00aa00]'> {total}</span>
+           Total: <span className='text-[#00aa00]'> {total}</span>
             </p>
      </div>
           </div>
-      
+{/*       
           {
             1==1 &&     <Link
             href="/dashboard/manage/bids/create"
@@ -352,7 +319,7 @@ if (allBidsLoading) {
             <HiOutlinePlus className="w-5 h-5" />
             Add New Bid
           </Link>
-          }
+          } */}
         </header>
 
 
@@ -417,25 +384,23 @@ if (allBidsLoading) {
 
   {/* Buttons */}
   <div className="flex gap-3 flex-wrap">
-
 {
-    dateFilter.to || dateFilter.from || bidSearch && (
-            <button
-      onClick={() =>{
-         setDateFilter({
+  (dateFilter.to || dateFilter.from || bidSearch) && (
+    <button
+      onClick={() => {
+        setDateFilter({
           from: "",
           to: "",
-        })
-        setbidSearch("")
-      }    
-      }
-      className="h-11 text-[var(--deleteIconColor)] rounded-lg border border-gray-300 px-5 font-medium transitionbg-[var(--deleteIconBg)] hover:bg-[var(--deleteIconBgHOver)]"
+        });
+        setbidSearch("");
+        setbidPage(1);
+      }}
+      className="h-11 text-[var(--deleteIconColor)] rounded-lg border border-gray-300 px-5 font-medium transition bg-[var(--deleteIconBg)] hover:bg-[var(--deleteIconBgHOver)]"
     >
       Clear
     </button>
-    )
+  )
 }
-
 
   </div>
 

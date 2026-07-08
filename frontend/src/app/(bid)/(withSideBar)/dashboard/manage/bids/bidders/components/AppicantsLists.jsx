@@ -95,7 +95,7 @@ export default function ApplicantsLists({ bid}) {
       {
   header: "Actions",
   cell: ({ row }) => {
-    console.log(row.original, "ROW ")
+    // console.log(row.original, "ROW ")
     const user = row.original;
 // console.log(user)
     return (
