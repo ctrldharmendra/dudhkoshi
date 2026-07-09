@@ -19,11 +19,62 @@ import TinyLoader from "@/components/reusable/loader/TinyLoader";
 import ProfileLoader from "./components/ProfileLoader";
 import AllRoleUserCount from "./manage/users/components/AllRoleUserCount";
 import Link from "next/link";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getInviteHistory } from "../../redux/slices/invite/inviteSlice";
+import { formatTimeRemaining } from "@/utils/formateTimeRemaining";
+import { useCountdown } from "@/utils/CountDownHook";
+import InvitationCountdown from "@/components/adminComponents/dashboard/InvitationCountDown";
+import { hasPermission } from "@/helper/helper";
+import { getRolePermissionLoggedInUser } from "../../redux/slices/rolesAndPermissionSlice";
 
 export default function Dashboard(){
 
+  const dispatch = useDispatch()
+  const inviteHistory = useSelector((state) => state?.invite?.inviteHistory);  //Invite Data
+  const inviteHistoryLoading = useSelector((state) => state.invite.inviteHistoryLoading);  //Loading invite history
+  const [showInvitationHistory, setshowInvitationHistory] = useState(true)
 
+
+
+//FIRST : check if logged in role has permission to view bid or not 
+//FIRST : fetch permissions on mount
+useEffect(() => {
+  dispatch(getRolePermissionLoggedInUser({}));
+}, [dispatch]);
+
+const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);
+const loading = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);
+
+const canViewBid = hasPermission(permissionOfLoggedInRoleOfUser, "view_invitation");
+// only "true" once permission data has actually arrived
+const permissionChecked = !loading && !!permissionOfLoggedInRoleOfUser;
+const hasBidAccess = canViewBid;
+
+useEffect(() => {
+  if (!permissionChecked) return;
+  if (!hasBidAccess) {
+    // router.replace("/forbidden");
+    setshowInvitationHistory(false)
+  }
+}, [permissionChecked, hasBidAccess]);
+//   check if logged in role has permission to view bid or not END
+
+// SECOND :Fetch only when permission exists
+useEffect(() => {
+  if (!permissionChecked || !hasBidAccess) return;
+
+      dispatch(getInviteHistory({}))
+}, [
+  permissionChecked,
+  hasBidAccess,
+  dispatch,
+]);
+// Fetch only when permission exists END 
+// -----------------------------------------------------
+ 
+
+
+  // console.log(inviteHistory)
 
 
 const stats=[
@@ -60,11 +111,38 @@ const stats=[
 
 
 
+
+
+
+
+if (inviteHistoryLoading) {
+  return (
+    <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+      <TinyLoader />
+    </div>
+  );
+}
+
+// LOADING 
+if (!permissionChecked) {
+  return (
+    <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+      <TinyLoader />
+    </div>
+  );
+}
+
+// if (!hasBidAccess) {
+//   // redirect is already in-flight via the effect above
+//   return null;
+// }
+
+
 return (
 
 <div className="space-y-6">
 
-
+ 
 {/* Header */}
 
 <div>
@@ -236,12 +314,14 @@ gap-6
 
 {/* Recent Activity */}
 
-<div className="
+{
+  showInvitationHistory && (
+    <div className="
 bg-white
 rounded-2xl
 border
 border-slate-200
-p-6
+p-6 max-h-[400px] overflow-auto
 ">
 
 
@@ -261,11 +341,7 @@ Recent Activity
 
 
 {
-[
-"New bid created",
-"Application approved",
-"Result published"
-].map((item,index)=>(
+inviteHistory?.map((item,index)=>(
 
 <div
 key={index}
@@ -274,6 +350,9 @@ flex
 items-center
 gap-3
 "
+style={{
+    backgroundColor: item?.status === "used" ? "#21ff1629" : "#fff",
+  }}
 >
 
 
@@ -300,18 +379,36 @@ font-medium
 text-slate-700
 ">
 
-{item}
-
+{item?.created_by_name } created an invite Link for <span className="font-semibold">{item?.email}</span>. 
 </p>
 
-<p className="
-text-xs
-text-slate-400
-">
+<div className="flex flex-row gap-2">
+<p className="text-sm text-[green]">{formatTimeRemaining(item?.created_at)} ago</p>
+<p className="text-sm text-[brown]">Status: <span className="font-semibold">{item?.status}</span></p> 
 
-2 hours ago
-
+<p className="text-sm font-semibold text-[green]">
+  {item?.status == "used" && (
+    <>by {item?.used_by_name}</>
+  )}
 </p>
+{item?.status?.trim().toLowerCase() === "used" && (
+  <div className=" text-sm text-blue-600 underline underline-offset-4 hover:text-blue-800 transition-colors cursor-pointer">
+    <Link href={`/dashboard/manage/users/${item?.used_by_id}`}>
+      View This Applicant
+    </Link>
+  </div>
+)}
+
+
+  </div>
+
+  {item?.status !== "used" && (
+<InvitationCountdown
+  expiresAt={item?.expires_at}
+  status={item?.status}
+/>
+  )}
+
 
 </div>
 
@@ -328,6 +425,8 @@ text-slate-400
 
 </div>
 
+  )
+}
 
 
 

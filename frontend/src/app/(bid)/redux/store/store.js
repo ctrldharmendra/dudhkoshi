@@ -12,6 +12,10 @@ import registrationReducer from "../slices/registerSlice"
 import organizationReducer from "../slices/users/organizationsSlice"
 import bidFormReducer from "../slices/bids/bidFormSlice"
 import bidApplicationSliceReducer from "../slices/bids/bidApplicationSlice"
+import inviteReducer from "../slices/invite/inviteSlice"
+
+
+import fontScaleReducer from "../slices/accessibility/fontScaleSlice"
 
 const rootReducer = combineReducers({
   userState: stateReducer,
@@ -23,6 +27,9 @@ const rootReducer = combineReducers({
   organization:organizationReducer,
   bidForm:bidFormReducer,
   bidApplication:bidApplicationSliceReducer,
+  invite:inviteReducer,
+
+  accessibility: fontScaleReducer,
 });
 
 const persistConfig = {

@@ -20,7 +20,6 @@ import { IoIosEye } from 'react-icons/io';
 
 
 
-
 const page = () => {
 const dispatch = useDispatch();
 const router = useRouter();
@@ -28,7 +27,7 @@ const pathname = usePathname();
 
   const allBids = useSelector((state) => state?.bidApplication?.loggedInUserBidsList?.bids ??  []);  //all bids object
   const allBidsLoading = useSelector((state) => state?.bidApplication?.loggedInUserBidsListLoading);  //all loading state
-  
+  // console.log(allBids, "allbids")
 
   const searchParams = useSearchParams();
 
@@ -236,8 +235,8 @@ params.set("to", dateFilter.to);
 }
 
             <Link 
-              href={`/dashboard/manage/applicant/documents?bid=16&id=14`}
-            //   manage/applicant/documents?bid=16&id=14
+              // href={`/dashboard/manage/applicant/documents?bid=16&id=14`}
+              href={`/dashboard/manage/bids/applied/view?bid=${row?.original?.id}&id=${row?.original?.applicationId}`}
               className="h-9 w-9 rounded-full bg-[var(--iconBgColro)] hover:scale-105 flex items-center justify-center transition"
               title='See Your filled Documents'
             >

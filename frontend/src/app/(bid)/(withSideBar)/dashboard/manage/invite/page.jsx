@@ -2,16 +2,23 @@
 "use client";
 
 import { createInvitation, getEmailContents } from "@/app/(bid)/redux/slices/registerSlice";
+import { getRolePermissionLoggedInUser } from "@/app/(bid)/redux/slices/rolesAndPermissionSlice";
 import EmailForm from "@/components/adminComponents/sendEmail/EmailForm";
 import Main from "@/components/adminComponents/sendEmail/Main";
 import TinyLoader from "@/components/reusable/loader/TinyLoader";
-import { useState } from "react";
+import { hasPermission } from  "@/helper/helper";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 
 export default function SharePage() {
+const router = useRouter();
+      const dispatch = useDispatch()
+
+
   const [email, setEmail] = useState("");
   const [copied, setCopied] = useState(false);
-      const dispatch = useDispatch()
+
 
 
   const [shareLink, setshareLink] = useState("")
@@ -26,6 +33,48 @@ const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
   const invitationCreationLoading = useSelector((state) => state?.registration?.invitationCreationLoading);  //Loading status for creation invite
   const emailContentsLoading = useSelector((state) => state?.registration?.emailContentsLoading);  //Loading status for email contents 
 //   const emailContents = useSelector((state) => state?.registration?.emailContents);  //Email content from db 
+
+
+
+   //FIRST : check if logged in role has permission to view bid or not 
+          //FIRST : fetch permissions on mount
+          useEffect(() => {
+            dispatch(getRolePermissionLoggedInUser({}));
+          }, [dispatch]);
+          
+          const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);
+          const loadingOfGetRolePermission = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);
+          
+          const create_user = hasPermission(permissionOfLoggedInRoleOfUser, "create_user");
+          
+          // only "true" once permission data has actually arrived
+          const permissionChecked = !loadingOfGetRolePermission && !!permissionOfLoggedInRoleOfUser;
+          const createUser = create_user;
+           
+          useEffect(() => {
+            if (!permissionChecked) return;
+            if (!createUser) {
+              router.replace("/forbidden");
+            }
+          }, [permissionChecked, createUser, router]);
+          //   check if logged in role has permission to view bid or not END
+          
+
+
+
+if (!permissionChecked) {
+  return (
+    <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+      <TinyLoader />
+    </div>
+  );
+}
+
+if (!create_user) {
+  // redirect is already in-flight via the effect above
+  return null;
+}
+
 
 // console.log(emailContents?.[0]?.body, "emailcondb")
 
@@ -43,6 +92,8 @@ const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
     }
   };
 console.log(shareLink, "sharelink")
+
+
   const handleCreateLink = async ()=>{
         //   const getEmailConRes = await dispatch(
         //      getEmailContents({})

@@ -1,5 +1,6 @@
 "use client";
 
+import { setFontScale } from "@/app/(bid)/redux/slices/accessibility/fontScaleSlice";
 import { getLoggedInUserBasicInfo } from "@/app/(bid)/redux/slices/users/userSlice";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -36,9 +37,68 @@ export default function UpperNav() {
         dispatch(getLoggedInUserBasicInfo({}))
   }, [])
   
+  const fontScale = useSelector((state) => state.accessibility.fontScale);
 
   return (
     <div ref={menuRef} className="relative flex flex-col w-40  text-sm">
+
+
+
+<div className="flex items-center gap-3 w-full" title="Scale Font Size ">
+  <span className="text-xs text-gray-300">A</span>
+
+  <input
+    type="range"
+    min={80}
+    max={140}
+    step={5}
+    value={fontScale}
+    onChange={(e) =>
+      dispatch(setFontScale(Number(e.target.value)))
+    }
+    className="
+      w-full
+      h-[3px]
+      rounded-full
+      appearance-none
+      cursor-pointer
+      bg-slate-500
+
+      [&::-webkit-slider-thumb]:
+      appearance-none
+      [&::-webkit-slider-thumb]:
+      w-3
+      [&::-webkit-slider-thumb]:
+      h-3
+      [&::-webkit-slider-thumb]:
+      rounded-full
+      [&::-webkit-slider-thumb]:
+      bg-white
+      [&::-webkit-slider-thumb]:
+      border
+      [&::-webkit-slider-thumb]:
+      border-indigo-400
+      [&::-webkit-slider-thumb]:
+      shadow-sm
+
+      [&::-moz-range-thumb]:
+      w-3
+      [&::-moz-range-thumb]:
+      h-3
+      [&::-moz-range-thumb]:
+      rounded-full
+      [&::-moz-range-thumb]:
+      bg-white
+      [&::-moz-range-thumb]:
+      border
+      [&::-moz-range-thumb]:
+      border-indigo-400
+    "
+  />
+
+  <span className="text-sm text-white font-medium">A</span>
+</div>
+
 <div className="flex items-center">
         <span className="text-white">{user?.[0]?.name || " "} </span>
           <button onClick={() => setOpen((prev) => !prev)} className="cursor-pointer overflow-hidden">

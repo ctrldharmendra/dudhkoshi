@@ -62,7 +62,7 @@ useEffect(() => {
 
   
   // Guard clause if data hasn't arrived
-  if (!bidFormData || bidFormData == {} || bidFormData == undefined) return <div className="p-6 text-center text-[var(--notFoundTextColor,#475569)]">Loading bid criteria...</div>;
+  if (!bidFormData || bidFormData == {} || bidFormData == undefined) return <div className="p-6 text-center text-[#000000)]">Loading bid criteria...</div>;
 
 
 // 1. Initialize form state properly ensuring metadata is linked to the keys
@@ -267,7 +267,7 @@ if (applyBidLoading) {
 }
 // LOADING END
   return (
-    <div className="w-full max-w-4xl mx-auto p-4 md:p-8 bg-transparent">
+    <div className="w-full mx-auto pt-2 bg-transparent">
       
       {/* 1. Project Info Header Card */}
       <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm mb-6">
@@ -283,11 +283,11 @@ if (applyBidLoading) {
           </div>
         </div>
         
-        <p className="text-xs text-[var(--notFoundTextColor,#475569)] font-medium leading-relaxed whitespace-pre-line bg-slate-50 p-4 rounded-xl mb-4">
+        <p className="text-m text-[#000000)] font-medium leading-relaxed whitespace-pre-line bg-slate-50 p-4 rounded-xl mb-4">
           {bidFormData?.description}
         </p>
 
-        <div className="flex flex-wrap gap-4 text-xs font-bold text-gray-500">
+        <div className="flex flex-wrap gap-4 text-m font-bold text-gray-500">
           <span className="flex items-center gap-1.5"><FiCalendar /> Open Date: {formatDateFriendly(bidFormData.openDate)}</span>
           <span className="flex items-center gap-1.5 text-rose-600"><FiCalendar /> Close Date: {formatDateFriendly(bidFormData.closeDate)}</span>
         </div>
@@ -297,7 +297,7 @@ if (applyBidLoading) {
       <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm space-y-6">
         <div>
           <h2 className="text-lg font-black text-[var(--blackText,#090909)]">Application Requirements</h2>
-          <p className="text-xs text-gray-400 font-medium mt-0.5">Please provide information accurately according to each custom field specification parameter below.</p>
+          <p className="text-m text-red-400 font-medium mt-0.5">Please provide information accurately according to each custom field specification parameter below.</p>
         </div>
 
         <div className="space-y-5">
@@ -305,8 +305,8 @@ if (applyBidLoading) {
             const currentFieldState = formData[field.id];
 
             return (
-              <div key={field.id} className="p-4 rounded-xl border border-gray-100 bg-slate-50/50 space-y-2">
-                <label className="text-xs font-black text-slate-700 uppercase tracking-wide block">
+              <div key={field.id} className="py-1 px-4  rounded-xl border border-gray-100 bg-slate-50/50 space-y-2">
+                <label className="text-m font-black text-slate-700 uppercase tracking-wide block">
                   {field.field_name}
                 </label>
 
@@ -317,7 +317,7 @@ if (applyBidLoading) {
                       // File Selection Upload UI Area Box Component
                       <label className="border-2 border-dashed border-gray-200 hover:border-[var(--iconColor,#155dfc)] bg-white rounded-xl p-5 flex flex-col items-center justify-center cursor-pointer transition-colors group">
                         <FiUpload className="text-xl text-gray-400 group-hover:text-[var(--iconColor,#155dfc)] mb-1" />
-                        <span className="text-xs font-bold text-slate-600">Click to upload file document</span>
+                        <span className="text-m font-bold text-slate-600">Click to upload file document</span>
                         <span className="text-[10px] text-gray-400 font-medium mt-0.5">Images will preview instantly</span>
                         <input 
                         required
@@ -339,12 +339,12 @@ if (applyBidLoading) {
                             />
                           ) : (
                             // Non-image file default icon placeholder wrapper
-                            <div className="w-12 h-12 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-black text-xs flex-shrink-0 border border-amber-100">
+                            <div className="w-12 h-12 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-black text-m flex-shrink-0 border border-amber-100">
                               DOC
                             </div>
                           )}
                           <div className="overflow-hidden">
-                            <p className="text-xs font-bold text-slate-700 truncate max-w-[250px] sm:max-w-md">
+                            <p className="text-m font-bold text-slate-700 truncate max-w-[250px] sm:max-w-md">
                               {currentFieldState.value?.name || "Selected Document Resource File"}
                             </p>
                             <p className="text-[10px] text-emerald-600 font-bold flex items-center gap-1 mt-0.5">
@@ -373,7 +373,7 @@ if (applyBidLoading) {
                     value={currentFieldState?.value || ""}
                     placeholder="Enter numeric value..."
                     onChange={(e) => handleInputChange(field.id, e.target.value, field.field_type)}
-                    className="w-full border border-gray-200 bg-white rounded-xl px-4 py-2.5 text-sm font-bold text-slate-700 outline-none focus:border-[var(--iconColor,#155dfc)] transition-colors shadow-2xs"
+                    className="w-full border border-gray-200 bg-white rounded-xl px-4 py-2.5 text-m font-bold text-slate-700 outline-none focus:border-[var(--iconColor,#155dfc)] transition-colors shadow-2xs"
                   />
                 ) : (
                   // Fallback Text field module layout standard elements
@@ -383,7 +383,7 @@ if (applyBidLoading) {
                     value={currentFieldState?.value || ""}
                     placeholder="Provide information entry response text..."
                     onChange={(e) => handleInputChange(field.id, e.target.value, field.field_type)}
-                    className="w-full border border-gray-200 bg-white rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700 outline-none focus:border-[var(--iconColor,#155dfc)] transition-colors shadow-2xs"
+                    className="w-full border border-gray-200 bg-white rounded-xl px-4 py-2.5 text-m font-medium text-slate-700 outline-none focus:border-[var(--iconColor,#155dfc)] transition-colors shadow-2xs"
                   />
                 )}
               </div>
@@ -396,7 +396,7 @@ if (applyBidLoading) {
           <button
           onClick={handleSubmitForm}
             type="submit"
-            className="w-full sm:w-auto px-8 py-3 bg-[var(--addBtnBg,#155dfb)] hover:bg-[var(--addBtnBgHover,#0744c9)] text-[var(--whiteText,#fff)] font-black text-sm rounded-xl transition-all shadow-md shadow-blue-500/10 hover:scale-[1.01] active:scale-[0.99]"
+            className="w-full sm:w-auto px-8 py-3 bg-[var(--addBtnBg,#155dfb)] hover:bg-[var(--addBtnBgHover,#0744c9)] text-[var(--whiteText,#fff)] font-black text-m rounded-xl transition-all shadow-md shadow-blue-500/10 hover:scale-[1.01] active:scale-[0.99]"
           >
             Submit Application Entry
           </button>

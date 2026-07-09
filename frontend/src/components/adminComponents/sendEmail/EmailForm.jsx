@@ -114,7 +114,7 @@ useEffect(() => {
       </div>
 
       {/* Subject */}
-      <div className="flex flex-col gap-1.5">
+      {/* <div className="flex flex-col gap-1.5">
         <label className="text-xs font-medium uppercase tracking-widest text-slate">
           Subject
         </label>
@@ -127,10 +127,10 @@ useEffect(() => {
           className="input-base"
           required
         />
-      </div>
+      </div> */}
 
       {/* Messagetextarea */}
-      <div className="flex flex-col gap-1.5">
+      {/* <div className="flex flex-col gap-1.5">
         <label className="text-xs font-medium uppercase tracking-widest text-slate">
           Message
         </label>
@@ -144,7 +144,7 @@ useEffect(() => {
           className="input-base resize-none"
           required
         />
-      </div>
+      </div> */}
 
       {/* Divider */}
       <div className="border-t border-mist" />

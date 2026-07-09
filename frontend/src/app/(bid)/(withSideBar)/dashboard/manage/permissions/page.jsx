@@ -82,23 +82,12 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
       const isThisRoleHasAddPermissionAccess = hasPermission(permissionOfLoggedInRoleOfUser,"add_permission");
       const isThisRoleHasDeletePermissionAccess = hasPermission(permissionOfLoggedInRoleOfUser,"delete_permission");
 
-// console.log(permissionOfLoggedInRoleOfUser)
-  //   useEffect(()=>{
-  //     if(!permissionOfLoggedInRoleOfUser || permissionOfLoggedInRoleOfUser == null || permissionOfLoggedInRoleOfUser == undefined){
-  //        const res = await = dispatch(getRolePermissionLoggedInUser({}))
 
-  //               if (getRolePermissionLoggedInUser.fulfilled.match(res)) {
-  // //                               if (!permissionOfLoggedInRoleOfUser?.length) {
-  // //             toast.error("No permission you have.");
-  // // }
-  //     }
 
-  //     }
-  //     if(!allRoleWithPermission || allRoleWithPermission == null || allRoleWithPermission == undefined){
-  //         dispatch(getAllRoleWithItsPermission({}))
-  //     }
 
-  //   },[]);
+    // if(!allRoleWithPermission || allRoleWithPermission === null) return toast.error("You dont have permission to see this page.")
+
+  
 
   useEffect(() => {
   const fetchData = async () => {
@@ -136,14 +125,23 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
 //IS LOGGED IN role HAS  PERMISSION TO VIEW, DELETE, ADD END?
   
 
-  const selectedRole = allRoleWithPermission?.find((r) => r.roleId === selectedRoleId) || selectedRoleFromRolePage || null;
+const selectedRole =
+  Array.isArray(allRoleWithPermission)
+    ? allRoleWithPermission.find((r) => r.roleId === selectedRoleId)
+    : selectedRoleFromRolePage || null;
+  // const selectedRole = allRoleWithPermission?.find((r) => r.roleId === selectedRoleId) || selectedRoleFromRolePage || null;
 
 
   const allowedIds = selectedRole?.permissions.map((p) => p.permissionAssignedId) || [];
 
-  const notAllowedPermissions = allPermissionss ? allPermissionss?.filter(
-    (permission) => !allowedIds.includes(permission.id)
-  ) : [];
+const notAllowedPermissions = Array.isArray(allPermissionss)
+  ? allPermissionss.filter(
+      (permission) => !allowedIds.includes(permission.id)
+    )
+  : [];
+  // const notAllowedPermissions = allPermissionss ? allPermissionss?.filter(
+  //   (permission) => !allowedIds.includes(permission.id)
+  // ) : [];
 
   const toggleToRemove = (id) => {
     setSelectedToRemove((prev) =>
@@ -166,13 +164,23 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
   };
 
 // show in ui selected to add permission
-const matchedPermissionsToAdd = allPermissionss?.filter(permission =>
-  selectedToAdd.includes(permission.id)
-);
+const matchedPermissionsToAdd = Array.isArray(allPermissionss)
+  ? allPermissionss.filter((permission) =>
+      selectedToAdd.includes(permission.id)
+    )
+  : [];
+// const matchedPermissionsToAdd = allPermissionss?.filter(permission =>
+//   selectedToAdd.includes(permission.id)
+// );
 // show in ui selected to remove permission 
-const matchedPermissionsToRemove = allPermissionss?.filter(permission =>
-  selectedToRemove.includes(permission.id)
-);
+const matchedPermissionsToRemove = Array.isArray(allPermissionss)
+  ? allPermissionss.filter((permission) =>
+      selectedToRemove.includes(permission.id)
+    )
+  : [];
+// const matchedPermissionsToRemove = allPermissionss?.filter(permission =>
+//   selectedToRemove.includes(permission.id)
+// );
 
 
 if(addPermissionLoading) return  <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
@@ -237,7 +245,10 @@ if(addPermissionLoading) return  <div className='bg-[var(--loadingMainBg)] min-h
               className="absolute z-20 mt-2 w-full rounded-xl border border-slate-200 shadow-lg overflow-hidden"
               style={{ background: "var(--whiteBg, #fff)" }}
             >
-              {allRoleWithPermission?.map((role) => (
+           {(Array.isArray(allRoleWithPermission)
+  ? allRoleWithPermission
+  : []
+).map((role) => (
                 <button
                   key={role.roleId}
                   onClick={() => {

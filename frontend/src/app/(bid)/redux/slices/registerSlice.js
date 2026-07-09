@@ -53,7 +53,8 @@ console.log(data, "data")
       return data?.data ? data?.data : data;
 
     } catch (err) {
-      toast.error(err.message);
+      toast.error(err.response.data.errors || "Something Went Wrong...");
+      console.log(err.response)
       return thunkAPI.rejectWithValue(err.message);
     }
   }

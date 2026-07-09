@@ -75,6 +75,7 @@ if(response.status== false){
 }
 
 const data = await response.json();
+setloading(false)
 
 if(data.errors) {
     setloading(false)
@@ -88,7 +89,7 @@ console.error(error, "ERROR from catch block");
 }
 };
 
-if (loading) {
+if (loading) { 
   return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
    <TinyLoader></TinyLoader>
   </div>;

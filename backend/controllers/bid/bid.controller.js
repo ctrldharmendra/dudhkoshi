@@ -992,6 +992,30 @@ if (!bidId || !applicationId || isNaN(bidId) || isNaN(applicationId)) {
 }
 
 
+    // first check if user has permission to view applicants bid or not 
+    const userWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
+if(!userWithPermission || userWithPermission.length<=1) return res.json(new ApiResponse(403, "No Any Permission!"))
+
+    // if no "crete_user" permission then show error 
+const hasViewApplicantsPermission = userWithPermission.some(
+    p => p.permission_name === 'view_applicants'
+);
+
+// yadi aafno bid xa vhanne dekhaune, dekhaune, loggediuser ko bid xa vhanne
+// check garne if "bid_application" table ma yedi "req.user.id"  ko "bid_id" (jun usle request garya xa) match xa then it means user ko aafno bid xa tyo. 
+const [isThisBidBelongsToLoggedInUser] = await pool.query(`
+      SELECT * FROM bid_applications WHERE bid_id = ? AND applicant_user_id = ? 
+  `, [bidId, req?.user?.id])
+
+const belongsToLoggedInUser = isThisBidBelongsToLoggedInUser.length > 0;
+
+// yedi user ko aafno bid xa vhanne dekhaune ya user lai permission xa vhanne sabai dekhaune 
+if (!hasViewApplicantsPermission && !belongsToLoggedInUser) {
+  return res.status(403).json(
+    new ApiError(403, [], "No Permission To View Applicants.")
+  );
+}
+
     // dynamic field details 
     const [bidDynamiDocumentDets] = await pool.query(
       `SELECT 

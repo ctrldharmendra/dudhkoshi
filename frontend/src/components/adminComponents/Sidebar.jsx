@@ -83,7 +83,7 @@ const menuItems = [
     icon:RiAuctionFill,
     children:[
       {
-        title:"Bids",
+        title:"Bids Form",
         path:"/dashboard/manage/bids"
       },
       {
@@ -99,32 +99,32 @@ const menuItems = [
   },
 
 
-  {
-    title:"Users",
-    icon:FiUsers,
-    path:"/dashboard/users"
-  },
+  // {
+  //   title:"Users",
+  //   icon:FiUsers,
+  //   path:"/dashboard/users"
+  // },
 
 
-  {
-    title:"Reports",
-    icon:FiBarChart2,
-    path:"/dashboard/reports"
-  },
+  // {
+  //   title:"Reports",
+  //   icon:FiBarChart2,
+  //   path:"/dashboard/reports"
+  // },
 
 
-  {
-    title:"Notifications",
-    icon:FiBell,
-    path:"/dashboard/notifications"
-  },
+  // {
+  //   title:"Notifications",
+  //   icon:FiBell,
+  //   path:"/dashboard/notifications"
+  // },
 
 
-  {
-    title:"Settings",
-    icon:FiSettings,
-    path:"/dashboard/settings"
-  },
+  // {
+  //   title:"Settings",
+  //   icon:FiSettings,
+  //   path:"/dashboard/settings"
+  // },
 
 ];
 

@@ -35,7 +35,7 @@ const frontendUrl = process.env.FRONTEND_URL;
             'select * from users where email = ?', [email]
         )
         if(isUserAlreadyExistWithThisMail.length>=1){
-            return res.status(409).json(new ApiError(409, `This email is already Registered:` ,"This email is already Registered:"))
+            return res.status(409).json(new ApiError(409, "This email is already Registered:" ,"This email is already Registered:"))
         }
 
 
@@ -155,6 +155,7 @@ if(!hasViewInvitationLinkPermission) return res.json(new ApiError(403, [],"No Pe
 
     LEFT JOIN users used
         ON i.used_by = used.id
+      ORDER BY i.created_at DESC
 `);
 
 return res.json(new ApiResponse(200, rows, "All Invites Links"))

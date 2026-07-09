@@ -12,6 +12,7 @@ import ToastProvider from "@/lib/ToastProvider";
 import Sidebar from "@/components/adminComponents/Sidebar";
 import StoreProvider from "../redux/storeProvider/StoreProvider";
 import UpperNav from "@/components/adminComponents/UpperNav";
+import FontScaleProvider from "../redux/storeProvider/FontScailerProvider";
 
 const myFont = localFont({
   src: "../../../font/KaTeX_Main-Regular.12644167.woff2",
@@ -52,6 +53,7 @@ transition-all
 
 
  <StoreProvider>
+   <FontScaleProvider />
 <div className="hidden lg:flex justify-end w-full bg-[#0e172b] px-2">
   <UpperNav></UpperNav>
 </div>

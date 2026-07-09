@@ -103,6 +103,19 @@ const registerUser = asyncHandler(async (req, res) => {
 // console.log( name, gender, date_of_birth, password, tokenFromFrontend )
 
 
+
+const [updateInvitation] = await pool.query(
+  `
+    UPDATE invitations
+    SET 
+      status = 'used',
+      used_by = ?
+    WHERE status = 'pending'
+    AND token = ?
+  `,
+  [result?.insertId, tokenFromFrontend]
+);
+
         return res.status(201).json(new ApiResponse(201, 
           {
                         userId: result.insertId,
