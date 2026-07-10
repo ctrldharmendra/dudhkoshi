@@ -95,6 +95,21 @@ export const addNewRole = createAsyncThunk(
   }
 );
 
+// GET PARTICULAR USER 
+export const getParticularUser = createAsyncThunk(
+  'getParticularUser',
+  async ({id}, thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.get(`/api/user/users/${id}`);
+      // console.log(data, "from getLoggedInUserBasic")
+      return data?.data;
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message);
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
 const userSlice = createSlice({
   name: 'userSlice',
   initialState: {
@@ -106,6 +121,10 @@ const userSlice = createSlice({
 
     updateBasicInfoLoggedInUserLoading:false,
     updateLoggedInUserDPLoading:false,
+
+    particularUserDets:[],
+    particularUserDetsLoading:false,
+
 
 
     error: "",
@@ -137,6 +156,19 @@ const userSlice = createSlice({
       })
       .addCase(getLoggedInUserBasicInfo.rejected, (state, action) => {
         state.loggedInUserBasicDataLoading = false;
+        state.error = action.payload;
+      });
+      // GET PARTICULAR USER DETS 
+    builder
+      .addCase(getParticularUser.pending, (state) => {
+        state.particularUserDetsLoading = true;
+      })
+      .addCase(getParticularUser.fulfilled, (state, action) => {
+        state.particularUserDetsLoading = false;
+        state.particularUserDets = action.payload;
+      })
+      .addCase(getParticularUser.rejected, (state, action) => {
+        state.particularUserDetsLoading = false;
         state.error = action.payload;
       });
       // UPDATE LOGGED IN USER BASIC DETS 

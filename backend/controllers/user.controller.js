@@ -120,8 +120,10 @@ if(!hasViewUserAccess) return res.json(new ApiError(403, [],"No Permission To Vi
                 u.email,
                 u.date_of_birth,
                 u.dp,
+                u.gender,
                 u.created_at,
-                r.name AS roleName
+                r.name AS roleName,
+                r.id AS roleId
             from users u
             INNER JOIN roles r
                 ON r.id = u.role_id
@@ -129,10 +131,19 @@ if(!hasViewUserAccess) return res.json(new ApiError(403, [],"No Permission To Vi
             [id]
         );
 
+        if(rows?.length===0)     return res.status(404).json(new ApiError(404, `ErorrU.") In getUserById:` ,"No User Found."))
+
+    const [userOrganizations] = await pool.query(`
+            SELECT * FROM organizations WHERE user_id = ? 
+        `, [id])
+        // console.log(userOrganizations, "ORG")
+
+
+        rows[0].userOrganizations = userOrganizations;
 
         return res.status(200).json(new ApiResponse(200, rows, "User fetched successfully."))
         } catch (error) {
-            return res.status(500).json(new ApiError(500, `ErorrU.") In getAllUser:` ,error?.message))
+            return res.status(500).json(new ApiError(500, `ErorrU.") In getUserById:` ,error?.message))
         }
 
 })

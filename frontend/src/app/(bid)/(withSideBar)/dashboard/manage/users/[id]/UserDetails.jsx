@@ -21,10 +21,11 @@ import EditForm from "./EditForm";
 import { setIsDeleteOpened, setIsEditOpened } from "@/app/(bid)/redux/slices/activitySlice";
 import { hasPermission } from "@/helper/helper";
 import TinyLoader from "@/components/reusable/loader/TinyLoader";
-import { deleteUser } from "@/app/(bid)/redux/slices/users/userSlice";
+import { deleteUser, getParticularUser } from "@/app/(bid)/redux/slices/users/userSlice";
 
 import { useRouter } from 'next/navigation';
 import { MdDeleteForever } from "react-icons/md";
+import { formatTimeRemaining } from "@/utils/formateTimeRemaining";
 
 
 
@@ -34,6 +35,11 @@ export default function UserDetails({ id }) {
 
 
   const user = useSelector((state) => state.userState.selectedUser);  //selectedUser object
+
+
+
+
+
   const isEdit = useSelector((state) => state?.activity?.isEditOpened);    //isEdit popup opened?
   const isDelete = useSelector((state) => state?.activity?.isDeleteOpened);    //isDelete popup opened?
   const dispatch = useDispatch()
@@ -41,20 +47,55 @@ export default function UserDetails({ id }) {
   const baseContentUrl = process.env.NEXT_PUBLIC_BASE_CONTENT_URL;
 
 
-
-  // check if logged In user has : edit_role, delete_role permission  || permission in array
-  useEffect(() => {
-    dispatch(getRolePermissionLoggedInUser({}))
-  }, []);
-  const loading = useSelector((state) => state?.roleAndPermission?.loadingOfGetRolePermission);
-  const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);
-  const isThisRoleHasChangeRolePermission = hasPermission(permissionOfLoggedInRoleOfUser, "change_role");
-  const isThisRoleHasDeleteUserPermission = hasPermission(permissionOfLoggedInRoleOfUser, "delete_role");
  
 
 
+  //FIRST : check if logged in role has permission to view bid or not 
+  //FIRST : fetch permissions on mount
+  useEffect(() => {
+    dispatch(getRolePermissionLoggedInUser({}));
+  }, [dispatch]);
+  
+  const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);
+  const loading = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);
+  const particularUserLoading = useSelector((state) => state?.users?.particularUserDetsLoading);
+  const particularUserDets = useSelector((state) => state?.users?.particularUserDets);
 
-  if (Object.keys(user).length === 0) {
+  console.log(particularUserDets)
+  const canDeleteUser = hasPermission(permissionOfLoggedInRoleOfUser, "delete_role");
+  const canChangeRole = hasPermission(permissionOfLoggedInRoleOfUser, "change_role");
+  const viewUsers = hasPermission(permissionOfLoggedInRoleOfUser, "view_users");
+  
+  // only "true" once permission data has actually arrived
+  const permissionChecked = !loading && !!permissionOfLoggedInRoleOfUser;
+  const hasBidAccess = canDeleteUser && canChangeRole && viewUsers;
+  
+  useEffect(() => {
+    if (!permissionChecked) return;
+    if (!hasBidAccess) {
+      router.replace("/forbidden");
+    }
+  }, [permissionChecked, hasBidAccess, router]);
+  //   check if logged in role has permission to view bid or not END
+  
+  // SECOND :Fetch only when permission exists
+  // SECOND: fetch bids only when access is confirmed
+  useEffect(() => {
+    if (!permissionChecked || !hasBidAccess) return;
+  
+    dispatch(getParticularUser({id}));
+  }, [
+    permissionChecked,
+    hasBidAccess,
+    dispatch,
+  ]);
+  // Fetch only when permission exists END 
+  // -----------------------------------------------------
+
+
+
+
+  if (particularUserDets.length === 0) {
     return (
       <div className="bg-white border border-slate-200 rounded-2xl p-6 text-center text-[var(--notFoundTextColor)]  h-screen flex items-center justify-center">
         User data not found
@@ -62,19 +103,32 @@ export default function UserDetails({ id }) {
     );
   }
 
-  if (!user) {
+  if (!particularUserDets) {
     return (
       <div className="bg-white border border-slate-200 rounded-2xl p-6 text-center text-[var(--notFoundTextColor)] h-screen flex items-center justify-center">
         User data not found
       </div>
     );
   }
-
-  if (loading) {
+ 
+  if (loading || particularUserLoading) {
     return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
       <TinyLoader></TinyLoader>
     </div>;
   }
+
+if (!permissionChecked) {
+  return (
+    <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+      <TinyLoader />
+    </div>
+  );
+}
+
+if (!hasBidAccess) {
+  // redirect is already in-flight via the effect above
+  return null;
+}
 
   // when click on edit 
   const handleEdit = () => {
@@ -103,7 +157,7 @@ export default function UserDetails({ id }) {
         title="Update Details"
         description="You can Only Update Role of a User."
       >
-        <EditForm user={user} id={id}></EditForm>
+        <EditForm user={particularUserDets?.[0]} id={id}></EditForm>
       </Modal>
       {/* delete  */}
       <Modal
@@ -125,13 +179,14 @@ export default function UserDetails({ id }) {
 
 
         <div className="flex items-center gap-5">
-          <div className="w-20 h-20 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl font-bold">
+          <div className="w-20 h-20 overflow-hidden rounded-full bg-blue-100 text-blue-600 flex items-center justify-center text-3xl font-bold">
             <Image
               unoptimized
-              src={baseContentUrl + "/" + user?.dp}
+              src={baseContentUrl + "/" + particularUserDets?.[0]?.dp}
               alt="dp"
               height={100}
               width={100}
+              className="h-full"
             >
 
             </Image>
@@ -139,15 +194,15 @@ export default function UserDetails({ id }) {
 
           <div>
             <h1 className="text-2xl font-semibold text-slate-800">
-              {user.name}
+              {particularUserDets?.[0].name}
             </h1>
 
             <p className="text-sm text-slate-500 mt-1">
-              {user.email}
+              {particularUserDets?.[0].email}
             </p>
 
             <span className="inline-flex mt-3 px-3 py-1 rounded-full bg-purple-100 text-purple-700 text-xs font-medium">
-              {user.roleName}
+              {particularUserDets?.[0].roleName}
             </span>
           </div>
         </div>
@@ -155,7 +210,7 @@ export default function UserDetails({ id }) {
 
         <div className="flex items-center gap-3">
           {
-            isThisRoleHasChangeRolePermission && (
+            canChangeRole && (
           <button
   onClick={() => dispatch(setIsEditOpened(true))}
   className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg bg-[var(--addBtnBg)] text-white hover:bg-[var(--addBtnBgHover)] transition"
@@ -168,7 +223,7 @@ export default function UserDetails({ id }) {
           }
 
           {
-            isThisRoleHasDeleteUserPermission && (
+            canDeleteUser && (
               <button
                 onClick={() => dispatch(setIsDeleteOpened(true))}
                 className="flex items-center gap-2 px-4 py-2 cursor-pointer rounded-lg bg-[var(--deleteIconBg)] text-[var(--deleteIconColor)] hover:bg-[var(--deleteIconBgHOver)] transition"
@@ -195,34 +250,35 @@ export default function UserDetails({ id }) {
           <InfoCard
             icon={<TbMail />}
             title="Email"
-            value={user.email}
+            value={particularUserDets?.[0].email}
           />
 
           <InfoCard
             icon={<TbGenderBigender />}
             title="Gender"
-            value={user.gender}
+            value={particularUserDets?.[0].gender}
           />
 
 
           <InfoCard
             icon={<TbCalendar />}
             title="Date of Birth"
-            value={new Date(user.date_of_birth).toLocaleDateString("en-GB")}
+            value={new Date(particularUserDets?.[0].date_of_birth).toLocaleDateString("en-GB")}
           />
 
 
           <InfoCard
             icon={<TbUserShield />}
             title="Role"
-            value={user.roleName}
+            value={particularUserDets?.[0].roleName}
           />
 
 
           <InfoCard
             icon={<TbClock />}
             title="Created At"
-            value={new Date(user.created_at).toLocaleDateString("en-GB")}
+            // value={new Date(particularUserDets?.[0].created_at).toLocaleDateString("en-GB")}
+            value={formatTimeRemaining(particularUserDets?.[0].created_at)}
           />
 
         </div>

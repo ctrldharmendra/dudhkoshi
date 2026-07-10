@@ -321,7 +321,7 @@ bg-white
 rounded-2xl
 border
 border-slate-200
-p-6 max-h-[400px] overflow-auto
+p-6 max-h-[400px] overflow-auto 
 ">
 
 
@@ -348,10 +348,11 @@ key={index}
 className="
 flex
 items-center
-gap-3
+gap-3 transform transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-105 hover:-translate-y-1 hover:shadow-xl
 "
 style={{
-    backgroundColor: item?.status === "used" ? "#21ff1629" : "#fff",
+    backgroundColor: item?.status === "used" ? "#21ff1629" : "#fff", 
+       padding: item?.status === "used" ? "8px 0" : "0",
   }}
 >
 

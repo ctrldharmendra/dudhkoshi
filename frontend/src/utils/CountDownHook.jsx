@@ -3,21 +3,14 @@
 import { useEffect, useState } from "react";
 
 export function useCountdown(expiresAt, subtractHours = 0) {
-  const calculateRemaining = () => {
-    if (!expiresAt) return 0;
+const calculateRemaining = () => {
+  if (!expiresAt) return 0;
 
-    const expiryTime = new Date(expiresAt).getTime();
+  const expiryTime = new Date(expiresAt).getTime();
+  const now = Date.now();
 
-    // subtract custom hours
-    const adjustedExpiryTime =
-      expiryTime + subtractHours * 60 * 60 * 1000;
-
-    const now = Date.now();
-
-    const difference = adjustedExpiryTime - now;
-
-    return difference > 0 ? difference : 0;
-  };
+  return Math.max(expiryTime - now, 0);
+};
 
   const [remaining, setRemaining] = useState(calculateRemaining);
 

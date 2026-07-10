@@ -248,7 +248,7 @@ if(addPermissionLoading) return  <div className='bg-[var(--loadingMainBg)] min-h
            {(Array.isArray(allRoleWithPermission)
   ? allRoleWithPermission
   : []
-).map((role) => (
+)?.map((role) => (
                 <button
                   key={role.roleId}
                   onClick={() => {

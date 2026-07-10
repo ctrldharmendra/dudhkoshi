@@ -11,6 +11,7 @@ const createBidForm = asyncHandler(async (req, res) => {
     // Get a dedicated connection from the pool
     const connection = await pool.getConnection();
 
+    
     try {
         const {
             publishDate,
