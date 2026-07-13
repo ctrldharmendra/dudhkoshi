@@ -17,7 +17,6 @@ const PermissionPage = ({selectedRoleFromRolePage=null, isDropDownDisabled}) => 
   const dispatch = useDispatch();
   const hasMounted = useRef(false);
 
-
   const allRoleWithPermission = useSelector((state) => state?.roleAndPermission?.RoleWithItsPermission);
   const allPermissionss = useSelector((state) => state?.permissions?.allPermissionFromDb);
   // console.log(allPermissionss)
@@ -35,6 +34,7 @@ const PermissionPage = ({selectedRoleFromRolePage=null, isDropDownDisabled}) => 
 
   // Selected role from dropdown
   const [selectedRoleId, setSelectedRoleId] = useState(null);
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   // Multi-select state — separate sets for remove and add
@@ -127,10 +127,11 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
 
 const selectedRole =
   Array.isArray(allRoleWithPermission)
-    ? allRoleWithPermission.find((r) => r.roleId === selectedRoleId)
-    : selectedRoleFromRolePage || null;
+    ? allRoleWithPermission.find((r) => r.roleId === selectedRoleFromRolePage?.roleId  )
+    : selectedRoleId|| null;
   // const selectedRole = allRoleWithPermission?.find((r) => r.roleId === selectedRoleId) || selectedRoleFromRolePage || null;
 
+// console.log(selectedRole, "selectedRole")
 
   const allowedIds = selectedRole?.permissions.map((p) => p.permissionAssignedId) || [];
 

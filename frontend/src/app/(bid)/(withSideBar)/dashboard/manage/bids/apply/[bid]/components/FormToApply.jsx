@@ -10,6 +10,11 @@ import React, { useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
 import { FiFileText, FiCalendar, FiUpload, FiX, FiCheckCircle } from 'react-icons/fi'
 import { useDispatch, useSelector } from 'react-redux';
+import BidFormAttachmetns from './BidFormAttachmetns';
+
+import {FiHelpCircle } from 'react-icons/fi'
+import HelpTextPopup from './HelpTextPopup'
+
 
 export default function FormToApply({ bid }) {
 const dispatch = useDispatch();
@@ -17,8 +22,8 @@ const router = useRouter();
   const bidFormData = useSelector((state) => state?.bidForm?.particularBidForm);  //Particular BId Data Form
   const particularBidFormLoading = useSelector((state) => state?.bidForm?.particularBidFormLoading);  //Particular BId Data Form Loading
   const applyBidLoading = useSelector((state) => state?.bidApplication?.applyBidLoading);  //Applying loading
-//   console.log(bidFormData)
-console.log(applyBidLoading)
+  console.log(bidFormData, "bidFormData")
+// console.log(applyBidLoading)
 
 //FIRST : check if logged in role has permission to view bid or not 
 //FIRST : fetch permissions on mount
@@ -35,6 +40,8 @@ const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "create_bid")
 // only "true" once permission data has actually arrived
 const permissionChecked = !loading && !!permissionOfLoggedInRoleOfUser;
 const hasBidAccess = canViewBid && canCreateBid;
+
+const [fieldErrors, setFieldErrors] = useState({});
 
 useEffect(() => {
   if (!permissionChecked) return;
@@ -148,30 +155,35 @@ const handleInputChange = (fieldId, val, type) => {
 //     {"field_id": 44,"value": null, "type": "file","fileIndex": 0}
 // ]
 
-// 3. Make sure your mapping outputs the exact array object on form submission
-// const handleSubmitForm = () => {
-//   const structuredSubmissionPayload = Object.values(formData).map((item, id) => {
-//     if (item.type === 'file') {
-//       return {
-//         field_id: Number(item.field_id),
-//         value: null, 
-//         type: item.type,
-//         fileIndex: id ?? 0
-//       };
-//     }
-//     return {
-//       field_id: Number(item.field_id),
-//       value: item.value,
-//       type: item.type
-//     };
-//   });
 
-//   dispatch(applyBid({bid, values:structuredSubmissionPayload}))
-
-// //   console.log("Payload Output:", structuredSubmissionPayload);
-// };
 
 const handleSubmitForm = async () => {
+// SHOW ERROR IF REQUIRED IS ENABLED FOR PARTICULAR FIELD 
+const errors = {};
+
+bidFormData?.fields?.forEach((field) => {
+  const currentFieldState = bidFormData?.fields[field.id];
+
+  if (field.isRequired === 1) {
+    if (
+      field.field_type === "file"
+        ? !currentFieldState?.value
+        : !currentFieldState?.value?.toString().trim()
+    ) {
+      errors[field.id] = true;
+    }
+  }
+});
+
+if (Object.keys(errors).length > 0) {
+  setFieldErrors(errors);
+  toast.error("Please fill all required fields.");
+  return;
+}
+
+setFieldErrors({});
+
+
   //1 — Separate files from text values
   // Track fileIndex correctly — count only file-type fields
   const files = [];      // actual File objects in order
@@ -238,6 +250,14 @@ const handleSubmitForm = async () => {
   };
 
 
+
+  // DYNAMIC FIELD SHOWIUNG 
+
+// ── inside your component, add this state ──────────────────────
+const [activeHelpField, setActiveHelpField] = useState(null) 
+// stores { fieldName, helpText } of whichever ? was clicked, or null
+
+
 // LOADING 
 if (!permissionChecked) {
   return (
@@ -270,75 +290,152 @@ if (applyBidLoading) {
     <div className="w-full mx-auto pt-2 bg-transparent">
       
       {/* 1. Project Info Header Card */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm mb-6">
-        <div className="flex items-center gap-3 mb-4 pb-3 border-b border-gray-50">
-          <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-[var(--iconBgColro,#dbeafe)] text-[var(--iconColor,#155dfc)] flex-shrink-0">
-            <FiFileText />
-          </div>
-          <div>
-            <span className="text-[10px] font-black tracking-widest text-emerald-600 uppercase bg-emerald-50 px-2.5 py-0.5 rounded-full">• {bidFormData.status}</span>
-            <h1 className="text-xl md:text-2xl font-black text-[var(--blackText,#090909)] mt-1 leading-tight">
-              {bidFormData?.title}
-            </h1>
-          </div>
-        </div>
-        
-        <p className="text-m text-[#000000)] font-medium leading-relaxed whitespace-pre-line bg-slate-50 p-4 rounded-xl mb-4">
-          {bidFormData?.description}
-        </p>
+    <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm mb-6">
+  <div className="flex items-center gap-3 mb-4 pb-3 border-b border-gray-50">
+    <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-[var(--iconBgColro,#dbeafe)] text-[var(--iconColor,#155dfc)] flex-shrink-0">
+      <FiFileText />
+    </div>
+    <div>
+      <span className="text-[10px] font-black tracking-widest text-emerald-600 uppercase bg-emerald-50 px-2.5 py-0.5 rounded-full">
+        • {bidFormData.status}
+      </span>
+      <h1 className="text-xl md:text-2xl font-black text-[var(--blackText,#090909)] mt-1 leading-tight">
+        {bidFormData?.title}
+      </h1>
+    </div>
+  </div>
 
-        <div className="flex flex-wrap gap-4 text-m font-bold text-gray-500">
-          <span className="flex items-center gap-1.5"><FiCalendar /> Open Date: {formatDateFriendly(bidFormData.openDate)}</span>
-          <span className="flex items-center gap-1.5 text-rose-600"><FiCalendar /> Close Date: {formatDateFriendly(bidFormData.closeDate)}</span>
-        </div>
+  <p className="text-m text-[#000000)] font-medium leading-relaxed whitespace-pre-line bg-slate-50 p-4 rounded-xl mb-4">
+    {bidFormData?.description}
+  </p>
+
+  <div className="flex flex-wrap gap-4 text-m font-bold text-gray-500 mb-4">
+    <span className="flex items-center gap-1.5">
+      <FiCalendar /> Open Date: {formatDateFriendly(bidFormData.openDate)}
+    </span>
+    <span className="flex items-center gap-1.5 text-rose-600">
+      <FiCalendar /> Close Date: {formatDateFriendly(bidFormData.closeDate)}
+    </span>
+  </div>
+
+  {/* Newly Added Fields */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {bidFormData?.contractNo && (
+      <div className="bg-slate-50 rounded-lg p-3">
+        <p className="text-xs text-gray-500">Contract No.</p>
+        <p className="font-semibold">{bidFormData.contractNo}</p>
       </div>
+    )}
+
+
+
+    {bidFormData?.bidSecurityAmnt != null && (
+      <div className="bg-slate-50 rounded-lg p-3">
+        <p className="text-xs text-gray-500">Bid Security Amount</p>
+        <p className="font-semibold">{bidFormData.bidSecurityAmnt}</p>
+      </div>
+    )}
+
+    {bidFormData?.bidSecurityValidityInDays != null && (
+      <div className="bg-slate-50 rounded-lg p-3">
+        <p className="text-xs text-gray-500">Bid Security Validity</p>
+        <p className="font-semibold">
+          {bidFormData.bidSecurityValidityInDays} Days
+        </p>
+      </div>
+    )}
+
+    {bidFormData?.bidDocumentRefundable != null && (
+      <div className="bg-slate-50 rounded-lg p-3">
+        <p className="text-xs text-gray-500">Is Bid Document Refundable</p>
+        <p className="font-semibold">
+          {bidFormData.bidDocumentRefundable ? "Yes" : "No"}
+        </p>
+      </div>
+    )}
+    {bidFormData?.bidDocumentRefundable != null && (
+      <div className="bg-slate-50 rounded-lg p-3">
+        <p className="text-xs text-gray-500">Bid Document Refundable</p>
+        <p className="font-semibold">
+          {bidFormData.bidDocumentRefundable}
+        </p>
+      </div>
+    )}
+    {bidFormData?.isEstimatedIncludingVat != null && (
+      <div className="bg-slate-50 rounded-lg p-3">
+        <p className="text-xs text-gray-500">Is Estimated Amt. included Vat?</p>
+        <p className="font-semibold">
+          {bidFormData.isEstimatedIncludingVat ? "Yes" : "No"}
+        </p>
+      </div>
+    )}
+        {bidFormData?.estimatedAmt != null && (
+      <div className="bg-slate-50 rounded-lg p-3">
+        <p className="text-xs text-gray-500">Estimated Amount</p>
+        <p className="font-semibold">{bidFormData.estimatedAmt}</p>
+      </div>
+    )}
+  </div>
+</div>
+
+{/* ATTACHMENTS FILE PROVIDED BY ADMIN  */}
+<BidFormAttachmetns attachments={bidFormData?.attachments}></BidFormAttachmetns>
+
 
       {/* 2. Interactive Application Entry Form */}
-      <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm space-y-6">
+      <div className="bg-white rounded-2xl mt-2 border border-gray-100 p-6 md:p-8 shadow-sm space-y-6">
         <div>
           <h2 className="text-lg font-black text-[var(--blackText,#090909)]">Application Requirements</h2>
           <p className="text-m text-red-400 font-medium mt-0.5">Please provide information accurately according to each custom field specification parameter below.</p>
         </div>
 
         <div className="space-y-5">
-          {bidFormData?.fields?.map((field) => {
+          {/* {bidFormData?.fields?.map((field) => {
             const currentFieldState = formData[field.id];
 
             return (
               <div key={field.id} className="py-1 px-4  rounded-xl border border-gray-100 bg-slate-50/50 space-y-2">
+        <label className="font-semibold">
+  {field.field_name}
+  {field.isRequired === 1 && (
+    <span className="text-red-500 ml-1">*</span>
+  )}
+</label>
                 <label className="text-m font-black text-slate-700 uppercase tracking-wide block">
-                  {field.field_name}
+                  {field.isRequired}
+                </label>
+                <label className="text-m font-black text-slate-700 uppercase tracking-wide block">
+                  {field.helpText}
                 </label>
 
-                {/* Conditional variant UI routing based on dynamic variable strings */}
                 {field.field_type === 'file' ? (
                   <div className="space-y-3">
                     {!currentFieldState?.value ? (
-                      // File Selection Upload UI Area Box Component
                       <label className="border-2 border-dashed border-gray-200 hover:border-[var(--iconColor,#155dfc)] bg-white rounded-xl p-5 flex flex-col items-center justify-center cursor-pointer transition-colors group">
                         <FiUpload className="text-xl text-gray-400 group-hover:text-[var(--iconColor,#155dfc)] mb-1" />
                         <span className="text-m font-bold text-slate-600">Click to upload file document</span>
                         <span className="text-[10px] text-gray-400 font-medium mt-0.5">Images will preview instantly</span>
                         <input 
-                        required
+                        
                           type="file" 
                           onChange={(e) => handleFileChange(field.id, e, field.field_type)}
                           className="hidden" 
                         />
+
                       </label>
                     ) : (
-                      // Document Loaded Status / Live Image Preview Container
+           
                       <div className="relative bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between gap-4">
                         <div className="flex items-center gap-3 overflow-hidden">
                           {currentFieldState.previewUrl ? (
-                            // Render instant live thumbnail image item
+   
                             <img 
                               src={currentFieldState.previewUrl} 
                               alt="Instant Preview" 
                               className="w-16 h-16 rounded-lg object-cover border border-gray-100 bg-slate-50 flex-shrink-0"
                             />
                           ) : (
-                            // Non-image file default icon placeholder wrapper
+                
                             <div className="w-12 h-12 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-black text-m flex-shrink-0 border border-amber-100">
                               DOC
                             </div>
@@ -353,7 +450,7 @@ if (applyBidLoading) {
                           </div>
                         </div>
 
-                        {/* Removable control element click option overlay action */}
+                      
                         <button
                           type="button"
                           onClick={() => handleRemoveFile(field.id)}
@@ -366,19 +463,29 @@ if (applyBidLoading) {
                     )}
                   </div>
                 ) : field.field_type === 'number' ? (
+                  <>
                   // Native Number input component structure configuration
                   <input
-                     required
                     type="number"
                     value={currentFieldState?.value || ""}
                     placeholder="Enter numeric value..."
                     onChange={(e) => handleInputChange(field.id, e.target.value, field.field_type)}
-                    className="w-full border border-gray-200 bg-white rounded-xl px-4 py-2.5 text-m font-bold text-slate-700 outline-none focus:border-[var(--iconColor,#155dfc)] transition-colors shadow-2xs"
+                  className={`w-full rounded-xl px-4 py-2.5 outline-none transition-colors
+${
+  fieldErrors[field.id]
+    ? "border-red-500"
+    : "border-gray-200 focus:border-[var(--iconColor,#155dfc)]"
+}`}
                   />
+                  {fieldErrors[field.id] && (
+  <p className="text-red-500 text-xs mt-1">
+    This field is required.
+  </p>
+)}
+</>
                 ) : (
-                  // Fallback Text field module layout standard elements
+   
                   <input
-                  required
                     type="text"
                     value={currentFieldState?.value || ""}
                     placeholder="Provide information entry response text..."
@@ -388,7 +495,157 @@ if (applyBidLoading) {
                 )}
               </div>
             );
-          })}
+          })} */}
+
+
+          {[...( bidFormData?.fields || [])]
+
+  // 1. Sort by displayOrder before rendering
+  //    Fields with no displayOrder go to the end
+  .sort((a, b) => {
+    const orderA = a.displayOrder ?? Infinity
+    const orderB = b.displayOrder ?? Infinity
+    return orderA - orderB
+  })
+
+  .map((field) => {
+    const currentFieldState = formData[field.id]
+
+    // 2. Placeholder — use field.label if present, fallback to generic text
+    const textPlaceholder = field.label
+      ? field.label
+      : "Provide information entry response text..."
+
+    const numberPlaceholder = field.label
+      ? field.label
+      : "Enter numeric value..."
+
+    return (
+      <div
+        key={field.id}
+        className="py-1 px-4 rounded-xl border border-gray-100 bg-slate-50/50 space-y-2"
+      >
+
+        {/* Field label row — name on left, ? icon on right */}
+        <div className="flex ">
+          <label className="font-semibold text-slate-700">
+            {field.field_name}
+            {field.isRequired === 1 && (
+              <span className="text-red-500 ml-1">*</span>
+            )}
+          </label>
+
+          {/* 3. ? icon — only show if helpText exists */}
+          {field.helpText && (
+            <button
+              type="button"
+              onClick={() =>
+                setActiveHelpField({
+                  fieldName: field.field_name,
+                  helpText: field.helpText,
+                })
+              }
+              className="w-6 h-6 rounded-full bg-blue-50 hover:bg-blue-100 text-blue-400 hover:text-blue-600 flex items-center justify-center transition-colors flex-shrink-0"
+              title="View help text"
+            >
+              <FiHelpCircle size={14} />
+            </button>
+          )}
+        </div>
+
+        {/* Field input — conditional by type */}
+        {field.field_type === 'file' ? (
+          <div className="space-y-3">
+            {!currentFieldState?.value ? (
+              <label className="border-2 border-dashed border-gray-200 hover:border-[var(--iconColor,#155dfc)] bg-white rounded-xl p-5 flex flex-col items-center justify-center cursor-pointer transition-colors group">
+                <FiUpload className="text-xl text-gray-400 group-hover:text-[var(--iconColor,#155dfc)] mb-1" />
+                <span className="text-sm font-bold text-slate-600">
+                  {field.label ? field.label : "Click to upload file document"}
+                </span>
+                <span className="text-[10px] text-gray-400 font-medium mt-0.5">
+                  Images will preview instantly
+                </span>
+                <input
+                  type="file"
+                  onChange={(e) => handleFileChange(field.id, e, field.field_type)}
+                  className="hidden"
+                />
+              </label>
+            ) : (
+              <div className="relative bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between gap-4">
+                <div className="flex items-center gap-3 overflow-hidden">
+                  {currentFieldState.previewUrl ? (
+                    <img
+                      src={currentFieldState.previewUrl}
+                      alt="Instant Preview"
+                      className="w-16 h-16 rounded-lg object-cover border border-gray-100 bg-slate-50 flex-shrink-0"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-black text-xs flex-shrink-0 border border-amber-100">
+                      DOC
+                    </div>
+                  )}
+                  <div className="overflow-hidden">
+                    <p className="text-sm font-bold text-slate-700 truncate max-w-[250px] sm:max-w-md">
+                      {currentFieldState.value?.name || "Selected Document Resource File"}
+                    </p>
+                    <p className="text-[10px] text-emerald-600 font-bold flex items-center gap-1 mt-0.5">
+                      <FiCheckCircle /> Loaded Successfully
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => handleRemoveFile(field.id)}
+                  className="w-8 h-8 rounded-lg bg-[var(--deleteIconBg,#fef2f2)] text-[var(--deleteIconColor,#e7000b)] hover:bg-[var(--deleteIconBgHOver,#ffb8b8)] flex items-center justify-center transition-colors shadow-2xs flex-shrink-0"
+                >
+                  <FiX />
+                </button>
+              </div>
+            )}
+          </div>
+
+        ) : field.field_type === 'number' ? (
+          <>
+            <input
+              type="number"
+              value={currentFieldState?.value || ""}
+              placeholder={numberPlaceholder}   // ✅ uses label if present
+              onChange={(e) => handleInputChange(field.id, e.target.value, field.field_type)}
+              className={`w-full border rounded-xl px-4 py-2.5 outline-none transition-colors ${
+                fieldErrors[field.id]
+                  ? "border-red-500"
+                  : "border-gray-200 focus:border-[var(--iconColor,#155dfc)]"
+              }`}
+            />
+            {fieldErrors[field.id] && (
+              <p className="text-red-500 text-xs mt-1">This field is required.</p>
+            )}
+          </>
+
+        ) : (
+          <input
+            type="text"
+            value={currentFieldState?.value || ""}
+            placeholder={textPlaceholder}       // ✅ uses label if present
+            onChange={(e) => handleInputChange(field.id, e.target.value, field.field_type)}
+            className="w-full border border-gray-200 bg-white rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700 outline-none focus:border-[var(--iconColor,#155dfc)] transition-colors shadow-2xs"
+          />
+        )}
+
+      </div>
+    )
+  })
+}
+
+{/* Help popup — renders outside the map, controlled by activeHelpField state */}
+{activeHelpField && (
+  <HelpTextPopup
+    fieldName={activeHelpField.fieldName}
+    helpText={activeHelpField.helpText}
+    onClose={() => setActiveHelpField(null)}
+  />
+)}
         </div>
 
         {/* Action submission terminal controls row button block */}

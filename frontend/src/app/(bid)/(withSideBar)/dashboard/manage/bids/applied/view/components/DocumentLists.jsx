@@ -16,6 +16,7 @@ const dispatch = useDispatch()
   const applicantDetails = useSelector((state) => state?.bidApplication?.particularApplicantDocuments?.applicantDetails);  //Applicant's Details 
   const bidDynamicDocumentDetails = useSelector((state) => state?.bidApplication?.particularApplicantDocuments?.bidDynamicDocumentDetails);  //bidDynamicDocumentDetails
   const bidMasterDetails = useSelector((state) => state?.bidApplication?.particularApplicantDocuments?.bidMasterDetails);  //bidMasterDetails
+  const attachments = useSelector((state) => state?.bidApplication?.particularApplicantDocuments?.attachments);  //Attachments
 
 
 
@@ -56,7 +57,7 @@ if(particularApplicantDocumentsLoading){
   <>
 <div className='flex flex-col gap-[12px] pt-[12px]'>
       <ApplicantDetails applicantDetails={applicantDetails}></ApplicantDetails>
-  <BidDetails bidMasterDetails={bidMasterDetails} applicantDetails={applicantDetails}></BidDetails>
+  <BidDetails bidMasterDetails={bidMasterDetails} applicantDetails={applicantDetails} attachments={attachments}></BidDetails>
   <ApplicantAppliedDocuments bidDynamicDocumentDetails={bidDynamicDocumentDetails}></ApplicantAppliedDocuments>
 </div>
   </>

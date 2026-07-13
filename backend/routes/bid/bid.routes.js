@@ -15,11 +15,13 @@ const { upload } = require('../../middlewares/upload');
 // CREATE BID_FORM 
 router.route('/bidform').post(
     authenticateAccessToken,
+    upload({ folder: 'bid-form' }).array('files', 20), // max 20 files
     bidControlller.createBidForm
 );
 // EDIT BID FORM 
 router.route('/bidform/:id').put(
     authenticateAccessToken,
+        upload({ folder: 'bid-form' }).array('files', 20),
     bidControlller.editBidForm
 );
 

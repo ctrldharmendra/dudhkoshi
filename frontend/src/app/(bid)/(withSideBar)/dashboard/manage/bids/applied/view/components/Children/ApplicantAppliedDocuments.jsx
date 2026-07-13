@@ -11,7 +11,7 @@ const baseContentPath = process.env.NEXT_PUBLIC_BASE_CONTENT_URL
   if (!bidDynamicDocumentDetails || bidDynamicDocumentDetails.length === 0) return null;
 
 
-  console.log(bidDynamicDocumentDetails, "bidDynamicDocumentDetails")
+  // console.log(bidDynamicDocumentDetails, "bidDynamicDocumentDetails")
   // Render friendly layout wrappers based on the incoming answer format
   const renderFieldTypeBadge = (type) => {
     switch (type) {

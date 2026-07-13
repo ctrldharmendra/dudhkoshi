@@ -2,10 +2,12 @@
 
 import React from 'react';
 import { FiFileText, FiCalendar, FiActivity } from 'react-icons/fi';
+import BidFormAttachmetns from '../../../../apply/[bid]/components/BidFormAttachmetns';
 
-export default function BidDetails({ bidMasterDetails, applicantDetails }) {
+export default function BidDetails({ bidMasterDetails, attachments, applicantDetails }) {
     // console.log(applicantDetails)
   if (!bidMasterDetails) return null;
+  // console.log(bidMasterDetails, "bidMasterDetails")
 
   // Format date helper to make it simple and friendly for seniors
   const formatDate = (dateStr) => {
@@ -66,6 +68,65 @@ export default function BidDetails({ bidMasterDetails, applicantDetails }) {
         </div>
       </div>
 
+  {/* Newly Added Fields */}
+  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {bidMasterDetails?.contractNo && (
+      <div className="bg-slate-50 rounded-lg p-3">
+        <p className="text-xs text-gray-500">Contract No.</p>
+        <p className="font-semibold">{bidMasterDetails.contractNo}</p>
+      </div>
+    )}
+
+
+
+    {bidMasterDetails?.bidSecurityAmnt != null && (
+      <div className="bg-slate-50 rounded-lg p-3">
+        <p className="text-xs text-gray-500">Bid Security Amount</p>
+        <p className="font-semibold">{bidMasterDetails.bidSecurityAmnt}</p>
+      </div>
+    )}
+
+    {bidMasterDetails?.bidSecurityValidityInDays != null && (
+      <div className="bg-slate-50 rounded-lg p-3">
+        <p className="text-xs text-gray-500">Bid Security Validity</p>
+        <p className="font-semibold">
+          {bidMasterDetails.bidSecurityValidityInDays} Days
+        </p>
+      </div>
+    )}
+
+    {bidMasterDetails?.bidDocumentRefundable != null && (
+      <div className="bg-slate-50 rounded-lg p-3">
+        <p className="text-xs text-gray-500">Is Bid Document Refundable</p>
+        <p className="font-semibold">
+          {bidMasterDetails.bidDocumentRefundable ? "Yes" : "No"}
+        </p>
+      </div>
+    )}
+    {bidMasterDetails?.bidDocumentRefundable != null && (
+      <div className="bg-slate-50 rounded-lg p-3">
+        <p className="text-xs text-gray-500">Bid Document Refundable</p>
+        <p className="font-semibold">
+          {bidMasterDetails.bidDocumentRefundable}
+        </p>
+      </div>
+    )}
+    {bidMasterDetails?.isEstimatedIncludingVat != null && (
+      <div className="bg-slate-50 rounded-lg p-3">
+        <p className="text-xs text-gray-500">Is Estimated Amt. included Vat?</p>
+        <p className="font-semibold">
+          {bidMasterDetails.isEstimatedIncludingVat ? "Yes" : "No"}
+        </p>
+      </div>
+    )}
+        {bidMasterDetails?.estimatedAmt != null && (
+      <div className="bg-slate-50 rounded-lg p-3">
+        <p className="text-xs text-gray-500">Estimated Amount</p>
+        <p className="font-semibold">{bidMasterDetails.estimatedAmt}</p>
+      </div>
+    )}
+  </div>
+
       {/* Description Layout Block */}
       <div>
         <span className="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-1">Project Details & Objectives</span>
@@ -73,6 +134,10 @@ export default function BidDetails({ bidMasterDetails, applicantDetails }) {
           {bidMasterDetails?.description}
         </p>
       </div>
+
+<div className='mt-2'>
+        <BidFormAttachmetns attachments={attachments}></BidFormAttachmetns>
+</div>
     </div>
   );
 }

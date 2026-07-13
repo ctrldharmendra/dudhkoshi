@@ -26,8 +26,14 @@ import { useCountdown } from "@/utils/CountDownHook";
 import InvitationCountdown from "@/components/adminComponents/dashboard/InvitationCountDown";
 import { hasPermission } from "@/helper/helper";
 import { getRolePermissionLoggedInUser } from "../../redux/slices/rolesAndPermissionSlice";
+import { getAllBidForm } from "../../redux/slices/bids/bidFormSlice";
+import unknownDp from "../../../../../public/profileDemo.jpeg"
+import { FaExternalLinkAlt } from "react-icons/fa";
+
+
 
 export default function Dashboard(){
+    const baseContentUrl = process.env.NEXT_PUBLIC_BASE_CONTENT_URL; 
 
   const dispatch = useDispatch()
   const inviteHistory = useSelector((state) => state?.invite?.inviteHistory);  //Invite Data
@@ -35,6 +41,10 @@ export default function Dashboard(){
   const [showInvitationHistory, setshowInvitationHistory] = useState(true)
 
 
+    const allBids = useSelector((state) => state?.bidForm?.allBidFormFromDb?.bids ??  []);  //all bids object
+    const allBidsLoading = useSelector((state) => state?.bidForm?.allBidFormLoading);  //all loading state
+
+// console.log(allBids, "allBids")
 
 //FIRST : check if logged in role has permission to view bid or not 
 //FIRST : fetch permissions on mount
@@ -46,6 +56,7 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
 const loading = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);
 
 const canViewBid = hasPermission(permissionOfLoggedInRoleOfUser, "view_invitation");
+const viewApplicants = hasPermission(permissionOfLoggedInRoleOfUser, "view_applicants");
 // only "true" once permission data has actually arrived
 const permissionChecked = !loading && !!permissionOfLoggedInRoleOfUser;
 const hasBidAccess = canViewBid;
@@ -67,6 +78,13 @@ useEffect(() => {
 }, [
   permissionChecked,
   hasBidAccess,
+  dispatch,
+]);
+useEffect(() => {
+  if (!viewApplicants) return;
+      dispatch(getAllBidForm({}))
+}, [
+viewApplicants,
   dispatch,
 ]);
 // Fetch only when permission exists END 
@@ -124,7 +142,7 @@ if (inviteHistoryLoading) {
 }
 
 // LOADING 
-if (!permissionChecked) {
+if (!permissionChecked || allBidsLoading) {
   return (
     <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
       <TinyLoader />
@@ -199,6 +217,84 @@ grid
 sm:grid-cols-2
 gap-5
 ">
+{/* Quick Profile */}
+
+<div className="
+bg-gradient-to-br
+from-blue-600
+to-indigo-700
+rounded-2xl
+p-6
+text-white
+">
+
+
+<h3 className="
+text-xl
+font-bold
+">
+
+View Your Details
+
+</h3>
+
+
+<p className="
+mt-3
+text-blue-100
+">
+
+Manage your Details. 
+</p>
+
+<div className="flex gap-4 flex-col lg:flex-row">
+
+<button
+
+className="
+mt-6
+bg-white
+text-blue-700
+px-5
+py-2
+rounded-xl
+font-semibold
+hover:bg-blue-50
+transition
+"
+
+>
+
+<Link href="/dashboard/profile">
+Change Profile Details
+
+</Link>
+</button>
+<button
+
+className="
+mt-6
+bg-white
+text-blue-700
+px-5
+py-2
+rounded-xl
+font-semibold
+hover:bg-blue-50
+transition
+"
+
+>
+
+<Link href="/dashboard/organizations">
+Change Organization Details
+
+</Link>
+</button>
+
+</div>
+
+</div>
 
 
 
@@ -332,7 +428,7 @@ text-slate-800
 mb-5
 ">
 
-Recent Activity
+Recent Invitation History
 
 </h3>
 
@@ -430,86 +526,130 @@ text-slate-700
 }
 
 
-
-
-{/* Quick Profile */}
-
-<div className="
-bg-gradient-to-br
-from-blue-600
-to-indigo-700
+{/* BID CREATION HISTORY  */}
+{
+  showInvitationHistory && (
+    <div className="
+bg-white
 rounded-2xl
-p-6
-text-white
+border
+border-slate-200
+p-6 max-h-[400px] overflow-auto 
 ">
 
 
 <h3 className="
-text-xl
 font-bold
+text-lg
+text-slate-800
+mb-5
 ">
 
-View Your Details
+Recent Bid Creation
 
 </h3>
 
 
+<div className="space-y-4">
+
+
+{
+allBids?.map((item,index)=>(
+
+<div
+key={index}
+className="
+flex
+items-center
+gap-3 transform transition duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] hover:scale-105 hover:-translate-y-1 hover:shadow-xl
+"
+style={{
+    backgroundColor: item?.status === "used" ? "#21ff1629" : "#fff", 
+       padding: item?.status === "used" ? "8px 0" : "0",
+  }}
+>
+
+
+<div className="
+max-w-[49px]max-w-[49px] max-h-[49px] max-h-[49px] 
+rounded-full
+bg-blue-100
+text-blue-600
+flex
+items-center
+justify-center
+">
+<Image
+unoptimized
+src={item?.createdByDp ? baseContentUrl+'/'+item?.createdByDp : unknownDp}
+
+width={80}
+
+height={80}
+
+alt="profile"
+
+className=" rounded-full max-w-[49px] max-w-[49px] max-h-[49px] max-h-[49px] border-1 border-blue-100
+"
+/>
+
+</div>
+
+
+<div>
+  <div className="flex gap-1 items-center">
 <p className="
-mt-3
-text-blue-100
+font-medium
+text-slate-700
 ">
 
-Manage your Details. 
+<span className="font-semibold">{item?.createdBy }</span> created a bid  
+</p>
+<Link href={`/dashboard/manage/users/${item?.createdByUserId}`} className=" text-sm text-blue-600 underline underline-offset-4 hover:text-blue-800 line-clamp-2 transition-colors cursor-pointer"> 
+
+<FaExternalLinkAlt tooltip="View This User"/>
+</Link>
+  </div>
+    <Link title="View Thi Bid" href={`/dashboard/manage/bids/bidders?bid=${item?.id}`} className=" text-sm text-blue-600 underline underline-offset-4 hover:text-blue-800 line-clamp-2 transition-colors cursor-pointer">
+     {item?.title}
+    </Link>
+
+<div className="flex flex-row gap-2">
+<p className="text-sm text-[green]">{formatTimeRemaining(item?.created_at)} ago</p>
+<p className="text-sm text-[brown]">
+  Status:{" "}
+  <span
+    className={`font-semibold ${
+      item?.status === "ACTIVE" ? "text-green-600" : ""
+    }`}
+  >
+    {item?.status}
+  </span>
 </p>
 
-<div className="flex gap-4 flex-col lg:flex-row">
+  </div>
 
-<button
 
-className="
-mt-6
-bg-white
-text-blue-700
-px-5
-py-2
-rounded-xl
-font-semibold
-hover:bg-blue-50
-transition
-"
-
->
-
-<Link href="/dashboard/profile">
-Change Profile Details
-
-</Link>
-</button>
-<button
-
-className="
-mt-6
-bg-white
-text-blue-700
-px-5
-py-2
-rounded-xl
-font-semibold
-hover:bg-blue-50
-transition
-"
-
->
-
-<Link href="/dashboard/organizations">
-Change Organization Details
-
-</Link>
-</button>
 
 </div>
 
+
 </div>
+
+))
+
+}
+
+
+</div>
+
+
+</div>
+
+  )
+}
+
+
 
 
 

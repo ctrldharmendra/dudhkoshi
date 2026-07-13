@@ -6,12 +6,17 @@ const path = require('path')
 const fs = require('fs')
 const { saveFiles } = require('../../middlewares/upload');
 const helper = require('../../helper/helper')
+
+
+
+
+
+
+
 // CREATE BID FORM 
 const createBidForm = asyncHandler(async (req, res) => {
     // Get a dedicated connection from the pool
     const connection = await pool.getConnection();
-
-    
     try {
         const {
             publishDate,
@@ -19,19 +24,29 @@ const createBidForm = asyncHandler(async (req, res) => {
             title,
             description,
             status,
-            fields,
-            closeDate
+            closeDate,
+            estimatedAmt,
+isEstimatedIncludingVat,
+bidSecurityAmnt,
+bidSecurityValidityInDays,
+bidDocumentRefundable,
+isBidDocumentRefundable,
+contractNo
         } = req.body;
 
-        const loggedInUserId = req.user.id;
+const fields = JSON.parse(req.body.fields);
 
+// geting attachment tittle 
+const attachmentTitles = Array.isArray(req.body.attachmentTitles)
+  ? req.body.attachmentTitles
+  : [req.body.attachmentTitles];
+
+
+        const loggedInUserId = req.user.id;
+// console.log(attachmentTitles, "attachmentTitles")
         // Basic validation
-        if (!publishDate ||!openDate ||!title ||!description ||!status ||!Array.isArray(fields) || fields.length === 0
-        ) {
-            return res
-                .status(400)
-                .json(new ApiError(400, "Missing required fields."));
-        }
+        if (!publishDate ||!openDate ||!title ||!description ||!status ) {return res.status(400).json(new ApiError(400,"" ,"Missing required fields"));}
+        if (!Array.isArray(fields) || fields.length === 0) {return res.status(400).json(new ApiError(400,"" ,"You Need to Add Atleast 1 Row So you can be more clear about Bidders"));}
 
         // START TRANSACTION
         // Nothing is permanently saved until commit()
@@ -40,8 +55,8 @@ const createBidForm = asyncHandler(async (req, res) => {
         // STEP 1: Insert into bid_master
         const [result] = await connection.query(
             `INSERT INTO bid_master
-            (publishDate, openDate, title, description, status, user_id, closeDate)
-            VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            (publishDate, openDate, title, description, status, user_id, closeDate,    estimatedAmt, isEstimatedIncludingVat, bidSecurityAmnt, bidSecurityValidityInDays, bidDocumentRefundable, isBidDocumentRefundable, contractNo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 publishDate,
                 openDate,
@@ -49,7 +64,14 @@ const createBidForm = asyncHandler(async (req, res) => {
                 description,
                 status,
                 loggedInUserId,
-                closeDate
+                closeDate, 
+                   estimatedAmt || null,
+isEstimatedIncludingVat || null,
+bidSecurityAmnt || null,
+bidSecurityValidityInDays || null,
+bidDocumentRefundable || null,
+isBidDocumentRefundable || null,
+contractNo
             ]
         );
 
@@ -58,21 +80,69 @@ const createBidForm = asyncHandler(async (req, res) => {
 
         // STEP 2: Insert all fields
         // If ANY insert fails, execution jumps to catch block
-        for (const field of fields) {
-            await connection.query(
-                `INSERT INTO bid_fields
-                (bid_id, field_name, created_by, field_type)
-                VALUES (?, ?, ?, ?)`,
-                [
-                    bidId,
-                    field.fieldName,
-                    loggedInUserId,
-                    field.fieldType
-                ]
-            );
-        }
+if(fields.length>=1){
+        //   for (const field of fields) {
+        //     await connection.query(
+        //         `INSERT INTO bid_fields
+        //         (bid_id, field_name, created_by, field_type)
+        //         VALUES (?, ?, ?, ?)`,
+        //         [
+        //             bidId,
+        //             field.fieldName,
+        //             loggedInUserId,
+        //             field.fieldType
+        //         ]
+        //     );
+        // }
 
-        // STEP 3: Everything succeeded
+        for (const field of fields) {
+    await connection.query(
+        `INSERT INTO bid_fields
+        (
+            bid_id,
+            field_name,
+            created_by,
+            field_type,
+            label,
+            isRequired,
+            displayOrder,
+            helpText
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            bidId,
+            field.fieldName,
+            loggedInUserId,
+            field.fieldType,
+            field.label || null,
+            field.isRequired || 0,
+            field.displayOrder || null,
+            field.helpText || null
+        ]
+    );
+}
+}
+
+
+        // SETP 3: Insert Attachment if provided 
+       const savedFiles = await saveFiles(req);
+       const filePaths = savedFiles.files || [];
+
+for (let i = 0; i < filePaths.length; i++) {
+  await connection.query(
+    `INSERT INTO bid_attachments
+      (title, attachment, bidId)
+     VALUES (?, ?, ?)`,
+    [
+      attachmentTitles[i],
+      filePaths[i],
+      bidId,
+    ]
+  );
+}
+
+
+        // STEP 4: Everything succeeded
         // Save all changes permanently
         await connection.commit();
 
@@ -88,6 +158,8 @@ const createBidForm = asyncHandler(async (req, res) => {
         // Something failed
         // Undo ALL database changes
         // bid_master insert will also be removed
+        console.log("CREATE BID ERROR:", error);
+        if(error.code == "ER_DUP_ENTRY") return res.status(409).json(new ApiError(409, "", "Duplicate Contract Id. Please Make Unique. "))
         await connection.rollback();
 
         return res.status(500).json(
@@ -100,236 +172,303 @@ const createBidForm = asyncHandler(async (req, res) => {
     }
 });
 
+
 // EDIT CREATED BID FORM 
-const editBidForm = asyncHandler(async (req, res)=>{
-  const connection = await pool.getConnection();
-  const {id} = req.params;  //particular bid ko id 
-  const {publishDate, openDate, title, description, status, closeDate, fields} = req.body; 
+// const editBidForm = asyncHandler(async (req, res)=>{
+//   const connection = await pool.getConnection();
+//   const {id} = req.params;  //particular bid ko id 
+//   const {publishDate, openDate, title, description, status, closeDate, fields} = req.body; 
 
-  // console.log(fields, " fields")
-  try {
+//   // console.log(fields, " fields")
+//   try {
     
-     // Basic validation
-        if (!publishDate ||!openDate ||!title ||!description ||!status ||!Array.isArray(fields) || fields.length === 0
-        ) {
-            return res
-                .status(400)
-                .json(new ApiError(400, "Missing required fields."));
-        }
-  await connection.beginTransaction();
-        const [bidMasterRow] = await connection.query(
-            `SELECT id FROM bid_master WHERE id = ?`,
-            [id]
-        );
-        if(bidMasterRow.length ==0) return res.status(404).json(
-            new ApiError(
-                404,
-                "Bid not found."
-            )
-        )
-        // it has a single row of a bid 
-        const bid = bidMasterRow[0];
+//      // Basic validation
+//         if (!publishDate ||!openDate ||!title ||!description ||!status ||!Array.isArray(fields) || fields.length === 0
+//         ) {
+//             return res
+//                 .status(400)
+//                 .json(new ApiError(400, "Missing required fields."));
+//         }
+//   await connection.beginTransaction();
+//         const [bidMasterRow] = await connection.query(
+//             `SELECT id FROM bid_master WHERE id = ?`,
+//             [id]
+//         );
+//         if(bidMasterRow.length ==0) return res.status(404).json(
+//             new ApiError(
+//                 404,
+//                 "Bid not found."
+//             )
+//         )
+//         // it has a single row of a bid 
+//         const bid = bidMasterRow[0];
 
-        // check if this bid has already applied by user, then we cannot edit it
-        const [existingApplications] = await connection.query(
-            `SELECT id FROM bid_applications WHERE bid_id = ?`,
-            [id]
-        );
-        if (existingApplications.length > 0) {
-            return res.status(400).json(new ApiError(400, "", "Cannot edit this bid form because applicants have already applied."));
-        }
+//         // check if this bid has already applied by user, then we cannot edit it
+//         const [existingApplications] = await connection.query(
+//             `SELECT id FROM bid_applications WHERE bid_id = ?`,
+//             [id]
+//         );
+//         if (existingApplications.length > 0) {
+//             return res.status(400).json(new ApiError(400, "", "Cannot edit this bid form because applicants have already applied."));
+//         }
 
-  await connection.query(
-    `UPDATE bid_master SET publishDate = ?, openDate = ?, title = ?, description = ?, status = ?, closeDate = ?, updated_by = ? WHERE id = ?`,
-    [publishDate, openDate, title, description, status, closeDate, req.user.id, id]
-  );
+//   await connection.query(
+//     `UPDATE bid_master SET publishDate = ?, openDate = ?, title = ?, description = ?, status = ?, closeDate = ?, updated_by = ? WHERE id = ?`,
+//     [publishDate, openDate, title, description, status, closeDate, req.user.id, id]
+//   );
 
-  // Delete existing fields
-  await connection.query(
-    `DELETE FROM bid_fields WHERE bid_id = ?`,
-    [id]
-  );
+//   // Delete existing fields
+//   await connection.query(
+//     `DELETE FROM bid_fields WHERE bid_id = ?`,
+//     [id]
+//   );
 
-  // Insert new fields
-  for (const field of fields) {
+//   // Insert new fields
+//   for (const field of fields) {
+//     await connection.query(
+//       `INSERT INTO bid_fields (bid_id, field_name, created_by, modified_by, field_type) VALUES (?, ?, ?, ?, ?)`,
+//       [id, field.field_name, req.user.id, req.user.id, field.field_type]
+//     );
+//   }
+
+//   // update that particular fields 
+// // for (const field of fields) {
+// //   await connection.query(
+// //     `UPDATE bid_fields
+// //      SET field_name = ?, field_type = ?, modified_by = ?
+// //      WHERE id = ?`,
+// //     [
+// //       field.field_name,
+// //       field.field_type,
+// //       req.user.id,
+// //       field.id
+// //     ]
+// //   );
+// // }
+
+//   await connection.commit();  
+// return res.status(200).json(new ApiResponse(200, {id, publishDate, openDate, title, description, status, closeDate}, "Bid form edited successfully."))
+//   } catch (error) {
+//     await connection.rollback();
+//     return res.status(500).json(new ApiError(500, "Failed to edit bid form.", error.message))
+
+//   }
+//   finally {
+//     connection.release();
+//   }
+// })
+
+
+
+const editBidForm = asyncHandler(async (req, res) => {
+  const connection = await pool.getConnection();
+  const { id } = req.params;
+
+  try {
+
+    // STEP 1 — READ ALL FIELDS FROM BODY
+    // Same as createBidForm — fields comes as JSON string (FormData)
+    const {
+      publishDate,
+      openDate,
+      title,
+      description,
+      status,
+      closeDate,
+      estimatedAmt,
+      isEstimatedIncludingVat,
+      bidSecurityAmnt,
+      bidSecurityValidityInDays,
+      bidDocumentRefundable,
+      isBidDocumentRefundable,
+      contractNo,
+    } = req.body;
+
+    // fields comes as JSON string because of FormData — must parse
+    const fields = JSON.parse(req.body.fields);
+
+    // attachmentTitles can be single string or array — normalize to array
+    const attachmentTitles = Array.isArray(req.body.attachmentTitles)
+      ? req.body.attachmentTitles
+      : req.body.attachmentTitles
+      ? [req.body.attachmentTitles]
+      : [];
+
+    const loggedInUserId = req.user.id;
+
+    // STEP 2 — BASIC VALIDATION
+    if (!publishDate || !openDate || !title || !description || !status) {
+      return res.status(400).json(new ApiError(400, "", "Missing required fields."));
+    }
+
+    if (!Array.isArray(fields) || fields.length === 0) {
+      return res.status(400).json(new ApiError(400, "", "You need to add at least 1 row."));
+    }
+    // STEP 3 — CHECK BID EXIST
+    const [bidMasterRow] = await pool.query(
+      `SELECT id FROM bid_master WHERE id = ?`,
+      [id]
+    );
+
+    if (bidMasterRow.length === 0) {
+      return res.status(404).json(new ApiError(404, "", "Bid not found."));
+    }
+    // STEP 4 — BLOCK EDIT IF SOMEONE ALREADY APPLIE
+    const [existingApplications] = await pool.query(
+      `SELECT id FROM bid_applications WHERE bid_id = ?`,
+      [id]
+    );
+
+    if (existingApplications.length > 0) {
+      return res.status(400).json(
+        new ApiError(400, "", "Cannot edit this bid because applicants have already applied.")
+      );
+    }
+
+  
+    // STEP 5 — START TRANSACTION
+  
+    await connection.beginTransaction();
+
+  
+    // STEP 6 — UPDATE bid_master (all fields including new ones)
+  
     await connection.query(
-      `INSERT INTO bid_fields (bid_id, field_name, created_by, modified_by, field_type) VALUES (?, ?, ?, ?, ?)`,
-      [id, field.field_name, req.user.id, req.user.id, field.field_type]
+      `UPDATE bid_master SET
+        publishDate               = ?,
+        openDate                  = ?,
+        title                     = ?,
+        description               = ?,
+        status                    = ?,
+        closeDate                 = ?,
+        estimatedAmt              = ?,
+        isEstimatedIncludingVat   = ?,
+        bidSecurityAmnt           = ?,
+        bidSecurityValidityInDays = ?,
+        bidDocumentRefundable     = ?,
+        isBidDocumentRefundable   = ?,
+        contractNo                = ?,
+        updated_by                = ?
+      WHERE id = ?`,
+      [
+        publishDate,
+        openDate,
+        title,
+        description,
+        status,
+        closeDate,
+        estimatedAmt              || null,
+        isEstimatedIncludingVat   || null,
+        bidSecurityAmnt           || null,
+        bidSecurityValidityInDays || null,
+        bidDocumentRefundable     || null,
+        isBidDocumentRefundable   || null,
+        contractNo                || null,
+        loggedInUserId,
+        id
+      ]
+    );
+
+    // STEP 7 — DELETE OLD bid_fields AND INSERT NEW ONES
+    // Same strategy as your existing code — delete all then re-insert
+    // Now includes the extra columns from createBidForm
+    await connection.query(
+      `DELETE FROM bid_fields WHERE bid_id = ?`,
+      [id]
+    );
+
+    for (const field of fields) {
+      await connection.query(
+        `INSERT INTO bid_fields
+          (bid_id, field_name, created_by, modified_by, field_type, label, isRequired, displayOrder, helpText)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          id,
+          field.fieldName  || field.field_name,   // handle both shapes
+          loggedInUserId,
+          loggedInUserId,
+          field.fieldType  || field.field_type,
+          field.label       || null,
+          field.isRequired  || 0,
+          field.displayOrder || null,
+          field.helpText    || null,
+        ]
+      );
+    }
+
+   // STEP 8 — HANDLE bid_attachments
+// Three things can happen:
+//   A) deleteAttachmentIds present → delete those specific rows
+//   B) new files uploaded          → save and insert them
+//   C) neither                     → do nothing, existing attachments stay
+
+// Parse which existing attachments to delete
+const deleteAttachmentIds = req.body.deleteAttachmentIds
+  ? JSON.parse(req.body.deleteAttachmentIds)
+  : [];
+
+// A) Delete specific attachments by id
+if (deleteAttachmentIds.length > 0) {
+  // Use IN clause — deletes all marked ids in one query
+  const placeholders = deleteAttachmentIds.map(() => '?').join(', ');
+  await connection.query(
+    `DELETE FROM bid_attachments WHERE id IN (${placeholders}) AND bidId = ?`,
+    [...deleteAttachmentIds, id]   // AND bidId = ? prevents deleting other bids' attachments
+  );
+}
+
+// B) Save and insert new attachments if any files were uploaded
+const newFiles = req.files || [];
+
+if (newFiles.length > 0) {
+  const savedFiles = await saveFiles(req);
+  const filePaths = savedFiles.files || [];
+
+  // Normalize — saveFiles returns string for single file, array for multiple
+  const normalizedPaths = typeof filePaths === 'string'
+    ? [filePaths]
+    : filePaths;
+
+  for (let i = 0; i < normalizedPaths.length; i++) {
+    await connection.query(
+      `INSERT INTO bid_attachments (title, attachment, bidId) VALUES (?, ?, ?)`,
+      [
+        attachmentTitles[i] || null,
+        normalizedPaths[i],
+        id,
+      ]
     );
   }
+}
+// C) Nothing to do — existing untouched rows stay in DB
+    // B) No new files → existing bid_attachments rows stay as-is, nothing to do
+    // STEP 9 — COMMIT
+    await connection.commit();
 
-  // update that particular fields 
-// for (const field of fields) {
-//   await connection.query(
-//     `UPDATE bid_fields
-//      SET field_name = ?, field_type = ?, modified_by = ?
-//      WHERE id = ?`,
-//     [
-//       field.field_name,
-//       field.field_type,
-//       req.user.id,
-//       field.id
-//     ]
-//   );
-// }
+    return res.status(200).json(
+      new ApiResponse(200, { id }, "Bid form updated successfully.")
+    );
 
-  await connection.commit();  
-return res.status(200).json(new ApiResponse(200, {id, publishDate, openDate, title, description, status, closeDate}, "Bid form edited successfully."))
   } catch (error) {
     await connection.rollback();
-    return res.status(500).json(new ApiError(500, "Failed to edit bid form.", error.message))
 
-  }
-  finally {
+    // Handle duplicate contractNo same as createBidForm
+    if (error.code === "ER_DUP_ENTRY") {
+      return res.status(409).json(
+        new ApiError(409, "", "Duplicate Contract ID. Please use a unique one.")
+      );
+    }
+console.log(error)
+    return res.status(500).json(
+      new ApiError(500, "Failed to edit bid form.", error.message)
+    );
+
+  } finally {
     connection.release();
   }
-})
+});
 
 // GET BID FORM | TO LIST IN FRONTED SIDE 
-// const getAllBids = asyncHandler(async (req, res) => {
-//     try {
-//         // Read query parameters
-//         const page = Number(req.query.page) || 1;
-//         const limit = Number(req.query.limit) || 4;
-
-
-//         const search = req.query.search || "";
-//         const status = req.query.status || "";
-//         const fromDate = req.query.from || "";
-//         const toDate = req.query.to || "";
-
-
-
-//     // first check if user has permission to view bid or not 
-//     const userWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
-// if(!userWithPermission || userWithPermission.length<=1) return res.json(new ApiResponse(403, "No Any Permission!"))
-
-//     // if no "crete_user" permission then show error 
-// const hasViewBidPermission = userWithPermission.some(
-//     p => p.permission_name === 'view_bid'
-// );
-
-// if(!hasViewBidPermission) return res.json(new ApiError(403, [],"No Permission To View Bid."))
-
-//         // Calculate offset
-//         const offset = (page - 1) * limit;
-
-//         //  SELECT query
-//         let selectQuery = `
-//             SELECT
-//                 id,
-//                 publishDate,
-//                 openDate,
-//                 title,
-//                 description,
-//                 status,
-//                 user_id,
-//                 created_at
-//             FROM bid_master
-//             WHERE 1=1
-//         `;
-        
-
-//         const selectValues = [];
-
-//         // Search by title
-//         if (search) {
-//             selectQuery += ` AND title LIKE ?`;
-//             selectValues.push(`%${search}%`);
-//         }
-
-//         // Filter by status
-//         if (status) {
-//             selectQuery += ` AND status = ?`;
-//             selectValues.push(status);
-//         }
-
-//         // from and to date 
-//         if (fromDate) {
-//     selectQuery += ` AND created_at >= ?`;
-//     selectValues.push(fromDate);
-//         }
-
-//       if (toDate) {
-//     selectQuery += ` AND created_at <= ?`;
-//     selectValues.push(toDate);
-//         }
-
-//         // Latest bids first
-//         selectQuery += `
-//             ORDER BY created_at DESC
-//             LIMIT ?
-//             OFFSET ?
-//         `;
-
-//         selectValues.push(limit);
-//         selectValues.push(offset);
-
-//         const [bids] = await pool.query(selectQuery, selectValues);
-
-//         //  COUNT query
-//         let countQuery = `
-//             SELECT COUNT(*) AS total
-//             FROM bid_master
-//             WHERE 1=1
-//         `;
-
-//         const countValues = [];
-
-//         if (search) {
-//             countQuery += ` AND title LIKE ?`;
-//             countValues.push(`%${search}%`);
-//         }
-
-//         if (status) {
-//             countQuery += ` AND status = ?`;
-//             countValues.push(status);
-//         }
-
-//         if (fromDate) {
-//     countQuery += ` AND created_at >= ?`;
-//     countValues.push(fromDate);
-// }
-
-// if (toDate) {
-//     countQuery += ` AND created_at <= ?`;
-//     countValues.push(toDate);
-// }
-
-//         const [[countResult]] = await pool.query(countQuery, countValues);
-
-//         const total = countResult.total;
-
-//         //  response
-//         return res.status(200).json(
-//             new ApiResponse(
-//                 200,
-//                 {
-//                     bids,
-//                     pagination: {
-//                         page,
-//                         limit,
-//                         total,
-//                         totalPages: Math.ceil(total / limit),
-//                         hasNextPage: page < Math.ceil(total / limit),
-//                         hasPreviousPage: page > 1
-//                     }
-//                 },
-//                 "Bids fetched successfully."
-//             )
-//         );
-
-//     } catch (error) {
-
-//         return res.status(500).json(
-//             new ApiError(
-//                 500,
-//                 "Failed to fetch bids.",
-//                 error.message
-//             )
-//         );
-//     }
-// });
 const getAllBids = asyncHandler(async (req, res) => {
   try {
     // Read query parameters
@@ -377,11 +516,18 @@ const getAllBids = asyncHandler(async (req, res) => {
         bm.status,
         bm.user_id,
         bm.created_at,
-
+ u.name AS createdBy,
+ u.id AS createdByUserId,
+    u.email AS createdByEmail,
+    u.dp AS createdByDp,
         ba.id AS applicationId,
         ba.status AS applicationStatus
+        
 
       FROM bid_master bm
+
+      LEFT JOIN users u
+    ON u.id = bm.user_id
 
       LEFT JOIN bid_applications ba
         ON ba.bid_id = bm.id
@@ -512,7 +658,14 @@ const getSingleBidForm = asyncHandler(async (req, res)=>{
                 user_id,
                 created_at,
                 updated_at, 
-                updated_by
+                updated_by,
+                              estimatedAmt,
+isEstimatedIncludingVat,
+bidSecurityAmnt,
+bidSecurityValidityInDays,
+bidDocumentRefundable,
+isBidDocumentRefundable,
+contractNo
             FROM bid_master
             WHERE id = ?
             `,
@@ -525,9 +678,16 @@ const getSingleBidForm = asyncHandler(async (req, res)=>{
                 "Bid not found."
             )
         )
-        // it has a single row of a bid 
-        const bid = bidMasterRow[0];
 
+
+      
+        // it has a single row of a bid 
+        // attaching attachments of particular bids 
+        const [attachments] = await pool.query(
+          `SELECT * FROM bid_attachments WHERE bidId = ?`,
+          [id]
+        ) 
+        const bid = bidMasterRow[0];
     //    Get dynamic fields
     const [bidFields] = await pool.query(
         `
@@ -537,7 +697,11 @@ const getSingleBidForm = asyncHandler(async (req, res)=>{
             field_name,
             field_type,
             created_by,
-            created_at
+            created_at,
+            isRequired,
+            label, 
+            helpText, 
+            displayOrder
         FROM bid_fields
         WHERE bid_id = ?
         `,
@@ -547,7 +711,8 @@ const getSingleBidForm = asyncHandler(async (req, res)=>{
     // Combine results
     const response = {
         ...bid,
-        fields: bidFields
+        fields: bidFields,
+        attachments:attachments,
     };
 
     return res.status(200).json(
@@ -1034,6 +1199,12 @@ if (bidDynamiDocumentDets.length === 0) {
   return res.status(404).json(new ApiError(404, "No documents found for this bid application."));
 }
 
+// BID ATTACHMENTS 
+  const [bidAttachments] = await pool.query(
+    `SELECT * FROM bid_attachments WHERE bidId = ?`,
+    [bidId]
+  )
+
 
 // bid mater row 
     const [bidMasterRow] = await pool.query(
@@ -1045,7 +1216,14 @@ if (bidDynamiDocumentDets.length === 0) {
           description,
           status,
           user_id,
-          created_at
+          created_at,
+                      estimatedAmt,
+isEstimatedIncludingVat,
+bidSecurityAmnt,
+bidSecurityValidityInDays,
+bidDocumentRefundable,
+isBidDocumentRefundable,
+contractNo
       FROM bid_master
       WHERE id = ?`,
       [bidId]
@@ -1075,7 +1253,8 @@ const applierDetails = theOneWhoApplied.length > 0 ? theOneWhoApplied[0] : null;
 const applicantAllDets = {
   applicantDetails: applierDetails,
   bidMasterDetails: bidMasterDetails,
-  bidDynamicDocumentDetails: bidDynamiDocumentDets
+  bidDynamicDocumentDetails: bidDynamiDocumentDets,
+  attachments:bidAttachments
 };
 
 
@@ -1198,6 +1377,9 @@ const getAppliedBid = asyncHandler(async (req, res) => {
     );
   }
 });
+
+
+// get the details of bid who created 
 
 module.exports = {
     createBidForm,

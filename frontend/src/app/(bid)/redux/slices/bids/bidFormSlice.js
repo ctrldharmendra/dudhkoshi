@@ -37,19 +37,57 @@ export const getAllBidForm = createAsyncThunk(
 
 // POST | CREATE A BID FORM
 export const createBidForm = createAsyncThunk(
-  'createBidForm',
-  async ({bidData}, thunkAPI) => {
+  "createBidForm",
+  async ({ bidData }, thunkAPI) => {
     try {
-      const { data } = await axiosInstance.post(`/api/bid/bidform`, bidData);
-        // console.log(data.data)
-      return data?.data;
+      const formData = new FormData();
 
+      // Basic fields
+      formData.append("title", bidData.title);
+      formData.append("publishDate", bidData.publishDate);
+      formData.append("openDate", bidData.openDate);
+      formData.append("closeDate", bidData.closeDate);
+      formData.append("description", bidData.description);
+      formData.append("status", bidData.status);
+
+      formData.append("estimatedAmt", bidData.estimatedAmt);
+      formData.append(
+        "isEstimatedIncludingVat",
+        bidData.isEstimatedIncludingVat
+      );
+      formData.append("bidSecurityAmnt", bidData.bidSecurityAmnt);
+      formData.append("bidSecurityValidityInDays",bidData.bidSecurityValidityInDays);
+      formData.append(
+        "bidDocumentRefundable",
+        bidData.bidDocumentRefundable
+      );
+      formData.append(
+        "isBidDocumentRefundable",
+        bidData.isBidDocumentRefundable
+      );
+      formData.append("contractNo", bidData.contractNo);
+
+      // Arrays/objects -> stringify
+      formData.append("fields", JSON.stringify(bidData.fields));
+
+      // Attachments
+      bidData.attachments.forEach((item) => {
+        formData.append("files", item.attachment); // File object
+        formData.append("attachmentTitles", item.title);
+      });
+
+      const { data } = await axiosInstance.post(
+        "/api/bid/bidform",
+        formData
+      );
+
+      return data.data;
     } catch (err) {
-          console.log("STATUS:", err.response?.status);
-  console.log("DATA:", err.response?.data);
-  console.log("MESSAGE:", err.message);
-      toast.error( 'Failed Add');
-      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+      console.log(err.response?.data);
+      toast.error(err.response?.data?.errors || "Something Went Wrong.");
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || err.message
+      );
     }
   }
 );
@@ -73,28 +111,54 @@ export const getParticularBidForm = createAsyncThunk(
 
 
 // EDIT PARTICULAR BID FORM 
+// export const editBidForm = createAsyncThunk(
+//   'editBidForm',
+//   async ({bidData, id}, thunkAPI) => {
+
+//     console.log(bidData, "FTOM SLCIE")
+//     try {
+//       const { data } = await axiosInstance.put(`/api/bid/bidform/${id}`, bidData);
+//         console.log(data.data)
+//       return data?.data;
+
+//     } catch (err) {
+//       if(err.response?.data?.errors){
+//             console.log("STATUS:", err.response?.status);
+//     console.log("DATA:", err.response?.data?.errors);
+//           toast.error( err.response?.data?.errors);
+//   }
+
+//       return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+//     }
+//   }
+// );
 export const editBidForm = createAsyncThunk(
   'editBidForm',
-  async ({bidData, id}, thunkAPI) => {
-
-    console.log(bidData, "FTOM SLCIE")
+  async ({ formData, id }, thunkAPI) => {  // ✅ destructure formData not bidData
     try {
-      const { data } = await axiosInstance.put(`/api/bid/bidform/${id}`, bidData);
-        console.log(data.data)
+
+      const { data } = await axiosInstance.put(
+        `/api/bid/bidform/${id}`,
+        formData
+        // ✅ NO Content-Type header — axios detects FormData automatically
+        // and sets multipart/form-data + correct boundary
+      );
+
       return data?.data;
 
     } catch (err) {
-      if(err.response?.data?.errors){
-            console.log("STATUS:", err.response?.status);
-    console.log("DATA:", err.response?.data?.errors);
-          toast.error( err.response?.data?.errors);
-  }
+      const message = err.response?.data?.message || err.message;
 
-      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+      if (err.response?.data?.errors) {
+        toast.error(err.response?.data?.errors);
+      } else {
+        toast.error(message);
+      }
+
+      return thunkAPI.rejectWithValue(message);
     }
   }
 );
-
 
 const bidFormSlice = createSlice({
   name: 'bidFormSlice',

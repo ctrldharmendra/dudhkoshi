@@ -75,9 +75,10 @@ const debouncedSearch = useDebounce(bidSearch, 2000);
   
   const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);
   const loading = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);
+  console.log(permissionOfLoggedInRoleOfUser)
   
   const canViewBid = hasPermission(permissionOfLoggedInRoleOfUser, "view_bid");
-  const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "create_bid");
+  const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "apply_bid");
   
   // only "true" once permission data has actually arrived
   const permissionChecked = !loading && !!permissionOfLoggedInRoleOfUser;
