@@ -516,6 +516,7 @@ const getAllBids = asyncHandler(async (req, res) => {
         bm.status,
         bm.user_id,
         bm.created_at,
+        bm.closeDate,
  u.name AS createdBy,
  u.id AS createdByUserId,
     u.email AS createdByEmail,
@@ -784,11 +785,11 @@ if(!hasApplyBidPermission) return res.json(new ApiError(403, [],"No Permission T
 
     // 2 — BASIC VALIDATION
     if (!bid_id) {
-      return res.status(400).json(new ApiError(400, "Bid ID is required."));
+      return res.status(400).json(new ApiError(400, "",  "Bid ID is required."));
     }
 
     if (!Array.isArray(values) || values.length === 0) {
-      return res.status(400).json(new ApiError(400, "Values must be a non-empty array."));
+      return res.status(400).json(new ApiError(400, "",  "Values must be a non-empty array."));
     }
 
     // Check every item has field_id and either a value or a file reference

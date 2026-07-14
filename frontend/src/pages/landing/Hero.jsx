@@ -1,213 +1,312 @@
-'use client';
+import React from 'react';
+import Navbar from './navAndFooter/Nav';
+import { HiArrowRight, HiLocationMarker } from 'react-icons/hi';
+import Image from 'next/image';
+import heroBottom1 from "../../../public/landing/heroBottom1.png";
+import heroCardImg2 from "../../../public/landing/heroCardImg2.png";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { 
-  FiArrowRight, FiMenu, FiX, FiZap, FiDroplet, 
-  FiCompass, FiTrendingUp, FiCheckCircle, FiChevronDown 
-} from 'react-icons/fi';
-
-export default function Hero() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
+export default function HeroPage() {
   return (
-    <section className="relative min-h-screen w-full flex flex-col gradientBgHero overflow-hidden">
-      
-      {/* Dynamic Structural Ambient Backdrop Glow Spills */}
-      <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] rounded-full blur-[160px] pointer-events-none -z-10" style={{ backgroundColor: 'var(--glow-primary)' }} />
-      <div className="absolute top-[10%] right-[-10%] w-[500px] h-[500px] rounded-full blur-[140px] pointer-events-none -z-10" style={{ backgroundColor: 'var(--glow-secondary)' }} />
+    <div 
+      className="min-h-screen bg-white flex flex-col font-sans antialiased overflow-x-hidden"
+    >
+      {/* Responsive Navbar */}
+      <Navbar />
 
-      {/* --- HEADER NAVBAR --- */}
-      <header className="w-full z-50">
-        {/* Constrained layout matching strict 1300px limit */}
-        <div className="max-w-[1300px] mx-auto px-6 h-24 flex items-center justify-between w-full">
-          
-          {/* Brand/Logo Layout */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 rounded-full flex items-center justify-center border-2" style={{ borderColor: 'var(--color-primary)', backgroundColor: 'var(--bg-lighter)' }}>
-              <FiDroplet className="text-xl animate-pulse" style={{ color: 'var(--color-primary)' }} />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-black tracking-wider uppercase leading-none text-[#1e3a8a]">Dudhkoshi</span>
-              <span className="text-[11px] font-bold tracking-widest uppercase text-sky-600">Hydropower Ltv. Pvt.</span>
-            </div>
-          </Link>
-
-          {/* Navigation Links Area */}
-          <nav className="hidden lg:flex items-center gap-7">
-            {['About', 'Project', 'Site Story', 'Team', 'Timeline', 'Reports', 'News', 'Contact'].map((link) => (
-              <Link 
-                key={link} 
-                href={`/${link.toLowerCase().replace(' ', '-')}`} 
-                className="text-sm font-medium transition-colors hover:opacity-80"
-                style={{ color: 'var(--text-muted)' }}
-              >
-                {link}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Call to Action Trigger */}
-          <div className="hidden lg:block">
-            <Link 
-              href="/contact" 
-              className="text-white text-xs font-bold px-5 py-2.5 rounded-full shadow-md transition-all hover:scale-[1.02]"
-              style={{ backgroundColor: 'var(--color-primary)' }}
-            >
-              Get In Touch
-            </Link>
-          </div>
-
-          {/* Mobile Navigation Bars Menu Handle */}
-          <button 
-            className="lg:hidden text-2xl p-2 rounded-md" 
-            style={{ color: 'var(--text-primary)' }}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            {mobileMenuOpen ? <FiX /> : <FiMenu />}
-          </button>
-        </div>
-
-        {/* Responsive Mobile Navigation Panel */}
-        {mobileMenuOpen && (
-          <div className="absolute top-24 left-0 w-full bg-white/95 backdrop-blur-md border-b px-6 py-6 flex flex-col gap-4 shadow-xl lg:hidden z-50" style={{ borderColor: 'var(--border-primary)' }}>
-            {['About', 'Project', 'Site Story', 'Team', 'Timeline', 'Reports', 'News', 'Contact'].map((link) => (
-              <Link key={link} href="#" className="text-base font-semibold py-1" style={{ color: 'var(--text-secondary)' }} onClick={() => setMobileMenuOpen(false)}>
-                {link}
-              </Link>
-            ))}
-            <Link href="#" className="text-center py-3 text-white rounded-full font-bold text-sm mt-2" style={{ backgroundColor: 'var(--color-primary)' }}>
-              Get In Touch
-            </Link>
-          </div>
-        )}
-      </header>
-
-      {/* --- HERO CORE MAIN FRAME --- */}
-      <main className="flex-grow flex flex-col items-center justify-center w-full max-w-[1300px] mx-auto px-6 text-center pt-8 pb-16">
+      {/* Main Hero Wrapper */}
+      <main className="flex-1 flex flex-col ">
         
-        {/* Floating Capsule Badge */}
-        <div 
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-6 border shadow-sm bg-white"
-          style={{ borderColor: 'var(--border-primary)' }}
-        >
-          <span className="w-2 h-2 rounded-full animate-ping" style={{ backgroundColor: 'var(--color-primary)' }} />
-          <span style={{ color: 'var(--color-primary-dark)' }}>North Summit Hydro Limited</span>
-        </div>
-
-        {/* Dynamic Typography Stack Headings */}
-        <h1 
-          className="text-4xl sm:text-5xl md:text-[64px] font-black tracking-tight leading-[1.08] max-w-4xl mb-4 text-[#1e293b]"
-          style={{ textShadow: '0 2px 20px rgba(14,165,233,0.05)' }}
-        >
-          Dudhkoshi <br className="hidden sm:inline" />
-          <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#0ea5e9] via-[#2563eb] to-[#6366f1]">
-            Hydropower Project
-          </span>
-        </h1>
-
-        {/* Sub-description Paragraph Paragraph */}
-        <p className="text-sm sm:text-base md:text-lg max-w-2xl font-medium mb-10 leading-relaxed" style={{ color: 'var(--text-muted)' }}>
-          A flagship initiative by Dudhkoshi Hydro Limited — harnessing the pristine waters of the Himalayas for a sustainable tomorrow.
-        </p>
-
-        {/* Dynamic Row Meta Capsule Tags */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-amber-500/10 text-amber-600 border border-amber-500/20">
-            <FiZap className="text-sm" /> 21.4 MW Run-of-River
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-500/10 text-emerald-600 border border-emerald-500/20">
-            <FiCompass /> Naxal, Nepal
-          </span>
-          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-sky-500/10 text-sky-600 border border-sky-500/20">
-            <span className="w-1.5 h-1.5 rounded-full bg-sky-500" /> Under Construction
-          </span>
-        </div>
-
-        {/* Call to Action Action Row Triggers */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16 w-full">
-          <Link 
-            href="/explore" 
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 text-white font-bold text-sm px-7 py-3.5 rounded-full shadow-lg transition-all hover:scale-[1.02] hover:shadow-xl"
-            style={{ backgroundColor: 'var(--color-primary)' }}
-          >
-            Explore Project <FiArrowRight />
-          </Link>
-          <Link 
-            href="/learn" 
-            className="w-full sm:w-auto text-sm font-bold px-7 py-3.5 rounded-full border bg-white shadow-sm transition-all hover:bg-gray-50 hover:scale-[1.02]"
-            style={{ borderColor: 'var(--border-accent)', color: 'var(--text-secondary)' }}
-          >
-            Learn More
-          </Link>
-        </div>
-
-        {/* --- METRIC STATS GRID PANEL --- */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl mb-12">
-          
-          {/* Card 1: Capacity */}
+        {/* Combined Hero Section (Image Frame holding the Text) */}
+        <section className=" heroBg">
+          <div className='max-w-[1440px] relative px-4 sm:px-8  mx-auto w-full pt-6 pb-32'>
+          {/* Main Hero Container with Background Image */}
           <div 
-            className="backdrop-blur-md rounded-2xl p-6 border text-center flex flex-col items-center transition-all hover:translate-y-[-4px]"
-            style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-primary)', boxShadow: '0 10px 30px var(--glow-primary)' }}
+            className="relative w-full min-h-[750px] md:min-h-[750px] heroParentStyled overflow-hidden bg-cover bg-center flex flex-col items-center pt-16 px-4 md:px-8"
+            style={{
+              backgroundImage: `url('/landing/heroImage.png')`
+            }}
           >
-            <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl mb-4 bg-sky-500/10 text-sky-500">
-              <FiZap />
+            {/* 1. Cloudy White Transparency Overlay (Top fading down) */}
+            <div className="absolute inset-x-0 top-0 h-[60%] bg-gradient-to-b from-[var(--lightWhite)] via-[var(--lightWhite)]/85 to-transparent pointer-events-none"></div>
+
+            {/* 2. Soft Ambient Bottom Fade (Bottom fading up for card blending) */}
+            {/* <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-[var(--lightWhite)] via-[var(--lightWhite)]/30 to-transparent pointer-events-none"></div> */}
+
+            {/* 3. Interactive/Text Layer (Sits on top of the gradient masks) */}
+            <div className="relative z-10 w-full text-center flex flex-col items-center">
+              
+              {/* Styled Subheading Line */}
+              <div className="flex items-center justify-center gap-4 mb-6">
+                <div className="hidden sm:flex items-center gap-2">
+                  <span className="h-[1px] w-24 bg-gradient-to-r from-transparent to-[var(--landingPageSecondaryColor)]/40"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-[var(--landingPagePrimaryColor)]"></span>
+                </div>
+                <p className="text-[var(--landingPagePrimaryColor)] text-xs  tracking-wider uppercase">
+                  Dudhkhoshi Hydropower Limited
+                </p>
+                <div className="hidden sm:flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[var(--landingPagePrimaryColor)]"></span>
+                  <span className="h-[1px] w-24 bg-gradient-to-l from-transparent to-[var(--landingPageSecondaryColor)]/40"></span>
+                </div>
+              </div>
+
+              {/* Main Display Headline */}
+              <h1 className="text-4xl md:text-6xl lg:text-[70px] font-extrabold tracking-tight leading-tight md:leading-[1.15] max-w-5xl mx-auto">
+                <span className="text-[var(--landingPagePrimaryColor)] block">Clean Energy</span>
+                <span className="text-[var(--textColorOnLightBg)] block">Unstoppable Flow</span>
+              </h1>
+
+              {/* Subtext Paragraph */}
+              <p className="mt-6 text-sm md:text-base text-[var(--landingPageSecondaryColor)] font-medium leading-relaxed max-w-4xl mx-auto px-4">
+                Dudhkhoshi Hydropower Nepal Pvt. Ltd. is driving Nepal’s clean energy future. Committed to meeting the country’s 
+                expanding power demands, we build sustainable, reliable hydropower solutions rooted in our foundational vision to 
+                harness the nation’s incredible water resources.
+              </p>
+
+              {/* Call To Action Button */}
+              <div className="mt-8">
+                <button className="inline-flex items-center gap-3 bg-[var(--lightWhite)] text-[var(--landingPagePrimaryColor)] font-bold text-sm py-3 px-6 rounded-full border border-gray-200/80 shadow-md hover:shadow-lg hover:border-gray-300 transition-all duration-200">
+                  Get in touch
+                  <span className="w-6 h-6 rounded-full bg-[var(--landingPagePrimaryColor)] flex items-center justify-center text-[var(--lightWhite)]">
+                    <HiArrowRight className="w-3.5 h-3.5" />
+                  </span>
+                </button>
+              </div>
+
             </div>
-            <span className="text-4xl font-black text-[#0f172a] tracking-tight">21.4</span>
-            <span className="text-xs font-bold tracking-wider text-slate-800 mt-1">MW Capacity</span>
-            <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest mt-2 block border-t pt-2 w-full border-slate-100">
-              ⚡ Annual Output
-            </span>
           </div>
 
-          {/* Card 2: Energy */}
-          <div 
-            className="backdrop-blur-md rounded-2xl p-6 border text-center flex flex-col items-center transition-all hover:translate-y-[-4px]"
-            style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-accent)', boxShadow: '0 10px 30px var(--glow-accent)' }}
-          >
-            <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl mb-4 bg-cyan-500/10 text-cyan-500">
-              <FiDroplet />
+          {/* Overlapping Glass Cards Grid (Positioned absolutely over the bottom boundary) */}
+          <div className="absolute -bottom-[40px] left-0 right-0 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6 z-20">
+            
+            {/* Card 1: Solukhumbu Project */}
+            <div className="bg-[var(--lightWhite)]/5 backdrop-blur-sm rounded-3xl p-4 border border-white/40 shadow-xl flex flex-col gap-4 ">
+              <div className="relative w-full h-36 rounded-2xl overflow-hidden">
+                <Image 
+                  src={heroBottom1} 
+                  alt="Dudhkhoshi-2" 
+                  className="w-full h-full object-cover"
+                />
+                {/* Location Badge */}
+                <span className="absolute top-3 right-3 bg-[var(--lightWhite)] text-[var(--textColorOnLightBg)] text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
+                  <HiLocationMarker className="text-[var(--landingPagePrimaryColor)]" /> SOLUKHUMBU
+                </span>
+              </div>
+              <div>
+                <h4 className="text-[var(--landingPagePrimaryColor)] font-bold text-sm">Dudhkhoshi-2</h4>
+                <p className="text-[var(--landingPageSecondaryColor)] text-xs mt-0.5">hydropower project</p>
+              </div>
             </div>
-            <span className="text-4xl font-black text-[#0f172a] tracking-tight">129.14</span>
-            <span className="text-xs font-bold tracking-wider text-slate-800 mt-1">GWh/Year</span>
-            <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest mt-2 block border-t pt-2 w-full border-slate-100">
-              💧 Clean Energy
-            </span>
-          </div>
 
-          {/* Card 3: Head Height */}
-          <div 
-            className="backdrop-blur-md rounded-2xl p-6 border text-center flex flex-col items-center transition-all hover:translate-y-[-4px]"
-            style={{ backgroundColor: 'var(--bg-card)', borderColor: 'var(--border-secondary)', boxShadow: '0 10px 30px var(--glow-secondary)' }}
-          >
-            <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl mb-4 bg-indigo-500/10 text-indigo-500">
-              <FiTrendingUp />
+            {/* Card 2: Technical Description */}
+            <div className="bg-[#ffffff91] backdrop-blur-md rounded-3xl p-6 border border-white/40 shadow-xl flex flex-col justify-between min-h-[220px]">
+              <p className="text-[var(--textColorOnLightBg)] text-xs leading-relaxed font-medium">
+                High-efficiency PRoR design ensuring 6 hours of peak power, even during dry seasons.
+              </p>
+              <div className="mt-6">
+                <h4 className="text-[var(--landingPagePrimaryColor)] font-bold text-sm">PRoR</h4>
+                <p className="text-[var(--landingPageSecondaryColor)] text-xs mt-0.5">optimized project</p>
+              </div>
             </div>
-            <span className="text-4xl font-black text-[#0f172a] tracking-tight">690m</span>
-            <span className="text-xs font-bold tracking-wider text-slate-800 mt-1">Gross Head</span>
-            <span className="text-[10px] font-black uppercase text-slate-400 tracking-widest mt-2 block border-t pt-2 w-full border-slate-100">
-              ⛰️ High Head Design
-            </span>
+
+            {/* Card 3: Capacity Details */}
+            <div className="bg-[var(--lightWhite)]/5 backdrop-blur-sm rounded-3xl p-4 border border-white/40 shadow-xl flex flex-col gap-4">
+              <div className="relative w-full h-36 rounded-2xl overflow-hidden">
+                <Image 
+                  src={heroCardImg2} 
+                  alt="River Valley" 
+                  unoptimized
+                  width={100}
+                  height={100}
+                  className="w-full h-full object-cover"
+                />
+                {/* Play Badge Icon */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-[var(--lightWhite)] cursor-pointer hover:scale-110 transition-transform">
+                    <span className="ml-0.5 text-xs">▶</span>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <p className="text-[var(--landingPageSecondaryColor)] text-[11px] font-medium uppercase tracking-wider">Total Capacity</p>
+                <h4 className="text-[var(--landingPagePrimaryColor)] font-extrabold text-base mt-0.5">
+                  97.5 <span className="text-[var(--textColorOnLightBg)] text-xs font-semibold ml-0.5">MW</span>
+                </h4>
+              </div>
+            </div>
+
           </div>
-
-        </div>
-
-        {/* --- BOTTOM SYSTEM PILL ATTRIBUTES --- */}
-        <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs font-bold text-slate-500 border-t border-slate-100/80 pt-8 w-full max-w-3xl">
-          <span className="flex items-center gap-2"><FiCheckCircle className="text-sky-500 text-sm" /> Run-of-River Design</span>
-          <span className="flex items-center gap-2"><FiCheckCircle className="text-indigo-500 text-sm" /> Minimal Environmental Impact</span>
-          <span className="flex items-center gap-2"><FiCheckCircle className="text-cyan-500 text-sm" /> 132 kV Grid Connection</span>
-        </div>
-
-        {/* Floating Bottom Scroll Indicator Component */}
-        <div className="flex flex-col items-center gap-1 mt-12 animate-bounce cursor-pointer">
-          <span className="text-[10px] font-black uppercase tracking-[0.25em] text-slate-400">Scroll</span>
-          <div className="w-6 h-9 rounded-full border-2 flex items-start justify-center p-1 border-slate-300">
-            <FiChevronDown className="text-slate-400 text-xs" />
           </div>
-        </div>
-
+        </section>
       </main>
-    </section>
+    </div>
   );
 }
+
+
+// import { FaMapMarkerAlt, FaArrowRight } from "react-icons/fa";
+
+// Pure server component — no "use client" needed, no state/toggle here.
+// This renders fully on the server (SSR/SSG friendly).
+// import React from 'react';
+// import Navbar from './navAndFooter/Nav';
+// import { HiArrowRight, HiLocationMarker } from 'react-icons/hi';
+// import Image from 'next/image';
+// import heroBottom1 from "../../../public/landing/heroBottom1.png";
+// import heroImage from "../../../public/landing/rectangularHeroMain.png";
+
+
+// import { FaMapMarkerAlt, FaArrowRight } from "react-icons/fa";
+
+// export default function HeroSection() {
+//   return (
+//     <section className="relative w-full bg-[var(--lightWhite)] mx-auto">
+//       {/* ===================== Image + cloudy overlay block ===================== */}
+//       <div className="relative h-[560px] overflow-hidden rounded-b-[40px] sm:h-[620px] max-w-[1440px] mx-auto sm:rounded-b-[56px] md:h-[680px] lg:h-full">
+//         <Image
+//           src={heroImage}
+//           alt="Dudhkoshi hydropower dam surrounded by green mountains"
+//           fill
+//           priority
+//           sizes="100vw"
+//           className="object-cover object-bottom"
+//         />
+
+//         {/* Radial white haze — heaviest center/top, clears toward the sides so the mountains stay visible on both edges */}
+//         <div
+//           aria-hidden
+//           className="pointer-events-none absolute inset-0"
+//           style={{
+//             background:
+//               "radial-gradient(ellipse 68% 58% at 50% 28%, rgba(255,255,255,0.94) 0%, rgba(255,255,255,0.80) 32%, rgba(255,255,255,0.30) 58%, rgba(255,255,255,0) 78%)",
+//           }}
+//         />
+//         {/* Soft top-to-bottom fade so the dam itself stays crisp lower down */}
+//         <div
+//           aria-hidden
+//           className="pointer-events-none absolute inset-0"
+//           style={{
+//             background:
+//               "linear-gradient(to bottom, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.12) 42%, rgba(255,255,255,0) 62%)",
+//           }}
+//         />
+
+//         {/* ===================== Content ===================== */}
+//         <div className="relative z-10 flex flex-col items-center px-6 pt-14 text-center motion-safe:animate-[fadeInUp_0.7s_ease-out_both] sm:pt-16 md:pt-20">
+//           {/* Eyebrow */}
+//           <div className="mb-5 flex items-center gap-3 sm:mb-6">
+//             <span className="h-px w-14 bg-[var(--landingPagePrimaryColor)]/40 sm:w-24" />
+//             <span className="h-1.5 w-1.5 rounded-full bg-[var(--landingPagePrimaryColor)]" />
+//             <span className="whitespace-nowrap text-xs font-medium tracking-wide text-[var(--landingPagePrimaryColor)] sm:text-sm">
+//               Dudhkoshi Hydropower Limited
+//             </span>
+//             <span className="h-1.5 w-1.5 rounded-full bg-[var(--landingPagePrimaryColor)]" />
+//             <span className="h-px w-14 bg-[var(--landingPagePrimaryColor)]/40 sm:w-24" />
+//           </div>
+
+//           {/* Heading */}
+//           <h1 className="text-4xl font-bold leading-tight text-[var(--landingPagePrimaryColor)] sm:text-5xl md:text-6xl">
+//             Clean Energy
+//             <br />
+//             Unstoppable Flow
+//           </h1>
+
+//           {/* Paragraph */}
+//           <p className="mt-5 max-w-2xl text-sm leading-relaxed text-[var(--textColorOnLightBg)] sm:mt-6 sm:text-base">
+//             Dudhkoshi Hydropower Nepal Pvt. Ltd. is driving Nepal&apos;s clean
+//             energy future. Committed to meeting the country&apos;s expanding
+//             power demands, we build sustainable, reliable hydropower
+//             solutions rooted in our foundational vision to harness the
+//             nation&apos;s incredible water resources.
+//           </p>
+
+//           {/* CTA */}
+//           <a
+//             href="#contact"
+//             className="group mt-7 inline-flex items-center gap-3 rounded-full bg-[var(--lightWhite)] py-2 pl-6 pr-2 text-sm font-medium text-[var(--textColorOnLightBg)] shadow-md transition-transform duration-300 hover:scale-[1.03] sm:mt-8"
+//           >
+//             Get in touch
+//             <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--landingPagePrimaryColor)] text-[var(--lightWhite)] transition-transform duration-300 group-hover:translate-x-0.5">
+//               <FaArrowRight className="h-3.5 w-3.5" />
+//             </span>
+//           </a>
+//         </div>
+//       </div>
+
+//       {/* ===================== Overlapping info cards ===================== */}
+//       <div className="relative z-20 -mt-16 px-4 sm:-mt-20 sm:px-8 md:-mt-24 md:px-16">
+//         <div
+//           className="mx-auto grid max-w-6xl grid-cols-1 gap-4 motion-safe:animate-[fadeInUp_0.7s_ease-out_0.15s_both] sm:gap-5 md:grid-cols-3"
+//         >
+//           {/* Card 1 — project image + location */}
+//           <div className="flex flex-col gap-3 rounded-2xl bg-[var(--lightWhite)]/90 p-3 shadow-lg ring-1 ring-black/5 backdrop-blur-md sm:p-4">
+//             <div className="relative h-36 w-full overflow-hidden rounded-xl sm:h-40">
+//               <Image
+//                 src={heroBottom1}
+//                 alt="Dudhkoshi-2 hydropower project aerial view"
+//                 fill
+//                 sizes="(max-width: 768px) 100vw, 33vw"
+//                 className="object-cover"
+//               />
+//               <span className="absolute left-2 top-2 flex items-center gap-1 rounded-full bg-[var(--lightWhite)]/95 px-2.5 py-1 text-[10px] font-semibold text-[var(--textColorOnLightBg)] shadow sm:text-xs">
+//                 <FaMapMarkerAlt className="h-3 w-3 text-[var(--landingPagePrimaryColor)]" />
+//                 SOLUKHUMBU
+//               </span>
+//             </div>
+//             <p className="text-sm leading-snug">
+//               <span className="block font-semibold text-[var(--landingPagePrimaryColor)]">
+//                 Dudhkoshi-2
+//               </span>
+//               <span className="text-[var(--textColorOnLightBg)]">
+//                 hydropower project
+//               </span>
+//             </p>
+//           </div>
+
+//           {/* Card 2 — text only */}
+//           <div className="flex flex-col justify-between gap-4 rounded-2xl bg-[var(--lightWhite)]/90 p-4 shadow-lg ring-1 ring-black/5 backdrop-blur-md sm:p-5">
+//             <p className="text-sm leading-relaxed text-[var(--textColorOnLightBg)]">
+//               High-efficiency PRoR design ensuring 6 hours of peak power, even
+//               during dry seasons.
+//             </p>
+//             <p className="text-sm leading-snug">
+//               <span className="block font-semibold text-[var(--landingPagePrimaryColor)]">
+//                 PRoR
+//               </span>
+//               <span className="text-[var(--textColorOnLightBg)]">
+//                 optimized project
+//               </span>
+//             </p>
+//           </div>
+
+//           {/* Card 3 — capacity image + figure */}
+//           <div className="flex flex-col gap-3 rounded-2xl bg-[var(--lightWhite)]/90 p-3 shadow-lg ring-1 ring-black/5 backdrop-blur-md sm:p-4">
+//             <div className="relative h-36 w-full overflow-hidden rounded-xl sm:h-40">
+//               <Image
+//                 src="/images/capacity-valley.jpg"
+//                 alt="Mountain valley representing total installed capacity"
+//                 fill
+//                 sizes="(max-width: 768px) 100vw, 33vw"
+//                 className="object-cover"
+//               />
+//             </div>
+//             <p className="text-sm leading-snug">
+//               <span className="block font-semibold text-[var(--textColorOnLightBg)]">
+//                 Total Capacity
+//               </span>
+//               <span>
+//                 <span className="font-semibold text-[var(--landingPagePrimaryColor)]">
+//                   97.5
+//                 </span>{" "}
+//                 <span className="text-[var(--textColorOnLightBg)]">MW</span>
+//               </span>
+//             </p>
+//           </div>
+//         </div>
+//       </div>
+
+//       {/* Breathing room so following sections don't collide with the overlap */}
+//       <div className="h-6 sm:h-8 md:h-10" />
+//     </section>
+//   );
+// }

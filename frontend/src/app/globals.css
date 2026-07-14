@@ -47,8 +47,50 @@
     --greyText:grey;
     --blackText:rgb(9, 9, 9);
   --loadingMainBg: #dbdbdbde;
+
+
+  /* THESE ARE LANDING PAGE VARIABLE  */
+  --landingPagePrimaryColor: #1E7EBB;
+  --landingPageSecondaryColor: #64748b;
+  --lightWhite: #FFFFFF;
+  --textColorOnLightBg:#45484D;
+
+  /* THESE ARE LANDING PAGE VARIABLE END  */
 }
 
+
+ 
+:root {
+  --landingPagePrimaryColor: #1e7ebb;
+  --landingPageSecondaryColor: #64748b;
+  --lightWhite: #ffffff;
+  --textColorOnLightBg: #45484d;
+}
+ 
+/* Entrance animation used by the hero content + card row.
+   Respects prefers-reduced-motion automatically because it's only
+   applied via Tailwind's `motion-safe:` variant in the component. */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* LANDING PAGE CSS  */
+.heroParentStyled{
+  background-size: cover;
+  background-position: center 30%;
+  border-radius: 0px 0px 80px 80px;
+}
+.heroBg{
+  background: #FAFAFA;
+background: linear-gradient(178deg,rgba(250, 250, 250, 1) 35%, rgba(221, 236, 245, 1) 100%);
+}
+/* LANDING PAGE CSS END */
 .twoLinePara{
      overflow: hidden;
    text-overflow: ellipsis;

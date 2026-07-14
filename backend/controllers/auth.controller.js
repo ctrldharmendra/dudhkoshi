@@ -44,11 +44,15 @@ const registerUser = asyncHandler(async (req, res) => {
     if(!date_of_birth) date_of_birth =null;
     const {orgName, ownerName, phnNumber, panNo, vatNo, contactPerson, contactPersonsPhNo, contactPersonsEmail, physicalAddress } = req?.body;
 
+    if (!gender || gender.trim() === "") {
+  gender = null;
+}
 
 
 
-
-    if(!name || !password || !tokenFromFrontend) return res.json(new ApiError(400, "", "Required Name, Password and valid token. ")) 
+    if(!name || !tokenFromFrontend) return res.json(new ApiError(400, "", "Required Name, Password and valid token. ")) 
+    if(panNo.length < 9 || panNo.length > 9) return res.json(new ApiError(400, "", "Invalid Pan Number")) 
+    if(password.length < 9 || password.length > 20) return res.json(new ApiError(400, "", "Password Must be between 9 to 20 characters.")) 
       
       
       try {
@@ -125,7 +129,6 @@ const [updateInvitation] = await pool.query(
           "Created Successfully!"))
 
     } catch (error) {
-
   if (error.code === "ER_DUP_ENTRY") {
     return res.status(409).json(
       new ApiError(

@@ -35,7 +35,7 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
 const loading = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);
 
 const canViewBid = hasPermission(permissionOfLoggedInRoleOfUser, "view_bid");
-const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "create_bid");
+const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "apply_bid");
 
 // only "true" once permission data has actually arrived
 const permissionChecked = !loading && !!permissionOfLoggedInRoleOfUser;
@@ -162,14 +162,15 @@ const handleSubmitForm = async () => {
 const errors = {};
 
 bidFormData?.fields?.forEach((field) => {
-  const currentFieldState = bidFormData?.fields[field.id];
+  const currentFieldState = formData[field.id];
 
   if (field.isRequired === 1) {
-    if (
+    const isEmpty =
       field.field_type === "file"
         ? !currentFieldState?.value
-        : !currentFieldState?.value?.toString().trim()
-    ) {
+        : !String(currentFieldState?.value ?? "").trim();
+
+    if (isEmpty) {
       errors[field.id] = true;
     }
   }
@@ -390,113 +391,7 @@ if (applyBidLoading) {
         </div>
 
         <div className="space-y-5">
-          {/* {bidFormData?.fields?.map((field) => {
-            const currentFieldState = formData[field.id];
-
-            return (
-              <div key={field.id} className="py-1 px-4  rounded-xl border border-gray-100 bg-slate-50/50 space-y-2">
-        <label className="font-semibold">
-  {field.field_name}
-  {field.isRequired === 1 && (
-    <span className="text-red-500 ml-1">*</span>
-  )}
-</label>
-                <label className="text-m font-black text-slate-700 uppercase tracking-wide block">
-                  {field.isRequired}
-                </label>
-                <label className="text-m font-black text-slate-700 uppercase tracking-wide block">
-                  {field.helpText}
-                </label>
-
-                {field.field_type === 'file' ? (
-                  <div className="space-y-3">
-                    {!currentFieldState?.value ? (
-                      <label className="border-2 border-dashed border-gray-200 hover:border-[var(--iconColor,#155dfc)] bg-white rounded-xl p-5 flex flex-col items-center justify-center cursor-pointer transition-colors group">
-                        <FiUpload className="text-xl text-gray-400 group-hover:text-[var(--iconColor,#155dfc)] mb-1" />
-                        <span className="text-m font-bold text-slate-600">Click to upload file document</span>
-                        <span className="text-[10px] text-gray-400 font-medium mt-0.5">Images will preview instantly</span>
-                        <input 
-                        
-                          type="file" 
-                          onChange={(e) => handleFileChange(field.id, e, field.field_type)}
-                          className="hidden" 
-                        />
-
-                      </label>
-                    ) : (
-           
-                      <div className="relative bg-white border border-gray-200 rounded-xl p-4 flex items-center justify-between gap-4">
-                        <div className="flex items-center gap-3 overflow-hidden">
-                          {currentFieldState.previewUrl ? (
-   
-                            <img 
-                              src={currentFieldState.previewUrl} 
-                              alt="Instant Preview" 
-                              className="w-16 h-16 rounded-lg object-cover border border-gray-100 bg-slate-50 flex-shrink-0"
-                            />
-                          ) : (
-                
-                            <div className="w-12 h-12 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-black text-m flex-shrink-0 border border-amber-100">
-                              DOC
-                            </div>
-                          )}
-                          <div className="overflow-hidden">
-                            <p className="text-m font-bold text-slate-700 truncate max-w-[250px] sm:max-w-md">
-                              {currentFieldState.value?.name || "Selected Document Resource File"}
-                            </p>
-                            <p className="text-[10px] text-emerald-600 font-bold flex items-center gap-1 mt-0.5">
-                              <FiCheckCircle /> Loaded Successfully
-                            </p>
-                          </div>
-                        </div>
-
-                      
-                        <button
-                          type="button"
-                          onClick={() => handleRemoveFile(field.id)}
-                          className="w-8 h-8 rounded-lg bg-[var(--deleteIconBg,#fef2f2)] text-[var(--deleteIconColor,#e7000b)] hover:bg-[var(--deleteIconBgHOver,#ffb8b8)] flex items-center justify-center transition-colors shadow-2xs flex-shrink-0"
-                          title="Remove selection file"
-                        >
-                          <FiX />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-                ) : field.field_type === 'number' ? (
-                  <>
-                  // Native Number input component structure configuration
-                  <input
-                    type="number"
-                    value={currentFieldState?.value || ""}
-                    placeholder="Enter numeric value..."
-                    onChange={(e) => handleInputChange(field.id, e.target.value, field.field_type)}
-                  className={`w-full rounded-xl px-4 py-2.5 outline-none transition-colors
-${
-  fieldErrors[field.id]
-    ? "border-red-500"
-    : "border-gray-200 focus:border-[var(--iconColor,#155dfc)]"
-}`}
-                  />
-                  {fieldErrors[field.id] && (
-  <p className="text-red-500 text-xs mt-1">
-    This field is required.
-  </p>
-)}
-</>
-                ) : (
-   
-                  <input
-                    type="text"
-                    value={currentFieldState?.value || ""}
-                    placeholder="Provide information entry response text..."
-                    onChange={(e) => handleInputChange(field.id, e.target.value, field.field_type)}
-                    className="w-full border border-gray-200 bg-white rounded-xl px-4 py-2.5 text-m font-medium text-slate-700 outline-none focus:border-[var(--iconColor,#155dfc)] transition-colors shadow-2xs"
-                  />
-                )}
-              </div>
-            );
-          })} */}
-
+         
 
           {[...( bidFormData?.fields || [])]
 
@@ -610,17 +505,13 @@ ${
             <input
               type="number"
               value={currentFieldState?.value || ""}
-              placeholder={numberPlaceholder}   // ✅ uses label if present
+              placeholder={numberPlaceholder}   // uses label if present
               onChange={(e) => handleInputChange(field.id, e.target.value, field.field_type)}
-              className={`w-full border rounded-xl px-4 py-2.5 outline-none transition-colors ${
-                fieldErrors[field.id]
-                  ? "border-red-500"
-                  : "border-gray-200 focus:border-[var(--iconColor,#155dfc)]"
-              }`}
+              className={`w-full rounded-xl px-4 py-2.5 text-sm font-medium bg-white outline-none transition-colors border border-gray-200 focus:border-[var(--iconColor,#155dfc)]"`}
             />
-            {fieldErrors[field.id] && (
+            {/* {fieldErrors[field.id] && (
               <p className="text-red-500 text-xs mt-1">This field is required.</p>
-            )}
+            )} */}
           </>
 
         ) : (
@@ -629,7 +520,7 @@ ${
             value={currentFieldState?.value || ""}
             placeholder={textPlaceholder}       // ✅ uses label if present
             onChange={(e) => handleInputChange(field.id, e.target.value, field.field_type)}
-            className="w-full border border-gray-200 bg-white rounded-xl px-4 py-2.5 text-sm font-medium text-slate-700 outline-none focus:border-[var(--iconColor,#155dfc)] transition-colors shadow-2xs"
+           className={`w-full rounded-xl px-4 py-2.5 text-sm font-medium bg-white outline-none transition-colors border border-gray-200 focus:border-[var(--iconColor,#155dfc)]"`}
           />
         )}
 

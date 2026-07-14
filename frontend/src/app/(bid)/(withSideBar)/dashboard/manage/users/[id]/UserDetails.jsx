@@ -61,7 +61,7 @@ export default function UserDetails({ id }) {
   const particularUserLoading = useSelector((state) => state?.users?.particularUserDetsLoading);
   const particularUserDets = useSelector((state) => state?.users?.particularUserDets);
 
-  console.log(particularUserDets)
+  // console.log(particularUserDets)
   const canDeleteUser = hasPermission(permissionOfLoggedInRoleOfUser, "delete_role");
   const canChangeRole = hasPermission(permissionOfLoggedInRoleOfUser, "change_role");
   const viewUsers = hasPermission(permissionOfLoggedInRoleOfUser, "view_users");
@@ -93,7 +93,7 @@ export default function UserDetails({ id }) {
   // -----------------------------------------------------
 
 
-
+console.log(particularUserDets?.[0]?.userOrganizations)
 
   if (particularUserDets.length === 0) {
     return (
@@ -252,7 +252,7 @@ if (!hasBidAccess) {
             title="Email"
             value={particularUserDets?.[0].email}
           />
-
+{/* 
           <InfoCard
             icon={<TbGenderBigender />}
             title="Gender"
@@ -264,7 +264,7 @@ if (!hasBidAccess) {
             icon={<TbCalendar />}
             title="Date of Birth"
             value={new Date(particularUserDets?.[0].date_of_birth).toLocaleDateString("en-GB")}
-          />
+          /> */}
 
 
           <InfoCard
@@ -274,15 +274,118 @@ if (!hasBidAccess) {
           />
 
 
-          <InfoCard
+          {/* <InfoCard
             icon={<TbClock />}
             title="Created At"
             // value={new Date(particularUserDets?.[0].created_at).toLocaleDateString("en-GB")}
             value={formatTimeRemaining(particularUserDets?.[0].created_at)}
-          />
+          /> */}
+
+
 
         </div>
       </div>
+
+{/* ORGANIZATION DETAILS  */}
+{
+  Array.isArray(particularUserDets?.[0]?.userOrganizations) &&
+  particularUserDets?.[0]?.userOrganizations?.map((org, index) => (
+    <div
+      key={org.orgName}
+      className="bg-white border border-slate-200 rounded-xl shadow-sm p-6 mb-5"
+    >
+    <h2 className="text-lg font-semibold text-slate-800 mb-5">
+          Organization Information
+        </h2>
+
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+        <div>
+          <label className="block text-sm font-medium text-gray-500">
+            Organization Name
+          </label>
+          <p className="text-gray-900 font-medium">
+            {org.orgName || "N/A"}
+          </p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-500">
+            Owner Name
+          </label>
+          <p className="text-gray-900 font-medium">
+            {org.ownerName || "N/A"}
+          </p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-500">
+            Contact Person
+          </label>
+          <p className="text-gray-900 font-medium">
+            {org.contactPerson || "N/A"}
+          </p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-500">
+            Contact Email
+          </label>
+          <p className="text-gray-900 font-medium">
+            {org.contactPersonsEmail || "N/A"}
+          </p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-500">
+            Contact Phone
+          </label>
+          <p className="text-gray-900 font-medium">
+            {org.contactPersonsPhNo || "N/A"}
+          </p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-500">
+            PAN Number
+          </label>
+          <p className="text-gray-900 font-medium">
+            {org.panNo || "N/A"}
+          </p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-500">
+            Phone Number
+          </label>
+          <p className="text-gray-900 font-medium">
+            {org.phnNumber || "N/A"}
+          </p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-500">
+            VAT Number
+          </label>
+          <p className="text-gray-900 font-medium">
+            {org.vatNo || "N/A"}
+          </p>
+        </div>
+
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-gray-500">
+            Physical Address
+          </label>
+          <p className="text-gray-900 font-medium">
+            {org.physicalAddress || "N/A"}
+          </p>
+        </div>
+
+      </div>
+    </div>
+  ))
+}
     </div>
   );
 }

@@ -8,16 +8,13 @@ export default async function RegisterPage({ searchParams }) {
 
   const rawToken = params.token || "";
 
-  const [token, email] = rawToken.split("/c=");
+  const [token] = rawToken.split("/c=");
 
 //   console.log(email);
 //   console.log(token);
 
   if (
-    token.length <= 10 ||
-    !email ||
-    email.length <= 5 ||
-    !email.includes("@")
+    token.length <= 10
   ) {
     redirect("/login");
   }
@@ -25,7 +22,8 @@ export default async function RegisterPage({ searchParams }) {
   return (
     <RegisterClient
       token={token}
-      email={email}
+      // email={email}
     />
   );
 }
+

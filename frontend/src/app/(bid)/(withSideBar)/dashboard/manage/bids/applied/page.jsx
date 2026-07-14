@@ -72,7 +72,7 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
 const loading = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);
 
 const canViewBid = hasPermission(permissionOfLoggedInRoleOfUser, "view_bid");
-const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "create_bid");
+const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "apply_bid");
 
 // only "true" once permission data has actually arrived
 const permissionChecked = !loading && !!permissionOfLoggedInRoleOfUser;

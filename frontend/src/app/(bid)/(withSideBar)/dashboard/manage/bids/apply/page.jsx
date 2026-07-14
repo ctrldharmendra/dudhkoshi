@@ -29,7 +29,6 @@ const pathname = usePathname();
   const allBids = useSelector((state) => state?.bidForm?.allBidFormFromDb?.bids ??  []);  //all bids object
   const allBidsLoading = useSelector((state) => state?.bidForm?.allBidFormLoading);  //all loading state
 
-
 // console.log(allBids, "allBids")
 
   const searchParams = useSearchParams();
@@ -75,7 +74,7 @@ const debouncedSearch = useDebounce(bidSearch, 2000);
   
   const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);
   const loading = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);
-  console.log(permissionOfLoggedInRoleOfUser)
+  // console.log(permissionOfLoggedInRoleOfUser)
   
   const canViewBid = hasPermission(permissionOfLoggedInRoleOfUser, "view_bid");
   const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "apply_bid");
@@ -139,7 +138,7 @@ const debouncedSearch = useDebounce(bidSearch, 2000);
       scroll: false,
     });
   }, [bidPage, debouncedSearch, limit, dateFilter.from, dateFilter.to]);
-  // CHANGE URL END
+  // CHANGE URL ENDconsole.log(
 
 const columns = useMemo(
   () => [
@@ -190,27 +189,37 @@ const columns = useMemo(
           year: "numeric",
         }),
     },
-
     {
-      accessorKey: "status",
-      header: "Status",
-      cell: ({ getValue }) => {
-        const status = getValue();
-
-        return (
-          <span
-            className={`px-3 py-1 rounded-full text-xs font-semibold MedTextSize
-            ${
-              status == "ACTIVE"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-600"
-            }`}
-          >
-            {status}
-          </span>
-        );
-      },
+      accessorKey: "closeDate",
+      header: "Close Date",
+      cell: ({ getValue }) =>
+        new Date(getValue()).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }),
     },
+
+    // {
+    //   accessorKey: "status",
+    //   header: "Status",
+    //   cell: ({ getValue }) => {
+    //     const status = getValue();
+
+    //     return (
+    //       <span
+    //         className={`px-3 py-1 rounded-full text-xs font-semibold MedTextSize
+    //         ${
+    //           status == "ACTIVE"
+    //             ? "bg-green-100 text-green-700"
+    //             : "bg-red-100 text-red-600"
+    //         }`}
+    //       >
+    //         {status}
+    //       </span>
+    //     );
+    //   },
+    // },
 
     {
       accessorKey: "created_at",
@@ -223,7 +232,7 @@ const columns = useMemo(
       header: "Actions",
       cell: ({ row }) => {
         const bid = row?.original;
-
+  const isExpired = new Date() > new Date(bid.closeDate);
         return (
           <div className="flex items-center gap-2">
 
@@ -236,20 +245,26 @@ const columns = useMemo(
 </div>    
   )
 }
-{
-  !row?.original?.applicationStatus && !row?.original?.applicationId && (
-                <Link
-              href={`/dashboard/manage/bids/apply/${bid.id}`}
-              // href={`/dashboard/manage/bids/${bid.id}/bidders`}
-              className="h-9 w-9 rounded-full bg-[var(--iconBgColro)] hover:scale-105 flex items-center justify-center transition"
-              title='Apply Bid'
-            >
-              <VscGitStashApply
-                className="text-lg text-[var(--iconColor)]"
-              />
-            </Link>
-  )
-}
+ {!bid.applicationStatus &&
+        !bid.applicationId &&
+        !isExpired && (
+          <Link
+            href={`/dashboard/manage/bids/apply/${bid.id}`}
+            className="h-9 w-9 rounded-full bg-[var(--iconBgColro)] hover:scale-105 flex items-center justify-center transition"
+            title="Apply Bid"
+          >
+            <VscGitStashApply className="text-lg text-[var(--iconColor)]" />
+          </Link>
+        )}
+
+      {!bid.applicationStatus &&
+        !bid.applicationId &&
+        isExpired && (
+          <button className="px-2 text-[15px] py-1 rounded-md bg-red-100 text-red-600 rounded-md">
+            Bid Closed
+          </button>
+        )}
+
 
           </div>
         );

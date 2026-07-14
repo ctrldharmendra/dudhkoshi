@@ -11,12 +11,12 @@ const page = () => {
   return (
    <>
    <Hero></Hero>  
-   <AboutSection></AboutSection>
+   {/* <AboutSection></AboutSection>
    <TeamSection></TeamSection>
    <ProjectTeam></ProjectTeam>
  <TechnicalSpecifications></TechnicalSpecifications>
   <WaterToWireSystem></WaterToWireSystem> 
-    <FinancialOverview></FinancialOverview> 
+    <FinancialOverview></FinancialOverview>  */}
    </>
   )
 }

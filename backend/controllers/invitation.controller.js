@@ -74,7 +74,7 @@ if(isAlreadyCreatedAndUsed.length>=1){
     // console.log(validInvites)
 // this return valid link not passed 48hrs 
     if(validInvites.length>=1){
-        return res.json(new ApiResponse(403, validInvites, `Still have thsese valid links which can be used ${frontendUrl+'/register/token='+validInvites[0].token}/c=${validInvites[0].email}`))
+        return res.json(new ApiResponse(403, validInvites, `Still have thsese valid links which can be used ${frontendUrl+'/register/token='+validInvites[0].token}`))
         // ${frontendUrl}/register?token=${token}
     }
     
@@ -115,7 +115,7 @@ const [createdInvite] = await pool.query(
 
 // console.log(`${frontendUrl}/register?token=${token}`)
 
-        return res.json({registerLink:`${frontendUrl}/register?token=${token}/c=${email}`})
+        return res.json({registerLink:`${frontendUrl}/register?token=${token}`})
         } catch (error) {
             return res.status(500).json(new ApiError(500, `Erorr In getAllUser:` ,error?.message))
         }
