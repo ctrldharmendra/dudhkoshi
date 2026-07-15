@@ -10,11 +10,13 @@ import { hasPermission } from  "@/helper/helper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+
 
 export default function SharePage() {
 const router = useRouter();
       const dispatch = useDispatch()
-
+// const logoUrl = "https://i.imgur.com/pcrXLsK.png"
 
   const [email, setEmail] = useState("");
   const [copied, setCopied] = useState(false);
@@ -22,11 +24,39 @@ const router = useRouter();
 
 
   const [shareLink, setshareLink] = useState("")
+const [linkSending, setlinkSending] = useState(false)
 
 const [isLinkCreated, setisLinkCreated] = useState(false)
 const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
 
-
+// console.log(shareLink, "shareLink")
+// SEND INVITATION FUNCTION FOR CLIENT SIDEee
+async function sendInvitationEmail(toEmail, link) {
+  try {
+    setlinkSending(true)
+    const res = await fetch("/api/send-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        to: toEmail,
+        subject: "You have received an invitation from Dudhkoshi Hydropower",
+        paragraph:
+          "You have been invited to register on the Dudhkoshi Hydropower portal.\n\nClick the button below to complete your registration. This link will expire in 48 hours.",
+        buttonText: "Register Now",
+        buttonLink: link,
+      }),
+    });
+    if (!res.ok) {
+      const { error } = await res.json();
+      throw new Error(error);
+    }
+    toast.success("Invitation email sent!");
+    setlinkSending(false)
+  } catch (err) {
+    setlinkSending(false)
+    toast.error("Link created but email failed: " + err.message, { id: "invite-email-err" });
+  }
+}
 
 
 
@@ -62,7 +92,7 @@ const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL;
 
 
 
-if (!permissionChecked) {
+if (!permissionChecked || linkSending) {
   return (
     <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
       <TinyLoader />
@@ -91,39 +121,39 @@ if (!create_user) {
       console.error("Failed to copy:", error);
     }
   };
-console.log(shareLink, "sharelink")
-
-
-  const handleCreateLink = async ()=>{
-        //   const getEmailConRes = await dispatch(
-        //      getEmailContents({})
-        //    );
-
-        //    when get email content api call sucess then only call geenrate link 
-        //    if (getEmailContents.fulfilled.match(getEmailConRes)) {
-           
-          const result = await dispatch(
-             createInvitation({email})
-           );
-       
-           if (createInvitation.fulfilled.match(result)) {
-             setisLinkCreated(true)
-           }
-           console.log(result, "fromjsx")
-        //    when new created then receive link here 
-        if(result?.payload?.registerLink) setshareLink(result?.payload?.registerLink)
-
-            // if the link is not expired then this return pervious created link 
-           if(result?.payload?.[0]){
-                // const link = 
-                console.log(result?.payload?.[0]?.token)
-            setshareLink(`${frontendUrl}/register?token=${result?.payload?.[0]?.token}/c=${result?.payload?.[0]?.email}`)
-           }
-
-        //    }
-
-
+  const handleRefresh = () => {
+    setEmail("");
+    setshareLink("");
+    setisLinkCreated(false);
   }
+// console.log(shareLink, "sharelink")
+
+// AFTER LINK CREATION EMAIL WILL BE SENDF 
+const handleCreateLink = async () => {
+  const result = await dispatch(createInvitation({ email }));
+
+  if (createInvitation.fulfilled.match(result)) {
+    setisLinkCreated(true);
+  }
+
+  let finalLink = "";
+
+  if (result?.payload?.registerLink) {
+    finalLink = result.payload.registerLink;
+    setshareLink(finalLink);
+  }
+
+  if (result?.payload?.[0]) {
+    finalLink = `${frontendUrl}/register?token=${result.payload[0].token}`;
+    // finalLink = `${frontendUrl}/register?token=${result.payload[0].token}/c=${result.payload[0].email}`;
+    setshareLink(finalLink);
+  }
+
+  // Send email automatically as soon as link is ready
+  if (finalLink && createInvitation.fulfilled.match(result)) {
+    await sendInvitationEmail(email, finalLink);
+  }
+};
 // loading for generatinf link  
     if(invitationCreationLoading) return  <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
       <TinyLoader></TinyLoader>
@@ -166,15 +196,19 @@ console.log(shareLink, "sharelink")
       onClick={handleCreateLink}
       className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg transition font-medium"
     >
-      Create Invitation Link
+      Send Invitation
     </button>
   )
 }
  
-      <EmailForm email={email} 
-      subject={`Greetings, you have received invitation Link from Dudhkoshi hydropower.`} 
-      body={`Click on the link bellow to register. Remember this Link will be expired in 48hrs from now on. Do register as soon as possible. Thank you and Regards.   ${shareLink} `}
-      isLinkCreated={isLinkCreated}
+      <EmailForm 
+        email={email} 
+  subject={`Greetings, you have received invitation Link from Dudhkoshi hydropower.`} 
+  paragraph={`Click on the link bellow to register. Remember this Link will be expired in 48hrs from now on. Do register as soon as possible. Thank you and Regards.`}
+  buttonText="Register Now"
+  buttonLink={shareLink}
+  isLinkCreated={isLinkCreated}
+  logoUrl="https://i.imgur.com/pcrXLsK.png"
       ></EmailForm>
 </div>
 
@@ -184,7 +218,7 @@ console.log(shareLink, "sharelink")
         {/* Divider */}
         <div className="my-8 border-t border-slate-200" />
 
-  { 
+  {/* { 
     isLinkCreated && (
         <div className="space-y-3">
           <label className="block text-sm font-medium text-slate-700">
@@ -212,7 +246,15 @@ console.log(shareLink, "sharelink")
         </div>
     )
 
-  }
+  } */}
+  {isLinkCreated && (
+        <button
+      onClick={handleRefresh}
+      className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg transition font-medium"
+    >
+      Clear
+    </button>
+  )}
       </div>
     </main>
   );

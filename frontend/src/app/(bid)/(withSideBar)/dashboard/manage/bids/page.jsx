@@ -216,23 +216,23 @@ params.set("to", dateFilter.to);
     {
       accessorKey: "status",
       header: "Status",
-      cell: ({ getValue }) => {
-        const status = getValue();
+      cell: ({ row }) => {
+          const isExpired = new Date() > new Date(row?.original?.closeDate);
 
-        return (
-          <span
-            className={`px-3 py-1 rounded-full text-xs font-semibold MedTextSize
-            ${
-              status == "ACTIVE"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-600"
-            }`}
-          >
-            {status}
-          </span>
-        );
+ return isExpired ? (
+  <div className="">
+    <button className="px-2 text-[15px] py-1 rounded-md bg-red-100 text-red-600 rounded-md">
+      Closed
+    </button>
+  </div>
+) : (
+  <button className="px-2 text-[15px] py-1 rounded-md bg-green-100 text-green-500 rounded-md">
+  Active
+  </button>
+);
       },
     },
+  
 
     {
       accessorKey: "created_at",
@@ -245,6 +245,7 @@ params.set("to", dateFilter.to);
       header: "Actions",
       cell: ({ row }) => {
         const bid = row.original;
+          const isExpired = new Date() > new Date(row?.original?.closeDate);
 
         return (
           <div className="flex items-center gap-2">
@@ -259,7 +260,9 @@ params.set("to", dateFilter.to);
                 className="text-lg text-[var(--iconColor)]"
               />
             </Link>
-
+{
+ !isExpired && (
+  
             <Link
             title='Edit'
               href={`/dashboard/manage/bids/edit/${bid.id}`}
@@ -269,6 +272,8 @@ params.set("to", dateFilter.to);
                 className="text-lg text-[var(--iconColor)]"
               />
             </Link>
+ )
+}
 
             <button
             title='Delete'
@@ -335,7 +340,7 @@ if (allBidsLoading) {
             </h1>
      <div>
                <p className="text-slate-500 mt-1 text-sm sm:text-base">
-              Manage system users and permissions 
+             Create a New one
             </p>
                <p className="text-slate-500 mt-1 text-sm sm:text-base">
            Total Bid Created So Far: <span className='text-[#00aa00]'> {total}</span>
@@ -490,7 +495,7 @@ if (allBidsLoading) {
             {row.getVisibleCells().map((cell) => (
               <td
                 key={cell.id}
-                className="px-5 py-4 max-w-[220px] text-sm whitespace-nowrap"
+                className="px-1 py-1 max-w-[220px] text-sm whitespace-nowrap"
               >
                 {flexRender(
                   cell.column.columnDef.cell,

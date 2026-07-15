@@ -155,7 +155,7 @@ if (!hasBidAccess) {
         </div>
       </div> */}
     </div>
-      <ApplicantsLists bid={bid}></ApplicantsLists>
+      <ApplicantsLists bid={bid} particularBidFormData={particularBidFormData}></ApplicantsLists>
       </>
   );
 }

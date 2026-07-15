@@ -49,7 +49,7 @@ console.log(data, "data")
     try {
 
       const { data } = await axiosInstance.post(`/api/invite`, {email});
-        toast.success("Created.")
+        toast.success("Getting Ready...")
       return data?.data ? data?.data : data;
 
     } catch (err) {

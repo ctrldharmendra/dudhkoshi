@@ -22,7 +22,7 @@ export default function BidDetails({ bidMasterDetails, attachments, applicantDet
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm">
       {/* Header section */}
-      <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-50">
+      {/* <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-50">
         <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-purple-50 text-[var(--adminPrimaryColor,#8200db)]">
           <FiFileText />
         </div>
@@ -32,7 +32,7 @@ export default function BidDetails({ bidMasterDetails, attachments, applicantDet
   What project you have Applied For?
 </h2>
         </div>
-      </div>
+      </div> */}
 
       {/* Title */}
       <div className="mb-6">

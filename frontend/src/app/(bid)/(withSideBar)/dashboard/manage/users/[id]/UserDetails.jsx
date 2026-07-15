@@ -26,6 +26,7 @@ import { deleteUser, getParticularUser } from "@/app/(bid)/redux/slices/users/us
 import { useRouter } from 'next/navigation';
 import { MdDeleteForever } from "react-icons/md";
 import { formatTimeRemaining } from "@/utils/formateTimeRemaining";
+import { getParticularUserAppliedBid } from "@/app/(bid)/redux/slices/bids/bidApplicationSlice";
 
 
 
@@ -34,11 +35,14 @@ import { formatTimeRemaining } from "@/utils/formateTimeRemaining";
 export default function UserDetails({ id }) {
 
 
-  const user = useSelector((state) => state.userState.selectedUser);  //selectedUser object
+  const applieBidCount = useSelector((state) => state?.bidApplication?.howManyBidThisUserApplied?.totalApplied);  //gives the number of applied bids
+  const appliedBidOfAUserInHisProfile = useSelector((state) => state?.bidApplication?.howManyBidThisUserApplied);  //gives the which bids applied
+  const appliedBidOfAUserInHisProfileLoading = useSelector((state) => state?.bidApplication?.howManyBidThisUserAppliedLoading);  //loading
 
 
-
-
+// console.log(appliedBidOfAUserInHisProfile?.totalApplied?.length>=1, "appliedBidOfAUserInHisProfile.totalApplied")
+// console.log(appliedBidOfAUserInHisProfile, "appliedBidOfAUserInHisProfile")
+// console.log(appliedBidOfAUserInHisProfileLoading, "appliedBidOfAUserInHisProfileLoading")
 
   const isEdit = useSelector((state) => state?.activity?.isEditOpened);    //isEdit popup opened?
   const isDelete = useSelector((state) => state?.activity?.isDeleteOpened);    //isDelete popup opened?
@@ -62,7 +66,7 @@ export default function UserDetails({ id }) {
   const particularUserDets = useSelector((state) => state?.users?.particularUserDets);
 
   // console.log(particularUserDets)
-  const canDeleteUser = hasPermission(permissionOfLoggedInRoleOfUser, "delete_role");
+  const canDeleteUser = hasPermission(permissionOfLoggedInRoleOfUser, "delete_user");
   const canChangeRole = hasPermission(permissionOfLoggedInRoleOfUser, "change_role");
   const viewUsers = hasPermission(permissionOfLoggedInRoleOfUser, "view_users");
   
@@ -84,6 +88,7 @@ export default function UserDetails({ id }) {
     if (!permissionChecked || !hasBidAccess) return;
   
     dispatch(getParticularUser({id}));
+    dispatch(getParticularUserAppliedBid({userId:id}))
   }, [
     permissionChecked,
     hasBidAccess,
@@ -93,7 +98,7 @@ export default function UserDetails({ id }) {
   // -----------------------------------------------------
 
 
-console.log(particularUserDets?.[0]?.userOrganizations)
+// console.log(particularUserDets?.[0]?.userOrganizations)
 
   if (particularUserDets.length === 0) {
     return (
@@ -210,7 +215,7 @@ if (!hasBidAccess) {
 
         <div className="flex items-center gap-3">
           {
-            canChangeRole && (
+            canChangeRole && applieBidCount === 0 && (
           <button
   onClick={() => dispatch(setIsEditOpened(true))}
   className="flex items-center cursor-pointer gap-2 px-4 py-2 rounded-lg bg-[var(--addBtnBg)] text-white hover:bg-[var(--addBtnBgHover)] transition"
@@ -223,7 +228,7 @@ if (!hasBidAccess) {
           }
 
           {
-            canDeleteUser && (
+            canDeleteUser && applieBidCount === 0 && (
               <button
                 onClick={() => dispatch(setIsDeleteOpened(true))}
                 className="flex items-center gap-2 px-4 py-2 cursor-pointer rounded-lg bg-[var(--deleteIconBg)] text-[var(--deleteIconColor)] hover:bg-[var(--deleteIconBgHOver)] transition"

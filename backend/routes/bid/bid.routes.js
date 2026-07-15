@@ -75,4 +75,11 @@ router.get(
   bidControlller.getAppliedBid
 );
 
+// how many bid this user has applied | required: userId
+router.get(
+  "/applied/count/:userId",
+  authenticateAccessToken,
+  bidControlller.getBidApplicantsCount
+);
+
 module.exports = router;

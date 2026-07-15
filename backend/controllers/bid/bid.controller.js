@@ -1168,6 +1168,26 @@ const hasViewApplicantsPermission = userWithPermission.some(
     p => p.permission_name === 'view_applicants'
 );
 
+
+// check if requested bid closed | if closed then only show | check via closeDate field if its greater than today's date
+const [bidDetsWithCloseField] = await pool.query(
+  "SELECT closeDate FROM bid_master WHERE id = ?",
+  [bidId]
+);
+if (bidDetsWithCloseField.length === 0) {
+  return res.status(404).json(new ApiError(404, "", "Bid not found."));
+}
+const closeDate = new Date(bidDetsWithCloseField[0].closeDate);
+const now = new Date();
+const bidClosed = now >= closeDate;
+if (!bidClosed) {
+  return res
+    .status(400)
+    .json(new ApiError(400, "", "Only closed bids can be viewed."));
+}
+// check if requested bid closed | if closed then only show | check via closeDate field if its greater than today's date END
+
+
 // yadi aafno bid xa vhanne dekhaune, dekhaune, loggediuser ko bid xa vhanne
 // check garne if "bid_application" table ma yedi "req.user.id"  ko "bid_id" (jun usle request garya xa) match xa then it means user ko aafno bid xa tyo. 
 const [isThisBidBelongsToLoggedInUser] = await pool.query(`
@@ -1267,6 +1287,54 @@ const applicantAllDets = {
 });
 
 
+// // how many bid this user has applied | required: userId
+const getBidApplicantsCount = asyncHandler(async (req, res) => {
+  try {
+
+const userId = req.params.userId;
+
+    // Get count + list of all bids this user has applied to
+    // JOIN bid_master to get the actual bid details alongside
+    const [appliedBids] = await pool.query(
+      `SELECT 
+          ba.id               AS application_id,
+          ba.bid_id           AS bid_id,
+          ba.status           AS application_status,
+          ba.created_at       AS applied_at,
+          bm.title            AS bid_title,
+          bm.description      AS bid_description,
+          bm.status           AS bid_status,
+          bm.closeDate        AS bid_close_date,
+          bm.publishDate      AS bid_publish_date
+       FROM bid_applications ba
+       JOIN bid_master bm ON ba.bid_id = bm.id
+       WHERE ba.applicant_user_id = ?
+       ORDER BY ba.created_at DESC`,
+      [userId]
+    );
+
+    // Total count — just the length of the result array
+    // No need for a separate COUNT query
+    const totalApplied = appliedBids.length;
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          totalApplied,   // how many bids this user applied to
+          appliedBids     // the actual list with bid details
+        },
+        "Applied bids fetched successfully."
+      )
+    );
+
+  } catch (error) {
+    return res.status(500).json(
+      new ApiError(500, "Failed to fetch applied bids.", error.message)
+    );
+  }
+});
+
 // GET APPLIED BID OF LOGGED IN USER 
 const getAppliedBid = asyncHandler(async (req, res) => {
   try {
@@ -1320,6 +1388,7 @@ const getAppliedBid = asyncHandler(async (req, res) => {
         bm.openDate,
         bm.status,
         bm.created_at,
+        bm.closeDate,
         ba.status AS applicationStatus,
         ba.id AS applicationId
       FROM bid_master bm
@@ -1392,4 +1461,5 @@ module.exports = {
     getBidApplicantDocument,
     editBidForm,
     getAppliedBid,
+    getBidApplicantsCount,
 }

@@ -119,10 +119,10 @@ const [updateInvitation] = await pool.query(
   `,
   [result?.insertId, tokenFromFrontend]
 );
-
         return res.status(201).json(new ApiResponse(201, 
           {
                         userId: result.insertId,
+                        userEmail: isTokenExistInDB?.[0]?.email,
             organizationId: resultOrgTable.insertId
           }, 
           
@@ -158,7 +158,7 @@ const loginUser = asyncHandler(async (req, res)=>{
       const {email, password} = req?.body;
 
    const [rows] = await pool.query(
-    'select * from users where email = ?', [email]
+    'select * from users where email = ? AND isActive = ?', [email, 1]
    )
 
    if(!rows.length){

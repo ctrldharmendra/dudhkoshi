@@ -186,28 +186,36 @@ params.set("to", dateFilter.to);
           year: "numeric",
         }),
     },
+    {
+      accessorKey: "closeDate",
+      header: "Close Date",
+      cell: ({ getValue }) =>
+        new Date(getValue()).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }),
+    },
 
     {
       accessorKey: "status",
       header: "Status",
-      cell: ({ getValue }) => {
-        const status = getValue();
-
-        return (
-          <span
-            className={`px-3 py-1 rounded-full text-xs font-semibold MedTextSize
-            ${
-              status == "ACTIVE"
-                ? "bg-green-100 text-green-700"
-                : "bg-red-100 text-red-600"
-            }`}
-          >
-            {status}
-          </span>
-        );
+      cell: ({ row }) => {
+          const isExpired = new Date() > new Date(row?.original?.closeDate);
+ return isExpired ? (
+  <div className="">
+    <button className="px-2 text-[15px] py-1 rounded-md bg-red-100 text-red-600 rounded-md">
+      Closed
+    </button>
+  </div>
+) : (
+  <button className="px-2 text-[15px] py-1 rounded-md bg-green-100 text-green-500 rounded-md">
+  Active
+  </button>
+);
       },
     },
-
+  
     {
       accessorKey: "created_at",
       header: "Created",
@@ -219,6 +227,7 @@ params.set("to", dateFilter.to);
       header: "Actions",
       cell: ({ row }) => {
         const bid = row.original;
+          const isExpired = new Date() > new Date(row?.original?.closeDate);
 
         return (
           <div className="flex items-center gap-2">
@@ -233,7 +242,9 @@ params.set("to", dateFilter.to);
 </div>    
   )
 }
-
+           {
+              isExpired && (
+                
             <Link 
               // href={`/dashboard/manage/applicant/documents?bid=16&id=14`}
               href={`/dashboard/manage/bids/applied/view?bid=${row?.original?.id}&id=${row?.original?.applicationId}`}
@@ -244,6 +255,8 @@ params.set("to", dateFilter.to);
                 className="text-lg text-[var(--iconColor)]"
               />
             </Link>
+              )
+            }
 
           </div>
         );
@@ -454,7 +467,7 @@ if (allBidsLoading) {
             {row.getVisibleCells().map((cell) => (
               <td
                 key={cell.id}
-                className="px-5 py-4 max-w-[220px] text-sm whitespace-nowrap"
+                className="px-1 py-1 max-w-[220px] text-sm whitespace-nowrap"
               >
                 {flexRender(
                   cell.column.columnDef.cell,

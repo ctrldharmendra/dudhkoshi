@@ -56,7 +56,7 @@ if(particularApplicantDocumentsLoading){
   return (
   <>
 <div className='flex flex-col gap-[12px] pt-[12px]'>
-      <ApplicantDetails applicantDetails={applicantDetails}></ApplicantDetails>
+      {/* <ApplicantDetails applicantDetails={applicantDetails}></ApplicantDetails> */}
   <BidDetails bidMasterDetails={bidMasterDetails} applicantDetails={applicantDetails} attachments={attachments}></BidDetails>
   <ApplicantAppliedDocuments bidDynamicDocumentDetails={bidDynamicDocumentDetails}></ApplicantAppliedDocuments>
 </div>

@@ -24,14 +24,15 @@ export const getApplicantDocumentForParticularBid = createAsyncThunk(
   'getApplicantDocumentForParticularBid',
   async ({ applicationId, bidId}, thunkAPI) => {
     try {
-
     const { data } = await axiosInstance.get(
       `/api/bid/${bidId}/application/${applicationId}/documents`
     );
     // console.log(data?.data)
       return data?.data;
+
     } catch (err) {
-      toast.error(err.response?.data?.message || err.message);
+      console.log(err.response?.data)
+      toast.error(err.response?.data?.errors || err.message);
       return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
     }
   }
@@ -102,6 +103,23 @@ export const getLoggedInUserBids = createAsyncThunk(
   }
 );
 
+// how many bid this user has applied | required: userId
+export const getParticularUserAppliedBid = createAsyncThunk(
+  'getParticularUserAppliedBid',
+  async ({userId}, thunkAPI) => {
+    try {
+
+    const { data } = await axiosInstance.get(
+      `/api/bid/applied/count/${userId}`
+    );
+      return data?.data;
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message);
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
 
 const bidApplicationSlice = createSlice({
   name: 'bidApplicationSlice',
@@ -117,6 +135,9 @@ const bidApplicationSlice = createSlice({
 
     loggedInUserBidsList: [],
     loggedInUserBidsListLoading:false,
+
+    howManyBidThisUserApplied:[],
+    howManyBidThisUserAppliedLoading:false,
 
 
 
@@ -178,6 +199,20 @@ const bidApplicationSlice = createSlice({
       })
       .addCase(getLoggedInUserBids.rejected, (state, action) => {
         state.loggedInUserBidsListLoading = false;
+        state.error = action.payload;
+      });
+      
+      // GET HOW MANY BID THIS USER APPLIED | 
+    builder
+      .addCase(getParticularUserAppliedBid.pending, (state) => {
+        state.howManyBidThisUserAppliedLoading = true;
+      })
+      .addCase(getParticularUserAppliedBid.fulfilled, (state, action) => {
+        state.howManyBidThisUserAppliedLoading = false;
+        state.howManyBidThisUserApplied = action.payload;
+      })
+      .addCase(getParticularUserAppliedBid.rejected, (state, action) => {
+        state.howManyBidThisUserAppliedLoading = false;
         state.error = action.payload;
       });
 

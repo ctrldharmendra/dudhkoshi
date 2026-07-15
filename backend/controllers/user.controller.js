@@ -49,6 +49,7 @@ if(!hasViewUserAccess) return res.json(new ApiError(403, [],"No Permission To Vi
                 FROM users u
             INNER JOIN roles r
             ON u.role_id = r.id
+            WHERE u.isActive = 1;
             `
         );
         return res.status(200).json(new ApiResponse(200, rows, "User fetched successfully."))
@@ -80,20 +81,23 @@ if(!hasDeleteUserAccess) return res.json(new ApiError(403, [],"No Permission To 
        }
 
     //    deltee user 
-    await pool.query("delete from users where id = ?", [id])
-        // delete user dp 
-       const uploadFolderPath = path.join(__dirname, '..', 'uploads'+"/");
-       const dpToBeDeleted = uploadFolderPath+rows[0].dp;
-       if(dpToBeDeleted){
-        fs.unlink(dpToBeDeleted, (err)=>{
-            if(err) console.error("failed to delete user dp. ", err)
-                else console.log("user dp deleted sucessfully.")
-        })
-       }
+    // await pool.query("delete from users where id = ?", [id])
+    //     // delete user dp 
+    //    const uploadFolderPath = path.join(__dirname, '..', 'uploads'+"/");
+    //    const dpToBeDeleted = uploadFolderPath+rows[0].dp;
+    //    if(dpToBeDeleted){
+    //     fs.unlink(dpToBeDeleted, (err)=>{
+    //         if(err) console.error("failed to delete user dp. ", err)
+    //             else console.log("user dp deleted sucessfully.")
+    //     })
+    //    }
 
-       return res.status(201).json(new ApiResponse(200, dpToBeDeleted, "User deleted."))
+    const [resultDel] =  await pool.query("UPDATE users SET isActive = 0 WHERE id = ?", [id])
+
+       return res.status(201).json(new ApiResponse(200, resultDel, "User Soft deleted."))
     } catch (error) {
-        
+        console.log(error)
+        return res.status(500).json(new ApiError(500, "", `${error?.message} In deleteUser:`))
     }
 })
 

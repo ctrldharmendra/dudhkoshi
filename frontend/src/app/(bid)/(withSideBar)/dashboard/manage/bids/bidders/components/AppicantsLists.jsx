@@ -17,7 +17,7 @@ import { useEffect, useMemo, useState } from "react";
 import { TbEyeSearch } from "react-icons/tb";
 import { useDispatch, useSelector } from 'react-redux';
 
-export default function ApplicantsLists({ bid}) {
+export default function ApplicantsLists({ bid, particularBidFormData}) {
   const [sorting, setSorting] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
 
@@ -46,7 +46,7 @@ export default function ApplicantsLists({ bid}) {
         table.getState().pagination.pageSize
     );
   },
-},
+}, 
       {
         accessorKey: "applicant_name",
         header: "Name",
@@ -95,11 +95,13 @@ export default function ApplicantsLists({ bid}) {
       {
   header: "Actions",
   cell: ({ row }) => {
-    // console.log(row.original, "ROW ")
     const user = row.original;
-// console.log(user)
+    const isExpired = new Date() > new Date(particularBidFormData?.closeDate);
+
     return (
-      <Link
+
+  isExpired && (
+          <Link
       // /dashboard/manage/bids/bidders?bid=${bid.id}
         href={`/dashboard/manage/applicant/documents?bid=${bid}&id=${row?.original?.applicationId}`}
         onClick={() => dispatch(setSelectedUser(user))}
@@ -107,6 +109,8 @@ export default function ApplicantsLists({ bid}) {
       >
         <TbEyeSearch className="text-[var(--adminPrimaryColor)]" />
       </Link>
+  )
+
     );
   },
 },

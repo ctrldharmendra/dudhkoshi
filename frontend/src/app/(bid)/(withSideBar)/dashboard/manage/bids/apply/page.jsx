@@ -323,10 +323,10 @@ if (allBidsLoading) {
             </h1>
      <div>
                <p className="text-slate-500 mt-1 text-sm sm:text-base">
-             Explore bids
+             Explore and Apply bids
             </p>
                <p className="text-slate-500 mt-1 text-sm sm:text-base">
-           Total Bid Created So Far: <span className='text-[#00aa00]'> {total}</span>
+           Total Bids So Far: <span className='text-[#00aa00]'> {total}</span>
             </p>
      </div>
           </div>
@@ -479,7 +479,7 @@ if (allBidsLoading) {
             {row.getVisibleCells().map((cell) => (
               <td
                 key={cell.id}
-                className="px-5 py-4 max-w-[220px] text-sm whitespace-nowrap"
+                className="px-1 py-1 max-w-[220px] text-sm whitespace-nowrap"
               >
                 {flexRender(
                   cell.column.columnDef.cell,

@@ -1,20 +1,26 @@
 
 
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 
 import Image from "next/image";
 import TinyLoader from "@/components/reusable/loader/TinyLoader";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import EmailForm from "@/components/adminComponents/sendEmail/EmailForm";
 
 
 const RegistrationPage = ({token}) => {
-    
+   const frontendUrl = process.env.NEXT_PUBLIC_FRONTEND_URL
 const [error, seterror] = useState(null)
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [showConfirmPassword2, setShowConfirmPassword2] = useState(false);
+const [linkSending, setlinkSending] = useState(false)
+
+const countRef = useRef(5);
+
+
   const [formData, setFormData] = useState({
     name: "",
     email:"",
@@ -53,6 +59,34 @@ const handleImageChange = (e) => {
 
 const router = useRouter();
 
+// SEND INVITATION FUNCTION FOR CLIENT SIDEee
+async function sendInvitationEmail(toEmail, link) {
+  try {
+    setlinkSending(true)
+    const res = await fetch("/api/send-email", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        to: toEmail,
+        subject: "Registration Successful.",
+        paragraph:"Click On Login Button To Login",
+        buttonText: "Login",
+        buttonLink: link,
+      }),
+    });
+    if (!res.ok) {
+      const { error } = await res.json();
+      throw new Error(error);
+    }
+    toast.success("Check Your Email for Login Link.");
+    setlinkSending(false)
+  } catch (err) {
+    setlinkSending(false)
+    toast.error("Register Successful but email failed: " + err.message);
+  }
+}
+
+
 const handleSubmit = async (e) => {
   e.preventDefault();
 
@@ -60,6 +94,18 @@ const handleSubmit = async (e) => {
   if(formData.password !== cpassword) return seterror("Password and Confirm Password Must Match.")
   if (formData.panNo.length !== 9) {
     return seterror("A Valid PAN Number is Required of 9 digits.");
+  }
+
+  // if dob is not 18+ then show error
+  if(formData.date_of_birth){
+    const today = new Date();
+    const birthDate = new Date(formData.date_of_birth);
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    const dayDiff = today.getDate() - birthDate.getDate();
+    if (age < 18 || (age === 18 && monthDiff < 0) || (age === 18 && monthDiff === 0 && dayDiff < 0)) {
+      return seterror("You must be at least 18 years old to register.");
+    }
   }
 
   seterror(null);
@@ -83,12 +129,35 @@ const handleSubmit = async (e) => {
 
     const data = await response.json();
 
+    // console.log(data, "data")
+
 if(data?.statusCode === 201){
     setloading(false);
-    seterror(data?.errors || data?.data?.errors)
         // Success
-    toast.success("Registration successful!");
+       await sendInvitationEmail(data?.data?.userEmail, `${frontendUrl}/login`);
+
+       toast.success(
+  "Registration successful! Check your email for your login link.",
+);
+
+
+countRef.current = 5;
+
+const interval = setInterval(() => {
+  countRef.current--;
+
+  if (countRef.current > 0) {
+    toast.success(
+      `Redirecting to login in ${countRef.current} second${countRef.current === 1 ? "" : "s"}...`,
+      { id: "redirect-toast" }
+    );
+  } else {
+    clearInterval(interval);
+    toast.dismiss("redirect-toast");
     router.push("/login");
+  }
+}, 1000);
+  
   }
   
 if(data?.statusCode !== 201){
@@ -96,13 +165,7 @@ if(data?.statusCode !== 201){
   return toast.error(data?.errors || data?.data?.errors)
   }
   
-if(data?.statusCode === 201){
-    setloading(false);
-    seterror(data?.errors || data?.data?.errors)
-        // Success
-    toast.success("Registration successful!");
-    router.push("/login");
-  }
+
   
 
 
@@ -115,9 +178,18 @@ if(data?.statusCode === 201){
   }
 };
 
+
+
+
 if (loading) { 
   return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
    <TinyLoader></TinyLoader>
+  </div>;
+}
+if (linkSending) { 
+  return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+   <TinyLoader></TinyLoader>
+   <h1>Registration Succeeded. Sending Login Link...</h1>
   </div>;
 }
   return (
@@ -441,6 +513,19 @@ if (loading) {
             {error}
           </button>
         </form>
+
+
+        {/* hidden form mail for data  */}
+              {/* <EmailForm 
+                email={email} 
+          subject={`Greetings, you have received invitation Link from Dudhkoshi hydropower.`} 
+          paragraph={`Click on the link bellow to register. Remember this Link will be expired in 48hrs from now on. Do register as soon as possible. Thank you and Regards.`}
+          buttonText="Register Now"
+          buttonLink={shareLink}
+          isLinkCreated={isLinkCreated}
+          logoUrl="https://i.imgur.com/pcrXLsK.png"
+              ></EmailForm> */}
+        {/* hidden form mail for data end */}
       </div>
     </div>
   );
