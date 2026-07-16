@@ -116,7 +116,7 @@ export default function UserDetails({ id }) {
     );
   }
  
-  if (loading || particularUserLoading) {
+  if (loading || particularUserLoading || appliedBidOfAUserInHisProfileLoading) {
     return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
       <TinyLoader></TinyLoader>
     </div>;

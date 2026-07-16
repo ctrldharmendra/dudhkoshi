@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import toast from 'react-hot-toast';
 import axiosInstance from "@/lib/axiosInstance";  // ← ADDED
 
+
 // GET | GET ALL BID FORM FROM 
 export const getAllBidForm = createAsyncThunk(
   'getAllBidForm',
@@ -80,7 +81,6 @@ export const createBidForm = createAsyncThunk(
         "/api/bid/bidform",
         formData
       );
-
       return data.data;
     } catch (err) {
       console.log(err.response?.data);
@@ -134,13 +134,13 @@ export const getParticularBidForm = createAsyncThunk(
 // );
 export const editBidForm = createAsyncThunk(
   'editBidForm',
-  async ({ formData, id }, thunkAPI) => {  // ✅ destructure formData not bidData
+  async ({ formData, id }, thunkAPI) => {  //  destructure formData not bidData
     try {
 
       const { data } = await axiosInstance.put(
         `/api/bid/bidform/${id}`,
         formData
-        // ✅ NO Content-Type header — axios detects FormData automatically
+        //  NO Content-Type header — axios detects FormData automatically
         // and sets multipart/form-data + correct boundary
       );
 

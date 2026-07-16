@@ -46,7 +46,32 @@ const attachmentTitles = Array.isArray(req.body.attachmentTitles)
 // console.log(attachmentTitles, "attachmentTitles")
         // Basic validation
         if (!publishDate ||!openDate ||!title ||!description ||!status ) {return res.status(400).json(new ApiError(400,"" ,"Missing required fields"));}
-        if (!Array.isArray(fields) || fields.length === 0) {return res.status(400).json(new ApiError(400,"" ,"You Need to Add Atleast 1 Row So you can be more clear about Bidders"));}
+        if (!Array.isArray(fields) || fields.length === 0) {return res.status(400).json(new ApiError(400,"" ,"Add At least one Row so you can get clear info. from bidders."));}
+
+
+        // if publish date is greater close date then show error
+        if (new Date(publishDate) > new Date(closeDate)) {
+            return res.status(400).json(new ApiError(400,"" ,"Publish Date cannot be greater than Close Date"));
+        }
+          // if open date is greater than close date then show error
+        if (new Date(openDate) > new Date(closeDate)) {
+            return res.status(400).json(new ApiError(400,"" ,"Open Date cannot be greater than Close Date"));
+        }
+
+
+        // IF AMOUNT HARU NUMBER XAINA 
+        const numericFields = {
+  estimatedAmt,
+  bidSecurityAmnt,
+  bidSecurityValidityInDays,
+  bidDocumentRefundable,
+  contractNo,
+};
+for (const [fieldName, value] of Object.entries(numericFields)) {
+  if (value !== undefined && value !== null && value !== "" && isNaN(Number(value))) {
+         return res.status(400).json(new ApiError(400,"" ,"" + fieldName + " must be a number."));
+  }
+}
 
         // START TRANSACTION
         // Nothing is permanently saved until commit()
@@ -301,9 +326,33 @@ const editBidForm = asyncHandler(async (req, res) => {
       return res.status(400).json(new ApiError(400, "", "Missing required fields."));
     }
 
+            // if publish date is greater close date then show error
+        if (new Date(publishDate) > new Date(closeDate)) {
+            return res.status(400).json(new ApiError(400,"" ,"Publish Date cannot be greater than Close Date"));
+        }
+          // if open date is greater than close date then show error
+        if (new Date(openDate) > new Date(closeDate)) {
+            return res.status(400).json(new ApiError(400,"" ,"Open Date cannot be greater than Close Date"));
+        }
+
+
+            // IF AMOUNT HARU NUMBER XAINA 
+        const numericFields = {
+  estimatedAmt,
+  bidSecurityAmnt,
+  bidSecurityValidityInDays,
+  bidDocumentRefundable,
+  contractNo,
+};
+for (const [fieldName, value] of Object.entries(numericFields)) {
+  if (value !== undefined && value !== null && value !== "" && isNaN(Number(value))) {
+         return res.status(400).json(new ApiError(400,"" ,"" + fieldName + " must be a number."));
+  }
+}
     if (!Array.isArray(fields) || fields.length === 0) {
       return res.status(400).json(new ApiError(400, "", "You need to add at least 1 row."));
     }
+    
     // STEP 3 — CHECK BID EXIST
     const [bidMasterRow] = await pool.query(
       `SELECT id FROM bid_master WHERE id = ?`,
@@ -505,7 +554,9 @@ const getAllBids = asyncHandler(async (req, res) => {
     const offset = (page - 1) * limit;
 
     //SELECT QUERY 
-    // returns all from left table, matching from right --> Give me all bids, and if user 5 has an application for that bid, attach it.
+    // returns all from left table, matching from right --> Give me all bids,
+                                                                            // also if loggedin user has applied to particular bid or not (applicationId)
+                                                                            // also if any user has applied to particular bid or not (hasAnybodyAppliedYet)
     let selectQuery = `
       SELECT
         bm.id,
@@ -522,8 +573,14 @@ const getAllBids = asyncHandler(async (req, res) => {
     u.email AS createdByEmail,
     u.dp AS createdByDp,
         ba.id AS applicationId,
-        ba.status AS applicationStatus
+        ba.status AS applicationStatus,
         
+
+    EXISTS (
+        SELECT 1
+        FROM bid_applications ba2
+        WHERE ba2.bid_id = bm.id
+    ) AS hasAnybodyAppliedYet
 
       FROM bid_master bm
 

@@ -21,7 +21,6 @@ const EditForm = ({user, id}) => {
 const dispatch = useDispatch()
   const router = useRouter();
 
-
     const allRoleWithPermission = useSelector((state) => state?.roleAndPermission?.RoleWithItsPermission);
     // console.log(allRoleWithPermission, "allRoleWithPermission")
 
@@ -29,7 +28,9 @@ const dispatch = useDispatch()
     const loadWhenChangeRole = useSelector((state) => state?.roleAndPermission?.loadingChangeRole);    //loading when role changed 
     
 
-    const [selectedRole, setSelectedRole] = useState(user?.role_id || "");  //from redux 
+    const [selectedRole, setSelectedRole] = useState(user?.roleId || "");  //from redux 
+    // console.log(selectedRole, "selectedRole")
+    // console.log(user, "user")
 
 
     //   if not user found show error 
@@ -112,7 +113,7 @@ const handleSubmit = async (e)=>{
 
               <input
                 disabled
-                value={user?.Name || ""}
+                value={user?.name || ""}
                 className="
                 w-full 
                 bg-transparent 

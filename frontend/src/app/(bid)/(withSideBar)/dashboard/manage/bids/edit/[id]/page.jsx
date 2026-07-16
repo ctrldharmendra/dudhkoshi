@@ -234,12 +234,12 @@ const [attachmentState, setAttachmentState] = useState({
                 <label className="text-xs font-bold text-[var(--text-secondary,#1e293b)] uppercase tracking-wider mb-2 block">Including VAT?</label>
                 <select
                   value={bidData.isEstimatedIncludingVat}
-                  onChange={(e) => setBidData(prev => ({ ...prev, isEstimatedIncludingVat: e.target.value }))}
+                  onChange={(e) => setBidData(prev => ({ ...prev, isEstimatedIncludingVat: Number(e.target.value) }))}
                   className="w-full border border-slate-200 focus:border-[var(--color-primary,#0ea5e9)] bg-white rounded-xl px-4 py-3 text-sm font-bold shadow-2xs focus:ring-4 focus:ring-sky-500/10 outline-none transition-all"
                 >
                   <option value="">Select</option>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
+                  <option value={1}>Yes</option>
+                  <option value={0}>No</option>
                 </select>
               </div>
 
@@ -284,12 +284,12 @@ const [attachmentState, setAttachmentState] = useState({
                 <label className="text-xs font-bold text-[var(--text-secondary,#1e293b)] uppercase tracking-wider mb-2 block">Is Document Refundable?</label>
                 <select
                   value={bidData.isBidDocumentRefundable}
-                  onChange={(e) => setBidData(prev => ({ ...prev, isBidDocumentRefundable: e.target.value }))}
+                  onChange={(e) => setBidData(prev => ({ ...prev, isBidDocumentRefundable: Number(e.target.value) }))}
                   className="w-full border border-slate-200 focus:border-[var(--color-primary,#0ea5e9)] bg-white rounded-xl px-4 py-3 text-sm font-bold shadow-2xs focus:ring-4 focus:ring-sky-500/10 outline-none transition-all"
                 >
                   <option value="">Select</option>
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
+                  <option value={1}>Yes</option>
+                  <option value={0}>No</option>
                 </select>
               </div>
 
@@ -345,7 +345,7 @@ const [attachmentState, setAttachmentState] = useState({
                 }))}
                 className="inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-sky-500 to-[var(--color-primary-dark,#0284c7)] text-white text-xs font-black px-4 py-2.5 rounded-lg shadow-sm hover:shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all"
               >
-                <FiPlus className="text-sm" /> Add Dynamic Row
+                <FiPlus className="text-sm" /> Add  Row
               </button>
             </div>
 
@@ -403,19 +403,25 @@ const [attachmentState, setAttachmentState] = useState({
         <input
        value={field.displayOrder ?? ""}
           placeholder="1"
-          onChange={(e) =>
+          onChange={(e) =>{
+              const value = e.target.value;
+                if (!/^\d*$/.test(value)) return toast.error("Display order number must be a number");  // allow only numbers
+                if(value > bidData?.fields.length) return toast.error("Display order number cannot be greater than total number of fields"); // allow only less than or equal to total number of fields
+            if (bidData?.fields.some(field => field.displayOrder === value)) return toast.error("Same display order number is not allowed"); // same displaye order number is not allowed
+
             setBidData((prev) => ({
               ...prev,
               fields: prev.fields.map((f, i) =>
                 i === index
-                  ? {
-                      ...f,
-                      displayOrder: e.target.value,
-                    }
-                  : f
-              ),
-            }))
-          }
+              ? {
+                ...f,
+                displayOrder: e.target.value,
+              }
+              : f
+            ),
+          }))
+        }
+      }
           className="w-full border border-slate-200 rounded-lg px-3 py-2 text-xs font-bold outline-none focus:border-sky-500"
         />
       </div>

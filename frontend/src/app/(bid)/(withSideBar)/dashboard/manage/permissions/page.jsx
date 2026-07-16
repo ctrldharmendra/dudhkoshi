@@ -19,7 +19,7 @@ const PermissionPage = ({selectedRoleFromRolePage=null, isDropDownDisabled}) => 
 
   const allRoleWithPermission = useSelector((state) => state?.roleAndPermission?.RoleWithItsPermission);
   const allPermissionss = useSelector((state) => state?.permissions?.allPermissionFromDb);
-  // console.log(allPermissionss)
+  // console.log(allPermissionss, "it is loggedin user permission")
 
   // loading from reducx slice 
   const addPermissionLoading = useSelector((state) => state?.permissions?.addPermissionLoading);
@@ -41,10 +41,7 @@ const PermissionPage = ({selectedRoleFromRolePage=null, isDropDownDisabled}) => 
   const [selectedToRemove, setSelectedToRemove] = useState([]); // permissionAssignedIds to remove
   const [selectedToAdd, setSelectedToAdd] = useState([]);       // permission ids to add
 
-// Runs once on mount — fetches fresh data when page opens
-// useEffect(() => {
-//   dispatch(getAllRoleWithItsPermission({}));
-// }, []);
+  // console.log(allRoleWithPermission, "allRoleWithPermission")
 
 //  Re-fetches after a permission popup closes (to reflect changes)
 useEffect(() => {
@@ -52,22 +49,14 @@ useEffect(() => {
     dispatch(getAllRoleWithItsPermission({}));
   }
 }, [isPermissionOpened]);
-// useEffect(() => {
-//   if (!hasMounted.current) {
-//     hasMounted.current = true;
-//     return; // skip the very first render
-//   }
-//   if (isPermissionOpened === false) {
-//     dispatch(getAllRoleWithItsPermission({}));
-//   }
-// }, [isPermissionOpened]);
 
-// get all permission from db 
+// get all permission from db || logged in user's
 useEffect(() => {
   if (!allPermissionss?.length) {
     dispatch(getAllPermissionFromDbFn({}));
   }
 }, []);
+
 
   // Reset selections when role changes
   useEffect(() => {
@@ -126,9 +115,7 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
   
 
 const selectedRole =
-  Array.isArray(allRoleWithPermission)
-    ? allRoleWithPermission.find((r) => r.roleId === selectedRoleFromRolePage?.roleId  )
-    : selectedRoleId|| null;
+  Array.isArray(allRoleWithPermission) ? allRoleWithPermission.find((r) => r.roleId === selectedRoleId || r.roleId === selectedRoleFromRolePage?.roleId  ) : selectedRoleId|| null;
   // const selectedRole = allRoleWithPermission?.find((r) => r.roleId === selectedRoleId) || selectedRoleFromRolePage || null;
 
 // console.log(selectedRole, "selectedRole")
@@ -201,7 +188,7 @@ if(addPermissionLoading) return  <div className='bg-[var(--loadingMainBg)] min-h
 
   return (
     <div className="min-h-screen" style={{ background: "var(--pageBg, #f8fafc)" }}>
-      <div className="max-w-3xl mx-auto px-4 py-8">
+      <div className=" mx-auto px-4 py-8">
 
         {/* HEADER */}
         <header className="mb-8">

@@ -127,6 +127,9 @@ contractNo:"",
       }
     ]
   })
+      router.push(
+        `/dashboard/manage/bids/bidders?bid=${result.payload.bidId}`
+      );
                 }
 
                   //  router.replace("/dashboard/manage/bids");
@@ -293,7 +296,7 @@ if (loading || createBidFormLoading) {
             <div className='grid grid-cols-1 md:grid-cols-4 gap-2'>
                             <div className="">
                 <label className="text-xs font-bold text-[var(--text-secondary,#1e293b)] uppercase tracking-wider mb-2 block">
-                <span className='text-red-700'>*</span>  Estimated Amount
+                 Estimated Amount
                 </label>
                 <input
                   type="text"
@@ -337,7 +340,7 @@ if (loading || createBidFormLoading) {
 
                                     <div className="">
                 <label className="text-xs font-bold text-[var(--text-secondary,#1e293b)] uppercase tracking-wider mb-2 block">
-                  <span className='text-red-700'>*</span>   Bid Security Amount
+                 Bid Security Amount
                 </label>
                 <input
                   type="text"
@@ -355,7 +358,7 @@ if (loading || createBidFormLoading) {
 
                                     <div className="">
                 <label className="text-xs font-bold text-[var(--text-secondary,#1e293b)] uppercase tracking-wider mb-2 block">
-                 <span className='text-red-700'>*</span>    Bid Securiy Validity In days
+                  Bid Securiy Validity In days
                 </label>
                 <input
                   type="text"
@@ -372,7 +375,7 @@ if (loading || createBidFormLoading) {
               </div>
                                     <div className="">
                 <label className="text-xs font-bold text-[var(--text-secondary,#1e293b)] uppercase tracking-wider mb-2 block">
-              <span className='text-red-700'>*</span>      Bid Document Refundable
+                  Bid Document Refundable
                 </label>
                 <input
                   type="text"
@@ -470,7 +473,7 @@ if (loading || createBidFormLoading) {
                 }}
                 className="inline-flex items-center justify-center gap-1.5 bg-gradient-to-r from-sky-500 to-[var(--color-primary-dark,#0284c7)] text-white text-xs font-black px-4 py-2.5 rounded-lg shadow-sm hover:shadow-md hover:scale-[1.01] active:scale-[0.99] transition-all"
               >
-                <FiPlus className="text-sm" /> Add Dynamic Row
+                <FiPlus className="text-sm" /> Add Row
               </button>
             </div>
 
@@ -479,19 +482,19 @@ if (loading || createBidFormLoading) {
 
   {/* Table Header */}
   <div className="hidden md:grid md:grid-cols-7 bg-slate-100 border-b border-slate-200">
-    <div className="p-3 text-xs font-bold uppercase text-slate-600">
+    <div className="p-3 text-xs font-bold uppercase text-slate-600" title='eg: orgName'>
       Field Title
     </div>
 
-    <div className="p-3 text-xs font-bold uppercase text-slate-600">
+    <div title='Give a Meaningfull Label eg: Organization Name' className="p-3 text-xs font-bold uppercase text-slate-600">
       Label
     </div>
 
-    <div className="p-3 text-xs font-bold uppercase text-slate-600">
+    <div className="p-3 text-xs font-bold uppercase text-slate-600" title='In which order fields will be displayed to bidders (different for each fields). eg: 1'>
       Display Order
     </div>
 
-    <div className="p-3 text-xs font-bold uppercase text-slate-600">
+    <div className="p-3 text-xs font-bold uppercase text-slate-600" title='eg: Provide your Valid Organization Name.'>
       Helper Text
     </div>
 
@@ -587,7 +590,13 @@ if (loading || createBidFormLoading) {
           value={field.displayOrder ?? ""}
           placeholder="1"
           onChange={(e) => {
-            const updated = [...bidData.fields];
+
+                  const value = e.target.value;
+                if (!/^\d*$/.test(value)) return toast.error("Display order number must be a number");  // allow only numbers
+                if(value > bidData?.fields.length) return toast.error("Display order number cannot be greater than total number of fields"); // allow only less than or equal to total number of fields
+            if (bidData?.fields.some(field => field.displayOrder === value)) return toast.error("Same display order number is not allowed"); // same displaye order number is not allowed
+
+            const updated = [...bidData?.fields];
             updated[index].displayOrder = e.target.value;
 
             setBidData(prev => ({

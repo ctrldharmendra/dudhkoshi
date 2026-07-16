@@ -26,7 +26,7 @@ const pathname = usePathname();
 
   const allBids = useSelector((state) => state?.bidForm?.allBidFormFromDb?.bids ??  []);  //all bids object
   const allBidsLoading = useSelector((state) => state?.bidForm?.allBidFormLoading);  //all loading state
-
+// console.log(allBids, "albids")
 
 //   check if logged in role has permission to view bid or not 
 // const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
@@ -212,6 +212,16 @@ params.set("to", dateFilter.to);
           year: "numeric",
         }),
     },
+    {
+      accessorKey: "closeDate",
+      header: "Close Date",
+      cell: ({ getValue }) =>
+        new Date(getValue()).toLocaleDateString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+        }),
+    },
 
     {
       accessorKey: "status",
@@ -246,7 +256,7 @@ params.set("to", dateFilter.to);
       cell: ({ row }) => {
         const bid = row.original;
           const isExpired = new Date() > new Date(row?.original?.closeDate);
-
+          // console.log(row?.original?.applicationId, row?.original?.title)
         return (
           <div className="flex items-center gap-2">
 
@@ -261,7 +271,10 @@ params.set("to", dateFilter.to);
               />
             </Link>
 {
- !isExpired && (
+  // edit matra dekhaune: jaba bid expire xaina, ra bid lai kunai pani user le apply gariyeko xaina taba matra dekhaune 
+  // --(!row?.original?.applicationId--> this checks ki loggedinu user le bid apply garya ho ya nai) 
+  // (hasAnybodyAppliedYet --> this give boolean if kasaile pani apply gardiko xa vhanne "1" natra "0")
+!isExpired && row?.original?.hasAnybodyAppliedYet !== 1 && (
   
             <Link
             title='Edit'

@@ -183,7 +183,7 @@ Manage your dashboard and monitor activities
 <div className="
 grid
 grid-cols-1
-xl:grid-cols-3
+xl:grid-cols-2
 gap-6
 ">
 
@@ -212,12 +212,17 @@ p-6
 {/* Stats */}
 
 <div className="
+grid
+grid-cols-1
+w-full
+">
+{/* 
+<div className="
 xl:col-span-2
 grid
 sm:grid-cols-2
 gap-5
-">
-{/* Quick Profile */}
+"> */}
 
 <div className="
 bg-gradient-to-br
@@ -297,7 +302,7 @@ Change Organization Details
 </div>
 
 
-
+{/* 
 {
 stats.map((item,index)=>{
 
@@ -383,7 +388,7 @@ rounded-xl
 
 })
 
-}
+} */}
 
 
 </div>

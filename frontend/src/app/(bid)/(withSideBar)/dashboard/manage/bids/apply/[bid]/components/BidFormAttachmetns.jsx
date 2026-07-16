@@ -9,7 +9,7 @@ const BidFormAttachmetns = ({ attachments = [] }) => {
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm">
       <h2 className="text-lg font-bold text-gray-900 mb-5">
-        Attachments
+        Attachments <span className="text-xs text-red-500">Bidders must check these files before submitting the bid.</span>
       </h2>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
