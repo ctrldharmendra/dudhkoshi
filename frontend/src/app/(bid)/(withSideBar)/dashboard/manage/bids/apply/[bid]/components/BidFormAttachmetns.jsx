@@ -1,8 +1,14 @@
 import React from "react";
 import { FiFile, FiExternalLink } from "react-icons/fi";
+import useProtectedFile from "@/helper/useProtectedFile";
+import Image from "next/image";
+
 
 const BidFormAttachmetns = ({ attachments = [] }) => {
   if (!attachments?.length) return null;
+
+
+
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_CONTENT_URL;
   // console.log(baseUrl)
