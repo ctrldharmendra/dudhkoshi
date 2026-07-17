@@ -41,6 +41,7 @@ export default function RootLayout({ children }) {
     <>
     <div className="min-h-screen bg-slate-100">
 
+      <StoreProvider>
       <Sidebar/>
 
 
@@ -52,15 +53,14 @@ transition-all
 ">
 
 
- <StoreProvider>
    <FontScaleProvider />
 <div className="hidden lg:flex justify-end w-full bg-[#0e172b] px-2">
   <UpperNav></UpperNav>
 </div>
           {children}
-          </StoreProvider>
     
 </main>
+          </StoreProvider>
 
       <ToastProvider
         position="top-right"

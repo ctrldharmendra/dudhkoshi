@@ -124,7 +124,7 @@ if(!doesThisRoleExists.length>=1) return res.json(new ApiError(404, [],'this rol
 );
 if (usersUsingRole[0].count > 0) {
   return res.status(400).json({
-    message: `Cannot delete role. This role is assigned to users. This role still used by ${usersUsingRole[0].count}`,
+    message: `Cannot delete role. This role is assigned to user.`,
   });
 }
 

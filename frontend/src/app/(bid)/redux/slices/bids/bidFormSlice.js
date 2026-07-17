@@ -28,6 +28,7 @@ export const getAllBidForm = createAsyncThunk(
     const { data } = await axiosInstance.get(
       `/api/bid/bidform?${params.toString()}`
     );
+    console.log(data, "all bid")
       return data?.data;
     } catch (err) {
       toast.error(err.response?.data?.message || err.message);

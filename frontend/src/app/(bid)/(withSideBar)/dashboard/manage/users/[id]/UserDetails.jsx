@@ -72,26 +72,27 @@ export default function UserDetails({ id }) {
   
   // only "true" once permission data has actually arrived
   const permissionChecked = !loading && !!permissionOfLoggedInRoleOfUser;
-  const hasBidAccess = canDeleteUser && canChangeRole && viewUsers;
   
   useEffect(() => {
     if (!permissionChecked) return;
-    if (!hasBidAccess) {
+    if (!viewUsers) {
       router.replace("/forbidden");
     }
-  }, [permissionChecked, hasBidAccess, router]);
+  }, [permissionChecked, canDeleteUser, canChangeRole, viewUsers, router]);
   //   check if logged in role has permission to view bid or not END
   
   // SECOND :Fetch only when permission exists
   // SECOND: fetch bids only when access is confirmed
   useEffect(() => {
-    if (!permissionChecked || !hasBidAccess) return;
+    if (!permissionChecked || !canDeleteUser, !canChangeRole, !viewUsers) return;
   
     dispatch(getParticularUser({id}));
     dispatch(getParticularUserAppliedBid({userId:id}))
   }, [
     permissionChecked,
-    hasBidAccess,
+    canDeleteUser,
+    canChangeRole,
+    viewUsers,
     dispatch,
   ]);
   // Fetch only when permission exists END 
@@ -130,10 +131,6 @@ if (!permissionChecked) {
   );
 }
 
-if (!hasBidAccess) {
-  // redirect is already in-flight via the effect above
-  return null;
-}
 
   // when click on edit 
   const handleEdit = () => {

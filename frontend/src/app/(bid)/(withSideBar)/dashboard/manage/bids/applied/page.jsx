@@ -76,7 +76,7 @@ const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "apply_bid");
 
 // only "true" once permission data has actually arrived
 const permissionChecked = !loading && !!permissionOfLoggedInRoleOfUser;
-const hasBidAccess = canViewBid && canCreateBid;
+const hasBidAccess = canViewBid;
 
 useEffect(() => {
   if (!permissionChecked) return;

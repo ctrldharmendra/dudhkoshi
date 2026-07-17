@@ -28,28 +28,6 @@ const pathname = usePathname();
   const allBidsLoading = useSelector((state) => state?.bidForm?.allBidFormLoading);  //all loading state
 // console.log(allBids, "albids")
 
-//   check if logged in role has permission to view bid or not 
-// const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
-// const loading  = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);  //loading state
-
-
-// get all permission in an array 
-//     useEffect(()=>{
-//       dispatch(getRolePermissionLoggedInUser({}))
-//     },[]);
-
-// useEffect(() => {
-//   if (loading) return;
-//   if (!permissionOfLoggedInRoleOfUser) return;
-
-//   const canViewBid = hasPermission(permissionOfLoggedInRoleOfUser, "view_bid");
-//   const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "create_bid");
-//   if (!canViewBid || !canCreateBid) {
-//    return router.replace("/forbidden");
-//   }
-// }, [loading, permissionOfLoggedInRoleOfUser]);
-
-// -----------------------------------------------------
   
 
   const searchParams = useSearchParams();

@@ -70,6 +70,7 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
     // if this loggedIn Role has add_permision acces or not | if not dont show in ui 
       const isThisRoleHasAddPermissionAccess = hasPermission(permissionOfLoggedInRoleOfUser,"add_permission");
       const isThisRoleHasDeletePermissionAccess = hasPermission(permissionOfLoggedInRoleOfUser,"delete_permission");
+      const isThisRoleHasViewPermissionAccess = hasPermission(permissionOfLoggedInRoleOfUser,"view_Permission");
 
 
 
@@ -202,7 +203,9 @@ if(addPermissionLoading) return  <div className='bg-[var(--loadingMainBg)] min-h
         </header>
 
         {/* ROLE DROPDOWN */}
-        <div className="relative mb-6">
+        {
+          isThisRoleHasViewPermissionAccess && (
+                  <div className="relative mb-6">
           <button
             onClick={() => setDropdownOpen((prev) => !prev)}
 
@@ -263,6 +266,9 @@ if(addPermissionLoading) return  <div className='bg-[var(--loadingMainBg)] min-h
           )}
         </div>
 
+          )
+        }
+  
         {/* PERMISSION PANELS — only shown when a role is selected */}
         {selectedRole ? (
           <div className="flex flex-col gap-6">

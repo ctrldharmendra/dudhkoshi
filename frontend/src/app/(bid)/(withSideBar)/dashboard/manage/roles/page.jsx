@@ -30,7 +30,7 @@ import { FaUserEdit } from 'react-icons/fa';
 
 
 
-const user = () => {
+const Roless = () => {
   const router = useRouter();
  const [users, setUsers] = useState([])  
 
@@ -43,75 +43,89 @@ const loadingGetAllRoleWithPermission  = useSelector((state) => state.roleAndPer
 // console.log(permissionOfLoggedInRoleOfUser)
 
   const isAddOpened = useSelector((state) => state?.activity?.isAddOpened);    //isEdit popup opened?
-
-
-
-
-// | run permission to check logged in user has permission to : view_roles, create_role, delete_roles or not
-    useEffect(()=>{
-      dispatch(getRolePermissionLoggedInUser({}))
-    },[]);
-
-    // check if logged In user has : crete_user permission or not
-    const isThisRoleHasAddRolePermission = hasPermission(permissionOfLoggedInRoleOfUser,"create_role");
-    const isThisRoleHasViewRolePermission = hasPermission(permissionOfLoggedInRoleOfUser,"view_Permission");
     
 
     const allRoleWithPermission = useSelector((state) => state?.roleAndPermission?.RoleWithItsPermission);
     // console.log(allRoleWithPermission)
     
-    // if no view_role permission then || DONT CALL GET ROLE API 
-// useEffect(() => {
-//   if (loading) return;
 
-//   if (!permissionOfLoggedInRoleOfUser) return;
 
-//   const canViewRole = hasPermission(
-//     permissionOfLoggedInRoleOfUser,
-//     "view_role"
-//   );
 
-//   if (!canViewRole) {
-//     router.replace("/forbidden");
-//     return;
-//   }
-
-//   if(!allRoleWithPermission?.length){ 
-//     dispatch(getAllRoleWithItsPermission({})) 
-//   }
-// }, [loading, permissionOfLoggedInRoleOfUser, router]);
-
-// _______ 
-// 2. Only runs when permissions are loaded — check access & redirect if needed
+//FIRST : check if logged in role has permission to view bid or not 
+//FIRST : fetch permissions on mount
 useEffect(() => {
-  if (loading) return;
-  if (!permissionOfLoggedInRoleOfUser) return;
+  dispatch(getRolePermissionLoggedInUser({}));
+}, [dispatch]);
 
-  const canViewRole = hasPermission(permissionOfLoggedInRoleOfUser, "view_role");
+const canViewRole = hasPermission(permissionOfLoggedInRoleOfUser, "view_role");
+const canCreateRole = hasPermission(permissionOfLoggedInRoleOfUser, "create_role");
+const isThisRoleHasViewRolePermission = hasPermission(permissionOfLoggedInRoleOfUser, "view_Permission");
+
+// only "true" once permission data has actually arrived
+const permissionChecked = !loading && !!permissionOfLoggedInRoleOfUser;
+
+
+useEffect(() => {
+  if (!permissionChecked) return;
   if (!canViewRole) {
     router.replace("/forbidden");
   }
-}, [loading, permissionOfLoggedInRoleOfUser]); // ✅ no router — it's stable but remove to be safe
-  const isPermissionOpened = useSelector((state) => state?.activity?.isPermissionOpened);    //is add or remove permission popup opened for a role?
+}, [permissionChecked, canViewRole, router]);
+//   check if logged in role has permission to view bid or not END
 
-// // 3. Fetch roles separately — only once, only if not already loaded
+// SECOND :Fetch only when permission exists
+// SECOND: fetch bids only when access is confirmed
 useEffect(() => {
-  if (!allRoleWithPermission?.length) {
+  if (!permissionChecked || !canViewRole) return;
+
     dispatch(getAllRoleWithItsPermission({}));
+}, [
+  permissionChecked,
+  canViewRole,
+  canCreateRole,
+  dispatch,
+]);
+// Fetch only when permission exists END 
+// -----------------------------------------------------
+
+
+useEffect(() => {
+  if (!permissionChecked) return;
+
+  if (!canViewRole) {
+    router.replace("/forbidden");
   }
-}, []);
+}, [permissionChecked, canViewRole, router]);
 
 
 // if loading show loader 
-if (loading) {
-  return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
-   <TinyLoader></TinyLoader>
-  </div>;
-}
 if (loadingGetAllRoleWithPermission) {
   return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
    <TinyLoader></TinyLoader>
   </div>;
+}
+if (!permissionChecked) {
+  return (
+    <div className="bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center">
+      <TinyLoader />
+    </div>
+  );
+}
+if (loading || !permissionChecked) {
+  return (
+    <div className="bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center">
+      <TinyLoader />
+    </div>
+  );
+}
+
+// Wait while redirecting
+if (!canViewRole) {
+  return (
+    <div className="bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center">
+      <TinyLoader />
+    </div>
+  );
 }
 
 
@@ -143,7 +157,7 @@ if (loadingGetAllRoleWithPermission) {
           </div>
       
           {
-            isThisRoleHasAddRolePermission &&     
+            canCreateRole &&     
             <button
             onClick={()=>dispatch(setIsAddOpened(true))}
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl font-bold shadow-lg flex items-center gap-2 transition-all hover:scale-105 w-full sm:w-auto justify-center text-sm sm:text-base"
@@ -177,4 +191,4 @@ if (loadingGetAllRoleWithPermission) {
   )
 }
 
-export default user
+export default Roless

@@ -59,6 +59,26 @@ const attachmentTitles = Array.isArray(req.body.attachmentTitles)
         }
 
 
+                    // Check permission
+    const userWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
+
+    if (!userWithPermission || userWithPermission.length <= 1) {
+      return res
+        .status(403)
+        .json(new ApiError(403, "", "No Any Permission!"));
+    }
+
+    const hasCreateBidPermission = userWithPermission.some(
+      (p) => p.permission_name === "create_bid"
+    );
+
+    if (!hasCreateBidPermission) {
+      return res
+        .status(403)
+        .json(new ApiError(403, "", "No Permission To create Bid."));
+    }
+
+
         // IF AMOUNT HARU NUMBER XAINA 
         const numericFields = {
   estimatedAmt,
@@ -335,6 +355,26 @@ const editBidForm = asyncHandler(async (req, res) => {
             return res.status(400).json(new ApiError(400,"" ,"Open Date cannot be greater than Close Date"));
         }
 
+            // Check permission
+    const userWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
+
+    if (!userWithPermission || userWithPermission.length <= 1) {
+      return res
+        .status(403)
+        .json(new ApiError(403, "", "No Any Permission!"));
+    }
+
+    const hasViewBidPermission = userWithPermission.some(
+      (p) => p.permission_name === "create_bid"
+    );
+
+    if (!hasViewBidPermission) {
+      return res
+        .status(403)
+        .json(new ApiError(403,"", "No Permission To create Bid."));
+    }
+
+
 
             // IF AMOUNT HARU NUMBER XAINA 
         const numericFields = {
@@ -532,24 +572,16 @@ const getAllBids = asyncHandler(async (req, res) => {
     // Logged-in user
     const loggedInUserId = req.user.id;
 
-    // Check permission
-    const userWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
+// PERMISSION 
+    const roleWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
+  if(!roleWithPermission || roleWithPermission.length<=0) return res.json(new ApiResponse(403, "No Any Permission found!"))
 
-    if (!userWithPermission || userWithPermission.length <= 1) {
-      return res
-        .status(403)
-        .json(new ApiError(403, "No Any Permission!"));
-    }
-
-    const hasViewBidPermission = userWithPermission.some(
-      (p) => p.permission_name === "view_bid"
-    );
-
-    if (!hasViewBidPermission) {
-      return res
-        .status(403)
-        .json(new ApiError(403, "No Permission To View Bid."));
-    }
+    // if no "add_permission" permission then show error 
+const hasViewPermission = roleWithPermission.some(
+    p => p.permission_name === 'view_bid'
+);
+if(!hasViewPermission) return res.json(new ApiError(403, [],"No Permission To View Bid."))
+// PERMISSION END
 
     const offset = (page - 1) * limit;
 
@@ -701,6 +733,17 @@ const getSingleBidForm = asyncHandler(async (req, res)=>{
 // Combine both results into one response object:
    const {id} = req.params; //particular bid id
 
+   // PERMISSION 
+    const roleWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
+  if(!roleWithPermission || roleWithPermission.length<=0) return res.json(new ApiResponse(403, "No Any Permission found!"))
+
+    // if no "add_permission" permission then show error 
+const hasViewPermission = roleWithPermission.some(
+    p => p.permission_name === 'view_bid'
+);
+if(!hasViewPermission) return res.json(new ApiError(403, [],"No Permission To View Bid."))
+// PERMISSION END
+
    try {
       //  Get main bid information
         const [bidMasterRow] = await pool.query(
@@ -806,7 +849,7 @@ const applyBid = asyncHandler(async (req, res) => {
 
     // first check if user has permission to apply bid or not 
     const userWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
-if(!userWithPermission || userWithPermission.length<=1) return res.json(new ApiResponse(403, "No Any Permission!"))
+if(!userWithPermission || userWithPermission.length<1) return res.json(new ApiResponse(403, "No Any Permission!"))
 
     // if no "crete_user" permission then show error 
 const hasApplyBidPermission = userWithPermission.some(
@@ -1013,7 +1056,7 @@ const editAppliedBid = asyncHandler(async (req, res)=>{
 
     // first check if user has permission to apply bid or not 
     const userWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
-if(!userWithPermission || userWithPermission.length<=1) return res.json(new ApiResponse(403, "No Any Permission!"))
+if(!userWithPermission || userWithPermission.length<1) return res.json(new ApiResponse(403, "No Any Permission!"))
 
     // if no "crete_user" permission then show error 
 const hasApplyBidPermission = userWithPermission.some(
@@ -1173,7 +1216,25 @@ if(!hasApplyBidPermission) return res.json(new ApiError(403, [],"No Permission T
 // GET HOW MANY PEOPLE HAS APPLIED TO A PARTICULA BID FORM || GET ALL APPLICANTS OF A PARTICULAR BID
 const getBidApplicants = asyncHandler(async (req, res)=>{
   const selectedBidId = req.params.id;
+
+
+
 try {
+
+
+// PERMISSION 
+    const roleWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
+  if(!roleWithPermission || roleWithPermission.length<=0) return res.json(new ApiResponse(403, "No Any Permission found!"))
+
+    // if no "add_permission" permission then show error 
+const viewApplicants = roleWithPermission.some(
+    p => p.permission_name === 'view_applicants'
+);
+if(!viewApplicants) return res.json(new ApiError(403, [],"No Permission To View Applicants."))
+// PERMISSION END
+
+
+
     const [bidMasterRows] = await pool.query(
     `SELECT 
           bidApps.applicant_user_id AS applicant_user_id,
@@ -1209,6 +1270,11 @@ const getBidApplicantDocument = asyncHandler(async (req, res)=>{
     const applicationId = req.params.applicationId;
 
 
+
+
+
+
+
     // console.log(applicationId, "applicationId")
 
 if (!bidId || !applicationId || isNaN(bidId) || isNaN(applicationId)) {
@@ -1218,13 +1284,13 @@ if (!bidId || !applicationId || isNaN(bidId) || isNaN(applicationId)) {
 
     // first check if user has permission to view applicants bid or not 
     const userWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
-if(!userWithPermission || userWithPermission.length<=1) return res.json(new ApiResponse(403, "No Any Permission!"))
+    // console.log(userWithPermission, "userWithPermission")
+if(!userWithPermission || userWithPermission.length<1) return res.json(new ApiResponse(403, "", "No Any Permission!"))
 
     // if no "crete_user" permission then show error 
 const hasViewApplicantsPermission = userWithPermission.some(
     p => p.permission_name === 'view_applicants'
 );
-
 
 // check if requested bid closed | if closed then only show | check via closeDate field if its greater than today's date
 const [bidDetsWithCloseField] = await pool.query(

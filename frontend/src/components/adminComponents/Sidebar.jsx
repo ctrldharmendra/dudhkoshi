@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -28,105 +28,11 @@ import { CiLogin } from "react-icons/ci";
 import TinyLoader from "../reusable/loader/TinyLoader";
 import axiosInstance from "@/lib/axiosInstance";
 import { RiAuctionFill } from "react-icons/ri";
+import { hasPermission } from "@/helper/helper";
+import { useDispatch, useSelector } from "react-redux";
+import { getRolePermissionLoggedInUser } from "@/app/(bid)/redux/slices/rolesAndPermissionSlice";
 
 
-
-
-const menuItems = [
-
-  {
-    title: "Dashboard",
-    icon: FiHome,
-    path: "/dashboard",
-  },
-
-
-  {
-    title: "Users",
-    icon: FaUserCheck,
-    children: [
-      {
-        title:"Manage Users",
-        path:"/dashboard/manage/users"
-      },
-      {
-        title:"Invite To",
-        path:"/dashboard/manage/invite"
-      },
-    ]
-  },
-  {
-    title: "Roles",
-    icon: SiCriticalrole,
-    children: [
-      {
-        title:"Roles",
-        path:"/dashboard/manage/roles"
-      },
-    ]
-  },
-  {
-    title: "Permissions",
-    icon: GrUserAdmin,
-    children: [
-      {
-        title:"Permissions",
-        path:"/dashboard/manage/permissions"
-      },
-
-    ]
-  },
-
-
-  {
-    title:"Bids",
-    icon:RiAuctionFill,
-    children:[
-      {
-        title:"Bids Form",
-        path:"/dashboard/manage/bids"
-      },
-      {
-        title:"Apply For a Bid",
-        path:"/dashboard/manage/bids/apply"
-      },
-      {
-        title:"Your Applied Bids",
-        path:"/dashboard/manage/bids/applied"
-      }
-
-    ]
-  },
-
-
-  // {
-  //   title:"Users",
-  //   icon:FiUsers,
-  //   path:"/dashboard/users"
-  // },
-
-
-  // {
-  //   title:"Reports",
-  //   icon:FiBarChart2,
-  //   path:"/dashboard/reports"
-  // },
-
-
-  // {
-  //   title:"Notifications",
-  //   icon:FiBell,
-  //   path:"/dashboard/notifications"
-  // },
-
-
-  // {
-  //   title:"Settings",
-  //   icon:FiSettings,
-  //   path:"/dashboard/settings"
-  // },
-
-];
 
 
 
@@ -160,6 +66,109 @@ const [isLogoutPopupOpened, setisLogoutPopupOpened] = useState(false)
 
 const [logOutLoading, setLogOutLoading] = useState(false);
 
+// PERMISSION 
+const dispatch = useDispatch();
+   //FIRST : check if logged in role has permission to view bid or not 
+          //FIRST : fetch permissions on mount
+          useEffect(() => {
+            dispatch(getRolePermissionLoggedInUser({}));
+          }, [dispatch]);
+          
+          const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);
+          const loadingOfGetRolePermission = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);
+          
+          
+          // only "true" once permission data has actually arrived
+          const permissionChecked = !loadingOfGetRolePermission && !!permissionOfLoggedInRoleOfUser;
+
+          const permissions = {
+  viewUsers: hasPermission(permissionOfLoggedInRoleOfUser, "view_users"),
+  inviteUsers: hasPermission(permissionOfLoggedInRoleOfUser, "create_user"),
+
+  viewRoles: hasPermission(permissionOfLoggedInRoleOfUser, "view_role"),
+  viewPermissions: hasPermission(permissionOfLoggedInRoleOfUser, "view_Permission"),
+
+  createBids: hasPermission(permissionOfLoggedInRoleOfUser, "create_bid"),
+  applyBid: hasPermission(permissionOfLoggedInRoleOfUser, "apply_bid"),
+};
+           
+          useEffect(() => {
+            if (!permissionChecked) return;
+            // if (!viewUsers) {
+            //   // router.replace("/forbidden");
+            //   console.log("No Permission")
+            // }
+          }, [permissionChecked]);
+          //   check if logged in role has permission to view bid or not END
+// PERMISSION END
+
+
+const menuItems = [
+  {
+    title: "Dashboard",
+    icon: FiHome,
+    path: "/dashboard",
+  },
+
+  {
+    title: "Users",
+    icon: FaUserCheck,
+    children: [
+      permissions.viewUsers && {
+        title: "Manage Users",
+        path: "/dashboard/manage/users",
+      },
+
+      permissions.inviteUsers && {
+        title: "Invite To",
+        path: "/dashboard/manage/invite",
+      },
+    ].filter(Boolean),
+  },
+
+  {
+    title: "Roles",
+    icon: SiCriticalrole,
+    children: [
+      permissions.viewRoles && {
+        title: "Roles",
+        path: "/dashboard/manage/roles",
+      },
+    ].filter(Boolean),
+  },
+
+  {
+    title: "Permissions",
+    icon: GrUserAdmin,
+    children: [
+      permissions.viewPermissions && {
+        title: "Permissions",
+        path: "/dashboard/manage/permissions",
+      },
+    ].filter(Boolean),
+  },
+
+  {
+    title: "Bids",
+    icon: RiAuctionFill,
+    children: [
+      permissions.createBids && {
+        title: "Bids Form",
+        path: "/dashboard/manage/bids",
+      },
+
+      permissions.applyBid && {
+        title: "Apply For a Bid",
+        path: "/dashboard/manage/bids/apply",
+      },
+       {
+        title:"Your Applied Bids",
+        path:"/dashboard/manage/bids/applied"
+      }
+    ].filter(Boolean),
+  },
+].filter(item => !item.children || item.children.length > 0);
+
 const handleLogout = async () => {
   try {
     setLogOutLoading(true);
@@ -191,6 +200,25 @@ if (logOutLoading) {
     </div>
   );
 }
+
+
+// permission loading 
+if (loadingOfGetRolePermission) {
+  return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+   <TinyLoader></TinyLoader>
+  </div>;
+}
+if (!permissionChecked) {
+  return (
+    <div className="bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center">
+      <TinyLoader />
+    </div>
+  );
+}
+
+
+
+// permission loading end
 
   return (
 

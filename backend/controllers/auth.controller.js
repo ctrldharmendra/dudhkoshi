@@ -82,8 +82,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
         // STEP 1: Run DB query first (no files saved yet)
         const [result] = await pool.query(
-            'INSERT INTO users (name, email, gender, date_of_birth, password, role_id) VALUES (?,?,?,?,?,?)',
-            [name, isTokenExistInDB?.[0]?.email, gender, date_of_birth, hashedPassword, role_id]
+            'INSERT INTO users (name, email, gender, date_of_birth, password, role_id, isActive) VALUES (?,?,?,?,?,?,?)',
+            [name, isTokenExistInDB?.[0]?.email, gender, date_of_birth, hashedPassword, role_id, 1]
         )
 // now insert into organization table 
         const [resultOrgTable] = await pool.query(
