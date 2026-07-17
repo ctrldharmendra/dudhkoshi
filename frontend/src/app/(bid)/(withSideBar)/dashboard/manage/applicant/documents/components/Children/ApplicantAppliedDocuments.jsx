@@ -1,17 +1,21 @@
 "use client"
 
 import Link from 'next/link';
-import React from 'react';
+import React, { useState } from 'react';
+import { FaAward } from 'react-icons/fa';
 import { FiPaperclip, FiAlignLeft, FiHash, FiDownload } from 'react-icons/fi';
 import { GrView } from 'react-icons/gr';
+import AwardConfirmationModal from './award/Award';
 
-export default function ApplicantAppliedDocuments({ bidDynamicDocumentDetails }) {
+export default function ApplicantAppliedDocuments({ bidDynamicDocumentDetails, applicantDetails, bidMasterDetails}) {
 
 const baseContentPath = process.env.NEXT_PUBLIC_BASE_CONTENT_URL
   if (!bidDynamicDocumentDetails || bidDynamicDocumentDetails.length === 0) return null;
 
+  const [awardConfirmationModalOpen, setAwardConfirmationModalOpen] = useState(false)
 
-  console.log(bidDynamicDocumentDetails, "bidDynamicDocumentDetails")
+
+  // console.log(bidDynamicDocumentDetails, "bidDynamicDocumentDetails")
   // Render friendly layout wrappers based on the incoming answer format
   const renderFieldTypeBadge = (type) => {
     switch (type) {
@@ -30,7 +34,23 @@ const baseContentPath = process.env.NEXT_PUBLIC_BASE_CONTENT_URL
     }
   };
 
+
+
+  // HANDLE AWARD 
+
+  const handleAward = () => {
+    // console.log(applicantDetails, "applicantDetails")
+    // console.log(bidMasterDetails, "bidMasterDetails")  
+
+
+      // applicantDetails?.user_id  --user id
+      // bidMasterDetails?.id  -- bidId 
+
+  }
+  // HANDLE AWARD END
+
   return (
+    <>
     <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm">
       <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-50">
         <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-amber-50 text-amber-600">
@@ -87,6 +107,45 @@ const baseContentPath = process.env.NEXT_PUBLIC_BASE_CONTENT_URL
           </div>
         ))}
       </div>
+
     </div>
+
+{/* AWWARD BTN PARENT  */}
+    <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm flex justify-end">
+{
+  bidMasterDetails?.award_status ==="AWARDED" && bidMasterDetails?.awarded_to !== null && bidMasterDetails?.awarded_by !== null ? (
+<button
+  disabled
+  className=" inline-flex items-center gap-2 rounded-xl bg-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-500 cursor-not-allowed
+  "
+>
+  <FaAward />
+  Awarded {bidMasterDetails?.awarded_to === applicantDetails?.user_id ? `to ${applicantDetails?.user_name}` : "Other"}
+</button>
+  ) :     <button  //IF AWARD STATUS IS NOT AWARDED
+    onClick={()=>{setAwardConfirmationModalOpen(true)}}
+  className=" group relative inline-flex items-center gap-2 overflow-hidden rounded-xl bg-gradient-to-r from-amber-500 via-yellow-500 to-amber-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.03] hover:shadow-amber-400/40 active:scale-95 focus:outline-none focus:ring-2 focus:ring-amber-400 focus:ring-offset-2
+  ">
+  {/* Shine Effect */}
+  <span
+    className=" absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full"/>
+  <FaAward
+    className=" relative text-lg transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110"/><span className="relative">Award</span>
+</button>
+}
+
+<AwardConfirmationModal
+  open={awardConfirmationModalOpen}
+  onClose={() => setAwardConfirmationModalOpen(false)}
+  onContinue={() => {
+    handleAward();
+    setAwardConfirmationModalOpen(false);
+  }}
+  applicantDetails={applicantDetails}
+  // bidMasterDetails={bidMasterDetails}
+/>
+</div>
+    </>
+
   );
 }

@@ -1367,7 +1367,11 @@ bidSecurityAmnt,
 bidSecurityValidityInDays,
 bidDocumentRefundable,
 isBidDocumentRefundable,
-contractNo
+contractNo,
+      award_status,
+        awarded_to,
+           awarded_by,
+       awarded_at
       FROM bid_master
       WHERE id = ?`,
       [bidId]
@@ -1428,7 +1432,11 @@ const userId = req.params.userId;
           bm.description      AS bid_description,
           bm.status           AS bid_status,
           bm.closeDate        AS bid_close_date,
-          bm.publishDate      AS bid_publish_date
+          bm.publishDate      AS bid_publish_date,
+          bm.award_status    AS award_status,
+          bm.awarded_to       AS awarded_to,
+          bm.awarded_by       AS awarded_by,
+          bm.awarded_at       AS awarded_at
        FROM bid_applications ba
        JOIN bid_master bm ON ba.bid_id = bm.id
        WHERE ba.applicant_user_id = ?

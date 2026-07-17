@@ -37,6 +37,7 @@ const permissionRoutes = require('../routes/permission.routes')
 const roleRoutes = require('../routes/role.routes')
 const emailContentRoutes = require('../routes/email.routes')
 const userOrganizationRoute = require('../routes/userOrganization.routes')
+const awardRoute = require('../routes/bid/bidAward.routes')
 
 
 const protectedFileRoutes = require('../routes/protectFile/protectFile.routes') 
@@ -63,6 +64,7 @@ app.use('/api/roles', permissionRoutes)  //add or remove role's permission
 app.use('/api/manage/roles', roleRoutes)
 app.use('/api/emailcontents', emailContentRoutes)
 app.use('/api/userorg', userOrganizationRoute)
+app.use('/api/auction', awardRoute) //-- award
 
 
 // TESTING ONLY

@@ -5,6 +5,7 @@ import { FiFileText, FiCalendar, FiActivity } from 'react-icons/fi';
 
 export default function BidDetails({ bidMasterDetails, applicantDetails }) {
     // console.log(applicantDetails)
+    // console.log(bidMasterDetails, "bidMasterDetails")
   if (!bidMasterDetails) return null;
 
   // Format date helper to make it simple and friendly for seniors
@@ -16,9 +17,14 @@ export default function BidDetails({ bidMasterDetails, applicantDetails }) {
       day: 'numeric'
     });
   }; 
-
+// console.log(  bidMasterDetails?.award_status ==="AWARDED" && bidMasterDetails?.awarded_to !== null && bidMasterDetails?.awarded_by !== null)
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm">
+
+
+
+
+
       {/* Header section */}
       <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-50">
         <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-purple-50 text-[var(--adminPrimaryColor,#8200db)]">

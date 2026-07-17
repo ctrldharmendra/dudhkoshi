@@ -22,7 +22,6 @@ const router = useRouter()
   const bidMasterDetails = useSelector((state) => state?.bidApplication?.particularApplicantDocuments?.bidMasterDetails);  //bidMasterDetails
 
 
-
     // check if loggedn in user has permission to view "applicants"
     const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
     const loadingOfGetRolePermission  = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);  //loading state
@@ -59,9 +58,9 @@ if(particularApplicantDocumentsLoading){
   return (
   <>
 <div className='flex flex-col gap-[12px] pt-[12px]'>
-      <ApplicantDetails applicantDetails={applicantDetails}></ApplicantDetails>
+      <ApplicantDetails applicantDetails={applicantDetails} bidMasterDetails={bidMasterDetails}></ApplicantDetails>
   <BidDetails bidMasterDetails={bidMasterDetails} applicantDetails={applicantDetails}></BidDetails>
-  <ApplicantAppliedDocuments bidDynamicDocumentDetails={bidDynamicDocumentDetails}></ApplicantAppliedDocuments>
+  <ApplicantAppliedDocuments bidDynamicDocumentDetails={bidDynamicDocumentDetails} applicantDetails={applicantDetails} bidMasterDetails={bidMasterDetails}></ApplicantAppliedDocuments>
 </div>
   </>
   )

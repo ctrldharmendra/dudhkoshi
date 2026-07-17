@@ -301,3 +301,57 @@ body {
 *::-webkit-scrollbar-thumb:hover {
   background-color: #880000;
 }
+
+
+
+/* CONFETTIT  */
+.confetti{
+    position:absolute;
+    top:-30px;
+    animation:fall linear infinite;
+}
+
+.piece{
+    display:block;
+    border-radius:2px;
+    animation:spin 1.5s linear infinite;
+}
+
+@keyframes fall{
+
+    0%{
+        transform:translate3d(0,-30px,0);
+        opacity:1;
+    }
+
+    25%{
+        transform:translate3d(-20px,120px,0);
+    }
+
+    50%{
+        transform:translate3d(20px,240px,0);
+    }
+
+    75%{
+        transform:translate3d(-15px,360px,0);
+    }
+
+    100%{
+        transform:translate3d(25px,520px,0);
+        opacity:0;
+    }
+
+}
+
+@keyframes spin{
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+/* CONFETTIT END */

@@ -3,13 +3,26 @@
 import Link from 'next/link';
 import React from 'react';
 import { FiUser, FiMail, FiBriefcase } from 'react-icons/fi';
+import Confetti from './award/Confetti/Confetti';
 
-export default function ApplicantDetails({ applicantDetails }) {
+export default function ApplicantDetails({ applicantDetails, bidMasterDetails }) {
   if (!applicantDetails) return null;
   // console.log(applicantDetails, "applicantDetails")
 
   return (
     <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm relative">
+
+
+{/* SHOWING WELCOME ANIMATION  */}
+{
+  bidMasterDetails?.award_status ==="AWARDED" && bidMasterDetails?.awarded_to !== null && bidMasterDetails?.awarded_by !== null && (
+<Confetti></Confetti>
+  )
+}
+{/* SHOWING WELCOME ANIMATION END */}
+
+
+
       <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-50">
         <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-[var(--iconBgColro,#dbeafe)] text-[var(--iconColor,#155dfc)]">
           <FiUser />
