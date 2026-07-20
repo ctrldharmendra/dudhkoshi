@@ -20,6 +20,8 @@ const router = useRouter()
   const applicantDetails = useSelector((state) => state?.bidApplication?.particularApplicantDocuments?.applicantDetails);  //Applicant's Details 
   const bidDynamicDocumentDetails = useSelector((state) => state?.bidApplication?.particularApplicantDocuments?.bidDynamicDocumentDetails);  //bidDynamicDocumentDetails
   const bidMasterDetails = useSelector((state) => state?.bidApplication?.particularApplicantDocuments?.bidMasterDetails);  //bidMasterDetails
+  const awardedBy = useSelector((state) => state?.bidApplication?.particularApplicantDocuments?.awardedBy);  //awardedBy
+  const bidWinnerDetails = useSelector((state) => state?.bidApplication?.particularApplicantDocuments?.bidWinnerDetails);  //awardedto , bidWinnerDetails
 
 
     // check if loggedn in user has permission to view "applicants"
@@ -60,7 +62,7 @@ if(particularApplicantDocumentsLoading){
 <div className='flex flex-col gap-[12px] pt-[12px]'>
       <ApplicantDetails applicantDetails={applicantDetails} bidMasterDetails={bidMasterDetails}></ApplicantDetails>
   <BidDetails bidMasterDetails={bidMasterDetails} applicantDetails={applicantDetails}></BidDetails>
-  <ApplicantAppliedDocuments bidDynamicDocumentDetails={bidDynamicDocumentDetails} applicantDetails={applicantDetails} bidMasterDetails={bidMasterDetails}></ApplicantAppliedDocuments>
+  <ApplicantAppliedDocuments bidDynamicDocumentDetails={bidDynamicDocumentDetails} applicantDetails={applicantDetails} bidMasterDetails={bidMasterDetails} awardedBy={awardedBy} bidWinnerDetails={bidWinnerDetails}></ApplicantAppliedDocuments>
 </div>
   </>
   )

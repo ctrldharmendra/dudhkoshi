@@ -600,6 +600,10 @@ if(!hasViewPermission) return res.json(new ApiError(403, [],"No Permission To Vi
         bm.user_id,
         bm.created_at,
         bm.closeDate,
+        bm.award_status,
+        bm.awarded_to,
+        bm.awarded_by,
+        bm.awarded_at,
  u.name AS createdBy,
  u.id AS createdByUserId,
     u.email AS createdByEmail,
@@ -1361,7 +1365,7 @@ if (bidDynamiDocumentDets.length === 0) {
           status,
           user_id,
           created_at,
-                      estimatedAmt,
+           estimatedAmt,
 isEstimatedIncludingVat,
 bidSecurityAmnt,
 bidSecurityValidityInDays,
@@ -1397,12 +1401,36 @@ contractNo,
   [bidId, applicationId]
 );
 
+// get who won the bid details 
+const [bidWinnerDets] = await pool.query(
+  `SELECT 
+      u.id AS user_id,
+      u.name AS user_name
+  FROM bid_master bm
+  JOIN users u ON bm.awarded_to = u.id
+  WHERE bm.id = ?`,
+  [bidId]
+)
+
+// get who did award the bid 
+const [awardedBy] = await pool.query(
+  `SELECT 
+      u.id AS user_id,
+      u.name AS user_name
+  FROM bid_master bm
+  JOIN users u ON bm.awarded_by = u.id
+  WHERE bm.id = ?`,
+  [bidId]
+)
+
 const applierDetails = theOneWhoApplied.length > 0 ? theOneWhoApplied[0] : null;
 const applicantAllDets = {
   applicantDetails: applierDetails,
   bidMasterDetails: bidMasterDetails,
   bidDynamicDocumentDetails: bidDynamiDocumentDets,
-  attachments:bidAttachments
+  attachments:bidAttachments,
+  bidWinnerDetails:bidWinnerDets,
+  awardedBy:awardedBy
 };
 
 
@@ -1520,6 +1548,10 @@ const getAppliedBid = asyncHandler(async (req, res) => {
         bm.status,
         bm.created_at,
         bm.closeDate,
+        bm.award_status,
+        bm.awarded_to,
+        bm.awarded_by,
+        bm.awarded_at,
         ba.status AS applicationStatus,
         ba.id AS applicationId
       FROM bid_master bm

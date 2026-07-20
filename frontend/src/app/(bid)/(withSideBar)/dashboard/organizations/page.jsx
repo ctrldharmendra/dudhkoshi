@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
+import OrgDocs from './orgDocs/OrgDocs';
 
 const page = () => {
     const router = useRouter()
@@ -14,7 +15,7 @@ const page = () => {
      const organizationGetLoading = useSelector((state) => state?.organization?.organizationGetLoading);  //Get all org loading
      const organizationUpdateLoading = useSelector((state) => state?.organization?.organizationUpdateLoading);  //update Org Loading
 
-console.log(organizationOfLoggedInUser, "organizationOfLoggedInUser")
+// console.log(organizationOfLoggedInUser, "organizationOfLoggedInUser")
 
     const [isEditingOrganization, setIsEditingOrganization] = useState(false);
 
@@ -98,6 +99,7 @@ if (organizationGetLoading || organizationUpdateLoading) {
 
 
   return (
+    <>
    <div
   className="rounded-2xl mt-2 shadow-sm border overflow-hidden"
   style={{background:"var(--whiteBg)",borderColor:"#e5e7eb"}}
@@ -109,10 +111,21 @@ if (organizationGetLoading || organizationUpdateLoading) {
 
 <div className="flex justify-end mb-5">
 
-<button
+{/* <button
   onClick={handleOrganizationEditSave}
   className="px-5 py-2 rounded-lg text-white font-semibold"
   style={{background:"var(--addBtnBg)"}}
+>
+  {isEditingOrganization ? "Save" : "Organization Details"}
+</button> */}
+
+
+<button
+  onClick={handleOrganizationEditSave}
+  className={`px-5 py-2 rounded-lg text-white font-semibold transition-colors ${
+    isEditingOrganization ? "bg-green-500 hover:bg-green-600" : ""
+  }`}
+  style={!isEditingOrganization ? { background: "var(--addBtnBg)" } : {}}
 >
   {isEditingOrganization ? "Save" : "Organization Details"}
 </button>
@@ -253,6 +266,17 @@ style={{
 
 
 </div>
+
+
+{/* ORGANIZATION DOCUMENTS  */}
+
+
+
+<OrgDocs></OrgDocs>
+
+
+
+</>
   )
 }
 

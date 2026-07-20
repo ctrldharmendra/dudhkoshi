@@ -13,6 +13,8 @@ import organizationReducer from "../slices/users/organizationsSlice"
 import bidFormReducer from "../slices/bids/bidFormSlice"
 import bidApplicationSliceReducer from "../slices/bids/bidApplicationSlice"
 import inviteReducer from "../slices/invite/inviteSlice"
+import awardReducer from "../slices/award/awardSlice"
+
 
 
 import fontScaleReducer from "../slices/accessibility/fontScaleSlice"
@@ -28,6 +30,7 @@ const rootReducer = combineReducers({
   bidForm:bidFormReducer,
   bidApplication:bidApplicationSliceReducer,
   invite:inviteReducer,
+  award:awardReducer,
 
   accessibility: fontScaleReducer,
 });

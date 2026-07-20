@@ -719,7 +719,7 @@ const Page = () => {
         const isExpired = bid.closeDate ? new Date() > new Date(bid.closeDate) : false;
         return (
           <div className="flex items-center gap-2">
-            {row?.original?.applicationStatus && row?.original?.applicationId && (
+            {row?.original?.applicationStatus && row?.original?.applicationId &&  row?.original?.award_status !== "AWARDED" &&  (
               <div className='flex flex-col gap-[3px]'>
                 <button 
                   className='bg-gray-300 px-2 text-[15px] py-0 rounded-md cursor-not-allowed opacity-50' 
@@ -736,7 +736,15 @@ const Page = () => {
                 </button>
               </div>    
             )}
-            {!bid.applicationStatus && !bid.applicationId && canApplyBid && !isExpired && (
+
+              {
+                row?.original?.award_status === "AWARDED" ?(
+                  <Link href={`/dashboard/manage/users/${row?.original?.awarded_to}`} className="" title='See Winner'> 
+                    <button className="px-2 text-[15px] py-1 rounded-md bg-green-200 hover:underline cursor-pointer text-green-600 rounded-md">
+                      Awarded
+                    </button>
+                  </Link>
+                  ) : !bid.applicationStatus && !bid.applicationId && canApplyBid && !isExpired && (
               <Link
                 href={`/dashboard/manage/bids/apply/${bid.id}`}
                 className="h-9 w-9 rounded-full bg-[var(--iconBgColro)] hover:scale-105 flex items-center justify-center transition"
@@ -744,7 +752,9 @@ const Page = () => {
               >
                 <VscGitStashApply className="text-lg text-[var(--iconColor)]" />
               </Link>
-            )}
+            )
+              }
+
             {!bid.applicationStatus && !bid.applicationId && isExpired && (
               <button className="px-2 text-[15px] py-1 rounded-md bg-red-100 text-red-600">
                 Bid Closed

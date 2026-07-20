@@ -36,12 +36,18 @@ export default function Navbar() {
         </nav>
 
         {/* Action Button */}
-        <div className="hidden md:block">
+        <div className="hidden md:flex gap-2">
           <Link 
             href="/contact" 
             className="px-6 py-2.5 bg-[var(--landingPagePrimaryColor)] hover:opacity-90 text-[var(--lightWhite)] font-medium text-sm rounded-full transition-all duration-200 shadow-sm hover:shadow-md"
           >
             Contact Us
+          </Link>
+          <Link 
+            href="/contact" 
+            className="px-6 py-2.5 bg-[var(--landingPagePrimaryColor)] hover:opacity-90 text-[var(--lightWhite)] font-medium text-sm rounded-full transition-all duration-200 shadow-sm hover:shadow-md"
+          >
+            Login
           </Link>
         </div>
 

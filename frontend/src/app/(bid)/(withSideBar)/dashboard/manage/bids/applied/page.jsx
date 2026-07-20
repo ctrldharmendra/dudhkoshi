@@ -202,16 +202,24 @@ params.set("to", dateFilter.to);
       header: "Status",
       cell: ({ row }) => {
           const isExpired = new Date() > new Date(row?.original?.closeDate);
- return isExpired ? (
-  <div className="">
-    <button className="px-2 text-[15px] py-1 rounded-md bg-red-100 text-red-600 rounded-md">
-      Closed
+ return row?.original?.award_status ==="AWARDED" ? (
+  <Link href={`/dashboard/manage/users/${row?.original?.awarded_to}`} className="" title='See Winner'> 
+    <button className="px-2 text-[15px] py-1 rounded-md bg-green-200 hover:underline cursor-pointer text-green-600 rounded-md">
+      Awarded
     </button>
-  </div>
+  </Link>
 ) : (
-  <button className="px-2 text-[15px] py-1 rounded-md bg-green-100 text-green-500 rounded-md">
-  Active
-  </button>
+    isExpired ? (
+      <div className="">
+        <button className="px-2 text-[15px] py-1 rounded-md bg-red-100 text-red-600 rounded-md">
+          Closed
+        </button>
+      </div>
+    ) : (
+      <button className="px-2 text-[15px] py-1 rounded-md bg-green-100 text-green-500 rounded-md">
+      Active
+      </button>
+    )
 );
       },
     },
@@ -237,7 +245,7 @@ params.set("to", dateFilter.to);
   row?.original?.applicationStatus && row?.original?.applicationId && (
 <div className='flex flex-col gap-[3px]'>
   <button className='bg-gray-300 px-2 text-[15px] py-0 rounded-md cursor-not-allowed opacity-50" disabled' title='You Already Applied'>Applied</button>
-  <button className='bg-gray-300 px-2 text-[15px] py-0 rounded-md cursor-not-allowed opacity-50" disabled' title='Neither Won nor Rejected'>{row?.original?.applicationStatus}</button>
+  {/* <button className='bg-gray-300 px-2 text-[15px] py-0 rounded-md cursor-not-allowed opacity-50" disabled' title='Neither Won nor Rejected'>{row?.original?.applicationStatus}</button> PENDING STATUTS */}
 
 </div>    
   )

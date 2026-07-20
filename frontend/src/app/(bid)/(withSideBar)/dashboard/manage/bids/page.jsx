@@ -26,7 +26,7 @@ const pathname = usePathname();
 
   const allBids = useSelector((state) => state?.bidForm?.allBidFormFromDb?.bids ??  []);  //all bids object
   const allBidsLoading = useSelector((state) => state?.bidForm?.allBidFormLoading);  //all loading state
-// console.log(allBids, "albids")
+console.log(allBids, "albids")
 
   
 
@@ -207,16 +207,35 @@ params.set("to", dateFilter.to);
       cell: ({ row }) => {
           const isExpired = new Date() > new Date(row?.original?.closeDate);
 
- return isExpired ? (
-  <div className="">
-    <button className="px-2 text-[15px] py-1 rounded-md bg-red-100 text-red-600 rounded-md">
-      Closed
+//  return isExpired ? (
+//   <div className="">
+//     <button className="px-2 text-[15px] py-1 rounded-md bg-red-100 text-red-600 rounded-md">
+//       Closed
+//     </button>
+//   </div>
+// ) : (
+//   <button className="px-2 text-[15px] py-1 rounded-md bg-green-100 text-green-500 rounded-md">
+//   Active
+//   </button>
+// );
+ return row?.original?.award_status ==="AWARDED" ? (
+  <Link href={`/dashboard/manage/users/${row?.original?.awarded_to}`} className="" title='See Winner'> 
+    <button className="px-2 text-[15px] py-1 rounded-md bg-green-200 hover:underline cursor-pointer text-green-600 rounded-md">
+      Awarded
     </button>
-  </div>
+  </Link>
 ) : (
-  <button className="px-2 text-[15px] py-1 rounded-md bg-green-100 text-green-500 rounded-md">
-  Active
-  </button>
+    isExpired ? (
+      <div className="">
+        <button className="px-2 text-[15px] py-1 rounded-md bg-red-100 text-red-600 rounded-md">
+          Closed
+        </button>
+      </div>
+    ) : (
+      <button className="px-2 text-[15px] py-1 rounded-md bg-green-100 text-green-500 rounded-md">
+      Active
+      </button>
+    )
 );
       },
     },
@@ -266,14 +285,14 @@ params.set("to", dateFilter.to);
  )
 }
 
-            <button
+            {/* <button
             title='Delete'
               className="h-9 w-9 rounded-full bg-[var(--deleteIconBg)] hover:bg-[var(--deleteIconBgHOver)] flex items-center justify-center transition"
             >
               <FiTrash2
                 className="text-lg text-[var(--deleteIconColor)]"
               />
-            </button>
+            </button> */}
 
           </div>
         );

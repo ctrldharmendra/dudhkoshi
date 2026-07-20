@@ -15,7 +15,7 @@ export default function ApplicantDetails({ applicantDetails, bidMasterDetails })
 
 {/* SHOWING WELCOME ANIMATION  */}
 {
-  bidMasterDetails?.award_status ==="AWARDED" && bidMasterDetails?.awarded_to !== null && bidMasterDetails?.awarded_by !== null && (
+  bidMasterDetails?.award_status ==="AWARDED" && bidMasterDetails?.awarded_to == applicantDetails?.user_id && (
 <Confetti></Confetti>
   )
 }

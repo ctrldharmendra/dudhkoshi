@@ -6,9 +6,13 @@ import { FaAward } from 'react-icons/fa';
 import { FiPaperclip, FiAlignLeft, FiHash, FiDownload } from 'react-icons/fi';
 import { GrView } from 'react-icons/gr';
 import AwardConfirmationModal from './award/Award';
+import { createAward } from '@/app/(bid)/redux/slices/award/awardSlice';
+import toast from 'react-hot-toast';
+import { useDispatch, useSelector } from 'react-redux';
+import TinyLoader from '@/components/reusable/loader/TinyLoader';
 
-export default function ApplicantAppliedDocuments({ bidDynamicDocumentDetails, applicantDetails, bidMasterDetails}) {
-
+export default function ApplicantAppliedDocuments({ bidDynamicDocumentDetails, applicantDetails, bidMasterDetails, awardedBy, bidWinnerDetails}) {
+const dispatch = useDispatch()
 const baseContentPath = process.env.NEXT_PUBLIC_BASE_CONTENT_URL
   if (!bidDynamicDocumentDetails || bidDynamicDocumentDetails.length === 0) return null;
 
@@ -38,16 +42,34 @@ const baseContentPath = process.env.NEXT_PUBLIC_BASE_CONTENT_URL
 
   // HANDLE AWARD 
 
-  const handleAward = () => {
-    // console.log(applicantDetails, "applicantDetails")
-    // console.log(bidMasterDetails, "bidMasterDetails")  
-
-
+const awardLoading = useSelector((state) => state?.award?.awardLoading);
+console.log(awardLoading, "awardLoadingStat")
+  const handleAward = async () => {
       // applicantDetails?.user_id  --user id
       // bidMasterDetails?.id  -- bidId 
+        try {
+    const resultAction = await dispatch(createAward({ bidId: bidMasterDetails?.id, winnerUserId: applicantDetails?.user_id }));
+
+    if (createAward.fulfilled.match(resultAction)) {
+        setAwardConfirmationModalOpen(false)
+        toast.success("Awarded successfully")
+
+        // refresh the page 
+        window.location.reload();
+
+    }
+  } finally {
+    setAwardConfirmationModalOpen(false);
+  }
 
   }
   // HANDLE AWARD END
+if(awardLoading){
+      return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+   <TinyLoader></TinyLoader>
+  </div>;
+}
+
 
   return (
     <>
@@ -120,7 +142,8 @@ const baseContentPath = process.env.NEXT_PUBLIC_BASE_CONTENT_URL
   "
 >
   <FaAward />
-  Awarded {bidMasterDetails?.awarded_to === applicantDetails?.user_id ? `to ${applicantDetails?.user_name}` : "Other"}
+  {/* Awarded {bidMasterDetails?.awarded_to === applicantDetails?.user_id ? `to ${applicantDetails?.user_name}` : null } by {awardedBy[0]?.user_name} */}
+  Awarded to {bidWinnerDetails[0]?.user_name} by {awardedBy[0]?.user_name}
 </button>
   ) :     <button  //IF AWARD STATUS IS NOT AWARDED
     onClick={()=>{setAwardConfirmationModalOpen(true)}}
@@ -139,7 +162,6 @@ const baseContentPath = process.env.NEXT_PUBLIC_BASE_CONTENT_URL
   onClose={() => setAwardConfirmationModalOpen(false)}
   onContinue={() => {
     handleAward();
-    setAwardConfirmationModalOpen(false);
   }}
   applicantDetails={applicantDetails}
   // bidMasterDetails={bidMasterDetails}

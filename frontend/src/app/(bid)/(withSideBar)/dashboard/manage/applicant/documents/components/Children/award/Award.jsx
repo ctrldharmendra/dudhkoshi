@@ -13,6 +13,10 @@ export default function AwardConfirmationModal({
 
   if (!open) return null;
 
+
+
+
+
   return (
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
       <div className="relative w-full max-w-md overflow-hidden rounded-3xl bg-white shadow-2xl animate-in zoom-in-95 slide-in-from-bottom-6 duration-300">

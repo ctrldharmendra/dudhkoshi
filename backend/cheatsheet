@@ -1,3 +1,13 @@
+// %## Yedi file save garne bela folderName / user ko Id. eg: orgDoc/14 --> yesri save garaunu paryo vhanne:
+  // Yo file haru check garne:
+    // 1. userOrganization.routes.js ---> CREATE ORG DOC  route    
+    // 2. userOrganization.controller.js  ---> createOrganizationDocs 
+    
+    
+    
+    
+    
+    
     // const {password:_, ...userWithoutPassword} = user  -- separate any field 
 
        //     'INSERT INTO users (name, email, gender, date_of_birth, password) VALUES (?,?,?,?,?)',

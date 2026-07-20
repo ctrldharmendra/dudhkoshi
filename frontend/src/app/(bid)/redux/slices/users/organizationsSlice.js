@@ -26,6 +26,7 @@ console.log(data, "DATA ORG SLICE")
   }
 );
 
+
 // GET ALL ORGANIZATION 
 export const getUserOrganization = createAsyncThunk(
   'getUserOrganization',
@@ -37,7 +38,7 @@ export const getUserOrganization = createAsyncThunk(
       return data?.data;
 
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed Updation');
+      toast.error(err.response?.data?.message || 'Failed to get info');
       return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
     }
   }
@@ -45,12 +46,55 @@ export const getUserOrganization = createAsyncThunk(
 
 
 
+// DOCUMENTS FILE 
+
+// POST USER ORGANIZATION DOCUMENTS 
+export const createUserOrgDocuments = createAsyncThunk(
+  'createUserOrgDocuments',
+  async ({formData}, thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.post(`/api/userorg/organizations/docs`, 
+        formData
+      );
+      
+      console.log(data, "DATA ORG DOCUMENTS SLICE")
+      
+      return data?.data;
+      
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed Updation');
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
+// GET USER ORGANIZATION DETAILS 
+export const getUserOrganizationDocuments = createAsyncThunk(
+  'getUserOrganizationDocuments',
+  async ({}, thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.get(`/api/userorg/organizations/docs`
+    );
+
+    console.log(data?.data)
+      return data?.data;
+
+    } catch (err) {
+      toast.error(err.response?.data?.message || 'Failed to get Info');
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
 const organizationSlice = createSlice({
   name: 'organizationSlice',
   initialState: {
     userOrganization:[],
     organizationUpdateLoading:false,
     organizationGetLoading:false,
+
+    userOrgDocuments: [],
+    userOrgDocumentsLoading: false,
 
     error: "",
     lastFetched: "",
@@ -82,6 +126,35 @@ const organizationSlice = createSlice({
       })
       .addCase(getUserOrganization.rejected, (state, action) => {
         state.organizationGetLoading = false;
+        state.error = action.payload;
+      });
+
+      // USER ORG DOCUMENTS 
+      // POST 
+    builder
+      .addCase(createUserOrgDocuments.pending, (state) => {
+        state.userOrgDocumentsLoading = true;
+      })
+      .addCase(createUserOrgDocuments.fulfilled, (state, action) => {
+        state.userOrgDocumentsLoading = false;
+        state.userOrgDocuments = action.payload;
+      })
+      .addCase(createUserOrgDocuments.rejected, (state, action) => {
+        state.userOrgDocumentsLoading = false;
+        state.error = action.payload;
+      });
+
+      // GET 
+    builder
+      .addCase(getUserOrganizationDocuments.pending, (state) => {
+        state.userOrgDocumentsLoading = true;
+      })
+      .addCase(getUserOrganizationDocuments.fulfilled, (state, action) => {
+        state.userOrgDocumentsLoading = false;
+        state.userOrgDocuments = action.payload;
+      })
+      .addCase(getUserOrganizationDocuments.rejected, (state, action) => {
+        state.userOrgDocumentsLoading = false;
         state.error = action.payload;
       });
   },
