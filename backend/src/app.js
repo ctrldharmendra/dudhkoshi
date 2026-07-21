@@ -38,7 +38,8 @@ const roleRoutes = require('../routes/role.routes')
 const emailContentRoutes = require('../routes/email.routes')
 const userOrganizationRoute = require('../routes/userOrganization.routes')
 const awardRoute = require('../routes/bid/bidAward.routes')
-
+const forgotPasswordRoutes = require('../routes/resetPassword/resetPass.routes')
+ 
 
 const protectedFileRoutes = require('../routes/protectFile/protectFile.routes') 
 
@@ -65,6 +66,7 @@ app.use('/api/manage/roles', roleRoutes)
 app.use('/api/emailcontents', emailContentRoutes)
 app.use('/api/userorg', userOrganizationRoute)
 app.use('/api/auction', awardRoute) //-- award
+app.use('/api/resetpass', forgotPasswordRoutes)
 
 
 // TESTING ONLY
