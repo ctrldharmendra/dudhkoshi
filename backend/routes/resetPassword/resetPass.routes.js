@@ -6,13 +6,17 @@ const { authenticateAccessToken } = require('../../middlewares/authMiddleWare');
 
 
 
-// register route 
+// generate otp if email is valid 
 router.route('/forgot-password').post(
-    forgotPasswordController.forgorPassword
+    forgotPasswordController.forgotPassword
 );
 // verify passsword 
 router.route('/verify-otp').post(
     forgotPasswordController.verifyOtp
+);
+// reset passsword 
+router.route('/reset-password').post(
+    forgotPasswordController.resetPassword
 );
 
 

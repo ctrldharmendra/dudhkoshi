@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --color-primary: #0ea5e9;
+  --color-primary: #1E7EBB;
   --color-primary-light: #38bdf8;
   --color-primary-dark: #0284c7;
   --color-secondary: #06b6d4;
@@ -203,7 +203,7 @@ body {
     #ff94f7c4
   ); */
 
-      background: linear-gradient(to top right, #ffffff, #e1e7ec, #ddf1f3, #e1faef, #fff89445) 0 0 / cover no-repeat fixed;
+      background: linear-gradient(to top right, #ffffff, #1E7EBB) 0 0 / cover no-repeat fixed;
   
 }
 

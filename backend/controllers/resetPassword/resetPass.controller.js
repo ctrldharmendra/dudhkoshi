@@ -16,7 +16,7 @@ const { sendOtpEmail } = require('../../utils/email/sendOtpEmail');
 
 
 // FORGOT PASSWORD GENERATE OTP 
-const forgorPassword = asyncHandler(async (req, res)=>{
+const forgotPassword = asyncHandler(async (req, res)=>{
 // 1. Find user
 // 2. Generate OTP
 // 3. Hash OTP
@@ -32,7 +32,7 @@ const forgorPassword = asyncHandler(async (req, res)=>{
         [req.body.email]
     )
     // if user not found
-    if(!row.length) return res.json(new ApiResponse(404, [], "User Not Found."))
+    if(!row.length) return res.json(new ApiResponse(200, [], "If an account exists, an OTP has been sent."))
 
     const otp = Math.floor(100000 + Math.random() * 900000);
     const hashedOtp = await bcrypt.hash(otp.toString(), 10);
@@ -47,9 +47,9 @@ const forgorPassword = asyncHandler(async (req, res)=>{
       [hashedOtp, otpExpiresAt, req?.body?.email]
     );
 
-// Now if user found and otp saved in db then send email 
-    if(result.affectedRows === 0) return res.json(new ApiResponse(404, [], "User Not Found."))
-
+    if(result.affectedRows === 0) return res.json(new ApiResponse(200, [], "If an account exists, an OTP has been sent.."))
+        
+        // Now if user found and otp saved in db then send email 
 const info = await sendOtpEmail({
     to: req.body.email,
     otp,
@@ -107,6 +107,7 @@ const resetToken = jwt.sign(
   {
     id: user.id,
     email: user.email,
+    version: user.password_reset_version,
     purpose: "password-reset",
   },
   process.env.RESET_PASSWORD_SECRET,
@@ -114,32 +115,76 @@ const resetToken = jwt.sign(
     expiresIn: "10m",
   }
 );
+// after otp verified set otp to null 
+await pool.query(
+  `UPDATE users
+   SET otp = NULL,
+       otp_expiresAt = NULL
+   WHERE id = ?`,
+  [user.id]
+)
+return res.json(new ApiResponse(200, { resetToken }, "OTP Verified."));
 
-return res.json(new ApiResponse(200, { resetToken }, "OTP Verified."));})
+})
 
 
 // RESET PASSWORD 
 const resetPassword = asyncHandler(async (req, res)=>{
-        const { resetToken, password } = req.body;
+        const { resetToken, password, confirmPassword } = req.body;
 
 
-    if (!resetToken || !password) {
+
+    if (!resetToken || !password || !confirmPassword ) {
         return res.json(new ApiResponse(400, [], "All fields are required."));
     }
+if(password.length < 8) return res.json(new ApiResponse(400, [], "Password must be at least 8 characters."))
+    if (password !== confirmPassword) {
+        return res.json(new ApiResponse(400, [], "Passwords do not match."));
+    }
 
+    
     try {
-        // check if reset token is valid
-        const decoded = jwt.verify(resetToken, process.env.RESET_PASSWORD_SECRET);
+                // check if reset token is valid
+                  const decoded = jwt.verify(resetToken, process.env.RESET_PASSWORD_SECRET);
+
+                  const [rows] = await pool.query(
+    `SELECT password_reset_version
+     FROM users
+     WHERE id = ?`,
+    [decoded.id]
+);
+
+if (!rows.length) {return res.json(new ApiResponse(400, [], "Invalid reset token."));}
+const user = rows[0];
+
+
+
+        // check if reset token puropse is "reset-password "
+        if (decoded.purpose !== "password-reset") {
+    return res.json(
+        new ApiResponse(400, [], "Invalid reset token.")
+        );
+        }
+        // check if version is not equal to user.password_reset_version
+        if (decoded.version !== user.password_reset_version) {
+    return res.json(
+        new ApiResponse(400, [], "Token expired.")
+    );
+}
+  
 
         // hash the password before storeing in database 
         const hashedPassword = await bcrypt.hash(password, 10);
 
         await pool.query(
             `UPDATE users
-             SET password = ?
+             SET password = ?,
+             password_reset_version=password_reset_version+1
              WHERE id = ?`,
             [hashedPassword, decoded.id]
         );
+
+        return res.json(new ApiResponse(200, {}, "Password reset successfully."));
     } catch (error) {
         
         return res.json(new ApiResponse(400, [], "Invalid reset token."));
@@ -147,7 +192,7 @@ const resetPassword = asyncHandler(async (req, res)=>{
 })
 
 module.exports = {
-    forgorPassword,
+    forgotPassword,
     verifyOtp,
     resetPassword,
 }
