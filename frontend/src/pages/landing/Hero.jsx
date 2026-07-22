@@ -8,7 +8,7 @@ import heroCardImg2 from "../../../public/landing/heroCardImg2.png";
 export default function HeroPage() {
   return (
     <div 
-      className="min-h-screen bg-white flex flex-col font-sans antialiased overflow-x-hidden"
+      className="min-h-screen bg-white flex flex-col font-sans antialiased  heroBg"
     >
       {/* Responsive Navbar */}
       <Navbar />
@@ -17,8 +17,8 @@ export default function HeroPage() {
       <main className="flex-1 flex flex-col ">
         
         {/* Combined Hero Section (Image Frame holding the Text) */}
-        <section className=" heroBg">
-          <div className='max-w-[1440px] relative px-4 sm:px-8  mx-auto w-full pt-6 pb-32'>
+        <section className="">
+          <div className='max-w-[1440px] relative px-4 sm:px-8  mx-auto w-full pb-32'>
           {/* Main Hero Container with Background Image */}
           <div 
             className="relative w-full min-h-[750px] md:min-h-[750px] heroParentStyled overflow-hidden bg-cover bg-center flex flex-col items-center pt-16 px-4 md:px-8"

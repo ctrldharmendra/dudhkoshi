@@ -1,5 +1,5 @@
 import Hero from '@/pages/landing/Hero'
-import AboutSection from '@/pages/landing/AboutSection'
+import TechnicalSpecification from '@/pages/landing/about/TechnicalSpecification'
 import React from 'react'
 import TeamSection from '@/pages/landing/Team'
 import ProjectTeam from '@/pages/landing/ProjectTeam'
@@ -11,8 +11,8 @@ const page = () => {
   return (
    <>
    <Hero></Hero>  
-   {/* <AboutSection></AboutSection>
-   <TeamSection></TeamSection>
+   <TechnicalSpecification></TechnicalSpecification>
+   {/* <TeamSection></TeamSection>
    <ProjectTeam></ProjectTeam>
  <TechnicalSpecifications></TechnicalSpecifications>
   <WaterToWireSystem></WaterToWireSystem> 
