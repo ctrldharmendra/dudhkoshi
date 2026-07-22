@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import { FiPlus, FiTrash2, FiFileText, FiGrid, FiCalendar, FiLayers, FiSend } from 'react-icons/fi'
+import { FiPlus, FiTrash2, FiFileText, FiGrid, FiCalendar, FiLayers, FiSend, FiBarChart2 } from 'react-icons/fi'
 import { useDispatch } from 'react-redux'
 import { useSelector } from 'react-redux'
 import { useRouter } from 'next/navigation';
@@ -11,6 +11,8 @@ import { getRolePermissionLoggedInUser } from '@/app/(bid)/redux/slices/rolesAnd
 import { createBidForm } from '@/app/(bid)/redux/slices/bids/bidFormSlice'
 import toast from 'react-hot-toast'
 import BidAttachment from './BidAttachment'
+import Modal from '@/components/adminComponents/modal/Modal'
+import { FaAward } from 'react-icons/fa'
 
 
 
@@ -137,6 +139,12 @@ contractNo:"",
 }
 
 
+// confirm bid creation Popoup state
+const [confirmBidCreation, setconfirmBidCreation] = useState(false);
+  const [agree, setAgree] = useState(false);
+
+
+
 if (loading || createBidFormLoading) {
   return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
    <TinyLoader></TinyLoader>
@@ -145,6 +153,59 @@ if (loading || createBidFormLoading) {
 
   return (
     <div className="w-full mx-auto pt-4 bg-transparent">
+
+{/* BID CREATION CONFRIM POPUP  */}
+      <Modal
+        isModalOpen={confirmBidCreation}
+        onClose={()=>{
+          setconfirmBidCreation(false)
+          setAgree(false)
+        }}
+        icon={<FiBarChart2 />}
+        title="Are You Sure to create this Bid ?"
+        description="Highly recommend to check all your details before creating this bid. Once created cannot be updated."
+      >
+
+          <label className="mt-6 mb-3 flex cursor-pointer items-center gap-3 rounded-xl border border-gray-200 p-4 transition-all duration-300 hover:border-amber-400 hover:bg-amber-100 border-amber-200 bg-amber-50">
+            <input
+              type="checkbox"
+              checked={agree}
+              onChange={(e) => setAgree(e.target.checked)}
+              className="h-5 w-5 accent-amber-500"
+            />
+            <span className="text-sm font-medium  text-red-400">
+              I am sure to create this bid.
+            </span>
+          </label>
+
+          <div className="flex justify-center gap-[45px]">
+
+     <button onClick={()=>{
+      setconfirmBidCreation(false)
+      setAgree(false)
+      }} type="button" className="px-6 py-2 active:scale-95 transition bg-[var(--deleteIconColor)]  text-[var(--whiteText)] ">Cancel</button>
+
+                   <button
+                     disabled={!agree}
+                     onClick={handleSubmit}
+                     className={`px-6 py-2 rounded text-sm font-medium${
+                       agree
+                         ? "active:scale-95 transition cursor-pointer bg-[var(--addBtnBg)] rounded text-[var(--whiteText)] text-sm font-medium"
+                         : "cursor-not-allowed bg-gray-300"
+                     }`}
+                   >
+                     <span className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full" />
+                     <span className="relative flex items-center justify-center gap-2">
+                       <FaAward />
+                       Create Bid
+                     </span>
+                   </button>
+</div>
+
+
+      </Modal>
+{/* BID CREATION CONFRIM POPUP END */}
+
       {/* Outer Card Shell using Glassmorphism & Custom Variable Variables */}
       <div className="bg-[var(--bg-card,#fff)]   border border-[var(--border-primary,rgba(14,165,233,0.15))] overflow-hidden">
         
@@ -805,7 +866,7 @@ if (loading || createBidFormLoading) {
           <button
             type="button"
             onClick={() => {
-             handleSubmit()
+             setconfirmBidCreation(true)
             }}
             className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white text-sm font-black px-8 py-3.5 rounded-xl shadow-md shadow-emerald-500/10 hover:shadow-lg hover:scale-[1.01] active:scale-[0.99] transition-all"
           >
