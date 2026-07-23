@@ -586,7 +586,7 @@ justify-center
 ">
 <Image
 unoptimized
-src={item?.createdByDp ? baseContentUrl+'/'+item?.createdByDp : unknownDp}
+src={item?.createdByDp ? '/'+item?.createdByDp : unknownDp}
 
 width={80}
 
