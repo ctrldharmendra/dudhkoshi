@@ -49,7 +49,7 @@ const nextConfig = {
       },
                   {
         source: "/uploads/:path*",
-        destination: "http://localhost:5001/uploads/:path*",
+        destination: "https://test.aayumalunhydro.com.np/uploads/:path*",
       },
     ];
   },
