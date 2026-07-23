@@ -4,6 +4,9 @@ import { FiZap, FiAirplay, FiDroplet } from 'react-icons/fi';
 import technicalSpecificationIMG from "../../../../public/landing/aboutUsTechnicalSpecification.png";
 import Image from 'next/image';
 import SpatialConstraintsSection from './SpatialConstraintsSection';
+import MissionStrategySection from './MissionStrategySection';
+import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
+import StatsBanner from './StatsBanner';
 
 export default function TechnicalSpecification() {
   // Accordion Data Array (Easily add more items to test scrollability)
@@ -59,9 +62,8 @@ export default function TechnicalSpecification() {
 
         {/* Section Label */}
         <div className="mb-4">
-          <span className="text-[11px] font-bold tracking-widest text-[var(--landingPagePrimaryColor)] uppercase border-b-2 border-[var(--landingPagePrimaryColor)] pb-1">
-            TECHNICAL SPECIFICATION
-          </span>
+             <HrLineWithHeadingText text="   TECHNICAL SPECIFICATION"></HrLineWithHeadingText>
+
         </div>
 
         {/* Main Content Grid */}
@@ -186,6 +188,8 @@ export default function TechnicalSpecification() {
       </div>
     </section>
     <SpatialConstraintsSection></SpatialConstraintsSection>
+    <MissionStrategySection></MissionStrategySection>
+    <StatsBanner></StatsBanner>
     </>
   );
 }

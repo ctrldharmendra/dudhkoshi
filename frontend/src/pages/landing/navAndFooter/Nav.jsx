@@ -44,7 +44,7 @@ export default function Navbar() {
             Contact Us
           </Link>
           <Link 
-            href="/contact" 
+            href="/login" 
             className="px-6 py-2.5 bg-[var(--landingPagePrimaryColor)] hover:opacity-90 text-[var(--lightWhite)] font-medium text-sm rounded-full transition-all duration-200 shadow-sm hover:shadow-md"
           >
             Login

@@ -20,17 +20,20 @@ export default function MapCard({
       {/* Map Container */}
       <div className={`relative w-full ${height} rounded-[32px] overflow-hidden border border-blue-100/60 shadow-lg bg-slate-100 group`}>
         {/* Map Image / Embedded Map */}
-        <Image
+        {/* <Image
         height={200} 
         width={200}
         unoptimized
           src={technicalSpecificationIMG} 
           alt="Solukhumbu Location Map" 
           className="w-full h-full object-cover"
-        />
+        /> */}
+
+<iframe src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d220.75423900240068!2d85.32459836371902!3d27.71519209906059!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2snp!4v1784788003208!5m2!1sen!2snp" width="600" height="450" allowFullScreen="" loading="lazy" referrerPolicy="strict-origin-when-cross-origin"></iframe>
+
 
         {/* Map Controls (Zoom / Layers) */}
-        <div className="absolute bottom-5 right-5 flex flex-col gap-2 z-10">
+        {/* <div className="absolute bottom-5 right-5 flex flex-col gap-2 z-10">
           <div className="bg-white/90 backdrop-blur-xs rounded-xl shadow-md border border-gray-100 flex flex-col overflow-hidden">
             <button 
               type="button" 
@@ -55,7 +58,7 @@ export default function MapCard({
           >
             <FiLayers className="w-4 h-4" />
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

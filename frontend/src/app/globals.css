@@ -54,6 +54,9 @@
   --landingPageSecondaryColor: #64748b;
   --lightWhite: #FFFFFF;
   --textColorOnLightBg:#45484D;
+  --highlightBg:#FEF5E7;
+  --hightlightText:#F59E0B;
+
 
   /* THESE ARE LANDING PAGE VARIABLE END  */
 }
@@ -89,6 +92,10 @@
 .heroBg{
   background: #FAFAFA;
 background: linear-gradient(178deg,rgba(250, 250, 250, 1) 35%, rgba(221, 236, 245, 1) 100%);
+}
+.missionStrategyBg{
+  background: #EBF7FF;
+background: linear-gradient(351deg,rgba(235, 247, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
 }
 /* LANDING PAGE CSS END */
 .twoLinePara{
