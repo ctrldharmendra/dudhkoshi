@@ -27,7 +27,7 @@ const pathname = usePathname();
 
   const allBids = useSelector((state) => state?.bidApplication?.loggedInUserBidsList?.bids ??  []);  //all bids object
   const allBidsLoading = useSelector((state) => state?.bidApplication?.loggedInUserBidsListLoading);  //all loading state
-  // console.log(allBids, "allbids")
+  console.log(allBids, "allbids")
 
   const searchParams = useSearchParams();
 
@@ -198,14 +198,14 @@ params.set("to", dateFilter.to);
     },
 
     {
-      accessorKey: "status",
-      header: "Status",
+      accessorKey: "award_status",
+      header: "Award Status",
       cell: ({ row }) => {
           const isExpired = new Date() > new Date(row?.original?.closeDate);
  return row?.original?.award_status ==="AWARDED" ? (
   <Link href={`/dashboard/manage/users/${row?.original?.awarded_to}`} className="" title='See Winner'> 
     <button className="px-2 text-[15px] py-1 rounded-md bg-green-200 hover:underline cursor-pointer text-green-600 rounded-md">
-      Awarded
+      Awarded  {row?.original?.isThisAwardedToMe == true ? "(You)" : ""}
     </button>
   </Link>
 ) : (

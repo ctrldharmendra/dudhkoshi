@@ -53,7 +53,6 @@ console.log(awardLoading, "awardLoadingStat")
     if (createAward.fulfilled.match(resultAction)) {
         setAwardConfirmationModalOpen(false)
         toast.success("Awarded successfully")
-
         // refresh the page 
         window.location.reload();
 

@@ -107,3 +107,24 @@ if (usersUsingRole[0].count > 0) {
 ------------------------------------------------------------------------------------------
 
   const fullPath = path.join(process.cwd(), "uploads", row.value);
+
+
+
+
+  // <a href=${process.env.FRONTEND_URL}/bid/${bidMasterDetails?.[0]?.id}
+// /dashboard/manage/bids/applied/view?bid=16&id=14
+// style="
+// background:#16A34A;
+// color:white;
+// padding:14px 30px;
+// border-radius:10px;
+// text-decoration:none;
+// font-weight:bold;
+// display:inline-block;
+// ">
+// View Winning Bid
+// </a>
+
+// <p style="color:#374151;">
+// You can now proceed with the next steps.
+// </p>

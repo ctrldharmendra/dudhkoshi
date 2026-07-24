@@ -82,4 +82,11 @@ router.get(
   bidControlller.getBidApplicantsCount
 );
 
+// get app acrive, non awarded, bid 
+router.get(
+  "/active",
+  authenticateAccessToken,
+  bidControlller.getAllActiveAndNotAppliedBids
+);
+
 module.exports = router;

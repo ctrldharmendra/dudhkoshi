@@ -50,7 +50,7 @@ export async function proxy(request) {
         const cookieHeader = `${accessToken.name}=${accessToken.value}`;
         const isValid = await checkAuth(request, cookieHeader);
 
-        if (isValid) return NextResponse.next(); // ✅ all good, let them through
+        if (isValid) return NextResponse.next(); //  all good
       }
 
       // 2. accessToken missing or expired — try refreshing
