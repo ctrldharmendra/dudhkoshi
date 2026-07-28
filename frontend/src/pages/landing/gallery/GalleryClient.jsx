@@ -4,7 +4,7 @@ import Image from 'next/image';
 import React, { useState, useMemo } from 'react';
 import { FiChevronLeft, FiChevronRight, FiGrid, FiSliders } from 'react-icons/fi';
 
-export default async function GalleryClient({ initialGallery }) {
+export default  function GalleryClient({ initialGallery }) {
   const [activeCategory, setActiveCategory] = useState("All Photos");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isGridView, setIsGridView] = useState(false);
