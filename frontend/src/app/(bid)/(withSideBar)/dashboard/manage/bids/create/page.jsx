@@ -13,7 +13,7 @@ import toast from 'react-hot-toast'
 import BidAttachment from './BidAttachment'
 import Modal from '@/components/adminComponents/modal/Modal'
 import { FaAward } from 'react-icons/fa'
-
+import { nanoid } from "nanoid";
 
 
 const Page = () => {
@@ -45,7 +45,7 @@ contractNo:"",
     ],
         attachments:[
       {
-        id: crypto.randomUUID(),
+        id: nanoid(),
         attachment:"",
         title:""
       }

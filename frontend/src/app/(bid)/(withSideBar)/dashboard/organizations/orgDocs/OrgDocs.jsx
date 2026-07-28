@@ -9,6 +9,7 @@ import { FiPlus } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import BidFormAttachmetns from "../../manage/bids/apply/[bid]/components/BidFormAttachmetns";
 import ViewFile from "./ViewFile";
+import { nanoid } from "nanoid";
 
 const OrgDocs = () => {
 const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const dispatch = useDispatch();
       organizationDocs: [
         ...prev.organizationDocs,
         {
-          id: crypto.randomUUID(),
+         id: nanoid(),
           title: "",
           file: null,
         },
@@ -65,7 +66,7 @@ const dispatch = useDispatch();
   const [orgDocs, setOrgDocs] = useState({
              organizationDocs:[
                  {
-        id: crypto.randomUUID(),
+        id: nanoid(),
         file:"",
         title:""
       }
@@ -112,7 +113,7 @@ const handleSave = async () => {
       setOrgDocs({
         organizationDocs: [
           {
-            id: crypto.randomUUID(),
+           id: nanoid(),
             title: "",
             file: null,
           },

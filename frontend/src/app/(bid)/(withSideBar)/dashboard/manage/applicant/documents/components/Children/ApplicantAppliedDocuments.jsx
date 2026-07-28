@@ -61,7 +61,7 @@ console.log(awardLoading, "awardLoadingStat")
     setAwardConfirmationModalOpen(false);
   }
 
-  }
+  } 
   // HANDLE AWARD END
 if(awardLoading){
       return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
