@@ -16,7 +16,7 @@ const page = () => {
    <Hero></Hero>  
    <TechnicalSpecification></TechnicalSpecification>
    <TeamSection></TeamSection>
-   <GalleryPage></GalleryPage>
+   {/* <GalleryPage></GalleryPage> */}
    <NewsEventsSection></NewsEventsSection>
    {/* <TeamSection></TeamSection>
    <ProjectTeam></ProjectTeam>
