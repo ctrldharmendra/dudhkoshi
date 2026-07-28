@@ -1653,7 +1653,6 @@ if(!hasViewPermission) return res.json(new ApiError(403, [],"No Permission To Vi
     const offset = (page - 1) * limit;
 
     //SELECT QUERY 
-   // SELECT QUERY
 let selectQuery = `
   SELECT
     bm.id,
@@ -1707,80 +1706,60 @@ let selectQuery = `
     -- Exclude bids already applied by the logged-in user
     AND ba.id IS NULL
 `;
-
 const selectValues = [loggedInUserId];
 
 if (search) {
-  countQuery += ` AND bm.title LIKE ?`;
-  countValues.push(`%${search}%`);
+  selectQuery += ` AND bm.title LIKE ?`;   
+  selectValues.push(`%${search}%`);
 }
-
 if (status) {
-  countQuery += ` AND bm.status = ?`;
-  countValues.push(status);
+  selectQuery += ` AND bm.status = ?`;
+  selectValues.push(status);
 }
-
 if (fromDate) {
-  countQuery += ` AND bm.created_at >= ?`;
-  countValues.push(fromDate);
+  selectQuery += ` AND bm.created_at >= ?`;
+  selectValues.push(fromDate);
 }
-
 if (toDate) {
-  countQuery += ` AND bm.created_at <= ?`;
-  countValues.push(toDate);
+  selectQuery += ` AND bm.created_at <= ?`;
+  selectValues.push(toDate);
 }
 
-// Pagination
-selectQuery += `
-  ORDER BY bm.created_at DESC
-  LIMIT ?
-  OFFSET ?
-`;
-
+// Pagination —
+selectQuery += ` ORDER BY bm.created_at DESC LIMIT ? OFFSET ?`;
 selectValues.push(limit);
 selectValues.push(offset);
 
 const [bids] = await pool.query(selectQuery, selectValues);
 
-    // ---------------- COUNT QUERY ----------------
-
-   let countQuery = `
+let countQuery = `
   SELECT COUNT(DISTINCT bm.id) AS total
-FROM bid_master bm
-
-LEFT JOIN bid_applications ba
-  ON ba.bid_id = bm.id
- AND ba.applicant_user_id = ?
-
-WHERE 1=1
-
-AND (
+  FROM bid_master bm
+  LEFT JOIN bid_applications ba
+    ON ba.bid_id = bm.id
+   AND ba.applicant_user_id = ?
+  WHERE 1=1
+  AND (
     bm.award_status IS NULL
     OR bm.award_status = 'NOT_AWARDED'
-)
-
-AND bm.closeDate >= NOW()
-
-AND ba.id IS NULL
+  )
+  AND bm.closeDate >= NOW()
+  AND ba.id IS NULL
 `;
-
 const countValues = [loggedInUserId];
 
 if (search) {
   countQuery += ` AND bm.title LIKE ?`;
   countValues.push(`%${search}%`);
 }
-
 if (status) {
   countQuery += ` AND bm.status = ?`;
   countValues.push(status);
 }
-
 if (fromDate) {
   countQuery += ` AND bm.created_at >= ?`;
   countValues.push(fromDate);
 }
-
 if (toDate) {
   countQuery += ` AND bm.created_at <= ?`;
   countValues.push(toDate);
