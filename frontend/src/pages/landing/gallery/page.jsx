@@ -48,7 +48,7 @@ export default async function GalleryPage() {
         '--textColorOnLightBg': '#45484D',
       }}
     >
-      <GalleryClient initialGallery={galleryData} />
+      {/* <GalleryClient initialGallery={galleryData} /> */}
     </main>
   );
 }
