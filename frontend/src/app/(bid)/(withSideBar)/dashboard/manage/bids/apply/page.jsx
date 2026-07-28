@@ -100,11 +100,17 @@ const Page = () => {
   }, [bidPage, debouncedSearch, limit, dateFilter.from, dateFilter.to, pathname, router, permissionChecked, canViewBid]);
 
   const columns = useMemo(() => [
-    {
-      id: "serial",
-      header: "#",
-      cell: ({ row }) => row.index + 1 + (bidPage - 1) * limit,
-    },
+{
+  id: "serial",
+  header: "#",
+  cell: ({ row, table }) => {
+    const visibleIndex = table
+      .getRowModel()
+      .rows.findIndex(r => r.id === row.id);
+
+    return visibleIndex + 1 + (bidPage - 1) * limit;
+  },
+},
     {
       accessorKey: "title",
       header: "Bid Title",

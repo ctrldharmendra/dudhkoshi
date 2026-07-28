@@ -50,7 +50,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 
 
-    if(!name || !tokenFromFrontend) return res.json(new ApiError(400, "", "Required Name, Password and valid token. ")) 
+    if(!name || !tokenFromFrontend || !orgName) return res.json(new ApiError(400, "", "Name, Password Org. Name, Owner Name, PAN Required ")) 
     if(panNo.length < 9 || panNo.length > 9) return res.json(new ApiError(400, "", "Invalid Pan Number")) 
     if(password.length < 9 || password.length > 20) return res.json(new ApiError(400, "", "Password Must be between 9 to 20 characters.")) 
       

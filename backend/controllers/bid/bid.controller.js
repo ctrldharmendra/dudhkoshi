@@ -564,6 +564,8 @@ const getAllBids = asyncHandler(async (req, res) => {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 4;
 
+    // console.log(limit, "limit")
+
     const search = req.query.search || "";
     const status = req.query.status || "";
     const fromDate = req.query.from || "";
@@ -702,6 +704,7 @@ if(!hasViewPermission) return res.json(new ApiError(403, [],"No Permission To Vi
     const [[countResult]] = await pool.query(countQuery, countValues);
 
     const total = countResult.total;
+    
 
     return res.status(200).json(
       new ApiResponse(

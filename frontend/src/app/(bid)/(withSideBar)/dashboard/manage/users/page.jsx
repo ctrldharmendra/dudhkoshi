@@ -22,6 +22,10 @@ import { useRouter } from 'next/navigation';
 import { getRolePermissionLoggedInUser } from "@/app/(bid)/redux/slices/rolesAndPermissionSlice";
 import {  hasPermission } from '@/helper/helper';
 import TinyLoader from '@/components/reusable/loader/TinyLoader';
+import { setIsAddOpened } from '@/app/(bid)/redux/slices/activitySlice';
+import Modal from '@/components/adminComponents/modal/Modal';
+import { FaUserEdit } from 'react-icons/fa';
+import AddUser from './components/AddUser';
 
 
 
@@ -36,6 +40,7 @@ const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPerm
 const { loadingOfGetRolePermission } = useSelector((state) => state.roleAndPermission);
 // console.log(permissionOfLoggedInRoleOfUser)
 
+  const isAddOpened = useSelector((state) => state?.activity?.isAddOpened);    //isEdit popup opened?
 
 
   
@@ -51,6 +56,7 @@ const { loadingOfGetRolePermission } = useSelector((state) => state.roleAndPermi
                     withCredentials: true,
                 }
             );
+            // console.log(data?.data, "api")
             setUsers(data?.data)
         } catch(error){
 
@@ -110,6 +116,17 @@ if (loadingOfGetRolePermission) {
     
 
  <div className=" mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700 px-4 sm:px-6 lg:px-8 py-6">
+
+      <Modal
+        isModalOpen={isAddOpened}
+        onClose={() => dispatch(setIsAddOpened(false))}
+        icon={<FaUserEdit />}
+        // title="Update Details"
+        // description="You can Only Update Role of a User."
+      >
+        <AddUser></AddUser>
+      </Modal>
+
         {/* HEADER */}
         <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-1">
           <div>
@@ -124,6 +141,7 @@ if (loadingOfGetRolePermission) {
       
           {
             isThisRoleHasAddUserPermission &&     <button
+                      onClick={()=>dispatch(setIsAddOpened(true))}
             
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl font-bold shadow-lg flex items-center gap-2 transition-all hover:scale-105 w-full sm:w-auto justify-center text-sm sm:text-base"
           >

@@ -648,10 +648,21 @@ const RegistrationPage = ({ token }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // console.log(formData.phnNumber, "phn from frone")
+
     if (formData.password !== cpassword)
       return seterror("Password and Confirm Password Must Match.");
     if (formData.panNo.length !== 9) {
       return seterror("A Valid PAN Number is Required of 9 digits.");
+    }
+    if (!formData.orgName.length) {
+      return seterror("Organization  Name Required");
+    }
+    if (!formData.ownerName.length) {
+      return seterror("Organization Owner Name Required");
+    }
+    if (!formData.contactPersonsEmail.length) {
+      return seterror("Organization Email Required");
     }
 
     // if dob is not 18+ then show error
@@ -863,7 +874,7 @@ const RegistrationPage = ({ token }) => {
           <div className="grid grid-cols-1 gap-5">
             <div>
               <label className={labelClass}>
-                Organization Name 
+                Organization Name  <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -878,7 +889,7 @@ const RegistrationPage = ({ token }) => {
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               <div>
                 <label className={labelClass}>
-                  Owner Name 
+                  Owner Name   <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
@@ -890,13 +901,27 @@ const RegistrationPage = ({ token }) => {
                 />
               </div>
 
-              <div>
+              {/* <div>
                 <label className={labelClass}>Organizational Email</label>
                 <input
                   type="email"
                   name="email"
                   placeholder="email@organization.com"
                   value={formData.email}
+                  onChange={handleChange}
+                  className={inputClass}
+                />
+              </div> */}
+
+                            <div>
+                <label className={labelClass}>
+                  Phone Number
+                </label>
+                <input
+                  type="text"
+                  name="phnNumber"
+                  placeholder="+977 9841 23456"
+                  value={formData.phnNumber}
                   onChange={handleChange}
                   className={inputClass}
                 />
@@ -973,7 +998,7 @@ const RegistrationPage = ({ token }) => {
 
             <div>
               <label className={labelClass}>
-                Email Address
+                Email Address  <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"

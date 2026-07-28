@@ -222,7 +222,7 @@ if (loadingOfGetRolePermission || loggedInUserBasicDataLoading || updateLoggedIn
         {/* PERMISSION ACCORDION */}
 
         <div className="rounded-2xl shadow-sm border overflow-hidden" style={{background:"var(--whiteBg)",borderColor:"#e5e7eb"}}>
-
+{/* 
 
           <button
             onClick={() => setPermissionOpen(!permissionOpen)}
@@ -237,7 +237,7 @@ if (loadingOfGetRolePermission || loggedInUserBasicDataLoading || updateLoggedIn
 
             <FiChevronDown className={`${permissionOpen ? "rotate-180" : ""} transition-transform`} />
 
-          </button>
+          </button> */}
 
 
 

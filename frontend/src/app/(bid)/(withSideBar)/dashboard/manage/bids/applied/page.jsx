@@ -139,15 +139,17 @@ params.set("to", dateFilter.to);
 
     const columns = useMemo(
   () => [
-    {
-      id: "serial",
-      header: "#",
-      cell: ({ row, table }) =>
-        row.index +
-        1 +
-        table.getState().pagination.pageIndex *
-          table.getState().pagination.pageSize,
-    },
+{
+  id: "serial",
+  header: "#",
+  cell: ({ row, table }) => {
+    const visibleIndex = table
+      .getRowModel()
+      .rows.findIndex(r => r.id === row.id);
+
+    return visibleIndex + 1 + (bidPage - 1) * limit;
+  },
+},
 
     {
       accessorKey: "title",
@@ -209,7 +211,25 @@ params.set("to", dateFilter.to);
     </button>
   </Link>
 ) : (
-    isExpired ? (
+       <button className="px-2 text-[15px] py-1 rounded-md bg-red-200 hover:underline cursor-pointer text-red-600 rounded-md">
+     Not Awarded to Anyone  
+    </button>
+);
+      },
+    },
+  
+    {
+      accessorKey: "created_at",
+      header: "Created",
+      cell: ({ getValue }) =>
+        new Date(getValue()).toLocaleDateString("en-GB"),
+    },
+    {
+      accessorKey: "",
+      header: "Bid Status",
+      cell: ({ row }) => {
+          const isExpired = new Date() > new Date(row?.original?.closeDate);
+      return    isExpired ? (
       <div className="">
         <button className="px-2 text-[15px] py-1 rounded-md bg-red-100 text-red-600 rounded-md">
           Closed
@@ -220,15 +240,7 @@ params.set("to", dateFilter.to);
       Active
       </button>
     )
-);
       },
-    },
-  
-    {
-      accessorKey: "created_at",
-      header: "Created",
-      cell: ({ getValue }) =>
-        new Date(getValue()).toLocaleDateString("en-GB"),
     },
 
     {
@@ -287,7 +299,7 @@ params.set("to", dateFilter.to);
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
   });
 
 
