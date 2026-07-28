@@ -1,9 +1,5 @@
 import React from 'react';
 import GalleryClient from './GalleryClient';
-import img1 from "../../../../public/landing/gallery/img1.png"
-import img2 from "../../../../public/landing/gallery/img2.png"
-import img3 from "../../../../public/landing/gallery/img4.jpg"
-
 
 // SSR Data Fetcher function
 async function getGalleryData() {
@@ -14,7 +10,7 @@ async function getGalleryData() {
   return [
     {
       id: 1,
-      image: img3,
+      image: "/landing/gallery/img4.jpg",
       title: "Dam & Hydropower Reservoir",
       category: "infrastructure",
     },
@@ -26,13 +22,13 @@ async function getGalleryData() {
     },
     {
       id: 3,
-      image:img1,
+      image:"/landing/gallery/img1.png",
       title: "Local Hydropower Valley",
       category: "Communities",
     },
     {
       id: 4,
-      image: img2,
+      image: "/landing/gallery/img2.png",
       title: "Site Engineering Inspection",
       category: "infrastructure",
     },
