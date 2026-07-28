@@ -1,5 +1,5 @@
 import React from 'react';
-import GalleryClient from './GalleryClient';
+// import GalleryClient from './GalleryClient';
 
 // SSR Data Fetcher function
 async function getGalleryData() {
