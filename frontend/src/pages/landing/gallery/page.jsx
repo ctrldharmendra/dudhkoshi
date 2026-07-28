@@ -1,16 +1,8 @@
 
-export const dynamic = 'force-dynamic'
 import React from 'react';
-// import GalleryClient from './GalleryClient';
+import GalleryClient from './GalleryClient';
 
-
-// SSR Data Fetcher function
-async function getGalleryData() {
-// Replace this array or fetch call with your backend CMS or API endpoint:
-// const res = await fetch('https://api.yourdomain.com/gallery', { cache: 'no-store' });
-// return res.json();
-
-return [
+const galleryData = [
   {
     id: 1,
     image: "/landing/gallery/img4.jpg",
@@ -25,7 +17,7 @@ return [
   },
   {
     id: 3,
-    image:"/landing/gallery/img1.png",
+    image: "/landing/gallery/img1.png",
     title: "Local Hydropower Valley",
     category: "Communities",
   },
@@ -36,22 +28,17 @@ return [
     category: "infrastructure",
   },
 ];
-}
-export default async function GalleryPage() {
 
-  // Fetched server-side on each request
-  const galleryData = await getGalleryData();
-
-  // console.log(galleryData)
+export default function GalleryPage() {
   return (
-    <main 
+    <main
       className="min-h-screen bg-gradient-to-b from-white via-sky-50/40 to-white font-sans antialiased"
       style={{
         '--landingPagePrimaryColor': '#1E7EBB',
         '--textColorOnLightBg': '#45484D',
       }}
     >
-      {/* <GalleryClient initialGallery={galleryData} /> */}
+      <GalleryClient initialGallery={galleryData} />
     </main>
   );
 }
