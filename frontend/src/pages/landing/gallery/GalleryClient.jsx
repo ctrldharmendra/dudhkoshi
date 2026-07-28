@@ -59,7 +59,7 @@ export default function GalleryClient({ initialGallery }) {
           </span>
 
           <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
-            {categories.map((cat) => {
+            {categories?.map((cat) => {
               const isActive = activeCategory.toLowerCase() === cat.toLowerCase();
               return (
                 <button
@@ -99,7 +99,7 @@ export default function GalleryClient({ initialGallery }) {
       </div>
 
       {/* GALLERY DISPLAY AREA */}
-      {filteredGallery.length === 0 ? (
+      {filteredGallery?.length === 0 ? (
         <div className="text-center py-20 text-gray-500 text-sm">
           No images available in this category.
         </div>
@@ -107,7 +107,7 @@ export default function GalleryClient({ initialGallery }) {
         
         /* 1. GRID VIEW MODE */
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 animate-fadeIn">
-          {filteredGallery.map((item) => (
+          {filteredGallery?.map((item) => (
             <div 
               key={item.id}
               className="group relative h-64 rounded-2xl overflow-hidden shadow-md border border-white/60 bg-gray-100"
@@ -133,8 +133,8 @@ export default function GalleryClient({ initialGallery }) {
         <div className="relative flex flex-col items-center">
           
           <div className="relative w-full h-[320px] sm:h-[420px] md:h-[500px] flex items-center justify-center overflow-hidden py-4">
-            {filteredGallery.map((item, index) => {
-              const total = filteredGallery.length;
+            {filteredGallery?.map((item, index) => {
+              const total = filteredGallery?.length;
               
               // Determine index position relative to center image
               let position = "hidden"; // default state for non-visible slides
@@ -196,7 +196,7 @@ export default function GalleryClient({ initialGallery }) {
 
           {/* Bottom Progress Bar Indicators */}
           <div className="flex items-center justify-center gap-2 mt-8">
-            {filteredGallery.map((_, idx) => (
+            {filteredGallery?.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentIndex(idx)}
