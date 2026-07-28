@@ -1,7 +1,9 @@
 import React from 'react';
 // import GalleryClient from './GalleryClient';
 
-// SSR Data Fetcher function
+
+export default async function GalleryPage() {
+  // SSR Data Fetcher function
 async function getGalleryData() {
   // Replace this array or fetch call with your backend CMS or API endpoint:
   // const res = await fetch('https://api.yourdomain.com/gallery', { cache: 'no-store' });
@@ -35,7 +37,6 @@ async function getGalleryData() {
   ];
 }
 
-export default async function GalleryPage() {
   // Fetched server-side on each request
   const galleryData = await getGalleryData();
 
