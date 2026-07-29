@@ -52,7 +52,7 @@ const baseContentPath = process.env.NEXT_PUBLIC_BASE_CONTENT_URL
               <div className="flex items-center gap-2 mb-1.5 flex-wrap">
                 {renderFieldTypeBadge(field.field_type)}
                 <h4 className="text-sm font-black text-slate-700 capitalize">
-                 "{field.field_name}"
+                 {field.field_name}
                 </h4>
               </div>
 
