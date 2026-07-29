@@ -29,6 +29,10 @@ const nextConfig = {
       hostname: "localhost",
       port: "5001",
     },
+          {
+        protocol: "https",
+        hostname: "dudhkoshi.gyanbato.com",
+      },
     ],
   },
 
@@ -47,6 +51,10 @@ const nextConfig = {
             // Production backend
             // : "https://api.aayumalunhydro.com.np/api/:path*",
             : "http://localhost:5001/api/:path*",
+      },
+            {
+        source: "/uploads/:path*",
+        destination: "http://localhost:5001/uploads/:path*",
       },
     ];
   },
