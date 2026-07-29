@@ -139,18 +139,24 @@ params.set("to", dateFilter.to);
 
     const columns = useMemo(
   () => [
+// {
+//   id: "serial",
+//   header: "#",
+//   cell: ({ row, table }) => {
+//     const visibleIndex = table
+//       .getRowModel()
+//       .rows.findIndex(r => r.id === row.id);
+
+//     return visibleIndex + 1 + (bidPage - 1) * limit;
+//   },
+// },
 {
   id: "serial",
   header: "#",
-  cell: ({ row, table }) => {
-    const visibleIndex = table
-      .getRowModel()
-      .rows.findIndex(r => r.id === row.id);
-
-    return visibleIndex + 1 + (bidPage - 1) * limit;
+  cell: ({ row }) => {
+    return (bidPage - 1) * limit + row.index + 1;
   },
 },
-
     {
       accessorKey: "title",
       header: "Bid Title",
@@ -283,7 +289,7 @@ params.set("to", dateFilter.to);
       },
     },
   ],
-  []
+  [bidPage, limit]
 );
 
 
