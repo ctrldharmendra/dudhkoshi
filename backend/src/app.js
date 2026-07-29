@@ -23,7 +23,10 @@ app.use(requestIp.mw());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: [
+      "https://dudhkoshi.gyanbato.com",
+      "http://localhost:3000",
+    ],
     credentials: true, // needed for cookies/auth sessions
   })
 );
