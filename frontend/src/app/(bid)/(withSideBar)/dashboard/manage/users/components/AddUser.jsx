@@ -1,5 +1,10 @@
+import { setIsAddOpened } from "@/app/(bid)/redux/slices/activitySlice";
+import { createUserByAdmin, getAllUsers } from "@/app/(bid)/redux/slices/registerSlice";
 import { getAllRoleWithItsPermission } from "@/app/(bid)/redux/slices/rolesAndPermissionSlice";
+import TinyLoader from "@/components/reusable/loader/TinyLoader";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import {
   HiOutlineUser,
   HiOutlineMail,
@@ -11,9 +16,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 const AddUser = ({ roles = [] }) => {
 
-const dispatch = useDispatch()
-    const [selectedRole, setSelectedRole] = useState("");   
+const dispatch = useDispatch()   
+    const router = useRouter();
 
+    const createUserByAdminLoading = useSelector((state) => state?.registration?.createUserByAdminLoading);  //loading state creating user 
+    const allUsersLoading = useSelector((state) => state?.registration?.allUsersLoading);  //loading state creating user
 
   const [formData, setFormData] = useState({
     name: "",
@@ -21,7 +28,9 @@ const dispatch = useDispatch()
     gender: "",
     password: "",
     role_id: "",
+    cPassword:"",
   });
+
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -30,12 +39,24 @@ const dispatch = useDispatch()
     }));
   };
 
-  const handleSubmit = (e) => {
+
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(formData);
+    if(formData.password.length <9 ) return toast.error("Password must be atleast 9 character.")
+    if(formData.cPassword !== formData.password) return toast.error("Pasword and Confirm Password did not match.")
+   
 
-    // dispatch(addUser(formData))
+  const result = await dispatch(createUserByAdmin({formData}))
+  if (createUserByAdmin.fulfilled.match(result)) {
+      dispatch(getAllUsers({}));
+    toast.success("User Created Successfully.")
+    dispatch(setIsAddOpened(false))
+    router.refresh();
+  }
+   
+
   };
 
     const allRoleWithPermission = useSelector((state) => state?.roleAndPermission?.RoleWithItsPermission);
@@ -47,8 +68,16 @@ useEffect(() => {
 }, [dispatch, allRoleWithPermission]);
 
 
+// if loading show loader 
+if (createUserByAdminLoading || allUsersLoading) {
+  return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
+   <TinyLoader></TinyLoader>
+  </div>;
+}
+
+
   return (
-    <div className="bg-white rounded-xl sm:rounded-2xl border border-slate-200 shadow-sm p-5 sm:p-8">
+    <div className=" rounded-xl sm:rounded-2xl ">
 
       <h2 className="text-xl font-bold text-slate-800 mb-6">
         Add User
@@ -138,8 +167,9 @@ useEffect(() => {
 
 
           <select
-  value={selectedRole}
-  onChange={(e) => setSelectedRole(Number(e.target.value))}
+           name="role_id"
+  value={Number(formData.role_id)}
+  onChange={handleChange}
   className="w-full border rounded-lg px-3 py-2"
 >
   <option value="">
@@ -147,12 +177,14 @@ useEffect(() => {
   </option>
 
   {allRoleWithPermission?.map((role) => (
-    <option
+role?.roleName !== "bidders" && role?.roleName !== "bidder" && (
+      <option
       key={role.roleId}
       value={role.roleId}
     >
       {role.roleName}
     </option>
+  )
   ))}
 
 </select>
@@ -183,6 +215,34 @@ useEffect(() => {
                 type="password"
                 name="password"
                 value={formData.password}
+                onChange={handleChange}
+                placeholder="Enter password"
+                className="w-full bg-transparent outline-none text-slate-800"
+              />
+            </div>
+          </div>
+          {/* c pass  */}
+          <div className="flex items-center gap-4 border border-slate-200 rounded-xl p-4 bg-slate-50">
+
+            <div
+              className="rounded-full p-3"
+              style={{
+                backgroundColor: "var(--iconBgColro)",
+                color: "var(--iconColor)",
+              }}
+            >
+              <HiOutlineLockClosed className="w-6 h-6" />
+            </div>
+
+            <div className="flex-1">
+              <label className="text-sm text-slate-500">
+               Confirm  Password
+              </label>
+
+              <input
+                type="password"
+                name="cPassword"
+                value={formData.cPassword}
                 onChange={handleChange}
                 placeholder="Enter password"
                 className="w-full bg-transparent outline-none text-slate-800"

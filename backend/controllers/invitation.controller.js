@@ -42,7 +42,7 @@ const frontendUrl = process.env.FRONTEND_URL;
 
 // Logged in usermust have access to "create_user"  || TO GENERATE LINK 
 const userWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
-if(!userWithPermission || userWithPermission.length<=1) return res.json(new ApiResponse(403, "No Any Permission!"))
+if(!userWithPermission || userWithPermission.length === 0) return res.json(new ApiResponse(403, "No Any Permission!"))
 
     // if no "crete_user" permission then show error 
 const hasCreateUserPermission = userWithPermission.some(
@@ -126,7 +126,7 @@ const [createdInvite] = await pool.query(
 const getAllInvitation = asyncHandler(async (req, res)=>{
     // must have access to "view_invitation"
 const userWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
-if(!userWithPermission || userWithPermission.length<=1) return res.json(new ApiResponse(403, "No Any Permission!"))
+if(!userWithPermission || userWithPermission.length === 0) return res.json(new ApiResponse(403, "No Any Permission!"))
 
     // if no "view_Invitation" permission then show error 
 const hasViewInvitationLinkPermission = userWithPermission.some(

@@ -103,7 +103,7 @@ const [isDropDownDisabled, setisDropDownDisabled] = useState(true)
     return (
       <div className="flex gap-2 justify-end w-full">
 
-{ isThisRoleHasUpdateRolePermission &&(
+{ isThisRoleHasUpdateRolePermission && row?.original?.roleName!=="admin" && row?.original?.roleName!=="bidder" && (
         <button
         // href={`/dashboard/manage/roles/${role?.roleId}`}
          title={`Edit ${row?.original?.roleName}`}
@@ -116,11 +116,11 @@ const [isDropDownDisabled, setisDropDownDisabled] = useState(true)
         >
         <FaEdit className="text-[var(--adminPrimaryColor)]" />
       </button>
-)
+  )
 
 }
   {
-    isThisRoleHasDeleteRolePermission &&(
+    isThisRoleHasDeleteRolePermission && row?.original?.roleName!=="admin" && row?.original?.roleName!=="bidder" && (
           <button
           
          title={`Delete ${row?.original?.roleName}`}
