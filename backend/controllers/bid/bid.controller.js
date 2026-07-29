@@ -1705,6 +1705,7 @@ let selectQuery = `
 
     -- Only bids whose close date has not passed
     AND bm.closeDate >= NOW()
+    AND bm.openDate <= NOW()
 
     -- Exclude bids already applied by the logged-in user
     AND ba.id IS NULL
@@ -1747,6 +1748,7 @@ let countQuery = `
     OR bm.award_status = 'NOT_AWARDED'
   )
   AND bm.closeDate >= NOW()
+  AND bm.openDate <= NOW()
   AND ba.id IS NULL
 `;
 const countValues = [loggedInUserId];
