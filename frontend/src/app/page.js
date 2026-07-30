@@ -9,6 +9,8 @@ import TeamSection from '@/pages/landing/team/Team'
 import GalleryClient from '@/pages/landing/gallery/GalleryClient'
 import GalleryPage from '@/pages/landing/gallery/page'
 import NewsEventsSection from '@/pages/landing/blog/page'
+import ProjectOverviewSection from '@/pages/landing/projectOverview/page'
+import WaterToWireSection from '@/pages/landing/waterToWire/WaterToWire'
 
 const page = () => {
   return (
@@ -16,8 +18,10 @@ const page = () => {
    <Hero></Hero>  
    <TechnicalSpecification></TechnicalSpecification>
    <TeamSection></TeamSection>
-   {/* <GalleryPage></GalleryPage> */}
+   <GalleryPage></GalleryPage>
    <NewsEventsSection></NewsEventsSection>
+   <ProjectOverviewSection></ProjectOverviewSection>
+   <WaterToWireSection></WaterToWireSection>
    {/* <TeamSection></TeamSection>
    <ProjectTeam></ProjectTeam>
  <TechnicalSpecifications></TechnicalSpecifications>
