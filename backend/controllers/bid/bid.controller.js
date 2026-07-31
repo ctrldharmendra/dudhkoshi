@@ -740,6 +740,7 @@ const getSingleBidForm = asyncHandler(async (req, res)=>{
 // Combine both results into one response object:
    const {id} = req.params; //particular bid id
 
+
    // PERMISSION 
     const roleWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
   if(!roleWithPermission || roleWithPermission.length<=0) return res.json(new ApiResponse(403, "No Any Permission found!"))
@@ -752,6 +753,12 @@ if(!hasViewPermission) return res.json(new ApiError(403, [],"No Permission To Vi
 // PERMISSION END
 
    try {
+// check if this bid has applied any user of not 
+const [isThisBidAppliedByAnyone] = await pool.query(
+  `SELECT id FROM bid_applications WHERE bid_id = ?`,
+  [id]
+)
+// console.log(isThisBidAppliedByAnyone, "isThisBidAppliedByAnyone")
       //  Get main bid information
         const [bidMasterRow] = await pool.query(
             `
@@ -825,6 +832,7 @@ contractNo
         ...bid,
         fields: bidFields,
         attachments:attachments,
+        isThisBidAppliedByAnyone: isThisBidAppliedByAnyone
     };
 
     return res.status(200).json(
@@ -1450,7 +1458,7 @@ const applicantAllDets = {
 });
 
 
-// // how many bid this user has applied | required: userId
+//  how many bid this user has applied | required: userId
 const getBidApplicantsCount = asyncHandler(async (req, res) => {
   try {
 

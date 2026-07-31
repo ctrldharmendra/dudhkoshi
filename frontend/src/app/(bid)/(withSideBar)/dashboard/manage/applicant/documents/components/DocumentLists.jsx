@@ -10,6 +10,7 @@ import ApplicantDetails from './Children/ApplicantDetails'
 import BidDetails from './Children/BidDetails'
 import ApplicantAppliedDocuments from './Children/ApplicantAppliedDocuments'
 import TinyLoader from '@/components/reusable/loader/TinyLoader'
+import { getBidderReproposeDoc } from '@/app/(bid)/redux/slices/bidRepropose/biReproposeSlice'
 
 
 
@@ -22,7 +23,6 @@ const router = useRouter()
   const bidMasterDetails = useSelector((state) => state?.bidApplication?.particularApplicantDocuments?.bidMasterDetails);  //bidMasterDetails
   const awardedBy = useSelector((state) => state?.bidApplication?.particularApplicantDocuments?.awardedBy);  //awardedBy
   const bidWinnerDetails = useSelector((state) => state?.bidApplication?.particularApplicantDocuments?.bidWinnerDetails);  //awardedto , bidWinnerDetails
-
 
     // check if loggedn in user has permission to view "applicants"
     const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
@@ -48,7 +48,9 @@ const router = useRouter()
 // api calling to get particualr applicant's filled document for particular bid 
 useEffect(() => {
     dispatch(getApplicantDocumentForParticularBid({bidId, applicationId}))
-}, [])
+
+  }, [])
+
 
 
 if(particularApplicantDocumentsLoading){
