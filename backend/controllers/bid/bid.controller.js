@@ -1315,14 +1315,14 @@ if (!bidId || !applicationId || isNaN(bidId) || isNaN(applicationId)) {
     // console.log(userWithPermission, "userWithPermission")
 if(!userWithPermission || userWithPermission.length<1) return res.json(new ApiResponse(403, "", "No Any Permission!"))
 
-    // if no "crete_user" permission then show error 
+    // if no "view_applicants" permission then show error 
 const hasViewApplicantsPermission = userWithPermission.some(
     p => p.permission_name === 'view_applicants'
 );
 
-if(!hasViewApplicantsPermission) return res.json(new ApiResponse(403, "", "No Permission To View Applicants."))
+// if(!hasViewApplicantsPermission) return res.json(new ApiResponse(403, "", "No Permission To View Applicants."))
 
-console.log(hasViewApplicantsPermission, "hasViewApplicantsPermission")
+// console.log(hasViewApplicantsPermission, "hasViewApplicantsPermission")
 
 // check if requested bid closed | if closed then only show | check via closeDate field if its greater than today's date
 const [bidDetsWithCloseField] = await pool.query(

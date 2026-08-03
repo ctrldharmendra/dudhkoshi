@@ -46,7 +46,7 @@ useEffect(() => {
     dispatch(getApplicantDocumentForParticularBid({bidId, applicationId}))
 }, [])
 
-
+// console.log(bidDynamicDocumentDetails, "bidDynamicDocumentDetails")
 if(particularApplicantDocumentsLoading){
     return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
    <TinyLoader></TinyLoader>
