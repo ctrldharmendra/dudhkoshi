@@ -12,7 +12,7 @@ import ToastProvider from "@/lib/ToastProvider";
 
 
 const myFont = localFont({
-  src: "../font/KaTeX_Main-Regular.12644167.woff2",
+  src: "../font/Manrope-Regular.woff2",
   variable: "--font-myfont",
 });
 
@@ -35,7 +35,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={myFont.variable}>
+    <html lang="en" className={myFont.className}>
           <head>
         <noscript>
           <style>{`
@@ -54,7 +54,7 @@ export default function RootLayout({ children }) {
         </noscript>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${myFont.variable} antialiased`}
       >
 
 

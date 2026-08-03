@@ -29,7 +29,7 @@ export default function MissionStrategySection() {
 
   return (
     <section 
-      className="w-full missionStrategyBg py-20 px-4 sm:px-6 lg:px-8 font-sans antialiased text-[#45484D]"
+      className="w-full missionStrategyBg py-20 px-4 sm:px-6 lg:px-8  antialiased text-[#45484D]"
     >
       <div className="max-w-7xl mx-auto">
         

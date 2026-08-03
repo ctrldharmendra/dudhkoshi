@@ -4,17 +4,18 @@ import { HiArrowRight, HiLocationMarker } from 'react-icons/hi';
 import Image from 'next/image';
 import heroBottom1 from "../../../public/landing/heroBottom1.png";
 import heroCardImg2 from "../../../public/landing/heroCardImg2.png";
+import StyledSubHeadingLine from './components/StyledSubHeadingLine';
 
 export default function HeroPage() {
   return (
     <div 
-      className="min-h-screen bg-white flex flex-col font-sans antialiased  heroBg"
+      className="min-h-screen bg-white flex flex-col antialiased  heroBg"
     >
       {/* Responsive Navbar */}
       <Navbar />
 
       {/* Main Hero Wrapper */}
-      <main className="flex-1 flex flex-col ">
+      <main className="flex-1 flex flex-col pb-[73px]">
         
         {/* Combined Hero Section (Image Frame holding the Text) */}
         <section className="">
@@ -23,7 +24,7 @@ export default function HeroPage() {
           <div 
             className="relative w-full min-h-[750px] md:min-h-[750px] heroParentStyled overflow-hidden bg-cover bg-center flex flex-col items-center pt-16 px-4 md:px-8"
             style={{
-              backgroundImage: `url('/landing/heroImage.png')`
+              backgroundImage: `url('/landing/heroImage.png')` 
             }}
           >
             {/* 1. Cloudy White Transparency Overlay (Top fading down) */}
@@ -36,28 +37,16 @@ export default function HeroPage() {
             <div className="relative z-10 w-full text-center flex flex-col items-center">
               
               {/* Styled Subheading Line */}
-              <div className="flex items-center justify-center gap-4 mb-6">
-                <div className="hidden sm:flex items-center gap-2">
-                  <span className="h-[1px] w-24 bg-gradient-to-r from-transparent to-[var(--landingPageSecondaryColor)]/40"></span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-[var(--landingPagePrimaryColor)]"></span>
-                </div>
-                <p className="text-[var(--landingPagePrimaryColor)] text-xs  tracking-wider uppercase">
-                  Dudhkhoshi Hydropower Limited
-                </p>
-                <div className="hidden sm:flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[var(--landingPagePrimaryColor)]"></span>
-                  <span className="h-[1px] w-24 bg-gradient-to-l from-transparent to-[var(--landingPageSecondaryColor)]/40"></span>
-                </div>
-              </div>
+<StyledSubHeadingLine text="Dudhkhoshi Hydropower Limited"></StyledSubHeadingLine>
 
               {/* Main Display Headline */}
               <h1 className="text-4xl md:text-6xl lg:text-[70px] font-extrabold tracking-tight leading-tight md:leading-[1.15] max-w-5xl mx-auto">
-                <span className="text-[var(--landingPagePrimaryColor)] block">Clean Energy</span>
-                <span className="text-[var(--textColorOnLightBg)] block">Unstoppable Flow</span>
+                <span className="heroGradientText block">Clean Energy</span>
+                <span className="heroGradientText block">Unstoppable Flow</span>
               </h1>
 
               {/* Subtext Paragraph */}
-              <p className="mt-6 text-sm md:text-base text-[var(--landingPageSecondaryColor)] font-medium leading-relaxed max-w-4xl mx-auto px-4">
+              <p className="mt-6 text-sm md:text-base text-[var(--primaryTextColorLanding)] font-medium leading-relaxed max-w-4xl mx-auto px-4">
                 Dudhkhoshi Hydropower Nepal Pvt. Ltd. is driving Nepal’s clean energy future. Committed to meeting the country’s 
                 expanding power demands, we build sustainable, reliable hydropower solutions rooted in our foundational vision to 
                 harness the nation’s incredible water resources.
@@ -65,7 +54,7 @@ export default function HeroPage() {
 
               {/* Call To Action Button */}
               <div className="mt-8">
-                <button className="inline-flex items-center gap-3 bg-[var(--lightWhite)] text-[var(--landingPagePrimaryColor)] font-bold text-sm py-3 px-6 rounded-full border border-gray-200/80 shadow-md hover:shadow-lg hover:border-gray-300 transition-all duration-200">
+                <button className="inline-flex items-center gap-3 bg-[var(--lightWhite)] text-[var(--primaryTextColorLanding2)] font-bold text-sm py-2 px-6 rounded-full border border-gray-200/80 shadow-md hover:shadow-lg hover:border-gray-300 transition-all duration-200">
                   Get in touch
                   <span className="w-6 h-6 rounded-full bg-[var(--landingPagePrimaryColor)] flex items-center justify-center text-[var(--lightWhite)]">
                     <HiArrowRight className="w-3.5 h-3.5" />
@@ -77,24 +66,29 @@ export default function HeroPage() {
           </div>
 
           {/* Overlapping Glass Cards Grid (Positioned absolutely over the bottom boundary) */}
-          <div className="absolute -bottom-[40px] left-0 right-0 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6 z-20">
+          <div className="absolute -bottom-[40px] left-0 right-0 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-[3fr_2fr_1fr] gap-6 z-20">
             
             {/* Card 1: Solukhumbu Project */}
-            <div className="bg-[var(--lightWhite)]/5 backdrop-blur-sm rounded-3xl p-4 border border-white/40 shadow-xl flex flex-col gap-4 ">
+            <div className="bg-[var(--lightWhite)]/5 backdrop-blur-sm rounded-3xl gap-[12px] p-4 border border-white/40 shadow-xl flex flex-row items-center justify-center ">
               <div className="relative w-full h-36 rounded-2xl overflow-hidden">
                 <Image 
                   src={heroBottom1} 
                   alt="Dudhkhoshi-2" 
                   className="w-full h-full object-cover"
                 />
-                {/* Location Badge */}
-                <span className="absolute top-3 right-3 bg-[var(--lightWhite)] text-[var(--textColorOnLightBg)] text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full flex items-center gap-1 shadow-sm">
-                  <HiLocationMarker className="text-[var(--landingPagePrimaryColor)]" /> SOLUKHUMBU
-                </span>
+
               </div>
-              <div>
-                <h4 className="text-[var(--landingPagePrimaryColor)] font-bold text-sm">Dudhkhoshi-2</h4>
-                <p className="text-[var(--landingPageSecondaryColor)] text-xs mt-0.5">hydropower project</p>
+              <div className="flex flex-col items-center justify-center gap-[28px]">
+                <div>
+                                  {/* Location Badge */}
+                <span className="bg-[var(--lightWhite)] text-[var(--textColorOnLightBg)] text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full flex items-center gap-1">
+                  <HiLocationMarker className="text-[var(--primaryTextColorLanding)] text-[16px]" /> SOLUKHUMBU
+                </span>
+                </div>
+<div>
+                  <h4 className="text-[var(--landingPagePrimaryColor)] font-bold text-sm">Dudhkhoshi-2</h4>
+                <p className="text-[var(--primaryTextColorLanding2)] font-semibold text-xs mt-0.5">hydropower project</p>
+</div>
               </div>
             </div>
 
@@ -105,13 +99,13 @@ export default function HeroPage() {
               </p>
               <div className="mt-6">
                 <h4 className="text-[var(--landingPagePrimaryColor)] font-bold text-sm">PRoR</h4>
-                <p className="text-[var(--landingPageSecondaryColor)] text-xs mt-0.5">optimized project</p>
+                <p className="text-[var(--primaryTextColorLanding2)] font-semibold text-xs mt-0.5">optimized project</p>
               </div>
             </div>
 
             {/* Card 3: Capacity Details */}
-            <div className="bg-[var(--lightWhite)]/5 backdrop-blur-sm rounded-3xl p-4 border border-white/40 shadow-xl flex flex-col gap-4">
-              <div className="relative w-full h-36 rounded-2xl overflow-hidden">
+            <div className="bg-[var(--lightWhite)]/5 backdrop-blur-sm rounded-3xl p-4 border border-white/40 shadow-xl flex flex-col gap-12">
+              <div className="relative w-[133px] h-[82px] rounded-2xl overflow-hidden">
                 <Image 
                   src={heroCardImg2} 
                   alt="River Valley" 
@@ -120,15 +114,10 @@ export default function HeroPage() {
                   height={100}
                   className="w-full h-full object-cover"
                 />
-                {/* Play Badge Icon */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-[var(--lightWhite)] cursor-pointer hover:scale-110 transition-transform">
-                    <span className="ml-0.5 text-xs">▶</span>
-                  </div>
-                </div>
+
               </div>
               <div>
-                <p className="text-[var(--landingPageSecondaryColor)] text-[11px] font-medium uppercase tracking-wider">Total Capacity</p>
+                <p className="text-[var(--primaryTextColorLanding2)] text-[11px] font-semibold">Total Capacity</p>
                 <h4 className="text-[var(--landingPagePrimaryColor)] font-extrabold text-base mt-0.5">
                   97.5 <span className="text-[var(--textColorOnLightBg)] text-xs font-semibold ml-0.5">MW</span>
                 </h4>

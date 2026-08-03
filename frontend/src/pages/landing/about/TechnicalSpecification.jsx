@@ -7,6 +7,7 @@ import SpatialConstraintsSection from './SpatialConstraintsSection';
 import MissionStrategySection from './MissionStrategySection';
 import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
 import StatsBanner from './StatsBanner';
+import StyledSubHeadingWithPill from '../components/StyledSubHeadingWithPill';
 
 export default function TechnicalSpecification() {
   // Accordion Data Array (Easily add more items to test scrollability)
@@ -32,30 +33,32 @@ export default function TechnicalSpecification() {
   return (
     <>
     <section 
-      className="w-full bg-[#F5FAFF] py-16 px-4 sm:px-6 lg:px-8 font-sans antialiased"
+      className="w-full bg-[#F5FAFF] py-16 px-4 sm:px-6 lg:px-8 antialiased"
     >
       <div className="max-w-7xl mx-auto">
         
         {/* Top Centered Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           {/* About Us Pill Header */}
-          <div className="flex items-center justify-center gap-3 mb-6">
+          {/* <div className="flex items-center justify-center gap-3 mb-6">
             <span className="h-[1px] w-20 bg-gradient-to-r from-transparent to-[#1E7EBB]/30"></span>
             <span className="w-2 h-2 rounded-full bg-[var(--landingPagePrimaryColor)]"></span>
             <span className="border border-[var(--landingPagePrimaryColor)] text-[var(--landingPagePrimaryColor)] text-xs font-semibold px-4 py-1.5 rounded-full bg-white shadow-xs">
-              About us
+              About us 
             </span>
             <span className="w-2 h-2 rounded-full bg-[var(--landingPagePrimaryColor)]"></span>
             <span className="h-[1px] w-20 bg-gradient-to-l from-transparent to-[#1E7EBB]/30"></span>
-          </div>
+          </div> */}
+
+          <StyledSubHeadingWithPill text="About us"></StyledSubHeadingWithPill>
 
           {/* Main Title */}
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--landingPagePrimaryColor)] tracking-tight leading-tight mb-4">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--landingPageColorPrimary2)] tracking-tight leading-tight mb-4">
             Empowering Nepal With <br className="hidden sm:inline" /> Clean Hydropower Solutions
           </h2>
 
           {/* Subtitle */}
-          <p className="text-sm md:text-base text-[var(--landingPageSecondaryColor)] leading-relaxed">
+          <p className="text-sm md:text-base text-[var(--textColorOnLightBg)] leading-relaxed">
             Dudhkhoshi Hydropower Nepal Pvt. Ltd. operates the Dudhkhoshi-2 (Jaleshwor) project a 95.7 MW optimized facility engineered for the highest efficiency and reliability.
           </p>
         </div>

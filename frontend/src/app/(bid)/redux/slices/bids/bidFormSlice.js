@@ -102,9 +102,10 @@ export const getParticularBidForm = createAsyncThunk(
     const { data } = await axiosInstance.get(
       `/api/bid/bidform/${id}`
     );
+    console.log(data?.data, "DATA")
       return data?.data;
     } catch (err) {
-      toast.error(err.response?.data?.message || err.message);
+      toast.error(err.response?.data?.errors || "Something Went Wrong.");
       return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
     }
   }
@@ -205,7 +206,7 @@ const bidFormSlice = createSlice({
 
     createBidFormLoading:false,
 
-    particularBidForm:{},
+    particularBidForm:null,
     particularBidFormLoading:false,
 
     activeBidLoading:false,
@@ -216,7 +217,11 @@ const bidFormSlice = createSlice({
     error: "",
     lastFetched: "",
   },
-  reducers: {},
+   reducers: {
+    clearParticularBidForm: (state) => {
+      state.particularBidForm = null
+    }
+  },
 
   extraReducers: (builder) => {
     // GET | GET ALL BID FORM FROM DB
@@ -275,5 +280,5 @@ const bidFormSlice = createSlice({
   },
 });
 
-
+export const { clearParticularBidForm } = bidFormSlice.actions
 export default bidFormSlice.reducer;

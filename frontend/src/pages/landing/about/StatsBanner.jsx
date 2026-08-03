@@ -26,7 +26,7 @@ export default function StatsBanner() {
 
   return (
     <section 
-      className="w-full bg-[var(--landingPagePrimaryColor,#1E7EBB)] py-12 md:py-16 px-4 sm:px-6 lg:px-8 font-sans antialiased text-white"
+      className="w-full bg-[var(--landingPagePrimaryColor,#1E7EBB)] py-12 md:py-16 px-4 sm:px-6 lg:px-8 antialiased text-white"
       style={{
         '--landingPagePrimaryColor': '#1E7EBB',
         '--lightWhite': '#FFFFFF',

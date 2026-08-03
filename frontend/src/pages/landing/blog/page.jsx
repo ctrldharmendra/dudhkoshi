@@ -82,7 +82,7 @@ export default function NewsEventsSection() {
 
   return (
     <section 
-      className="w-full bg-[#f2f7fc] py-16 px-4 sm:px-6 lg:px-8 font-sans antialiased text-[#45484D]"
+      className="w-full bg-[#f2f7fc] py-16 px-4 sm:px-6 lg:px-8 antialiased text-[#45484D]"
       style={{
         '--landingPagePrimaryColor': '#1E7EBB',
         '--textColorOnLightBg': '#45484D',

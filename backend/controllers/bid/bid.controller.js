@@ -760,6 +760,7 @@ const [isThisBidAppliedByAnyone] = await pool.query(
 )
 // console.log(isThisBidAppliedByAnyone, "isThisBidAppliedByAnyone")
       //  Get main bid information
+      let isBidClosed = false;
         const [bidMasterRow] = await pool.query(
             `
             SELECT 
@@ -798,6 +799,15 @@ contractNo
             )
         )
 
+            // STEP 3 — CHECK BID IS STILL OPEN
+    const now = new Date();
+    if (bidMasterRow[0]?.closeDate) {
+      const closeDate = new Date(bidMasterRow[0]?.closeDate);
+      if (now >= closeDate) {
+        isBidClosed = true;
+      }
+    }
+
 
       
         // it has a single row of a bid 
@@ -832,6 +842,7 @@ contractNo
         ...bid,
         fields: bidFields,
         attachments:attachments,
+        isBidClosed: isBidClosed,
         isThisBidAppliedByAnyone: isThisBidAppliedByAnyone
     };
 
@@ -1236,8 +1247,6 @@ if(!hasApplyBidPermission) return res.json(new ApiError(403, [],"No Permission T
 const getBidApplicants = asyncHandler(async (req, res)=>{
   const selectedBidId = req.params.id;
 
-
-
 try {
 
 
@@ -1310,6 +1319,10 @@ if(!userWithPermission || userWithPermission.length<1) return res.json(new ApiRe
 const hasViewApplicantsPermission = userWithPermission.some(
     p => p.permission_name === 'view_applicants'
 );
+
+if(!hasViewApplicantsPermission) return res.json(new ApiResponse(403, "", "No Permission To View Applicants."))
+
+console.log(hasViewApplicantsPermission, "hasViewApplicantsPermission")
 
 // check if requested bid closed | if closed then only show | check via closeDate field if its greater than today's date
 const [bidDetsWithCloseField] = await pool.query(

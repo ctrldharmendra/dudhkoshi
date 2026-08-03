@@ -137,7 +137,7 @@ export default function TeamSection() {
 
   return (
     <section 
-      className="w-full bg-[#D3DEE8] py-16 px-4 sm:px-6 lg:px-8 font-sans antialiased text-[#45484D]"
+      className="w-full bg-[#D3DEE8] py-16 px-4 sm:px-6 lg:px-8  antialiased text-[#45484D]"
       style={{
         '--landingPagePrimaryColor': '#1E7EBB',
         '--landingPageSecondaryColor': '#64748b',

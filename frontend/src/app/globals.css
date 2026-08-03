@@ -56,18 +56,23 @@
   --textColorOnLightBg:#45484D;
   --highlightBg:#FEF5E7;
   --hightlightText:#F59E0B;
+  --primaryTextColorLanding:#45484D;
+  --primaryTextColorLanding2:#565A4A;
+
+  --landingPageColorPrimary2:#175F8C;
+  --halfBorderColor:#186596;
 
 
   /* THESE ARE LANDING PAGE VARIABLE END  */
 }
-
+ 
 
  
 :root {
   --landingPagePrimaryColor: #1e7ebb;
   --landingPageSecondaryColor: #64748b;
   --lightWhite: #ffffff;
-  --textColorOnLightBg: #45484d;
+    --font-myfont: "Manrope";
 }
  
 /* Entrance animation used by the hero content + card row.
@@ -82,6 +87,11 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+.heroGradientText{
+background: linear-gradient(147deg, #1e7ebb, #45484d);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
 }
 /* LANDING PAGE CSS  */
 .heroParentStyled{
@@ -199,7 +209,7 @@ font-size: 19px !important;
 body {
   /* background-color: var(--bg-light); */
   color: var(--text-primary);
-  font-family: var(--font-myfont), sans-serif;
+font-family: var(--font-myfont);
 
     /* background: linear-gradient(
     to top right,

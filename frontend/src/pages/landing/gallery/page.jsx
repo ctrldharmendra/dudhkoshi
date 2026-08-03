@@ -32,7 +32,7 @@ const galleryData = [
 export default function GalleryPage() {
   return (
     <main
-      className="bg-gradient-to-b from-white via-sky-50/40 to-white font-sans antialiased"
+      className="bg-gradient-to-b from-white via-sky-50/40 to-white antialiased"
       style={{
         '--landingPagePrimaryColor': '#1E7EBB',
         '--textColorOnLightBg': '#45484D',

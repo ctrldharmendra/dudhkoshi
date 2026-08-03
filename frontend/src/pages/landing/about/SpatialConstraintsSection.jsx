@@ -7,7 +7,7 @@ import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
 export default function SpatialConstraintsSection() {
   return (
     <section 
-      className="w-full bg-[#F5FAFF] py-16 px-4 sm:px-6 lg:px-8 font-sans antialiased"
+      className="w-full bg-[#F5FAFF] py-16 px-4 sm:px-6 lg:px-8 antialiased"
       style={{
         '--landingPagePrimaryColor': '#1E7EBB',
         '--landingPageSecondaryColor': '#64748b',
