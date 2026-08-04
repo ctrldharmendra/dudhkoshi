@@ -2,6 +2,10 @@
 
 import React, { useState } from 'react';
 import { FiZap, FiArrowRight, FiChevronUp, FiChevronDown, FiArrowDown } from 'react-icons/fi';
+import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
+import Image from 'next/image';
+import waterToWire from "../../../../public/landing/waterToWire/waterToWire.png";
+import PowerEvacuationSection from './export default function PowerEvacuationSection() {';
 
 export default function WaterToWireSection() {
   // Step cards dataset matching the design
@@ -75,32 +79,32 @@ export default function WaterToWireSection() {
 
   return (
     <section 
-      className="w-full bg-[#f8fafc] py-16 px-4 sm:px-6 lg:px-8  antialiased text-[#45484D]"
+      className="max-w-[1440px] mx-auto bg-[white] py-16 px-4 sm:px-6 lg:px-8  antialiased text-[#45484D]"
       style={{
         '--landingPagePrimaryColor': '#1E7EBB',
         '--textColorOnLightBg': '#45484D',
       }}
     >
-      <div className="max-w-6xl mx-auto">
+
         
+      <div className=" mx-auto">
+
         {/* Top Header Label */}
-        <div className="mb-8">
-          <span className="text-[11px] font-bold tracking-widest text-[#1E7EBB] uppercase border-b border-[#1E7EBB]/40 pb-0.5 inline-block">
-            WATER TO WIRE SYSTEM
-          </span>
-        </div>
+   <HrLineWithHeadingText text="Water to Wire System"></HrLineWithHeadingText>
 
         {/* Main Background Canvas Container with Subtle Grid Pattern */}
-        <div className="relative bg-[#f0f7fd]/70 rounded-[32px] p-6 sm:p-10 border border-sky-100 shadow-xs backdrop-blur-xs">
+        <div className="relative  rounded-[16px] overflow-hidden p-6 sm:p-10 border border-[#E5E5EA] shadow-xs backdrop-blur-xs">
           
-          {/* Subtle Background Grid Pattern */}
-          <div 
-            className="absolute inset-0 rounded-[32px] pointer-events-none opacity-20"
-            style={{
-              backgroundImage: 'radial-gradient(#1E7EBB 0.75px, transparent 0.75px)',
-              backgroundSize: '24px 24px'
-            }}
-          />
+
+                            <Image
+        src={waterToWire}
+        width={100}
+        height={100}
+        unoptimized
+        alt="Water to Wire System"
+        className="w-full absolute top-0 left-0 h-full object-cover"
+        >
+        </Image>
 
           {/* Canvas Subtitle */}
           <h3 className="text-xs sm:text-sm font-bold tracking-wider text-slate-600 uppercase mb-8 relative z-10">
@@ -206,8 +210,8 @@ export default function WaterToWireSection() {
             </div>
           </div>
 
+<PowerEvacuationSection></PowerEvacuationSection>
         </div>
-
       </div>
     </section>
   );

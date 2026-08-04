@@ -10,12 +10,14 @@ export default function MapCard({
   height = "h-[450px]" 
 }) {
   return (
-    <div className="relative w-full flex flex-col items-end">
-      {/* Coordinates Pill Badge */}
-      <div className="mb-3 bg-[var(--lightWhite,#FFFFFF)] border border-blue-100/80 shadow-xs px-3.5 py-1.5 rounded-full flex items-center gap-1.5 text-[11px] font-bold text-[var(--landingPagePrimaryColor,#1E7EBB)] tracking-tight">
+    <>
+          {/* Coordinates Pill Badge */}
+      <div className="mb-4 mx-auto border min-h-[33px] w-[fit-content]  border-[#B9D7EA] shadow-xs px-3.5 py-1.5 rounded-full flex items-center gap-1.5 text-[11px] font-bold text-[var(--landingPagePrimaryColor,#1E7EBB)] tracking-tight">
         <HiLocationMarker className="w-3.5 h-3.5 text-[var(--landingPagePrimaryColor,#1E7EBB)]" />
         <span>{coordinates}</span>
       </div>
+    <div className="relative w-full flex flex-col items-end bg-[#DDECF5] p-[16px] rounded-[33px]">
+
 
       {/* Map Container */}
       <div className={`relative w-full ${height} rounded-[32px] overflow-hidden border border-blue-100/60 shadow-lg bg-slate-100 group`}>
@@ -44,7 +46,7 @@ export default function MapCard({
             </button>
             <button 
               type="button" 
-              className="p-2.5 text-gray-700 hover:bg-gray-50 hover:text-[var(--landingPagePrimaryColor,#1E7EBB)] transition-colors"
+              className="p-2.5 text-gray-700 hover:bg-gray-50 hov</>er:text-[var(--landingPagePrimaryColor,#1E7EBB)] transition-colors"
               aria-label="Zoom out"
             >
               <FiMinus className="w-4 h-4" />
@@ -60,6 +62,6 @@ export default function MapCard({
           </button>
         </div> */}
       </div>
-    </div>
+    </div></>
   );
 }

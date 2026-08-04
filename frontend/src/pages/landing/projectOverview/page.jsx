@@ -8,6 +8,8 @@ import {
   FiCpu, 
   FiShare2 
 } from 'react-icons/fi';
+import StyledSubHeadingWithPill from '../components/StyledSubHeadingWithPill';
+import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
 
 export default function ProjectOverviewSection() {
   // Tab Navigation items matching the sample icons & labels
@@ -85,37 +87,35 @@ export default function ProjectOverviewSection() {
 
   return (
     <section 
-      className="w-full bg-[#f8fafc] py-16 px-4 sm:px-6 lg:px-8  antialiased text-[#45484D]"
+      className="w-full bg-[white] py-16 px-4 sm:px-6 lg:px-8  antialiased text-[#45484D]"
       style={{
         '--landingPagePrimaryColor': '#1E7EBB',
         '--textColorOnLightBg': '#45484D',
       }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1438px] mx-auto">
         
-        {/* Top Header Badge Divider */}
-        <div className="relative flex items-center justify-center mb-6">
-          <div className="w-full border-t border-sky-200/80 max-w-xs sm:max-w-md"></div>
-          <span className="absolute bg-[#f8fafc] px-5 py-1 rounded-full border border-sky-300/60 text-[11px] font-semibold text-[#1E7EBB] tracking-wide shadow-2xs">
-            Project Overview
-          </span>
-        </div>
+          <div className="text-center max-w-3xl mx-auto mb-16">
 
-        {/* Section Heading & Subtitle */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1E4D7A] tracking-tight mb-4">
-            Project Overview
+
+          <StyledSubHeadingWithPill text="Project Overview"></StyledSubHeadingWithPill>
+
+          {/* Main Title */}
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--landingPageColorPrimary2)] tracking-tight leading-tight mb-4">
+Project Overview
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-normal">
-            Engineering design data and technical specifications for the Dudhkoshi Run-of-River Hydroelectric Scheme.
+
+          {/* Subtitle */}
+          <p className="text-sm md:text-base text-[var(--textColorOnLightBg)] leading-relaxed">
+Engineering design data and technical specifications for the Dudhkoshi-2 
+Run-of-River Hydroelectric Scheme.
           </p>
         </div>
 
         {/* Technical Parameters Label */}
         <div className="mb-6">
-          <span className="text-[11px] font-bold tracking-widest text-[#1E7EBB] uppercase border-b border-[#1E7EBB]/40 pb-0.5 inline-block">
-            TECHNICAL PARAMETERS
-          </span>
+   <HrLineWithHeadingText text="TECHNICAL PARAMETERS"></HrLineWithHeadingText>
+
         </div>
 
         {/* Main Content Layout Grid */}
@@ -149,7 +149,7 @@ export default function ProjectOverviewSection() {
             <div className="bg-white rounded-[5px] border border-slate-200/80 shadow-xs overflow-hidden transition-all duration-300">
               
               {/* Card Header Banner */}
-              <div className="bg-[#EBF5FB] px-6 py-4 flex items-center gap-3 border-b border-sky-100">
+              <div className="projectOverViewCardTopBg px-6 py-4 flex items-center gap-3 border-b border-sky-100">
                 <div className="w-8 h-8 rounded-lg bg-[#1E7EBB] flex items-center justify-center text-white shrink-0">
                   <ContentIcon className="w-4 h-4" />
                 </div>

@@ -33,9 +33,9 @@ export default function TechnicalSpecification() {
   return (
     <>
     <section 
-      className="w-full bg-[#F5FAFF] py-16 px-4 sm:px-6 lg:px-8 antialiased"
+      className="w-full aboutUsBg py-16 px-4 sm:px-6 lg:px-8 antialiased"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1438px] mx-auto">
         
         {/* Top Centered Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
@@ -70,7 +70,7 @@ export default function TechnicalSpecification() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-[45px] items-stretch">
           
           {/* Left Column: Blue Feature Card (4 cols on lg screens) */}
           <div className="lg:col-span-4 bg-[var(--landingPagePrimaryColor)] text-white rounded-3xl p-8 flex flex-col justify-between shadow-sm">
@@ -81,7 +81,7 @@ export default function TechnicalSpecification() {
               <h3 className="text-2xl font-bold mb-4 leading-snug">
                 Engineering the Future
               </h3>
-              <p className="text-xs text-white/90 leading-relaxed font-normal">
+              <p className="text-[20px] text-white/90 leading-relaxed font-normal">
                 Dudhkhoshi Hydropower Nepal Pvt. Ltd. operates the Dudhkhoshi-2 (Jaleshwor) project a 95.7 MW optimized facility engineered for the highest efficiency and reliability.
               </p>
             </div>
@@ -116,7 +116,7 @@ export default function TechnicalSpecification() {
                     95.7 <span className="text-base font-medium text-gray-500">MW</span>
                   </p>
                 </div>
-                <div className="pt-4 mt-4 border-t border-gray-50">
+                <div className="pt-4 mt-4 border-t border-[#E9F2F8]">
                   <span className="text-[10px] font-bold tracking-wider text-[var(--landingPagePrimaryColor)] uppercase">
                     ANNUAL OUTPUT
                   </span>
@@ -134,8 +134,8 @@ export default function TechnicalSpecification() {
                     83.5 <span className="text-base font-medium text-gray-500">m³/s</span>
                   </p>
                 </div>
-                <div className="pt-4 mt-4 border-t border-gray-50">
-                  <span className="text-[10px] font-bold tracking-wider text-[var(--landingPagePrimaryColor)] uppercase">
+                <div className="pt-4 mt-4 border-t border-[#E9F2F8]">
+                  <span className="text-[10px] font-bold  text-[var(--landingPagePrimaryColor)] uppercase">
                     PEAKING ROR
                   </span>
                 </div>
@@ -152,8 +152,8 @@ export default function TechnicalSpecification() {
                     144.5 <span className="text-base font-medium text-gray-500">M</span>
                   </p>
                 </div>
-                <div className="pt-4 mt-4 border-t border-gray-50">
-                  <span className="text-[10px] font-bold tracking-wider text-[var(--landingPagePrimaryColor)] uppercase">
+                <div className="pt-4 mt-4 border-t border-[#E9F2F8]">
+                  <span className="text-[10px] font-bold  text-[var(--landingPagePrimaryColor)] uppercase">
                     HIGH-DROP HYDRO
                   </span>
                 </div>
@@ -166,9 +166,7 @@ export default function TechnicalSpecification() {
               
               {/* Left text inside bottom card */}
               <div className="md:col-span-5">
-                <span className="text-[10px] font-bold tracking-wider text-[var(--landingPagePrimaryColor)] uppercase">
-                  EST . 2070 B.S.
-                </span>
+                <span className="text-[10px] font-bold text-[var(--landingPagePrimaryColor)] uppercase">EST . 2070 B.S. Unshakable Foundations</span>
                 <h4 className="text-xl font-bold text-[var(--textColorOnLightBg)] mt-2 mb-3">
                   Unshakable Foundations
                 </h4>

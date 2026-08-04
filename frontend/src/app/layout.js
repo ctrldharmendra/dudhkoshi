@@ -54,7 +54,7 @@ export default function RootLayout({ children }) {
         </noscript>
       </head>
       <body
-        className={`${myFont.variable} antialiased`}
+        className={`${myFont.className}`}
       >
 
 

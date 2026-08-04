@@ -88,6 +88,8 @@
     transform: translateY(0);
   }
 }
+
+/* BACKGROUND  */
 .heroGradientText{
 background: linear-gradient(147deg, #1e7ebb, #45484d);
 -webkit-background-clip: text;
@@ -99,6 +101,12 @@ background: linear-gradient(147deg, #1e7ebb, #45484d);
   background-position: center 30%;
   border-radius: 0px 0px 80px 80px;
 }
+.aboutUsBg{
+      background: radial-gradient(ellipse 675px 428px at 70% 70%, #ddf2ffe3 0%, rgb(221 242 255 / 49%) -37%, rgb(221 242 255 / 77%) -60%, #FFFFFF 100%);
+}
+.accordionBg{
+  background: -webkit-linear-gradient(89deg, hsla(0, 0%, 100%, 1) 40%, hsla(203, 100%, 93%, 1) 88%);
+}
 .heroBg{
   background: #FAFAFA;
 background: linear-gradient(178deg,rgba(250, 250, 250, 1) 35%, rgba(221, 236, 245, 1) 100%);
@@ -107,6 +115,29 @@ background: linear-gradient(178deg,rgba(250, 250, 250, 1) 35%, rgba(221, 236, 24
   background: #EBF7FF;
 background: linear-gradient(351deg,rgba(235, 247, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
 }
+.spatialAboutUsBg{
+  background-color: #ffffff;
+  background-image: radial-gradient(
+    ellipse 70% 60% at 52% 100%, 
+    #DDF2FF 0%, 
+    rgba(221, 242, 255, 0) 70%
+  );
+  background-repeat: no-repeat;
+}
+.teamBg{
+    background: linear-gradient(19deg, #b6e0fc6b 14%, #fff 90%);
+}
+.galleryBg{
+  background: conic-gradient(from 11deg at 50% 50%, rgba(255, 255, 255, 1) 15%, rgba(210, 237, 255, 0.86) 46%, rgba(255, 255, 255, 0.65) 82%)
+}
+.newsEventsBg{
+  /* change place 32, 62  */
+  background: radial-gradient(circle at 32% 62%, rgb(221 242 255 / 83%) 25%, rgba(255, 255, 255, 1) 44%, rgba(255, 255, 255, 1) 59%, rgba(255, 255, 255, 1) 100%);
+}
+.projectOverViewCardTopBg{
+  background: linear-gradient(90deg, rgba(255, 255, 255, 1) 12%, rgba(221, 242, 255, 0.79) 85%)
+}
+/* BACKGROUND END  */
 /* LANDING PAGE CSS END */
 .twoLinePara{
      overflow: hidden;
@@ -220,7 +251,7 @@ font-family: var(--font-myfont);
     #ff94f7c4
   ); */
 
-      background: linear-gradient(to top right, #ffffff, #1E7EBB) 0 0 / cover no-repeat fixed;
+      /* background: linear-gradient(to top right, #ffffff, #1E7EBB) 0 0 / cover no-repeat fixed; */
   
 }
 

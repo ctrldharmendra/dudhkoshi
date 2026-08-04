@@ -2,12 +2,13 @@ import React from 'react';
 import MapCard from './MapCard';
 import { FiTriangle, FiDroplet, FiMapPin } from 'react-icons/fi';
 import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
+import { SlLocationPin } from 'react-icons/sl';
 
 
 export default function SpatialConstraintsSection() {
   return (
     <section 
-      className="w-full bg-[#F5FAFF] py-16 px-4 sm:px-6 lg:px-8 antialiased"
+      className="w-full spatialAboutUsBg py-8 px-4 sm:px-6 lg:px-8 antialiased"
       style={{
         '--landingPagePrimaryColor': '#1E7EBB',
         '--landingPageSecondaryColor': '#64748b',
@@ -15,7 +16,7 @@ export default function SpatialConstraintsSection() {
         '--textColorOnLightBg': '#45484D',
       }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1438px] mx-auto">
         
         {/* Section Header */}
                 <div className="mb-4">
@@ -27,10 +28,10 @@ export default function SpatialConstraintsSection() {
           </h2>
 
         {/* Content Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-[45px] items-start">
           
           {/* Left Column: Details Grid & Solukhumbu Card (6 Cols) */}
-          <div className="lg:col-span-6 flex flex-col justify-between gap-6">
+          <div className="lg:col-span-6 mt-[50px] flex flex-col justify-between gap-6">
 
             <div className="grid grid-cols-1 sm:grid-cols-2 ">
 
@@ -107,9 +108,9 @@ export default function SpatialConstraintsSection() {
 
 
             {/* Solukhumbu Info Card */}
-            <div className="bg-[var(--highlightBg)] max-w-[356px] overflow-hidden rounded-2xl border border-[#FDE3C8] flex flex-col items-center text-center shadow-2xs">
-              <div className=" pt-[2px]  w-full flex justify-center text-amber-600 font-bold text-[11px] tracking-wider uppercase mb-2">
-                <FiMapPin className="w-3.5 h-3.5 fill-amber-500 text-amber-600" />
+            <div className="bg-[white] min-h-[93px] max-w-[356px] overflow-hidden rounded-2xl border border-[#FFFFFF] flex flex-col items-center text-center shadow-2xs">
+              <div className=" pt-[2px] items-center bg-[var(--highlightBg)] min-h-[28px] w-full flex gap-3 justify-center text-amber-600 font-bold text-[11px] tracking-wider uppercase mb-2">
+                <SlLocationPin className="w-3.5 h-3.5 fill-amber-500 text-amber-600" />
                 <span>SOLUKHUMBU</span>
               </div>
               <p className="text-[11px] pt-0.5 min-w-full flex justify-center bg-[var(--lightWhite)] text-gray-600 font-medium leading-relaxed max-w-md">
@@ -120,7 +121,7 @@ export default function SpatialConstraintsSection() {
           </div>
 
           {/* Right Column: Reusable Map Component (6 Cols) */}
-          <div className="lg:col-span-6 p-2 bg-[#DDECF5] rounded-2xl">
+          <div className="lg:col-span-6 p-2 rounded-2xl">
             <MapCard height="h-[480px]" />
           </div>
 

@@ -19,9 +19,9 @@ export default function Accordion({ items = [] }) {
         return (
           <div
             key={index}
-            className={`rounded-xl border transition-all duration-200 overflow-hidden ${
+            className={`rounded-xl  transition-all duration-200 overflow-hidden ${
               isOpen
-                ? 'bg-[#EAF3FA] border-transparent'
+                ? 'accordionBg'
                 : 'bg-white border-gray-100 hover:border-gray-200'
             }`}
           >

@@ -8,6 +8,7 @@ import arun from "../../../../public/landing/team/arun.jpg"
 import bikram from "../../../../public/landing/team/bikramgautam.jpg"
 import devendra from "../../../../public/landing/team/devendraadhi.jpeg"
 import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
+import StyledSubHeadingWithPill from '../components/StyledSubHeadingWithPill';
 
 
 // Sample Team Data Array
@@ -38,13 +39,13 @@ const teamMembersData = [
     avatar: abhigya.src,
     photo: abhigya.src,
     bio: [
-      'Abhigya Malla brings extensive financial planning and strategic leadership expertise to the Dudhkoshi Hydropower board.',
-      'Her strategic vision focuses on long-term sustainability, risk management, and fostering key institutional partnerships to ensure optimal project execution.'
+      'Abhigya Malla, Holds Masters in Professional Accountancy and Commerce in Finance (Macquarie University, Australia).',
+      'Vice President/Finance Controller at High Himalaya Hydro Construction Pvt. Ltd. Project developer and youth contractor, involved in Aayu Malun -21 MW, Puwa Khola - 4 MW, Hongu Khola - 28.9 MW, Midim Khola - 3 MW, and Upper Tamor A - 60 MW. Managing Director of Union Hydropower Public Ltd.'
     ],
     metadata: [
-      { label: 'Background', value: 'Finance & Strategy' },
-      { label: 'Experience', value: '12+ Years' },
-      { label: 'Focus', value: 'Corporate Governance & Risk' }
+      { label: 'Background', value: 'Australia Master’s Alumnus' },
+      { label: 'Experience', value: '7+ Years' },
+      { label: 'Focus', value: 'Finance & Contractor' }
     ]
   },
   {
@@ -55,13 +56,13 @@ const teamMembersData = [
     avatar: devendra.src,
     photo: devendra.src,
     bio: [
-      'Devendra Adhikari has been a pivotal force in infrastructure development across Nepal for over two decades.',
-      'His deep domain experience in regulatory affairs and community relations ensures smooth project operations and stakeholder alignment.'
+      'Devendra Adhikari, Holds Masters in Professional Accountancy and Commerce in Finance (Macquarie University, Australia).',
+      'A seasoned entrepreneur with 30+ years of experience in trading, export, agriculture, and real estate; former Director of Lumbini Finance and Lumbini Bikash Bank; active capital market investor and real estate developer.'
     ],
     metadata: [
-      { label: 'Background', value: 'Infrastructure & Policy' },
-      { label: 'Experience', value: '20+ Years' },
-      { label: 'Focus', value: 'Regulatory Affairs' }
+      { label: 'Background', value: 'UK Master’s Alumnus' },
+      { label: 'Experience', value: '30+ Years' },
+      { label: 'Focus', value: 'Real estate & Investor' }
     ]
   },
   {
@@ -72,13 +73,13 @@ const teamMembersData = [
     avatar: bikram.src,
     photo: bikram.src,
     bio: [
-      'Bikram Gautam leads the core engineering team, overseeing hydraulic design, structural modeling, and site execution.',
-      'He brings specialized technical expertise in high-head hydropower systems and tunnelling operations.'
+      'Bikram Gautam, With over 15 years of experience leading large-scale manufacturing and construction teams, He brings deep expertise in the Real Estate and Mines business sectors. ',
+      'He has a strong track record in end-to-end product development, operational leadership, and project execution. His experience includes strategic planning, cross-functional team management, process optimization, and delivering high-quality, cost-effective solutions that drive sustainable business growth and long-term value.'
     ],
     metadata: [
-      { label: 'Background', value: 'Civil & Hydraulic Engineering' },
-      { label: 'Experience', value: '10+ Years' },
-      { label: 'Focus', value: 'PRoR Design & Hydraulics' }
+      { label: 'Background', value: 'Australia Master’s Alumnus' },
+      { label: 'Experience', value: '7+ Years' },
+      { label: 'Focus', value: 'Finance & Contractor' }
     ]
   },
   {
@@ -135,9 +136,10 @@ export default function TeamSection() {
     }
   };
 
+
   return (
     <section 
-      className="w-full bg-[#D3DEE8] py-16 px-4 sm:px-6 lg:px-8  antialiased text-[#45484D]"
+      className="w-full teamBg py-16 px-4 sm:px-6 lg:px-8  antialiased text-[#45484D]"
       style={{
         '--landingPagePrimaryColor': '#1E7EBB',
         '--landingPageSecondaryColor': '#64748b',
@@ -145,20 +147,37 @@ export default function TeamSection() {
         '--textColorOnLightBg': '#45484D',
       }}
     >
+
+          <div className="text-center max-w-3xl mx-auto mb-16">
+
+
+          <StyledSubHeadingWithPill text="Meet our Team"></StyledSubHeadingWithPill>
+
+          {/* Main Title */}
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--landingPageColorPrimary2)] tracking-tight leading-tight mb-4">
+          Meet our team behind our success
+          </h2>
+
+          {/* Subtitle */}
+          <p className="text-sm md:text-base text-[var(--textColorOnLightBg)] leading-relaxed">
+    Meet the multi-disciplinary team of engineers, environmental scientists, and strategic investors driving the 97.5 MW Dudhkoshi vision toward sustainable energy independence.
+          </p>
+        </div>
+
       <div className="max-w-7xl mx-auto">
    <HrLineWithHeadingText text="THE BOARD"></HrLineWithHeadingText>
 
         
         {/* Category Filter Tabs */}
         <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-2 scrollbar-none">
-          <div className="bg-[#B8C8D6]/60 p-1.5 rounded-2xl flex items-center gap-1 border border-white/30 shadow-xs">
+          <div className="bg-[#FFFFFF]/70 p-1.5 rounded-[8px] flex items-center gap-1 border border-white/30 shadow-xs">
             {categories.map((category) => {
               const isActive = activeCategory === category;
               return (
                 <button
                   key={category}
                   onClick={() => handleTabChange(category)}
-                  className={`px-5 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                  className={`px-5 py-2 rounded-[4px] text-xs font-semibold sm:text-sm font-medium transition-all duration-200 cursor-pointer whitespace-nowrap ${
                     isActive
                       ? 'bg-[var(--landingPagePrimaryColor)] text-white shadow-md'
                       : 'text-[#45484D] hover:text-[var(--landingPagePrimaryColor)] hover:bg-white/40'
@@ -172,7 +191,7 @@ export default function TeamSection() {
         </div>
 
         {/* Main Section Outer Container */}
-        <div className="bg-[#C6D4E1]/80 rounded-[32px] p-6 sm:p-8 lg:p-10 border border-white/50 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="bg-[#ffff] rounded-[16px] p-6 sm:p-8 lg:p-10 border border-white/80 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* LEFT SIDE: SELECT PERSONNEL LIST (5 Cols on lg) */}
           <div className="lg:col-span-4 flex flex-col gap-4 border-b lg:border-b-0 lg:border-r border-gray-400/20 pb-6 lg:pb-0 lg:pr-6">
@@ -189,8 +208,8 @@ export default function TeamSection() {
                     onClick={() => handleSelectMember(member)}
                     className={`w-full text-left p-3.5 rounded-2xl flex items-center gap-4 transition-all duration-200 cursor-pointer border ${
                       isSelected
-                        ? 'bg-[#B0C4D5]/90 border-white/60 shadow-xs'
-                        : 'bg-[#C1D0DE]/50 hover:bg-[#B8C9D8]/70 border-transparent'
+                        ? 'bg-[#DDECF5]/90 border-white/60 shadow-xs'
+                        : ' border-[#E9F2F8]'
                     }`}
                   >
                     {/* Member Avatar */}
@@ -198,6 +217,7 @@ export default function TeamSection() {
                       <img 
                         src={member.avatar} 
                         alt={member.name} 
+                        style={{objectPosition: 'top'}}
                         className="w-full h-full object-cover"
                       />
                     </div>
@@ -231,7 +251,7 @@ export default function TeamSection() {
                   <img 
                     src={selectedMember.photo} 
                     alt={selectedMember.name} 
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-top object-cover"
                   />
                 </div>
                 <h3 className="text-xl sm:text-2xl font-bold text-[var(--landingPagePrimaryColor)]">
@@ -246,7 +266,7 @@ export default function TeamSection() {
               <div className="md:col-span-7 flex flex-col justify-between h-full pt-1">
                 
                 {/* Paragraphs */}
-                <div className="flex flex-col gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed font-normal mb-6">
+                <div className="flex flex-col gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed font-semibold mb-6">
                   {selectedMember.bio.map((paragraph, idx) => (
                     <p key={idx}>{paragraph}</p>
                   ))}

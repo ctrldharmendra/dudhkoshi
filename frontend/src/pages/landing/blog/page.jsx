@@ -2,6 +2,8 @@ import React from 'react';
 import { FiArrowRight, FiCalendar } from 'react-icons/fi';
 import img from "../../../../public/landing/gallery/img4.jpg";
 import Image from 'next/image';
+import StyledSubHeadingWithPill from '../components/StyledSubHeadingWithPill';
+import FinancialHighlights from './FinancialHighlights';
 
 export default function NewsEventsSection() {
   // Main featured update cards (Left Grid)
@@ -82,29 +84,26 @@ export default function NewsEventsSection() {
 
   return (
     <section 
-      className="w-full bg-[#f2f7fc] py-16 px-4 sm:px-6 lg:px-8 antialiased text-[#45484D]"
+      className="w-full newsEventsBg py-16 px-4 sm:px-6 lg:px-8 antialiased text-[#45484D]"
       style={{
         '--landingPagePrimaryColor': '#1E7EBB',
         '--textColorOnLightBg': '#45484D',
       }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1440px] mx-auto">
         
-        {/* Top Header Badge Divider */}
-        <div className="relative flex items-center justify-center mb-6">
-          <div className="w-full border-t border-sky-200/80 max-w-xs sm:max-w-md"></div>
-          <span className="absolute bg-[#f2f7fc] px-5 py-1 rounded-full border border-sky-300/60 text-[11px] font-semibold text-[#1E7EBB] tracking-wide shadow-2xs">
-            News And Events
-          </span>
-        </div>
+        <div className="text-center max-w-3xl mx-auto mb-16">
 
-        {/* Section Heading & Subtitle */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#1E4D7A] tracking-tight mb-4">
-            Recent Updates And Milestones
+          <StyledSubHeadingWithPill text="News And Events"></StyledSubHeadingWithPill>
+
+          {/* Main Title */}
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--landingPageColorPrimary2)] tracking-tight leading-tight mb-4">
+         Recent Updates and milestones
           </h2>
-          <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-normal">
-            Meet the multi-disciplinary team of engineers, environmental scientists, and strategic investors driving the 97.5 MW Dudhkoshi vision toward sustainable energy independence.
+
+          {/* Subtitle */}
+          <p className="text-sm md:text-base text-[var(--textColorOnLightBg)] leading-relaxed">
+Meet the multi-disciplinary team of engineers, environmental scientists, and strategic investors driving the 97.5 MW Dudhkoshi vision toward sustainable energy independence.
           </p>
         </div>
 
@@ -140,7 +139,7 @@ export default function NewsEventsSection() {
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-sm font-extrabold text-[#1E3A8A] leading-snug mb-3 hover:text-[#1E7EBB] transition-colors line-clamp-2">
+                  <h3 className="text-sm font-extrabold  text-[#45484D]  leading-snug mb-3 hover:text-[#1E7EBB] transition-colors line-clamp-2">
                     {item.title}
                   </h3>
 
@@ -169,14 +168,21 @@ export default function NewsEventsSection() {
           </div>
 
           {/* RIGHT SIDEBAR COMPACT LIST (4 Cols on lg) */}
-          <div className="lg:col-span-4 flex flex-col gap-6 pt-2 lg:pt-0">
+          <div className="lg:col-span-4 flex flex-col gap-6 pt-2 lg:pt-0 h-full justify-between items-center">
+            <div className="">
             {sidebarNews.map((item) => (
+              <div className='relative min-h-[170px] flex flex-col gap-[11px] '                 key={item.id}> 
+                                                  <span className="text-[10px] font-bold tracking-wider text-[#1E7EBB] uppercase">
+                    {item.category}
+                  </span>
+                  
               <div 
-                key={item.id}
                 className="flex gap-3.5 items-start pb-6 border-b border-slate-200/80 last:border-0 last:pb-0"
               >
+
                 {/* Thumbnail Image */}
                 <div className="w-20 h-16 sm:w-22 sm:h-16 rounded-xl overflow-hidden shrink-0 bg-slate-100 border border-slate-100 shadow-2xs">
+                  
                   <Image
                          width={500}
                       height={500}
@@ -190,23 +196,24 @@ export default function NewsEventsSection() {
 
                 {/* Content */}
                 <div className="flex flex-col gap-1">
-                  <span className="text-[10px] font-bold tracking-wider text-[#1E7EBB] uppercase">
-                    {item.category}
-                  </span>
-                  
+
                   <a href={item.link} className="hover:text-[#1E7EBB] transition-colors">
-                    <h4 className="text-xs font-bold text-[#1E3A8A] leading-snug line-clamp-2">
+                    <h4 className="text-[20px] font-bold  text-[#45484D]  leading-snug line-clamp-2">
                       {item.title}
                     </h4>
                   </a>
 
-                  <div className="flex items-center gap-1 text-[10px] text-slate-400 mt-1">
+                  <div className="flex items-center gap-1 text-[10px] text-[#43474F] mt-1">
                     <FiCalendar className="w-3 h-3 text-slate-400" />
                     <span>{item.date}</span>
                   </div>
                 </div>
               </div>
+              </div>
+
             ))}
+</div>
+            <FinancialHighlights></FinancialHighlights>
           </div>
 
         </div>

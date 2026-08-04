@@ -3,6 +3,9 @@
 import Image from 'next/image';
 import React, { useState, useMemo } from 'react';
 import { FiChevronLeft, FiChevronRight, FiGrid, FiSliders } from 'react-icons/fi';
+import StyledSubHeadingWithPill from '../components/StyledSubHeadingWithPill';
+import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
+import { IoArrowBackOutline, IoArrowForwardSharp } from 'react-icons/io5';
 
 export default  function GalleryClient({ initialGallery }) {
   const [activeCategory, setActiveCategory] = useState("All Photos");
@@ -34,29 +37,30 @@ export default  function GalleryClient({ initialGallery }) {
   const categories = ["All Photos", "Infrastructure", "Communities", "Events"];
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      
-      {/* Top Badge Divider */}
-      <div className="relative flex items-center justify-center mb-6">
-        <div className="w-full border-t border-gray-200/80 max-w-md"></div>
-        <span className="absolute bg-white px-5 py-1 rounded-full border border-gray-300 text-[11px] font-semibold text-[var(--landingPagePrimaryColor,#1E7EBB)] tracking-wide shadow-xs">
-          Gallery
-        </span>
-      </div>
+    <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-      {/* Main Section Heading */}
-      <h2 className="text-3xl md:text-4xl font-extrabold text-center text-[#1e3a8a] mb-10 tracking-tight">
-        Our Visual Journal
-      </h2>
+       <div className="text-center max-w-3xl mx-auto mb-16">
+
+
+          <StyledSubHeadingWithPill text="Gallery"></StyledSubHeadingWithPill>
+
+          {/* Main Title */}
+          <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--landingPageColorPrimary2)] tracking-tight leading-tight mb-4">
+          Our Visual Journal
+          </h2>
+
+        </div>
+
+
+
 
       {/* Subheading & Filter Controls Bar */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-gray-200/60 mb-10">
         
         {/* Left Sub-label & Category Tabs */}
         <div className="flex flex-col gap-3">
-          <span className="text-[10px] font-bold tracking-widest text-[var(--landingPagePrimaryColor,#1E7EBB)] uppercase">
-            PHOTO SLIDE
-          </span>
+     <HrLineWithHeadingText text="Photo Slide"></HrLineWithHeadingText>
+
 
           <div className="flex items-center gap-2 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
             {categories?.map((cat) => {
@@ -172,10 +176,10 @@ export default  function GalleryClient({ initialGallery }) {
                   {position === "left" && (
                     <button
                       onClick={handlePrev}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/70 transition-all cursor-pointer z-40"
+                      className="absolute left-[46px] top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/70 border border-[white]  transition-all cursor-pointer z-40"
                       aria-label="Previous image"
                     >
-                      <FiChevronLeft className="w-5 h-5 text-gray-800" />
+                      <IoArrowBackOutline className="w-5 h-5 text-[white]" />
                     </button>
                   )}
 
@@ -183,10 +187,10 @@ export default  function GalleryClient({ initialGallery }) {
                   {position === "right" && (
                     <button
                       onClick={handleNext}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/70 transition-all cursor-pointer z-40"
+                      className="absolute right-[46px] top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/70 border border-[white]  transition-all cursor-pointer z-40"
                       aria-label="Next image"
                     >
-                      <FiChevronRight className="w-5 h-5 text-gray-800" />
+                      <IoArrowForwardSharp className="w-5 h-5 text-white" />
                     </button>
                   )}
                 </div>
@@ -203,7 +207,7 @@ export default  function GalleryClient({ initialGallery }) {
                 className={`h-1 rounded-full transition-all duration-300 cursor-pointer ${
                   idx === currentIndex
                     ? "w-10 bg-[var(--landingPagePrimaryColor,#1E7EBB)]"
-                    : "w-6 bg-blue-100 hover:bg-blue-200"
+                    : "w-6 bg-white hover:bg-blue-200"
                 }`}
                 aria-label={`Go to slide ${idx + 1}`}
               />
