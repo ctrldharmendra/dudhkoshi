@@ -11,6 +11,10 @@ import GalleryPage from '@/pages/landing/gallery/page'
 import NewsEventsSection from '@/pages/landing/blog/page'
 import ProjectOverviewSection from '@/pages/landing/projectOverview/page'
 import WaterToWireSection from '@/pages/landing/waterToWire/WaterToWire'
+import ContactSection from '@/pages/contact/ContactSection'
+import FaqSection from '@/pages/faq/FaqSection'
+import PreFooterCTA from '@/pages/landing/PreFooterCTA/PreFooterCTA'
+import Footer from '@/pages/landing/footer/Footer'
 
 const page = () => {
   return (
@@ -22,6 +26,10 @@ const page = () => {
    <NewsEventsSection></NewsEventsSection>
    <ProjectOverviewSection></ProjectOverviewSection>
    <WaterToWireSection></WaterToWireSection>
+   <ContactSection></ContactSection>
+   <FaqSection></FaqSection>
+   <PreFooterCTA></PreFooterCTA>
+   <Footer></Footer>
    {/* <TeamSection></TeamSection>
    <ProjectTeam></ProjectTeam>
  <TechnicalSpecifications></TechnicalSpecifications>

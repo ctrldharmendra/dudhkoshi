@@ -32,6 +32,7 @@ const galleryData = [
 export default function GalleryPage() {
   return (
     <main
+    id="gallery"
       className="galleryBg"
       style={{
         '--landingPagePrimaryColor': '#1E7EBB',

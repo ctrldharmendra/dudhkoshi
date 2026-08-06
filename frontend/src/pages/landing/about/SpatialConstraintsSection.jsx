@@ -31,11 +31,11 @@ export default function SpatialConstraintsSection() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-[45px] items-start">
           
           {/* Left Column: Details Grid & Solukhumbu Card (6 Cols) */}
-          <div className="lg:col-span-6 mt-[50px] flex flex-col justify-between gap-6">
+          <div className="lg:col-span-6 mt-[50px] flex flex-col justify-between gap-6 h-[91%]">
 
             <div className="grid grid-cols-1 sm:grid-cols-2 ">
 
-  <div className="p-6 sm:border-r border-[#D1D1D6] border-b border-[#D1D1D6]">
+  <div className="p-6 sm:border-r border-[#d1d1d63b] border-b border-[#d1d1d63b]">
     {/* Terrain */}
                  <div className="flex flex-col gap-2">
                 <div className="w-9 h-9 rounded-xl bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
@@ -50,7 +50,7 @@ export default function SpatialConstraintsSection() {
               </div>
   </div>
 
-  <div className="p-6 border-b border-[#D1D1D6]">
+  <div className="p-6 border-b border-[#d1d1d63b]">
     {/* Access */}
                   <div className="flex flex-col gap-2">
                 <div className="w-9 h-9 rounded-xl bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
@@ -67,7 +67,7 @@ export default function SpatialConstraintsSection() {
               </div>
   </div>
 
-  <div className="p-6 sm:border-r border-[#D1D1D6]">
+  <div className="p-6 sm:border-r border-[#d1d1d63b]">
       <div className="flex flex-col gap-2">
                 <div className="w-9 h-9 rounded-xl bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
                   <FiDroplet className="w-4 h-4" />

@@ -146,6 +146,7 @@ export default function TeamSection() {
         '--lightWhite': '#FFFFFF',
         '--textColorOnLightBg': '#45484D',
       }}
+      id="team"
     >
 
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -177,7 +178,7 @@ export default function TeamSection() {
                 <button
                   key={category}
                   onClick={() => handleTabChange(category)}
-                  className={`px-5 py-2 rounded-[4px] text-xs font-semibold sm:text-sm font-medium transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                  className={`px-5 py-2 rounded-[4px] text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer whitespace-nowrap ${
                     isActive
                       ? 'bg-[var(--landingPagePrimaryColor)] text-white shadow-md'
                       : 'text-[#45484D] hover:text-[var(--landingPagePrimaryColor)] hover:bg-white/40'
@@ -266,7 +267,7 @@ export default function TeamSection() {
               <div className="md:col-span-7 flex flex-col justify-between h-full pt-1">
                 
                 {/* Paragraphs */}
-                <div className="flex flex-col gap-3 text-xs sm:text-sm text-slate-700 leading-relaxed font-semibold mb-6">
+                <div className="flex flex-col gap-3 text-[16px] sm:text-sm text-[#45484D] leading-relaxed mb-6">
                   {selectedMember.bio.map((paragraph, idx) => (
                     <p key={idx}>{paragraph}</p>
                   ))}

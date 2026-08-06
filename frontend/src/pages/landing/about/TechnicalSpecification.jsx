@@ -34,21 +34,13 @@ export default function TechnicalSpecification() {
     <>
     <section 
       className="w-full aboutUsBg py-16 px-4 sm:px-6 lg:px-8 antialiased"
+      id="aboutUs"
     >
       <div className="max-w-[1438px] mx-auto">
         
         {/* Top Centered Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          {/* About Us Pill Header */}
-          {/* <div className="flex items-center justify-center gap-3 mb-6">
-            <span className="h-[1px] w-20 bg-gradient-to-r from-transparent to-[#1E7EBB]/30"></span>
-            <span className="w-2 h-2 rounded-full bg-[var(--landingPagePrimaryColor)]"></span>
-            <span className="border border-[var(--landingPagePrimaryColor)] text-[var(--landingPagePrimaryColor)] text-xs font-semibold px-4 py-1.5 rounded-full bg-white shadow-xs">
-              About us 
-            </span>
-            <span className="w-2 h-2 rounded-full bg-[var(--landingPagePrimaryColor)]"></span>
-            <span className="h-[1px] w-20 bg-gradient-to-l from-transparent to-[#1E7EBB]/30"></span>
-          </div> */}
+
 
           <StyledSubHeadingWithPill text="About us"></StyledSubHeadingWithPill>
 

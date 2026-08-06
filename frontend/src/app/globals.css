@@ -72,7 +72,6 @@
   --landingPagePrimaryColor: #1e7ebb;
   --landingPageSecondaryColor: #64748b;
   --lightWhite: #ffffff;
-    --font-myfont: "Manrope";
 }
  
 /* Entrance animation used by the hero content + card row.
@@ -89,17 +88,64 @@
   }
 }
 
-/* BACKGROUND  */
-.heroGradientText{
-background: linear-gradient(147deg, #1e7ebb, #45484d);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-}
 /* LANDING PAGE CSS  */
+.bottomSec{
+  background: radial-gradient(circle, rgba(31, 146, 217, 1) 0%, rgba(14, 70, 105, 1) 62%)
+}
+.footerCTA{
+background: linear-gradient(0deg, rgba(48, 125, 193, 0.58) 12%, rgba(71, 145, 232, 0) 38%, rgba(255, 255, 255, 0.01) 87%)
+}
+.foterLargeText{
+  background: linear-gradient(180deg, #e4e4e4 0%, #7e7e7e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 21%;
+}
+/* .footerCtaParent{
+      background: linear-gradient(rgba(0, 0, 0, 1.5), rgba(0, 0, 0, .8)), url(/landing/footer/bottomSectionBg.jpg);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/landing/footer/bottomSectionBg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+} */
+.contactUsForm{
+      position: absolute;
+    top: 50%;
+    transform: translateY(41%);
+}
+.box {
+  position: relative;
+  background: #fff;
+  border-radius: 24px;
+  overflow: visible;
+}
+
+.box::after {
+content: "";
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  bottom: -30px;
+  height: 30px;
+  background: #DDF2FF;
+  filter: blur(25px);
+  opacity: 0.9;
+  z-index: -1;
+}
+.heroGradientText{
+  background: linear-gradient(147deg, #1e7ebb, #45484d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* BACKGROUND  */
 .heroParentStyled{
   background-size: cover;
   background-position: center 30%;
   border-radius: 0px 0px 80px 80px;
+}
+.contactUsParentStyled{
+  background-size: cover;
+  background-position: center 30%;
 }
 .aboutUsBg{
       background: radial-gradient(ellipse 675px 428px at 70% 70%, #ddf2ffe3 0%, rgb(221 242 255 / 49%) -37%, rgb(221 242 255 / 77%) -60%, #FFFFFF 100%);
@@ -238,20 +284,9 @@ font-size: 19px !important;
   font-size: 25px;
 }
 body {
-  /* background-color: var(--bg-light); */
+    font-family: var(--font-hind);
   color: var(--text-primary);
-font-family: var(--font-myfont);
 
-    /* background: linear-gradient(
-    to top right,
-    #ff94f7c4,
-    #e1e7ec,
-    #ddf1f3,
-    #e1faef,
-    #ff94f7c4
-  ); */
-
-      /* background: linear-gradient(to top right, #ffffff, #1E7EBB) 0 0 / cover no-repeat fixed; */
   
 }
 
@@ -349,8 +384,31 @@ font-family: var(--font-myfont);
 *::-webkit-scrollbar-thumb:hover {
   background-color: #880000;
 }
+/* ! SUCT%OM FONT  */
+.font-title {
+  font-family: var(--font-manrope);
+}
+
+.font-body {
+  font-family: var(--font-hind);
+}
+.font-manrope-bold {
+  font-family: var(--font-manrope-bold);
+}
+/* .blackStrok{
+  -webkit-text-stroke: 1.4px #1f2937;
+} */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-manrope);
+}
 
 
+/* ! SUCT%OM FONT  */
 
 /* CONFETTIT  */
 .confetti{
@@ -403,3 +461,11 @@ font-family: var(--font-myfont);
 
 }
 /* CONFETTIT END */
+
+@media (max-width: 1200px) {
+.contactUsForm{
+      position: relative !important;
+    top: 0 !important;
+    transform: none !important;
+}
+}

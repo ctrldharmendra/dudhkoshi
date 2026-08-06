@@ -21,16 +21,16 @@ export default function Navbar() {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-10">
-          <Link href="/" className="text-[var(--landingPagePrimaryColor)] font-semibold text-[15px] relative after:absolute after:bottom-[-6px] after:left-0 after:w-full after:h-[3px] after:bg-[var(--landingPagePrimaryColor)] after:rounded-full">
+          <Link href="/" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-medium text-[15px] transition-colors">
             Home
           </Link>
-          <Link href="/about" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-medium text-[15px] transition-colors">
+          <Link href="#aboutUs" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-medium text-[15px] transition-colors">
             About Us
           </Link>
-          <Link href="/gallery" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-medium text-[15px] transition-colors">
+          <Link href="#gallery" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-medium text-[15px] transition-colors">
             Gallery
           </Link>
-          <Link href="/team" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-medium text-[15px] transition-colors">
+          <Link href="#team" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-medium text-[15px] transition-colors">
             Our Team
           </Link>
         </nav>
@@ -38,7 +38,8 @@ export default function Navbar() {
         {/* Action Button */}
         <div className="hidden md:flex gap-2">
           <Link 
-            href="/contact" 
+          
+            href="#contact" 
             className="px-6 py-2.5 bg-[var(--landingPagePrimaryColor)] hover:opacity-90 text-[var(--lightWhite)] font-medium text-sm rounded-full transition-all duration-200 shadow-sm hover:shadow-md"
           >
             Contact Us

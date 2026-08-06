@@ -1,0 +1,171 @@
+"use client";
+
+import React, { useState } from 'react';
+import { FiPlus, FiMinus } from 'react-icons/fi';
+import HrLineWithHeadingText from '../landing/components/HrLineWithHeadingText';
+
+export default function FaqSection() {
+  // Active Category State
+  const [activeTab, setActiveTab] = useState('Technical');
+  
+  // Active Open Accordion Item (stores ID of expanded FAQ)
+  const [openFaqId, setOpenFaqId] = useState('tech-1');
+
+  // Categories List
+  const categories = ['Technical', 'Environmental', 'Corporate'];
+
+  // FAQ Data grouped by category
+  const faqData = {
+    Technical: [
+      {
+        id: 'tech-1',
+        number: '1.',
+        question: 'What is the Dudhkoshi-2 (Jaleswar) Hydroelectric Project?',
+        answer: 'It is a 95.7 MW, 6-hour peaking run-of-river hydropower project located in Solukhumbu, Koshi Province. The project utilizes the Dudhkoshi River to generate clean and reliable energy for Nepal.',
+      },
+      {
+        id: 'tech-2',
+        number: '2.',
+        question: 'Who owns and develops the project?',
+        answer: 'The project is owned and developed by Aayu Dudhkoshi Hydro Power Pvt. Ltd., committed to developing sustainable energy infrastructure in Nepal.',
+      },
+      {
+        id: 'tech-3',
+        number: '3.',
+        question: 'How much energy will the project generate annually?',
+        answer: 'The project is estimated to generate approximately 580 GWh of clean electrical energy annually into the national grid.',
+      },
+      {
+        id: 'tech-4',
+        number: '4.',
+        question: 'What type of hydropower scheme is Dudhkoshi-2?',
+        answer: 'It is designed as a Peaking Run-of-River (PROR) scheme with a 6-hour daily peaking capacity during dry seasons.',
+      },
+    ],
+    Environmental: [
+      {
+        id: 'env-1',
+        number: '1.',
+        question: 'What measures are taken to mitigate environmental impact?',
+        answer: 'Comprehensive Environmental Impact Assessments (EIA) have been conducted, incorporating fish ladders, minimum environmental flow releases, and active reforestation programs.',
+      },
+      {
+        id: 'env-2',
+        number: '2.',
+        question: 'How will local aquatic life be protected?',
+        answer: 'A dedicated environmental flow is maintained continuously downstream, alongside fish passage facilities to ensure uninterrupted aquatic migration.',
+      },
+    ],
+    Corporate: [
+      {
+        id: 'corp-1',
+        number: '1.',
+        question: 'How can local communities participate or benefit?',
+        answer: 'The project prioritizes local employment, local infrastructure development, and offers local equity shares as per government guidelines.',
+      },
+      {
+        id: 'corp-2',
+        number: '2.',
+        question: 'What is the projected timeline for commercial operation?',
+        answer: 'Commercial Operation Date (COD) is targeted following the completion of headworks, tunneling, powerhouse erection, and grid connection facilities.',
+      },
+    ],
+  };
+
+  const toggleAccordion = (id) => {
+    setOpenFaqId(openFaqId === id ? null : id);
+  };
+
+  const currentFaqs = faqData[activeTab] || [];
+
+  return (
+    <section className="w-full mt-[110px] bg-white py-12 px-4 sm:px-6 lg:px-8 font-sans antialiased text-[#45484D]">
+      <div className="max-w-[1440px] mx-auto">
+        
+        {/* TOP HEADER & CATEGORY TABS ROW */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between pb-4 mb-8  gap-4 sm:gap-0">
+          
+          {/* Section Title */}
+          <div>
+   <HrLineWithHeadingText text="Common Inquiries"></HrLineWithHeadingText>
+
+          </div>
+
+          {/* Category Tabs */}
+          <div className="flex items-center gap-6 sm:gap-8 sm:w-auto pb-2 sm:pb-0 border-b-2 border-slate-100 px-[20px]">
+            {categories.map((category) => {
+              const isActive = activeTab === category;
+              return (
+                <button
+                  key={category}
+                  onClick={() => {
+                    setActiveTab(category);
+                    // Automatically open first FAQ when switching category
+                    setOpenFaqId(faqData[category]?.[0]?.id || null);
+                  }}
+                  className={`text-xs sm:text-sm font-medium transition-all relative py-1 cursor-pointer whitespace-nowrap ${
+                    isActive 
+                      ? 'text-[#1E7EBB] font-semibold' 
+                      : 'text-slate-500 hover:text-slate-800'
+                  }`}
+                >
+                  {category}
+                  {isActive && (
+                    <span className="absolute bottom-[-17px] left-0 w-full h-[2px] bg-[#1E7EBB] transition-all" />
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+        </div>
+
+        {/* CONTAINER CANVAS */}
+        <div className="bg-[#f0f7fd]/80 rounded-[32px] p-4 sm:p-8 md:p-10 border border-sky-100/60 transition-all duration-300">
+          
+          {/* FAQS LIST */}
+          <div className="space-y-4">
+            {currentFaqs.map((faq) => {
+              const isOpen = openFaqId === faq.id;
+
+              return (
+                <div
+                  key={faq.id}
+                  className="bg-white rounded-2xl border border-slate-100 shadow-2xs overflow-hidden transition-all duration-200"
+                >
+                  {/* Question Header */}
+                  <button
+                    onClick={() => toggleAccordion(faq.id)}
+                    className="w-full flex items-center justify-between p-5 sm:p-6 text-left cursor-pointer transition-colors hover:bg-slate-50/50"
+                  >
+                    <span className="text-xs sm:text-sm md:text-base font-bold text-slate-800 pr-4 leading-snug">
+                      {faq.number} {faq.question}
+                    </span>
+
+                    {/* Plus / Minus Icon */}
+                    <div className="shrink-0 text-slate-800">
+                      {isOpen ? (
+                        <FiMinus className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
+                      ) : (
+                        <FiPlus className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5]" />
+                      )}
+                    </div>
+                  </button>
+
+                  {/* Answer Body (Animated Expand) */}
+                  {isOpen && (
+                    <div className="px-5 pb-6 sm:px-6 sm:pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal border-t border-transparent">
+                      {faq.answer}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+  );
+}

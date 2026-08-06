@@ -5,7 +5,7 @@ import { FiZap, FiArrowRight, FiChevronUp, FiChevronDown, FiArrowDown } from 're
 import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
 import Image from 'next/image';
 import waterToWire from "../../../../public/landing/waterToWire/waterToWire.png";
-import PowerEvacuationSection from './export default function PowerEvacuationSection() {';
+import PowerEvacuationSection from './PowerEvacuationSection';
 
 export default function WaterToWireSection() {
   // Step cards dataset matching the design

@@ -7,7 +7,7 @@ const StyledSubHeadingWithPill = ({text}) => {
                   <span className="h-[2px] w-[260px] bg-gradient-to-r from-transparent to-[#004cb9]/40"></span>
                   <span className="w-2.5 h-2.5 rounded-full bg-[var(--landingPagePrimaryColor)]"></span>
                 </div>
-                    <span className="border border-[var(--landingPagePrimaryColor)] text-[var(--landingPagePrimaryColor)] text-xs font-semibold px-4 py-1.5 rounded-full bg-white shadow-xs">
+                    <span className="border font-title border-[var(--landingPagePrimaryColor)] text-[var(--landingPagePrimaryColor)] text-xs font-semibold px-4 py-1.5 rounded-full bg-white shadow-xs">
               {text}
             </span>
                 <div className="hidden sm:flex items-center">
