@@ -17,6 +17,7 @@ import { getRolePermissionLoggedInUser } from '@/app/(bid)/redux/slices/rolesAnd
 import { hasPermission } from '@/helper/helper';
 import { getLoggedInUserBids } from '@/app/(bid)/redux/slices/bids/bidApplicationSlice';
 import { IoIosEye } from 'react-icons/io';
+import { GiPin } from 'react-icons/gi';
 
 
 
@@ -139,17 +140,7 @@ params.set("to", dateFilter.to);
 
     const columns = useMemo(
   () => [
-// {
-//   id: "serial",
-//   header: "#",
-//   cell: ({ row, table }) => {
-//     const visibleIndex = table
-//       .getRowModel()
-//       .rows.findIndex(r => r.id === row.id);
 
-//     return visibleIndex + 1 + (bidPage - 1) * limit;
-//   },
-// },
 {
   id: "serial",
   header: "#",
@@ -263,6 +254,17 @@ params.set("to", dateFilter.to);
   row?.original?.applicationStatus && row?.original?.applicationId && (
 <div className='flex flex-col gap-[3px]'>
   <button className='bg-gray-300 px-2 text-[15px] py-0 rounded-md cursor-not-allowed opacity-50" disabled' title='You Already Applied'>Applied</button>
+  {/* <button className='bg-gray-300 px-2 text-[15px] py-0 rounded-md cursor-not-allowed opacity-50" disabled' title='Neither Won nor Rejected'>{row?.original?.applicationStatus}</button> PENDING STATUTS */}
+
+</div>    
+  )
+}
+{
+  row?.original?.reinvitationAttachments.length > 0 && (
+<div className='flex flex-col gap-[3px]'>
+  <button className='bg-[#f3b4b4ab] text-[#7c0000] h-9 w-9 rounded-full hover:scale-105 flex items-center justify-center transition' title='Requoted'>
+    <GiPin></GiPin>
+  </button>
   {/* <button className='bg-gray-300 px-2 text-[15px] py-0 rounded-md cursor-not-allowed opacity-50" disabled' title='Neither Won nor Rejected'>{row?.original?.applicationStatus}</button> PENDING STATUTS */}
 
 </div>    

@@ -1613,6 +1613,38 @@ const getAppliedBid = asyncHandler(async (req, res) => {
       ]
     );
 
+    // GET IF THIS USER HAS BEEN REPROPOSED FOR PARTICULAR BID OR NOT 
+    const bidIds = rows.map(row => row.id);
+    if (bidIds.length > 0) {
+  const placeholders = bidIds.map(() => '?').join(', ');
+
+  const [attachments] = await pool.query(
+    `SELECT 
+      id,
+      title,
+      file,
+      bidId,
+      userId,
+      createdBy,
+      createdAt
+     FROM reinvitation_attachment
+     WHERE bidId IN (${placeholders})
+     AND userId = ?`,       // ← only for logged-in user
+    [...bidIds, req.user.id]
+  );
+
+  reinvitationAttachments = attachments;
+}
+
+const bidsWithAttachments = rows.map(bid => ({
+  ...bid,
+  reinvitationAttachments: reinvitationAttachments.filter(
+    att => att.bidId === bid.id
+  )
+}));
+
+// console.log(bidsWithAttachments, "bidsWithAttachments")
+    // GET IF THIS USER HAS BEEN REPROPOSED FOR PARTICULAR BID OR NOT END 
 
     const totalPages = Math.ceil(total / limit);
 
@@ -1621,7 +1653,7 @@ const getAppliedBid = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         {
-          bids: rows,
+          bids: bidsWithAttachments,
           pagination: {
             total,
             page,
