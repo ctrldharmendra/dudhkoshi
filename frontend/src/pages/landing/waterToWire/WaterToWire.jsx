@@ -13,56 +13,64 @@ export default function WaterToWireSection() {
     {
       id: 'headworks',
       title: 'HEADWORKS',
-      subtitle: 'Boulder Lined Weir',
-      summary: 'Diversion , Intake , Settling',
+      subtitle: 'Barrage',
+      summary: 'Diversion, Intake, Desanding',
       componentsLabel: 'HEADWORKS COMPONENTS',
       details: [
-        { label: 'DIVERSION WEIR', value: 'BOULDER LINED, 15 M' },
-        { label: 'SPILLWAY', value: 'FREE OVERFLOW, 2.5M × 2.5M' },
-        { label: 'HEADRACE CULVERT', value: 'RCC, 61.5 M × 1.6 M × 1.5 M' },
-        { label: 'SETTLING BASIN', value: 'DOUBLE BAY, 35.0 M × 6.5 M × 3.9 M' },
-        { label: 'APPROACH CULVERT', value: 'RCC, 100 M, 1.6 M × 1.5 M' },
-        { label: 'APPROACH DIVERGED', value: 'RCC, 2 NOS, 28 M, 1.1 M × 1.5M' },
-        { label: 'INTAKE', value: 'SIDE INTAKE, 2 NOS, 2.0M ×1.6 M' },
+        { label: 'DIVERSION WEIR (BARRAGE)', value: 'BARRAGE, WIDTH 87.85 M, FSL/WEIR LEVEL 789 MASL, MDDL 781 MASL' },
+        { label: 'BARRAGE GATES', value: '12.0 M × 7.0 M, 4 NOS RADIAL GATES' },
+        { label: 'UNDER SLUICE GATES', value: '4.0 M × 5.0 M, 2 NOS RADIAL GATES' },
+        { label: 'SPILLWAY GATES', value: '12.0 M × 4 M (4 NOS) & 4.0 M × 7 M (2 NOS)' },
+        { label: 'STILLING BASIN', value: '80.00 M LENGTH' },
+        { label: 'INTAKE', value: 'SIDE INTAKE, 3 NOS, 7.5 M × 6.5 M' },
+        { label: 'GRAVEL TRAP', value: '2 NOS 8.1 M × 14 M + 1 NO 8.7 M × 14 M (MIDDLE BAY)' },
+        { label: 'APPROACH CANAL', value: '3.5 M × 3.5 M — LENGTHS: 86.912 M (RIGHT), 100.151 M (MIDDLE), 113.541 M (LEFT)' },
+        { label: 'DESANDING CHAMBER', value: 'SURFACE, 3 BAYS (2 HOPPERS EACH), 115 M × 13.50 M × 14.75 M' },
+        { label: 'HEADRACE CULVERT', value: "NULL" },
+        { label: 'APPROACH DIVERGED', value: "NULL" },
       ]
     },
     {
       id: 'headrace-tunnel',
       title: 'HEADRACE TUNNEL',
-      subtitle: '2,020 M',
-      summary: 'Inverted D-Shaped • 2.2 M × 2.5 M',
+      subtitle: '4,791 M',
+      summary: 'Concrete Lined Inverted D-Shaped • 5.6 M Finished Dia.',
       componentsLabel: 'HEADRACE TUNNEL COMPONENTS',
       details: [
-        { label: 'TUNNEL TYPE', value: 'INVERTED D-SHAPED, SHOTCRETE LINED' },
-        { label: 'TOTAL LENGTH', value: '2,020 METERS' },
-        { label: 'CROSS SECTION', value: '2.2 M WIDE × 2.5 M HIGH' },
-        { label: 'EXCAVATION', value: 'DRILL AND BLAST METHOD' },
+        { label: 'TUNNEL TYPE', value: 'CONCRETE LINED, INVERTED D-SHAPED' },
+        { label: 'TOTAL LENGTH', value: '4,791 METERS' },
+        { label: 'FINISHED DIAMETER', value: '5.6 METERS' },
+        { label: 'EXCAVATION', value: "NULL" },
       ]
     },
     {
       id: 'surge-shaft',
       title: 'SURGE SHAFT',
-      subtitle: '25 M',
-      summary: 'Simple Cylindrical • Ø 4.5 M',
+      subtitle: '69 M',
+      summary: 'Restricted Orifice • Ø 16.0 M',
       componentsLabel: 'SURGE SHAFT COMPONENTS',
       details: [
-        { label: 'TYPE', value: 'SIMPLE CYLINDRICAL RCC SHAFT' },
-        { label: 'HEIGHT', value: '25 METERS' },
-        { label: 'INTERNAL DIAMETER', value: 'Ø 4.5 METERS' },
-        { label: 'GATE CHAMBER', value: 'UNDERGROUND INCLINED SHAFT' },
+        { label: 'TYPE', value: 'RESTRICTED ORIFICE SURGE SHAFT' },
+        { label: 'HEIGHT', value: '69 METERS' },
+        { label: 'INTERNAL DIAMETER', value: 'Ø 16.0 METERS' },
+        { label: 'ORIFICE DIAMETER', value: 'Ø 3.0 METERS' },
+        { label: 'GATE CHAMBER', value: "NULL" },
       ]
     },
     {
       id: 'penstock',
       title: 'PENSTOCK',
-      subtitle: '1,490 M',
-      summary: 'Steel • Ø 1.2 M (Before Bifurcation)',
+      subtitle: 'Underground',
+      summary: 'Ø 4.6 M • Surge Shaft to Powerhouse',
       componentsLabel: 'PENSTOCK COMPONENTS',
       details: [
-        { label: 'MATERIAL', value: 'HIGH GRADE STRUCTURAL STEEL' },
-        { label: 'TOTAL LENGTH', value: '1,490 METERS' },
-        { label: 'DIAMETER', value: 'Ø 1.2 M (REDUCING AT BIFURCATION)' },
-        { label: 'ANCHOR BLOCKS', value: 'RCC CONCRETE BLOCKS (8 NOS)' },
+        { label: 'MATERIAL', value: "NULL" },
+        { label: 'TYPE', value: 'UNDERGROUND' },
+        { label: 'LENGTH (SURGE SHAFT → DROP SHAFT)', value: '80 METERS' },
+        { label: 'DROP SHAFT LENGTH', value: '96.97 METERS' },
+        { label: 'INCLINED PENSTOCK TUNNEL LENGTH', value: '96.62 METERS' },
+        { label: 'INTERNAL DIAMETER', value: 'Ø 4.6 METERS' },
+        { label: 'ANCHOR BLOCKS', value: "NULL" },
       ]
     }
   ];
@@ -72,7 +80,7 @@ export default function WaterToWireSection() {
 
   // Toggle or select card for expansion
   const handleToggleCard = (id) => {
-    setActiveCardId((prev) => (prev === id ? null : id));
+    setActiveCardId((prev) => (prev === id ? "NULL" : id));
   };
 
   const activeStep = stepsData.find((step) => step.id === activeCardId);

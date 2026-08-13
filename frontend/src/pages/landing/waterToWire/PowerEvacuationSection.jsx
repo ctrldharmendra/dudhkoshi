@@ -8,15 +8,16 @@ export default function PowerEvacuationSection() {
       id: 'powerhouse',
       title: 'POWERHOUSE',
       subtitle: 'Surface',
-      details: '28.85 M × 19.50 M × 14.65 M',
+      details: '55 M × 26.5 M × 35.3 M',
     },
     {
       id: 'grid-connection',
       title: 'GRID CONNECTION',
-      subtitle: '132 KV',
-      details: '19 Km • BEAR Conductor • Tarikuna NEA Hub',
+      subtitle: "null",
+      details: "null", // Power Evacuation data (voltage, line length, conductor, hub) not provided for Dudhkoshi-2
     },
   ];
+
 
   return (
     <section 
