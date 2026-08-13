@@ -27,19 +27,19 @@ export default function FaqSection() {
         id: 'tech-2',
         number: '2.',
         question: 'Who owns and develops the project?',
-        answer: 'The project is owned and developed by Aayu Dudhkoshi Hydro Power Pvt. Ltd., committed to developing sustainable energy infrastructure in Nepal.',
+        answer: 'The project is owned and developed by Dudhkoshi Hydro Power Pvt. Ltd., committed to developing sustainable energy infrastructure in Nepal.',
       },
       {
         id: 'tech-3',
         number: '3.',
         question: 'How much energy will the project generate annually?',
-        answer: 'The project is estimated to generate approximately 580 GWh of clean electrical energy annually into the national grid.',
+        answer: "The project will generate approximately 543.48 GWh of energy annually, including dry-season and wet-season production optimized for Nepal's power demand.",
       },
       {
         id: 'tech-4',
         number: '4.',
         question: 'What type of hydropower scheme is Dudhkoshi-2?',
-        answer: 'It is designed as a Peaking Run-of-River (PROR) scheme with a 6-hour daily peaking capacity during dry seasons.',
+        answer: 'It is a 6-hour peaking run-of-river (PRoR) hydropower scheme designed to supply stable energy during peak demand periods.',
       },
     ],
     Environmental: [
@@ -61,7 +61,7 @@ export default function FaqSection() {
         id: 'corp-1',
         number: '1.',
         question: 'How can local communities participate or benefit?',
-        answer: 'The project prioritizes local employment, local infrastructure development, and offers local equity shares as per government guidelines.',
+        answer: "The project supports local jobs, infrastructure development, community upliftment, and contributes to Nepal's overall energy security through clean, renewable power generation.",
       },
       {
         id: 'corp-2',

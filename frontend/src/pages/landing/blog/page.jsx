@@ -103,7 +103,7 @@ export default function NewsEventsSection() {
 
           {/* Subtitle */}
           <p className="text-sm md:text-base text-[var(--textColorOnLightBg)] leading-relaxed">
-Meet the multi-disciplinary team of engineers, environmental scientists, and strategic investors driving the 97.5 MW Dudhkoshi vision toward sustainable energy independence.
+Meet the multi-disciplinary team of engineers, environmental scientists, and strategic investors driving the 95.7 MW Dudhkoshi vision toward sustainable energy independence.
           </p>
         </div>
 

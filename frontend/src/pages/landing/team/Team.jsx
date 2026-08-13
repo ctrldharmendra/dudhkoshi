@@ -161,7 +161,7 @@ export default function TeamSection() {
 
           {/* Subtitle */}
           <p className="text-sm md:text-base text-[var(--textColorOnLightBg)] leading-relaxed">
-    Meet the multi-disciplinary team of engineers, environmental scientists, and strategic investors driving the 97.5 MW Dudhkoshi vision toward sustainable energy independence.
+    Meet the multi-disciplinary team of engineers, environmental scientists, and strategic investors driving the 95.7 MW Dudhkoshi vision toward sustainable energy independence.
           </p>
         </div>
 
@@ -170,7 +170,7 @@ export default function TeamSection() {
 
         
         {/* Category Filter Tabs */}
-        <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-2 scrollbar-none">
+        {/* <div className="flex items-center gap-2 mb-8 overflow-x-auto pb-2 scrollbar-none">
           <div className="bg-[#FFFFFF]/70 p-1.5 rounded-[8px] flex items-center gap-1 border border-white/30 shadow-xs">
             {categories.map((category) => {
               const isActive = activeCategory === category;
@@ -189,7 +189,7 @@ export default function TeamSection() {
               );
             })}
           </div>
-        </div>
+        </div> */}
 
         {/* Main Section Outer Container */}
         <div className="bg-[#ffff] rounded-[16px] p-6 sm:p-8 lg:p-10 border border-white/80 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">

@@ -119,7 +119,7 @@ export default function HeroPage() {
               <div>
                 <p className="text-[var(--primaryTextColorLanding2)] text-[11px] font-semibold">Total Capacity</p>
                 <h4 className="text-[var(--landingPagePrimaryColor)] font-extrabold text-base mt-0.5">
-                  97.5 <span className="text-[var(--textColorOnLightBg)] text-xs font-semibold ml-0.5">MW</span>
+                  95.7 <span className="text-[var(--textColorOnLightBg)] text-xs font-semibold ml-0.5">MW</span>
                 </h4>
               </div>
             </div>

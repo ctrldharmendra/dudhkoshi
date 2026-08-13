@@ -61,7 +61,7 @@ export default function SpatialConstraintsSection() {
                   ACCESS
                 </h4>
                 <p className="text-xs text-[var(--textColorOnLightBg)] leading-relaxed font-medium">
-                  <span className="font-semibold block text-slate-800">12 km corridor</span>
+                  <span className="font-semibold block text-slate-800">11 km corridor</span>
                   Pedestrian and light cargo maintenance access.
                 </p>
               </div>
@@ -78,8 +78,7 @@ export default function SpatialConstraintsSection() {
                 <div className="text-xs text-[var(--textColorOnLightBg)] leading-relaxed font-medium">
                   <p className="font-bold text-slate-800 mb-1">Dudhkoshi River</p>
                   <p className="text-[var(--landingPageSecondaryColor)]">
-                    Glacier-fed perennial flow system with robust discharge during monsoon cycles.
-                  </p>
+                      6 hours a day in dry seasons</p>
                 </div>
               </div>
   </div>

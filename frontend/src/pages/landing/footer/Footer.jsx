@@ -126,7 +126,7 @@ export default function Footer() {
                     </a>
                   </li>
                   <li className="text-[#45484D]">
-                    Anamnagar-29, Kathmandu, Nepal
+                    Sama Marga, Naxal Kathmandu, Nepal
                   </li>
                 </ul>
               </div>

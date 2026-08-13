@@ -119,7 +119,7 @@ export default function ContactSection() {
               <FiMapPin className="w-4 h-4" />
             </div>
             <span className="text-xs font-bold text-[#1E7EBB] mb-1">Visit Us</span>
-            <span className="text-[11px] font-medium text-slate-600">Kathmandu, Nepal</span>
+            <span className="text-[11px] font-medium text-slate-600">Sama Marga, Naxal, Kathmandu, Nepal</span>
           </div>
 
         </div>
@@ -248,7 +248,7 @@ export default function ContactSection() {
                 
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-xs font-bold text-[#1E7EBB]">
-                    Anamnagar, Kathmandu
+                    Sama Marga, Naxal, Kathmandu
                   </span>
                   
                   {/* Currently Open Badge */}

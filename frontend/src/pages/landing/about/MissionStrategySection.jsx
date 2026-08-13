@@ -84,7 +84,7 @@ export default function MissionStrategySection() {
                       <FiZap className="w-3.5 h-3.5" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-extrabold text-[#0972f6]">850+ MW</p>
+                      <p className="text-[10px] font-extrabold text-[#0972f6]">95.7 MW</p>
                       <p className="text-[8px] text-gray-500 leading-none">Clean Energy</p>
                     </div>
                   </div>

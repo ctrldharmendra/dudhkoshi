@@ -182,7 +182,7 @@ export default function TechnicalSpecification() {
     </section>
     <SpatialConstraintsSection></SpatialConstraintsSection>
     <MissionStrategySection></MissionStrategySection>
-    <StatsBanner></StatsBanner>
+    {/* <StatsBanner></StatsBanner> */}
     </>
   );
 }
