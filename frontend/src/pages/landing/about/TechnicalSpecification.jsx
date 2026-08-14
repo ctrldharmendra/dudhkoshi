@@ -6,7 +6,7 @@ import Image from 'next/image';
 import SpatialConstraintsSection from './SpatialConstraintsSection';
 import MissionStrategySection from './MissionStrategySection';
 import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
-import StatsBanner from './StatsBanner';
+// import StatsBanner from './StatsBanner';
 import StyledSubHeadingWithPill from '../components/StyledSubHeadingWithPill';
 
 export default function TechnicalSpecification() {
