@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default function PreFooterCTA() {
   return (
     <section 
-      className="w-full relative bottomSec overflow-hidden font-sans antialiased pt-12 pb-12 sm:pt-16 sm:pb-16 px-4 sm:px-6 lg:px-8"
+      className="w-full relative bottomSec overflow-hidden antialiased pt-12 pb-12 sm:pt-16 sm:pb-16 px-4 sm:px-6 lg:px-8"
       style={{
         // backgroundColor: '#0A3048', // Base background color
         borderBottomLeftRadius: '80px',
