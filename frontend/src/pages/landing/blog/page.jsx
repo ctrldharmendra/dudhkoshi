@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiArrowRight, FiCalendar } from 'react-icons/fi';
-import img from "../../../../public/landing/gallery/img4.jpg";
+import img from "../../../../public/landing/blog/1.jpg";
+import img2 from "../../../../public/landing/blog/2.png";
 import Image from 'next/image';
 import StyledSubHeadingWithPill from '../components/StyledSubHeadingWithPill';
 import FinancialHighlights from './FinancialHighlights';
@@ -19,67 +20,34 @@ export default function NewsEventsSection() {
     },
     {
       id: 2,
-      image: img,
-      title: "Laxmi Sunrise Bank-led consortium to invest in 70 MW Dudhkoshi 22",
+      image: img2,
+      title: "दूधकोशी–२ आयोजनाको क्षमता बढेर पुग्यो ९६ मेगावाट, लागत पनि थपियो",
       author: "By Dudhkoshi",
       date: "Feb,27 2026",
-      description: "The project is being constructed at the Dudhkoshi River of the Solukhumbu district with an estimated project cost ...",
+      description: "काठमाडौँ। निजी लगानीमा निर्माण सुरु भएको दूधकोशी–२ अर्धजलासय जलविद्युत आयोजनाको क्षमता बढेर ९५.७ मेगावाट पुगेको छ। यसअघि ७० मेगावाटमा....",
       link: "#"
     },
-    {
-      id: 3,
-      image: img,
-      title: "Laxmi Sunrise Bank-led consortium to invest in 70 MW Dudhkoshi 22",
-      author: "By Dudhkoshi",
-      date: "Feb,27 2026",
-      description: "The project is being constructed at the Dudhkoshi River of the Solukhumbu district with an estimated project cost ...",
-      link: "#"
-    },
-    {
-      id: 4,
-      image: img,
-      title: "Laxmi Sunrise Bank-led consortium to invest in 70 MW Dudhkoshi 22",
-      author: "By Dudhkoshi",
-      date: "Feb,27 2026",
-      description: "The project is being constructed at the Dudhkoshi River of the Solukhumbu district with an estimated project cost ...",
-      link: "#"
-    }
   ];
 
   // Sidebar compact articles (Right Side)
   const sidebarNews = [
     {
       id: 1,
-      category: "TECHNOLOGY",
-      title: "Smart Grid Integration: The Next Frontier in Hydropower Management",
+      category: "EVENTS",
+      title: "Laxmi Sunrise Bank-led consortium to invest in 70 MW Dudhkoshi 22",
       date: "FEB 20, 2026",
-      image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      image: img,
       link: "#"
     },
     {
       id: 2,
-      category: "TECHNOLOGY",
+      category: "EVENTS",
       title: "Smart Grid Integration: The Next Frontier in Hydropower Management",
       date: "FEB 20, 2026",
-      image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+      image: img2,
       link: "#"
     },
-    {
-      id: 3,
-      category: "TECHNOLOGY",
-      title: "Smart Grid Integration: The Next Frontier in Hydropower Management",
-      date: "FEB 20, 2026",
-      image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      link: "#"
-    },
-    {
-      id: 4,
-      category: "TECHNOLOGY",
-      title: "Smart Grid Integration: The Next Frontier in Hydropower Management",
-      date: "FEB 20, 2026",
-      image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
-      link: "#"
-    }
+    
   ];
 
   return (

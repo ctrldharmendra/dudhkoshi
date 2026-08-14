@@ -40,17 +40,17 @@ export default function FinancialHighlights() {
       <div className="flex flex-col">
         {highlights?.map((item, index) => (
           <div 
-            key={index} 
+            key={index}  
             className="flex items-center justify-between py-3.5 border-b border-slate-100 last:border-b-0"
           >
             {/* Label */}
-            <span className="text-sm text-slate-700 font-normal">
+            <span className="text-sm font-body text-slate-700 font-normal">
               {item.label}
             </span>
 
             {/* Value */}
             <span 
-              className={`text-sm font-medium ${
+              className={`text-sm font-body font-medium ${
                 item.isPositive ? 'text-emerald-600' : 'text-slate-800'
               }`}
             >

@@ -58,7 +58,7 @@ export default function MissionStrategySection() {
             <div className="bg-[#BFCFD8]/60 p-5 rounded-[32px] border border-white/30 shadow-inner">
 
               <div className="bg-[#EBF2F7] relative rounded-2xl p-6 shadow-sm overflow-hidden border border-white flex flex-col justify-between min-h-[300px]">
-<Image  src={missionStrategyIMG} width={100} height={100} className="absolute  w-full rounded-[9px] top-0 left-0 z-0" alt="mountains"  unoptimized/>
+<Image  src={missionStrategyIMG} width={100} height={100} className="absolute hidden lg:flex  w-full rounded-[9px] top-0 left-0 z-0" alt="mountains"  unoptimized/>
                 
                 {/* Upper Diagram Layout */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center z-[12]">
