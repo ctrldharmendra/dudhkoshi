@@ -92,7 +92,7 @@ export default function FaqSection() {
           </div>
 
           {/* Category Tabs */}
-          <div className="flex items-center gap-6 sm:gap-8 sm:w-auto pb-2 sm:pb-0 border-b-2 border-slate-100 px-[20px]">
+          <div className="font-body flex items-center gap-6 sm:gap-8 sm:w-auto pb-2 sm:pb-0 border-b-2 border-slate-100 px-[20px]">
             {categories.map((category) => {
               const isActive = activeTab === category;
               return (
@@ -136,7 +136,7 @@ export default function FaqSection() {
                   {/* Question Header */}
                   <button
                     onClick={() => toggleAccordion(faq.id)}
-                    className="w-full flex items-center justify-between p-5 sm:p-6 text-left cursor-pointer transition-colors hover:bg-slate-50/50"
+                    className="font-title w-full flex items-center justify-between p-5 sm:p-6 text-left cursor-pointer transition-colors hover:bg-slate-50/50"
                   >
                     <span className="text-xs sm:text-sm md:text-base font-bold text-slate-800 pr-4 leading-snug">
                       {faq.number} {faq.question}
@@ -154,7 +154,7 @@ export default function FaqSection() {
 
                   {/* Answer Body (Animated Expand) */}
                   {isOpen && (
-                    <div className="px-5 pb-6 sm:px-6 sm:pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal border-t border-transparent">
+                    <div className="font-body px-5 pb-6 sm:px-6 sm:pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal border-t border-transparent">
                       {faq.answer}
                     </div>
                   )}

@@ -395,6 +395,10 @@ body {
 .font-manrope-bold {
   font-family: var(--font-manrope-bold);
 }
+
+.font-libertinus {
+  font-family: var(--font-libertinus);
+}
 /* .blackStrok{
   -webkit-text-stroke: 1.4px #1f2937;
 } */

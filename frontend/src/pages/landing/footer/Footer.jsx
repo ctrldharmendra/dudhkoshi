@@ -41,23 +41,23 @@ export default function Footer() {
                   </svg>
                 </div>
 
-                <span className="text-xl font-bold tracking-tight text-[#373A3E]">
+                <span className="text-xl font-manrope-bold tracking-tight text-[#373A3E]">
                   Dudhkoshi <span className="text-[#1E7EBB]">Hydropower</span>
                 </span>
               </Link>
 
               {/* Description */}
-              <p className="text-xs sm:text-sm text-[#45484D] leading-relaxed max-w-sm font-normal">
+              <p className="text-xs font-body sm:text-sm text-[#45484D] leading-relaxed max-w-sm font-normal">
                 Building Nepal's clean energy future through sustainable, community-rooted hydropower infrastructure.
               </p>
             </div>
 
             {/* NAVIGATION LINKS GRID (7 Cols on lg) */}
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8 pt-2 sm:pt-0">
+            <div className="font-body lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-8 pt-2 sm:pt-0">
               
               {/* COLUMN 1: COMPANY */}
               <div className="space-y-3.5">
-                <h3 className="text-sm font-bold text-[#373A3E]">
+                <h3 className=" text-sm font-bold text-[#373A3E]">
                   Company
                 </h3>
                 <ul className="space-y-2.5 text-xs sm:text-sm">
@@ -80,7 +80,7 @@ export default function Footer() {
               </div>
 
               {/* COLUMN 2: PROJECT */}
-              <div className="space-y-3.5">
+              <div className="font-body space-y-3.5">
                 <h3 className="text-sm font-bold text-[#373A3E]">
                   Project
                 </h3>
@@ -104,7 +104,7 @@ export default function Footer() {
               </div>
 
               {/* COLUMN 3: CONTACT */}
-              <div className="space-y-3.5">
+              <div className="font-body space-y-3.5">
                 <h3 className="text-sm font-bold text-[#373A3E]">
                   Contact
                 </h3>
@@ -139,7 +139,7 @@ export default function Footer() {
           <div className="w-full h-[1px] bg-slate-100 my-2" />
 
           {/* BOTTOM SECTION: COPYRIGHT & LEGAL LINKS */}
-          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] sm:text-xs text-[#45484D]">
+          <div className="font-body pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] sm:text-xs text-[#45484D]">
             <p>
               © 2026 Dudhkoshi Hydropower Nepal Pvt. Ltd. All rights reserved.
             </p>
@@ -177,6 +177,7 @@ export default function Footer() {
 >
   <span
     className="
+      font-manrope-bold
       foterLargeText
       font-extrabold 
       tracking-widest 

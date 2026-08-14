@@ -47,7 +47,7 @@ export default function PowerEvacuationSection() {
           </h3>
 
           {/* Cards Flow Container */}
-          <div className="relative z-10 flex flex-col justify-between md:flex-row items-center justify-center gap-6 md:gap-12 py-2">
+          <div className="font-body relative z-10 flex flex-col justify-between md:flex-row items-center justify-center gap-6 md:gap-12 py-2">
             
             {cardsData.map((card, index) => (
               <React.Fragment key={card.id}>
@@ -78,7 +78,7 @@ export default function PowerEvacuationSection() {
 
                 {/* Connecting Arrow between cards */}
                 {index < cardsData.length - 1 && (
-                  <div className="flex items-center justify-center text-[#1E7EBB] shrink-0 my-2 md:my-0">
+                  <div className="font-body flex items-center justify-center text-[#1E7EBB] shrink-0 my-2 md:my-0">
                     {/* Horizontal Arrow for Desktop */}
                     <GoArrowRight className="hidden md:block w-[200px] h-7 " />
                     {/* Vertical Arrow for Mobile Devices */}

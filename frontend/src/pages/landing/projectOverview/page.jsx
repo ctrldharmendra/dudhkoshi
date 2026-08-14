@@ -184,7 +184,7 @@ Run-of-River Hydroelectric Scheme.
                       </span>
 
                       {/* Formula (Italicized style matching image) */}
-                      <span className="sm:col-span-4 text-[11px] font-serif italic text-slate-400 text-left sm:text-right">
+                      <span className="font-libertinus sm:col-span-4 text-[11px] font-serif italic text-slate-400 text-left sm:text-right">
                         {item.formula}
                       </span>
                     </div>

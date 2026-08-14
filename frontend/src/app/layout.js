@@ -16,6 +16,11 @@ export const manrope = localFont({
   variable: "--font-manrope",
 });
 
+export const libertinus = localFont({
+  src: "../font/libertinus-math-v1-latin-regular.woff2",
+  variable: "--font-libertinus",
+});
+
 export const manropeBold = localFont({
   src: "../font/Manrope-ExtraBold.woff2",
   variable: "--font-manrope-bold",
@@ -37,7 +42,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${manrope.variable} ${hind.variable} ${manropeBold.variable}`}>
+    <html lang="en" className={`${manrope.variable} ${hind.variable} ${manropeBold.variable} ${libertinus.variable}`}>
           <head>
         <noscript>
           <style>{`

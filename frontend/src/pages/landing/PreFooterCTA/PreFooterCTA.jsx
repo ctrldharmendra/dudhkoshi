@@ -77,19 +77,19 @@ export default function PreFooterCTA() {
 
               {/* Subtitle */}
               <p 
-                className="text-sm sm:text-base font-normal max-w-2xl mx-auto leading-relaxed"
+                className="font-body text-sm sm:text-base font-normal max-w-2xl mx-auto leading-relaxed"
                 style={{ color: '#C1E7FF', opacity: 0.88 }}
               >
                 We harness Nepal's rivers to deliver reliable, sustainable hydropower lighting homes, empowering communities, and building a cleaner future.
               </p>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+              <div className="font-body flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
                 
                 {/* Primary Button */}
                 <Link
                   href="#"
-                  className="w-full sm:w-auto px-7 py-3 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 active:scale-95 shadow-sm"
+                  className="font-body w-full sm:w-auto px-7 py-3 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 active:scale-95 shadow-sm"
                   style={{
                     backgroundColor: 'white',
                     color: '#1E7EBB',
