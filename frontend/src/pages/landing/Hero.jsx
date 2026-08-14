@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from './navAndFooter/Nav';
 import { HiArrowRight, HiLocationMarker } from 'react-icons/hi';
 import Image from 'next/image';
-import heroBottom1 from "../../../public/landing/heroBottom1.png";
+import heroBottom1 from "../../../public/landing/dam.jpg";
 import heroCardImg2 from "../../../public/landing/heroCardImg2.png";
 import StyledSubHeadingLine from './components/StyledSubHeadingLine';
 
@@ -66,7 +66,7 @@ export default function HeroPage() {
           </div>
 
           {/* Overlapping Glass Cards Grid (Positioned absolutely over the bottom boundary) */}
-          <div className="absolute -bottom-[40px] left-0 right-0 max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-[3fr_2fr_1fr] gap-6 z-20">
+          <div className="absolute -bottom-[55px] lg:-bottom-[40px] left-0 right-0 max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-[3fr_2fr_1fr] gap-6 z-20">
             
             {/* Card 1: Solukhumbu Project */}
             <div className="bg-[var(--lightWhite)]/5 backdrop-blur-sm rounded-3xl gap-[12px] p-4 border border-white/40 shadow-xl flex flex-row items-center justify-center ">
