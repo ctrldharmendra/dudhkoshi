@@ -22,6 +22,9 @@ import StyledSubHeadingWithPill from '../landing/components/StyledSubHeadingWith
 import formSide from '../../../public/landing/Contact/contactUsBg.png';
 import Loading from '../landing/components/Loading';
 
+import img10 from "../../../public/landing/realImage/12.png";
+import img11 from "../../../public/landing/realImage/11.png";
+
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -68,7 +71,7 @@ export default function ContactSection() {
           <div 
             className="relative w-full min-h-[790px] max-h-[790px] contactUsParentStyled overflow-hidden bg-cover bg-center flex flex-col items-center"
             style={{
-              backgroundImage: `url('/landing/Contact/contactUsBg.png')` 
+              backgroundImage: `url('/landing/realImage/10.png')` 
             }}
           >
             {/* 1. Cloudy White Transparency Overlay (Top fading down) */}
@@ -265,7 +268,7 @@ export default function ContactSection() {
                   height={100}
                   unoptimized
 
-                    src={formSide}
+                    src={img10}
                     alt="Global Headquarter Location"
                     className="w-full h-full object-cover" 
                   />
@@ -273,7 +276,7 @@ export default function ContactSection() {
 
                 {/* View On Map Link */}
                 <a 
-                  href="https://maps.google.com" 
+                  href="https://maps.app.goo.gl/D2R4KtMgM3Ww5pFJ6" 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#1E7EBB] hover:underline"

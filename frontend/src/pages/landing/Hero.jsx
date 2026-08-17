@@ -2,8 +2,10 @@ import React from 'react';
 import Navbar from './navAndFooter/Nav';
 import { HiArrowRight, HiLocationMarker } from 'react-icons/hi';
 import Image from 'next/image';
-import heroBottom1 from "../../../public/landing/dam.jpg";
-import heroCardImg2 from "../../../public/landing/heroCardImg2.png";
+import heroBottom1 from "../../../public/landing/realImage/12.png";
+import heroCardImg2 from "../../../public/landing/realImage/13.png";
+// import heroBottom1 from "../../../public/landing/dam.jpg";
+// import heroCardImg2 from "../../../public/landing/heroCardImg2.png";
 import StyledSubHeadingLine from './components/StyledSubHeadingLine';
 
 export default function HeroPage() {
@@ -24,7 +26,7 @@ export default function HeroPage() {
           <div 
             className="relative w-full min-h-[500px] lg:min-h-[750px] md:min-h-[750px] heroParentStyled overflow-hidden bg-cover bg-center flex flex-col items-center pt-16 px-4 md:px-8"
             style={{
-              backgroundImage: `url('/landing/heroImage.png')` 
+              backgroundImage: `url('/landing/realImage/1.jpeg')` 
             }}
           >
             {/* 1. Cloudy White Transparency Overlay (Top fading down) */}

@@ -2,6 +2,7 @@ import React from 'react';
 import { FiArrowRight, FiZap, FiDroplet, FiUsers, FiSun } from 'react-icons/fi';
 import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
 import Image from 'next/image';
+// import missionStrategyIMG from "../../../../public/landing/realImage/3.jpeg";
 import missionStrategyIMG from "../../../../public/landing/about/rectangularHeroMain2.jpg";
 
 export default function MissionStrategySection() {

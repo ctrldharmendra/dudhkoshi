@@ -1,7 +1,8 @@
 import React from 'react';
 import Accordion from './Accordion';
 import { FiZap, FiAirplay, FiDroplet } from 'react-icons/fi';
-import technicalSpecificationIMG from "../../../../public/landing/aboutUsTechnicalSpecification.png";
+import technicalSpecificationIMG from "../../../../public/landing/realImage/9.png";
+// import technicalSpecificationIMG from "../../../../public/landing/aboutUsTechnicalSpecification.png";
 import Image from 'next/image';
 import SpatialConstraintsSection from './SpatialConstraintsSection';
 import MissionStrategySection from './MissionStrategySection';
