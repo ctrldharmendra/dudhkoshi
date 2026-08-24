@@ -22,12 +22,14 @@ const page = () => {
    <Hero></Hero>  
    <TechnicalSpecification></TechnicalSpecification>
    <TeamSection></TeamSection>
-   <GalleryPage></GalleryPage>
-   <NewsEventsSection></NewsEventsSection>
+
+
    <ProjectOverviewSection></ProjectOverviewSection>
    <WaterToWireSection></WaterToWireSection>
    <ContactSection></ContactSection>
+      <GalleryPage></GalleryPage>
    <FaqSection></FaqSection>
+      <NewsEventsSection></NewsEventsSection>
    <PreFooterCTA></PreFooterCTA>
    <Footer></Footer>
    {/* <TeamSection></TeamSection>

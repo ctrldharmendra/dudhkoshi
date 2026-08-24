@@ -39,7 +39,7 @@ export default function Accordion({ items = [] }) {
 
             {/* Expandable Content */}
             {isOpen && item.content && (
-              <div className="px-5 pb-5 text-xs text-[var(--landingPageSecondaryColor,#64748b)] leading-relaxed font-normal">
+              <div className="px-5 pb-5 text-[15px] text-[var(--landingPageSecondaryColor,#64748b)] leading-relaxed font-normal">
                 {item.content}
               </div>
             )}

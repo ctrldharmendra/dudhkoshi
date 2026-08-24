@@ -2,17 +2,20 @@ import { NextResponse } from "next/server";
 
 // Helper — calls /api/auth/authme with whichever token string you pass
 async function checkAuth(request, cookieHeader) {
-  const url = new URL("/api/auth/authme", request.url);
-  const response = await fetch(url, {
-    headers: { Cookie: cookieHeader },
-  });
+  const url = new URL("https://dudhkoshihydro.aayumalunhydro.com.np/api/auth/authme", request.url);
+const response = await fetch(url, {
+  headers: { 
+    Cookie: cookieHeader,
+    'Content-Type': 'application/json'
+  },
+});
   return response.ok;
 }
 
 // Helper — calls /api/auth/refresh with the refreshToken cookie
 // Returns the new Set-Cookie headers if successful, null if failed
 async function tryRefresh(request, refreshToken) {
-  const url = new URL("/api/auth/refresh", request.url);
+  const url = new URL("https://dudhkoshihydro.aayumalunhydro.com.np/api/auth/refresh", request.url);
   const response = await fetch(url, {
     method: "POST",
     headers: { Cookie: `${refreshToken.name}=${refreshToken.value}` },

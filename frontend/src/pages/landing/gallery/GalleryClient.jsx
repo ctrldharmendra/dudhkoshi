@@ -69,7 +69,7 @@ export default  function GalleryClient({ initialGallery }) {
                 <button
                   key={cat}
                   onClick={() => handleCategoryChange(cat)}
-                  className={`px-5 py-2 rounded-full text-xs font-medium transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                  className={`px-5 py-2 rounded-full text-[15px] font-medium transition-all duration-200 cursor-pointer whitespace-nowrap ${
                     isActive
                       ? "bg-[var(--landingPagePrimaryColor,#1E7EBB)] text-white shadow-sm"
                       : "bg-[#eef4f8] text-[#45484D] hover:bg-gray-200"

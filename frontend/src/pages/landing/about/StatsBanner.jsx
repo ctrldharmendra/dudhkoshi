@@ -129,7 +129,7 @@ export default function StatsBanner() {
               </div>
 
               {/* Metric Label */}
-              <p className="text-[10px] md:text-xs font-semibold tracking-widest text-white/70 uppercase">
+              <p className="text-[14px] md:text-xs font-semibold tracking-widest text-white/70 uppercase">
                 {stat.label}
               </p>
             </div>

@@ -43,17 +43,20 @@ export default function Example() {
 
 const { data } = await axiosInstance.post(
   "/api/auth/login",
+  { email, password },
   {
-    email,
-    password,
-  },
-  // {
-  //   withCredentials: true,
-  // }
+    withCredentials: true,
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  }
 );
-if(data?.statusCode == 200){
-    toast.success("Login Successfull!")
-    router.push("/dashboard");
+
+if (data?.statusCode === 200) {
+  toast.success("Login Successfull!");
+    setTimeout(() => {
+        window.location.href = "/dashboard";
+    }, 100);
 }
 
 if(data?.success == false) setError(data?.message)
@@ -102,7 +105,7 @@ if(data?.success == false) setError(data?.message)
      }
      {
         loading && (
-               <span className="text-green-300 flex items-center justify-center gap-2">Loggin You In <TinyLoader></TinyLoader></span>
+               <span className="text-green-300 flex items-center justify-center gap-2">Logging You In <TinyLoader></TinyLoader></span>
         )
      }
             
