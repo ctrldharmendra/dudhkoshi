@@ -121,6 +121,12 @@ const memoryStorage = multer.memoryStorage();
 // This function runs for every file. It checks if the file type is allowed.
 
 function fileFilter(req, file, cb) {
+  console.log('FILE:', {
+    originalname: file.originalname,
+    mimetype: file.mimetype,
+    fieldname: file.fieldname,
+  });
+
   if (ALLOWED_MIME_TYPES.includes(file.mimetype)) {
     cb(null, true); // ✅ allow this file
   } else {

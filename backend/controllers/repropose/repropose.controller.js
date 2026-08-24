@@ -51,6 +51,9 @@ if(!req?.file || req?.file == undefined) return res.status(409).json(new ApiResp
         `INSERT INTO reinvitation_attachment (userId, title, createdBy, bidId) VALUES (?, ?, ?, ?)`,
         [userId, title, loggedInUserId, bidId]
     )
+        // check above data saved in db 
+        if(!result?.insertId) return res.status(500).json(new ApiError(500, [], "Failed to save."))
+
     // // ?after above query completion | SAVE update document field in reinvitation_attachment table
        const saved = await saveFiles(req, 're-propose');
         
@@ -63,8 +66,6 @@ if(!req?.file || req?.file == undefined) return res.status(409).json(new ApiResp
             )
         }
 
-        // check above data saved in db 
-        if(!result?.insertId) return res.status(500).json(new ApiError(500, [], "Failed to save."))
          
 
         // after above things saved send email to this user's business email | send the file what here provided
@@ -141,7 +142,79 @@ return res.status(200).json(new ApiResponse(200, result, "Success."))
 
 })
 
+
+// GET ALL REUOTED DATA WITH ITS ANS FOR A PARTICULAR BID, FOR A  LOGGED IN USER 
+const getAllRequotedLoggedInUser = asyncHandler(async (req, res)=>{
+
+    const {bidId} = req.params;
+
+    try {
+        // const [result] = await pool.query(
+        //    `SELECT reQ.id as requoted_ques_id
+        
+        //      FROM reinvitation_attachment 
+        //      LEFT JOIN 
+        //    ` 
+        // )
+
+
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json(new ApiResponse(500, [], "Internal Server Error.", error));
+    }
+
+
+})
+
+// REPLY TO PARTICULAR REQUOTED QUESTION FOR PARTICULAR BID
+const replyRequoted = asyncHandler(async (req, res)=>{
+    console.log("first")
+
+    const {bidId, requotedQuesId} = req.params;
+    try {
+// if(!req?.file || req?.file == undefined) return res.status(409).json(new ApiResponse(409, [], "Document required"));
+
+//         // check this bid exist 
+//         const [bidExist] = await pool.query(
+//             `SELECT id, closeDate, title FROM bid_master WHERE id = ?`,
+//             [bidId]
+//         )
+//         if(!bidExist.length) return res.status(404).json(new ApiResponse(404, [], "Bid Doesn't Exist."))
+//             // check if this bid is closed or not if closed from now then proceed if not closed then show error 
+//             // if(bidExist[0].closeDate > new Date()) return res.status(409).json(new ApiResponse(404, [], "Bid is not closed Yet. Cant Propose."))
+//             // // console.log(userId, title, createdBy, bidId)
+
+//             // check if reuoted question exist or not if not then show error 
+//             const [requotedQuesExist] = await pool.query(
+//                 `SELECT id FROM reinvitation_attachment WHERE id = ?`,
+//                 [requotedQuesId]
+//             )
+//             if(!requotedQuesExist.length) return res.status(404).json(new ApiResponse(404, [], "Requoted Question Doesn't Exist."))
+//                 const [result] = await pool.query(
+//                   `INSERT INTO reinvitation_attachment_ans (whoseAnsIsThis, whichQuesAnsIsThis) VALUES (?, ?, ?)`, 
+//                   [req?.user?.id, requotedQuesId]
+//                 )
+
+//                 if(!result?.insertId) return res.status(500).json(new ApiResponse(500, [], "Failed to save."))
+//                 // now save the its file 
+//                  const saved = await saveFiles(req, 're-propose');
+//         if (saved?.file) {
+//             await pool.query(
+//                 'UPDATE reinvitation_attachment_ans SET file = ? WHERE id = ?',
+//                 [saved?.file, result?.insertId]
+//             )
+//         }
+
+//         return res.status(201).json(new ApiResponse(201, result, "Success."))
+    } catch (error) {
+        return res.status(500).json(new ApiResponse(500, [], "Internal Server Error.", error));
+    }
+
+})
+
 module.exports = {
     cretePropose,
     getAllPropse,
+    replyRequoted
 }
