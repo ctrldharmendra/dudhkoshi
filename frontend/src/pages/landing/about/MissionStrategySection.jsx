@@ -86,7 +86,7 @@ export default function MissionStrategySection() {
                     </div>
                     <div>
                       <p className="text-[10px] font-extrabold text-[#0972f6]">95.7 MW</p>
-                      <p className="text-[8px] text-gray-500 leading-none">Clean Energy</p>
+                      <p className="text-[11px] text-gray-500 leading-none">Clean Energy</p>
                     </div>
                   </div>
 
@@ -96,7 +96,7 @@ export default function MissionStrategySection() {
                     </div>
                     <div>
                       <p className="text-[10px] font-extrabold text-[#0972f6]">2.4M tons</p>
-                      <p className="text-[8px] text-gray-500 leading-none">CO₂ Reduced</p>
+                      <p className="text-[11px] text-gray-500 leading-none">CO₂ Reduced</p>
                     </div>
                   </div>
 
@@ -106,7 +106,7 @@ export default function MissionStrategySection() {
                     </div>
                     <div>
                       <p className="text-[10px] font-extrabold text-[#0972f6]">Stronger Nepal</p>
-                      <p className="text-[8px] text-gray-500 leading-none">Sustainable Future</p>
+                      <p className="text-[11px] text-gray-500 leading-none">Sustainable Future</p>
                     </div>
                   </div>
                 </div>

@@ -99,6 +99,7 @@ const specsData = {
         '--landingPagePrimaryColor': '#1E7EBB',
         '--textColorOnLightBg': '#45484D',
       }}
+      id="projectOverview"
     >
       <div className="max-w-[1438px] mx-auto">
         

@@ -107,7 +107,7 @@ Meet the multi-disciplinary team of engineers, environmental scientists, and str
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-sm font-extrabold  text-[#45484D]  leading-snug mb-3 hover:text-[#1E7EBB] transition-colors line-clamp-2">
+                  <h3 className="text-[14px] font-extrabold  text-[#45484D]  leading-snug mb-3 hover:text-[#1E7EBB] transition-colors line-clamp-2">
                     {item.title}
                   </h3>
 
@@ -118,7 +118,7 @@ Meet the multi-disciplinary team of engineers, environmental scientists, and str
                   </div>
 
                   {/* Description Snippet */}
-                  <p className="text-[11px] text-slate-500 leading-relaxed line-clamp-2 mb-4">
+                  <p className="text-[14px] text-slate-500 leading-relaxed line-clamp-2 mb-4">
                     {item.description}
                   </p>
                 </div>
@@ -181,7 +181,7 @@ Meet the multi-disciplinary team of engineers, environmental scientists, and str
 
             ))}
 </div>
-            <FinancialHighlights></FinancialHighlights>
+            {/* <FinancialHighlights></FinancialHighlights> */}
           </div>
 
         </div>

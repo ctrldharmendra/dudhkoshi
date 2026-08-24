@@ -11,7 +11,7 @@ import StyledSubHeadingLine from './components/StyledSubHeadingLine';
 export default function HeroPage() {
   return (
     <div 
-      className="lg:min-h-screen min-h-[50vh] bg-white flex flex-col antialiased  heroBg"
+      className=" bg-white flex flex-col antialiased  heroBg"
     >
       {/* Responsive Navbar */}
       <Navbar />
@@ -48,7 +48,7 @@ export default function HeroPage() {
               </h1>
 
               {/* Subtext Paragraph */}
-              <p className="mt-6 text-sm hidden lg:flex md:text-base text-[var(--primaryTextColorLanding)] font-medium leading-relaxed max-w-4xl mx-auto px-4">
+              <p className="mt-6 text-xl hidden lg:flex text-[var(--primaryTextColorLanding)] font-medium leading-relaxed max-w-4xl mx-auto px-4">
                 Dudhkhoshi Hydropower Nepal Pvt. Ltd. is driving Nepal’s clean energy future. Committed to meeting the country’s 
                 expanding power demands, we build sustainable, reliable hydropower solutions rooted in our foundational vision to 
                 harness the nation’s incredible water resources.
@@ -96,7 +96,7 @@ export default function HeroPage() {
 
             {/* Card 2: Technical Description */}
             <div className="bg-[#ffffff91] backdrop-blur-md rounded-3xl p-6 border border-white/40 shadow-xl hidden lg:flex flex-col justify-between min-h-[220px]">
-              <p className="text-[var(--textColorOnLightBg)] text-xs leading-relaxed font-medium">
+              <p className="text-[var(--textColorOnLightBg)] text-lg leading-relaxed font-medium">
                 High-efficiency PRoR design ensuring 6 hours of peak power, even during dry seasons.
               </p>
               <div className="mt-6">

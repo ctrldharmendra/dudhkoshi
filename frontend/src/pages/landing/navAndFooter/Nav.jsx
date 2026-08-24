@@ -33,6 +33,9 @@ export default function Navbar() {
           <Link href="#team" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-medium text-[15px] transition-colors">
             Our Team
           </Link>
+          <Link href="#projectOverview" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-medium text-[15px] transition-colors">
+            Project Overview
+          </Link>
         </nav>
 
         {/* Action Button */}

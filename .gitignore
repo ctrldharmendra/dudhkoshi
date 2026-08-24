@@ -19,3 +19,6 @@ frontend/.env.local
 frontend/node_modules/
 
 .next
+frontend/next.config.mjs
+frontend/src/proxy.js
+

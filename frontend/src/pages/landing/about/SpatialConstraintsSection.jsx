@@ -44,7 +44,7 @@ export default function SpatialConstraintsSection() {
                 <h4 className="text-[11px] font-bold tracking-wider text-[var(--landingPagePrimaryColor)] uppercase">
                   TERRAIN
                 </h4>
-                <p className="text-xs text-[var(--textColorOnLightBg)] leading-relaxed font-medium">
+                <p className="text-[15px] text-[var(--textColorOnLightBg)] leading-relaxed font-medium">
                   Steep-walled glacial gorge with high metamorphic rock stability. Gradient analyzed at 42° mean.
                 </p>
               </div>
@@ -60,7 +60,7 @@ export default function SpatialConstraintsSection() {
                 <h4 className="text-[11px] font-bold tracking-wider text-[var(--landingPagePrimaryColor)] uppercase">
                   ACCESS
                 </h4>
-                <p className="text-xs text-[var(--textColorOnLightBg)] leading-relaxed font-medium">
+                <p className="text-[15px] text-[var(--textColorOnLightBg)] leading-relaxed font-medium">
                   <span className="font-semibold block text-slate-800">11 km corridor</span>
                   Pedestrian and light cargo maintenance access.
                 </p>
@@ -75,7 +75,7 @@ export default function SpatialConstraintsSection() {
                 <h4 className="text-[11px] font-bold tracking-wider text-[var(--landingPagePrimaryColor)] uppercase">
                   WATER SOURCE
                 </h4>
-                <div className="text-xs text-[var(--textColorOnLightBg)] leading-relaxed font-medium">
+                <div className="text-[15px] text-[var(--textColorOnLightBg)] leading-relaxed font-medium">
                   <p className="font-bold text-slate-800 mb-1">Dudhkoshi River</p>
                   <p className="text-[var(--landingPageSecondaryColor)]">
                       6 hours a day in dry seasons</p>
@@ -93,7 +93,7 @@ export default function SpatialConstraintsSection() {
                 <h4 className="text-[11px] font-bold tracking-wider text-[var(--landingPagePrimaryColor)] uppercase">
                   CONTEXT
                 </h4>
-                <div className="text-xs text-[var(--textColorOnLightBg)] leading-relaxed font-medium">
+                <div className="text-[15px] text-[var(--textColorOnLightBg)] leading-relaxed font-medium">
                   <p className="font-bold text-slate-700 uppercase tracking-wide text-[11px] mb-1">
                     PEAKING POWER CAPACITY
                   </p>
@@ -112,7 +112,7 @@ export default function SpatialConstraintsSection() {
                 <SlLocationPin className="w-3.5 h-3.5 fill-amber-500 text-amber-600" />
                 <span>SOLUKHUMBU</span>
               </div>
-              <p className="text-[11px] pt-0.5 min-w-full flex justify-center bg-[var(--lightWhite)] text-gray-600 font-medium leading-relaxed max-w-md">
+              <p className="text-[14px] pt-0.5 min-w-full flex justify-center bg-[var(--lightWhite)] text-gray-600 font-medium leading-relaxed max-w-md">
                 Located in the Solukhumbu District of Koshi Province, this semi-reservoir and peaking run-of-river (PRoR) project
               </p>
             </div>

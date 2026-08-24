@@ -106,7 +106,7 @@ export default function TechnicalSpecification() {
                   </div>
                   <p className="text-xs font-semibold text-[var(--textColorOnLightBg)]">Installed Capacity</p>
                   <p className="text-2xl font-extrabold text-[var(--landingPagePrimaryColor)] mt-2">
-                    95.7 <span className="text-base font-medium text-gray-500">MW</span>
+                    95.7 <span className="text-[14px] font-medium text-gray-500">MW</span>
                   </p>
                 </div>
                 <div className="pt-4 mt-4 border-t border-[#E9F2F8]">
@@ -124,7 +124,7 @@ export default function TechnicalSpecification() {
                   </div>
                   <p className="text-xs font-semibold text-[var(--textColorOnLightBg)]">Design Discharge</p>
                   <p className="text-2xl font-extrabold text-[var(--landingPagePrimaryColor)] mt-2">
-                    83.5 <span className="text-base font-medium text-gray-500">m³/s</span>
+                    83.5 <span className="text-[14px] font-medium text-gray-500">m³/s</span>
                   </p>
                 </div>
                 <div className="pt-4 mt-4 border-t border-[#E9F2F8]">
@@ -142,7 +142,7 @@ export default function TechnicalSpecification() {
                   </div>
                   <p className="text-xs font-semibold text-[var(--textColorOnLightBg)]">Gross Head</p>
                   <p className="text-2xl font-extrabold text-[var(--landingPagePrimaryColor)] mt-2">
-                    144.5 <span className="text-base font-medium text-gray-500">M</span>
+                    144.5 <span className="text-[14px] font-medium text-gray-500">M</span>
                   </p>
                 </div>
                 <div className="pt-4 mt-4 border-t border-[#E9F2F8]">
