@@ -24,11 +24,11 @@ export default function HeroPage() {
           <div className='max-w-[1440px] relative px-4 sm:px-8  mx-auto w-full pb-32'>
           {/* Main Hero Container with Background Image */}
           <div 
-            className="relative w-full min-h-[500px] lg:min-h-[750px] md:min-h-[750px] heroParentStyled overflow-hidden bg-cover bg-center flex flex-col items-center pt-16 px-4 md:px-8"
+            className="relative w-full min-h-[500px] lg:min-h-[700px] md:min-h-[700px] heroParentStyled overflow-hidden bg-cover bg-center flex flex-col items-center pt-16 px-4 md:px-8 "
             style={{
-              backgroundImage: `url('/landing/realImage/1.jpeg')` 
+              backgroundImage: `url('/landing/realImage/1_fog.png')`  
             }}
-          >
+          >{/*`url('/landing/realImage/1.jpeg')`  */}
             {/* 1. Cloudy White Transparency Overlay (Top fading down) */}
             <div className="absolute inset-x-0 top-0 h-[60%] bg-gradient-to-b from-[var(--lightWhite)] via-[var(--lightWhite)]/85 to-transparent pointer-events-none"></div>
 
@@ -42,10 +42,15 @@ export default function HeroPage() {
 <StyledSubHeadingLine text="Dudhkhoshi Hydropower Limited"></StyledSubHeadingLine>
 
               {/* Main Display Headline */}
-              <h1 className="text-4xl  md:text-6xl lg:text-[70px] font-extrabold tracking-tight leading-tight md:leading-[1.15] max-w-5xl mx-auto">
-                <span className="heroGradientText block font-manrope-bold blackStrok pb-[3px]">Clean Energy</span>
-                <span className="heroGradientText block font-manrope-bold blackStrok pb-[3px]">Unstoppable Flow</span>
-              </h1>
+            <h1 className="mx-auto max-w-5xl text-center font-manrope text-4xl font-bold leading-[100%] tracking-[0%] md:text-6xl lg:text-[64px]">
+              <span className="heroGradientText block pb-[3px]">
+                Clean Energy
+              </span>
+              <span className="heroGradientText block pb-[3px] mt-[20px]">
+                Unstoppable Flow
+              </span>
+            </h1>
+
 
               {/* Subtext Paragraph */}
               <p className="mt-6 text-xl hidden lg:flex text-[var(--primaryTextColorLanding)] font-medium leading-relaxed max-w-4xl mx-auto px-4">
