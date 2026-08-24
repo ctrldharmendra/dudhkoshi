@@ -26,6 +26,8 @@ app.use(
     origin: [
       "https://dudhkoshi.gyanbato.com",
       "http://localhost:3000",
+      "https://dudhkoshihydro.com.np",
+      "http://dudhkoshihydro.com.np",
     ],
     credentials: true, // needed for cookies/auth sessions
   })
