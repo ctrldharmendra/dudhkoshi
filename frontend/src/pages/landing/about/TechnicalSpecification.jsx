@@ -46,12 +46,12 @@ export default function TechnicalSpecification() {
           <StyledSubHeadingWithPill text="About us"></StyledSubHeadingWithPill>
 
           {/* Main Title */}
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--landingPageColorPrimary2)] tracking-tight leading-tight mb-4">
+          <h2 className="font-['Manrope'] font-bold text-[32px] leading-[44px] tracking-[0%] text-center capitalize text-[var(--landingPageColorPrimary2)] mb-4">
             Empowering Nepal With <br className="hidden sm:inline" /> Clean Hydropower Solutions
           </h2>
 
           {/* Subtitle */}
-          <p className="text-sm md:text-base text-[var(--textColorOnLightBg)] leading-relaxed">
+          <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]">
             Dudhkhoshi Hydropower Nepal Pvt. Ltd. operates the Dudhkhoshi-2 (Jaleshwor) project a 95.7 MW optimized facility engineered for the highest efficiency and reliability.
           </p>
         </div>

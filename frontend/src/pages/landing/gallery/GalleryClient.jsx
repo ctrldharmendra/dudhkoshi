@@ -45,7 +45,7 @@ export default  function GalleryClient({ initialGallery }) {
           <StyledSubHeadingWithPill text="Gallery"></StyledSubHeadingWithPill>
 
           {/* Main Title */}
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--landingPageColorPrimary2)] tracking-tight leading-tight mb-4">
+          <h2 className="font-['Manrope'] font-bold text-[32px] leading-[100%] tracking-[0%] text-center capitalize text-[var(--landingPageColorPrimary2)] mb-4">
           Our Visual Journal
           </h2>
 

@@ -109,12 +109,12 @@ const specsData = {
           <StyledSubHeadingWithPill text="Project Overview"></StyledSubHeadingWithPill>
 
           {/* Main Title */}
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--landingPageColorPrimary2)] tracking-tight leading-tight mb-4">
+          <h2 className="font-['Manrope'] font-bold text-[32px] leading-[44px] tracking-[0%] text-center capitalize text-[var(--landingPageColorPrimary2)] mb-4">
 Project Overview
           </h2>
 
           {/* Subtitle */}
-          <p className="text-sm md:text-base text-[var(--textColorOnLightBg)] leading-relaxed">
+          <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]">
 Engineering design data and technical specifications for the Dudhkoshi-2 
 Run-of-River Hydroelectric Scheme.
           </p>
