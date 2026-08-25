@@ -95,24 +95,28 @@ export default function ShowReinvitationDoc({ data = [] }) {
                 shadow-md
               "
             >
-              {getFileIcon(item.file)}
+              {getFileIcon(item?.file)}
             </div>
 
 
             {/* File Card */}
             <div
-              onClick={() => openFile(item.file)}
+              onClick={() => openFile(item?.file)}
               className={`
                 mb-8
+                pt-[26px]
                 flex-1
-                rounded-xl
-                border
-                bg-white
-                p-4
+        ${item?.isAnswered ? "bg-[#e9f9ef]" : "bg-white"}
+        border border-[#bfe6cf]
+        ${item?.isAnswered ? "border border-[#bfe6cf]" : "border border-[#e6e9e7ad]"}
+        
+        rounded-sm
+           px-4
+           pb-4
                 shadow-sm
                 transition-all
                 ${
-                  item.file
+                  item?.file
                   ? "cursor-pointer hover:shadow-lg hover:-translate-y-1"
                   : "cursor-not-allowed opacity-50"
                 }
@@ -149,6 +153,29 @@ export default function ShowReinvitationDoc({ data = [] }) {
                 </p>
               )}
 
+  {/* end  */}
+{
+  !item?.isAnswered && (
+    <div className="absolute top-[4px] text-sm bg-[#ffcfcf] px-3 py-0 rounded-xl text-red-500">
+  <span>Applicant hasn't replied yet.</span>
+  </div>
+  )
+}
+{
+  item?.isAnswered && (
+    <div className="absolute top-[4px] text-sm bg-[#b4ffda] px-3 py-0 rounded-xl text-[#00c500]">
+  <span>Applicant has replied back.</span>
+  </div>
+  )
+}
+  {
+    item?.answer &&(
+      <Attachment file={item?.file} fileBaseUrl={BASE_URL} label="Question document" />
+
+    )
+                        
+
+  }
             </div>
 
           </div>
@@ -158,5 +185,65 @@ export default function ShowReinvitationDoc({ data = [] }) {
       </div>
 
     </div>
+  );
+}
+
+
+
+function Attachment({ file, fileBaseUrl, label }) {
+  if (!file) {
+    return <p className="attachment attachment--empty">No attachment</p>;
+  }
+  const name = file.split('/').pop();
+  return (
+    <a
+      className="attachment"
+      href={`${fileBaseUrl}/${file}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      title={label}
+    >
+      <FileIcon />
+      <span className="attachment__name">View Applicant Replied Document</span>
+      <style jsx>{`
+        .attachment {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.4rem;
+          font-size: 0.8rem;
+          color: #2b3550;
+          background:#2b7fff;
+          border: 1px solid #e4e7ee;
+          border-radius: 7px;
+          padding: 0.35rem 0.6rem;
+          text-decoration: none;
+          max-width: 100%;
+        }
+
+        .attachment__name {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          color: white;
+        }
+        .attachment--empty {
+          color: #9aa1b3;
+          font-size: 0.8rem;
+          font-style: italic;
+          margin: 0;
+        }
+      `}</style>
+    </a>
+  );
+}
+
+
+
+function FileIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+      <path d="M14 2v6h6" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+    </svg>
   );
 }

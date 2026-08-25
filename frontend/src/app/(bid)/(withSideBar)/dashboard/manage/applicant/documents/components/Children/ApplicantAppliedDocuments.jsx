@@ -49,7 +49,7 @@ const baseContentPath = process.env.NEXT_PUBLIC_BASE_CONTENT_URL
   // APPLICABT REPROPOSED DOCUMENT 
   const bidReproposeData = useSelector((state) => state?.bidRepropse?.bidReproposeData);
   const bidReproposeLoading = useSelector((state) => state?.bidRepropse?.bidReproposeLoading);
-
+console.log(bidReproposeData, "bidReproposeData")
   useEffect(() => {
       dispatch(getBidderReproposeDoc({bidId: bidMasterDetails?.id, userId: applicantDetails?.user_id}))
   }, [])
@@ -170,8 +170,16 @@ if(awardLoading || bidReproposeLoading){
 
       <div className='flex gap-4'>
         {/* REINVITATION BTN  */}
+        {
+          bidMasterDetails?.award_status !=="AWARDED" && (
     <button type="button" 
-    className="w-40 py-3 active:scale-95 transition text-sm text-white rounded-xl bg-slate-700" onClick={() => dispatch(setIsAddOpened(true))}><p className="mb-0.5">Reinvite</p></button>
+    className="w-40 py-3 active:scale-95 transition text-sm text-white rounded-xl bg-slate-700"
+     onClick={() => dispatch(setIsAddOpened(true))}>
+      <p className="mb-0.5">Reinvite</p>
+    </button>
+          )
+        }
+
 
 {
   bidMasterDetails?.award_status ==="AWARDED" && bidMasterDetails?.awarded_to !== null && bidMasterDetails?.awarded_by !== null ? (
@@ -193,6 +201,7 @@ if(awardLoading || bidReproposeLoading){
     className=" absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full"/>
   <FaAward
     className=" relative text-lg transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110"/><span className="relative">Award</span>
+
 </button>
 }
       </div>

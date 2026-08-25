@@ -28,28 +28,43 @@ const router = useRouter()
     const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
     const loadingOfGetRolePermission  = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);  //loading state
     // get all permission in an array 
-        useEffect(()=>{
-          dispatch(getRolePermissionLoggedInUser({}))
-        },[]);
-
-        useEffect(() => {
-          if (loadingOfGetRolePermission) return;
-          if (!permissionOfLoggedInRoleOfUser) return;
-        
-          const canViewApplicants = hasPermission(permissionOfLoggedInRoleOfUser, "view_applicants");
-          if (!canViewApplicants) {
-            router.replace("/forbidden");
-          }
-        }, [loadingOfGetRolePermission, permissionOfLoggedInRoleOfUser]);
-    // check if loggedn in user has permission to view "applicants" end
-
-
-
-// api calling to get particualr applicant's filled document for particular bid 
 useEffect(() => {
-    dispatch(getApplicantDocumentForParticularBid({bidId, applicationId}))
+  dispatch(getRolePermissionLoggedInUser({}));
+}, [dispatch]);
 
-  }, [])
+useEffect(() => {
+  // Wait until permission API finishes
+  if (loadingOfGetRolePermission) return;
+
+  // Permission data isn't available yet
+  if (!permissionOfLoggedInRoleOfUser) return;
+
+  const canViewApplicants = hasPermission(
+    permissionOfLoggedInRoleOfUser,
+    "view_applicants"
+  );
+
+  if (!canViewApplicants) {
+    router.replace("/forbidden");
+    return;
+  }
+
+  // User has permission, so now fetch applicant documents
+  dispatch(
+    getApplicantDocumentForParticularBid({
+      bidId,
+      applicationId,
+    })
+  );
+}, [
+  loadingOfGetRolePermission,
+  permissionOfLoggedInRoleOfUser,
+  bidId,
+  applicationId,
+  dispatch,
+  router,
+]);
+    // check if loggedn in user has permission to view "applicants" end
 
 
 

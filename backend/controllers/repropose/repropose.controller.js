@@ -128,12 +128,54 @@ const getAllPropse = asyncHandler(async (req, res)=>{
 
     try {
         
-        const [result] = await pool.query(
-          `SELECT * FROM reinvitation_attachment WHERE bidId =? AND userId = ?`,
-          [bidId, userId]  
-        )
+        // const [result] = await pool.query(
+        //   `SELECT * FROM reinvitation_attachment WHERE bidId =? AND userId = ?`,
+        //   [bidId, userId]  
+        // )
 
-return res.status(200).json(new ApiResponse(200, result, "Success."))
+        const [rows] = await pool.query(
+        `SELECT
+            q.id            AS questionId,
+            q.title         AS questionTitle,
+            q.file          AS questionFile,
+            q.userId        AS questionForUser,
+            q.createdBy     AS questionCreatedBy,
+            q.bidId,
+            q.createdAt     AS questionCreatedAt,
+
+            a.id            AS answerId,
+            a.file          AS answerFile,
+            a.whoseAnsIsThis AS answeredBy,
+            a.created_at    AS answerCreatedAt
+
+        FROM reinvitation_attachment q
+        LEFT JOIN reinvitation_attachment_ans a
+            ON a.whichQuesAnsIsThis = q.id
+
+        WHERE q.bidId = ?
+          AND q.userId = ?
+        ORDER BY q.createdAt DESC`,
+        [bidId, userId]
+    );
+
+    const data = rows?.map((row) => ({
+        id: row.questionId,
+        title: row.questionTitle,
+        file: row.questionFile,
+        bidId: row.bidId,
+        createdAt: row.questionCreatedAt,
+        isAnswered: row.answerId !== null,
+        answer: row.answerId
+            ? {
+                  id: row.answerId,
+                  file: row.answerFile,
+                  answeredBy: row.answeredBy,
+                  createdAt: row.answerCreatedAt,
+              }
+            : null,
+    }));
+
+return res.status(200).json(new ApiResponse(200, data, "Success."))
     } catch (error) {
         console.log(error)
         return res.status(500).json(new ApiResponse(500, [], "Internal Server Error."));
@@ -144,70 +186,127 @@ return res.status(200).json(new ApiResponse(200, result, "Success."))
 
 
 // GET ALL REUOTED DATA WITH ITS ANS FOR A PARTICULAR BID, FOR A  LOGGED IN USER 
-const getAllRequotedLoggedInUser = asyncHandler(async (req, res)=>{
-
-    const {bidId} = req.params;
-
-    try {
-        // const [result] = await pool.query(
-        //    `SELECT reQ.id as requoted_ques_id
-        
-        //      FROM reinvitation_attachment 
-        //      LEFT JOIN 
-        //    ` 
-        // )
+const getRequotedWithAnswersLogged = asyncHandler(async (req, res) => {
+    // console.log("sa")
+  try {
+      const { bidId } = req.params;
+//       console.log("userID", req?.user?.id)
+//   console.log("BidId", bidId)
 
 
+    //   check if above bid exist or not   
+    const [bidExist] = await pool.query(
+        `SELECT id, closeDate FROM bid_master WHERE id = ?`,
+        [bidId]
+    )
+    if(!bidExist.length) return res.status(404).json(new ApiResponse(404, [], "Bid Doesn't Exist."))
 
-    } catch (error) {
-        console.log(error)
-        return res.status(500).json(new ApiResponse(500, [], "Internal Server Error.", error));
-    }
+    const [rows] = await pool.query(
+        `SELECT
+            q.id            AS questionId,
+            q.title         AS questionTitle,
+            q.file          AS questionFile,
+            q.userId        AS questionForUser,
+            q.createdBy     AS questionCreatedBy,
+            q.bidId,
+            q.createdAt     AS questionCreatedAt,
 
+            a.id            AS answerId,
+            a.file          AS answerFile,
+            a.whoseAnsIsThis AS answeredBy,
+            a.created_at    AS answerCreatedAt
 
-})
+        FROM reinvitation_attachment q
+        LEFT JOIN reinvitation_attachment_ans a
+            ON a.whichQuesAnsIsThis = q.id
+
+        WHERE q.bidId = ?
+          AND q.userId = ?
+        ORDER BY q.createdAt DESC`,
+        [bidId, req?.user?.id]
+    );
+
+    const data = rows?.map((row) => ({
+        id: row.questionId,
+        title: row.questionTitle,
+        file: row.questionFile,
+        bidId: row.bidId,
+        createdAt: row.questionCreatedAt,
+        isAnswered: row.answerId !== null,
+        answer: row.answerId
+            ? {
+                  id: row.answerId,
+                  file: row.answerFile,
+                  answeredBy: row.answeredBy,
+                  createdAt: row.answerCreatedAt,
+              }
+            : null,
+    }));
+    return res.status(200).json(new ApiResponse(200, data, "Success."));
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json(new ApiResponse(500, [], "Internal Server Error.", error));
+  }
+
+});
 
 // REPLY TO PARTICULAR REQUOTED QUESTION FOR PARTICULAR BID
 const replyRequoted = asyncHandler(async (req, res)=>{
-    console.log("first")
+
 
     const {bidId, requotedQuesId} = req.params;
+    // console.log("userID", req?.user?.id)
+    // console.log("BidId", bidId)
+    // console.log("requotedQuesId", requotedQuesId)
     try {
-// if(!req?.file || req?.file == undefined) return res.status(409).json(new ApiResponse(409, [], "Document required"));
+if(!req?.file || req?.file == undefined) return res.status(409).json(new ApiResponse(409, [], "Document required"));
 
-//         // check this bid exist 
-//         const [bidExist] = await pool.query(
-//             `SELECT id, closeDate, title FROM bid_master WHERE id = ?`,
-//             [bidId]
-//         )
-//         if(!bidExist.length) return res.status(404).json(new ApiResponse(404, [], "Bid Doesn't Exist."))
-//             // check if this bid is closed or not if closed from now then proceed if not closed then show error 
-//             // if(bidExist[0].closeDate > new Date()) return res.status(409).json(new ApiResponse(404, [], "Bid is not closed Yet. Cant Propose."))
-//             // // console.log(userId, title, createdBy, bidId)
+        // check this bid exist 
+        const [bidExist] = await pool.query(
+            `SELECT id, closeDate, title FROM bid_master WHERE id = ?`,
+            [bidId]
+        )
+        if(!bidExist.length) return res.status(404).json(new ApiResponse(404, [], "Bid Doesn't Exist."))
+            // check if this bid is closed or not if closed from now then proceed if not closed then show error 
+            // if(bidExist[0].closeDate > new Date()) return res.status(409).json(new ApiResponse(404, [], "Bid is not closed Yet. Cant Propose."))
+            // // console.log(userId, title, createdBy, bidId)
 
-//             // check if reuoted question exist or not if not then show error 
-//             const [requotedQuesExist] = await pool.query(
-//                 `SELECT id FROM reinvitation_attachment WHERE id = ?`,
-//                 [requotedQuesId]
-//             )
-//             if(!requotedQuesExist.length) return res.status(404).json(new ApiResponse(404, [], "Requoted Question Doesn't Exist."))
-//                 const [result] = await pool.query(
-//                   `INSERT INTO reinvitation_attachment_ans (whoseAnsIsThis, whichQuesAnsIsThis) VALUES (?, ?, ?)`, 
-//                   [req?.user?.id, requotedQuesId]
-//                 )
+            // CHECK IF THIS QUESTION EXISTS | CHECK IF THIS QUESTION BELONG TO THIS LOGGED IN USER | IF RELATED TO REQUESTED BID  
+            const [requotedQuesExist] = await pool.query(
+                `SELECT id FROM reinvitation_attachment WHERE id = ? AND userId = ? AND bidId = ?`,
+                [requotedQuesId, req?.user?.id, bidId]
+            )
+            if(!requotedQuesExist.length) return res.status(404).json(new ApiResponse(404, [], "Requoted Question Doesn't Exist."))
 
-//                 if(!result?.insertId) return res.status(500).json(new ApiResponse(500, [], "Failed to save."))
-//                 // now save the its file 
-//                  const saved = await saveFiles(req, 're-propose');
-//         if (saved?.file) {
-//             await pool.query(
-//                 'UPDATE reinvitation_attachment_ans SET file = ? WHERE id = ?',
-//                 [saved?.file, result?.insertId]
-//             )
-//         }
+// ALSO CHECK IF THIS QUESTION ALREADY ANSWERED
+const [isThisAlreadyAnswered] = await pool.query(
+    `SELECT id FROM reinvitation_attachment_ans WHERE whichQuesAnsIsThis = ? AND whoseAnsIsThis = ?`,
+    [requotedQuesExist?.[0]?.id, req?.user?.id]
+)
+if(isThisAlreadyAnswered?.length) return res.status(409).json(new ApiResponse(409, [], "It's Already Answered.."))
 
-//         return res.status(201).json(new ApiResponse(201, result, "Success."))
+            // THEN ONLY INSETR 
+                const [result] = await pool.query(
+                  `INSERT INTO reinvitation_attachment_ans (whoseAnsIsThis, whichQuesAnsIsThis) VALUES (?, ?)`, 
+                  [req?.user?.id, requotedQuesId]
+                )
+            
+            
+
+                if(!result?.insertId) return res.status(500).json(new ApiResponse(500, [], "Failed to save."))
+                // now save the its file 
+                 const saved = await saveFiles(req, 're-propose');
+        if (saved?.file) {
+            await pool.query(
+                'UPDATE reinvitation_attachment_ans SET file = ? WHERE id = ?',
+                [saved?.file, result?.insertId]
+            )
+        }
+
+        return res.status(201).json(new ApiResponse(201, result, "Success."))
     } catch (error) {
+        console.log(error)
+        if(error.code == "ER_DUP_ENTRY") return res.status(409).json(new ApiResponse(409, [], "It's Already Answered."))
         return res.status(500).json(new ApiResponse(500, [], "Internal Server Error.", error));
     }
 
@@ -216,5 +315,6 @@ const replyRequoted = asyncHandler(async (req, res)=>{
 module.exports = {
     cretePropose,
     getAllPropse,
-    replyRequoted
+    replyRequoted,
+    getRequotedWithAnswersLogged
 }

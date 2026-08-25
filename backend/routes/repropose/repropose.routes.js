@@ -26,4 +26,12 @@ router.route('/reply/:bidId/:requotedQuesId').post(
     reproposeController.replyRequoted
 );
 
+
+// GET LOGGED IN USER REQUOTED QUESTIONS WITH ALL ITS ANSWER DATA 
+router.route('/loggedIn/reqoutes/:bidId').get(
+    authenticateAccessToken,
+    reproposeController.getRequotedWithAnswersLogged
+);
+
+
 module.exports = router;
