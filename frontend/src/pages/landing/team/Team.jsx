@@ -155,12 +155,12 @@ export default function TeamSection() {
           <StyledSubHeadingWithPill text="Meet our Team"></StyledSubHeadingWithPill>
 
           {/* Main Title */}
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--landingPageColorPrimary2)] tracking-tight leading-tight mb-4">
+          <h2 className="font-['Manrope'] font-bold text-[32px] leading-[44px] tracking-[0%] text-center capitalize text-[var(--landingPageColorPrimary2)] mb-4">
           Meet our team behind our success
           </h2>
 
           {/* Subtitle */}
-          <p className="text-sm md:text-base text-[var(--textColorOnLightBg)] leading-relaxed">
+          <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]">
     Meet the multi-disciplinary team of engineers, environmental scientists, and strategic investors driving the 95.7 MW Dudhkoshi vision toward sustainable energy independence.
           </p>
         </div>
@@ -196,7 +196,7 @@ export default function TeamSection() {
           
           {/* LEFT SIDE: SELECT PERSONNEL LIST (5 Cols on lg) */}
           <div className="lg:col-span-4 flex flex-col gap-4 border-b lg:border-b-0 lg:border-r border-gray-400/20 pb-6 lg:pb-0 lg:pr-6">
-            <span className="text-[11px] font-bold tracking-widest text-[var(--landingPagePrimaryColor)] uppercase mb-2">
+            <span className="font-[Manrope] font-bold text-[12px] leading-[20px] tracking-[2px] align-middle text-[var(--landingPagePrimaryColor)] uppercase mb-2">
               SELECT PERSONNEL
             </span>
 
@@ -209,7 +209,7 @@ export default function TeamSection() {
                     onClick={() => handleSelectMember(member)}
                     className={`w-full text-left p-3.5 rounded-2xl flex items-center gap-4 transition-all duration-200 cursor-pointer border ${
                       isSelected
-                        ? 'bg-[#DDECF5]/90 border-white/60 shadow-xs'
+                        ? 'bg-[#DDECF5]/40 border-[#DDECF5] shadow-xs'
                         : ' border-[#E9F2F8]'
                     }`}
                   >
@@ -228,7 +228,7 @@ export default function TeamSection() {
                       <h4 className="text-sm font-bold text-slate-800 truncate">
                         {member.name}
                       </h4>
-                      <p className="text-xs text-[var(--landingPageSecondaryColor)] font-medium truncate">
+                      <p className="font-[Hind] font-normal text-[12px] leading-[16px] tracking-[0px] align-middle text-[var(--primaryTextColorLanding)] truncate">
                         {member.role}
                       </p>
                     </div>
@@ -255,10 +255,10 @@ export default function TeamSection() {
                     className="w-full h-full object-top object-cover"
                   />
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-[var(--landingPagePrimaryColor)]">
+                <h3 className="font-[Manrope] font-bold text-[24px] leading-[30px] tracking-[0%] text-center text-[var(--landingPageColorPrimary2)]">
                   {selectedMember.name}
                 </h3>
-                <p className="text-xs font-bold tracking-widest text-slate-600 uppercase mt-0.5">
+                <p className="font-[Hind] font-bold text-[14px] text-[var(--primaryTextColorLanding3)] leading-[20px] tracking-[0px] text-center align-middle uppercase mt-0.5 ">
                   {selectedMember.role}
                 </p>
               </div>
@@ -267,18 +267,31 @@ export default function TeamSection() {
               <div className="md:col-span-7 flex flex-col justify-between h-full pt-1">
                 
                 {/* Paragraphs */}
-                <div className="flex flex-col gap-3 text-[16px] sm:text-sm text-[#45484D] leading-relaxed mb-6">
-                  {selectedMember.bio.map((paragraph, idx) => (
-                    <p key={idx}>{paragraph}</p>
-                  ))}
-                </div>
+              <div className="flex flex-col gap-3 font-[Hind] font-normal text-[16px] leading-[20px] tracking-[0px] text-[var(--primaryTextColorLanding)] mb-6">
+                {selectedMember.bio.map((paragraph, idx) => (
+                  <p key={idx}>
+                    {idx === 0
+                      ? paragraph.split(" ").map((word, i) =>
+                          i < 2 ? (
+                            <span key={i} className="text-[var(--primaryTextColorLanding3)]">
+                              {word}{" "}
+                            </span>
+                          ) : (
+                            word + " "
+                          )
+                        )
+                      : paragraph}
+                  </p>
+                ))}
+              </div>
+
 
                 {/* Metadata List */}
-                <div className="border-t border-gray-400/20 pt-4 flex flex-col gap-2.5">
+                <div className="border-y border-gray-400/20 pt-4 flex flex-col gap-2.5">
                   {selectedMember.metadata.map((item, idx) => (
                     <div key={idx} className="flex items-center justify-between text-xs py-1 border-b border-gray-400/10 last:border-0">
-                      <span className="font-bold text-slate-800">{item.label}</span>
-                      <span className="text-[var(--landingPageSecondaryColor)] font-medium">{item.value}</span>
+                      <span className="font-[Hind] font-bold text-[14px] text-[#3E4145] leading-[20px] tracking-[0px]">{item.label}</span>
+                      <span className="text-[#3E4145] font-[Hind] font-light text-[14px] leading-[20px] tracking-[0px] align-middle">{item.value}</span>
                     </div>
                   ))}
                 </div>

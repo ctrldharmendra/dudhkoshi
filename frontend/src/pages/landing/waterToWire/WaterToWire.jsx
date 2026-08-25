@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import { FiZap, FiArrowRight, FiChevronUp, FiChevronDown, FiArrowDown } from 'react-icons/fi';
+import { FiArrowRight, FiChevronUp, FiChevronDown, FiArrowDown } from 'react-icons/fi';
+import { ImPower } from "react-icons/im";
+
 import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
 import Image from 'next/image';
 import waterToWire from "../../../../public/landing/waterToWire/waterToWire.png";
@@ -138,21 +140,21 @@ export default function WaterToWireSection() {
                     <div>
                       {/* Icon Badge */}
                       <div className="w-9 h-9 rounded-xl bg-[#eaf4fc] text-[#1E7EBB] flex items-center justify-center mb-5">
-                        <FiZap className="w-5 h-5 fill-[#1E7EBB]/20" />
+                        <ImPower className="w-5 h-5 fill-[#175F8C]" />
                       </div>
 
                       {/* Header Title */}
-                      <h4 className="text-xs font-bold tracking-wider text-[#1E7EBB] uppercase mb-1">
+                      <h4 className="text-xs font-bold tracking-wider text-[#186596] uppercase mb-1">
                         {step.title}
                       </h4>
 
                       {/* Main Subtitle */}
-                      <p className="text-sm sm:text-base font-extrabold text-slate-800 leading-snug mb-2">
+                      <p className="text-sm sm:text-base text-[#45484D] font-bold leading-8 mb-2">
                         {step.subtitle}
                       </p>
 
                       {/* Summary Text */}
-                      <p className="text-[11px] text-slate-500 font-medium leading-relaxed mb-4">
+                      <p className="text-[11px] text-slate-600 text-[#45484D] font-medium leading-relaxed mb-4">
                         {step.summary}
                       </p>
                     </div>
@@ -185,7 +187,7 @@ export default function WaterToWireSection() {
               <div className="bg-white/90 backdrop-blur-md rounded-2xl p-6 sm:p-8 border border-sky-100 shadow-sm">
                 
                 {/* Details Section Label */}
-                <h5 className="text-[11px] font-bold tracking-wider text-[#1E7EBB] uppercase mb-5">
+                <h5 className="text-[10px] font-medium tracking-wider text-[#1E7EBB] uppercase mb-5">
                   {activeStep.componentsLabel}
                 </h5>
 
@@ -194,12 +196,12 @@ export default function WaterToWireSection() {
                   {activeStep.details.map((item, idx) => (
                     <div 
                       key={idx}
-                      className="bg-[#f4f8fc]/80 p-3.5 rounded-xl border border-sky-100/60 flex flex-col justify-center"
+                      className="rounded-r-[4px] border-l-[0.5px] border-l-[#1E7EBB] bg-[#E9F2F8]/58 p-[10px] flex flex-col justify-center"
                     >
-                      <span className="text-[10px] font-bold text-slate-400 tracking-wider uppercase mb-1">
+                      <span className="text-[10px] leading-[20px] font-[Hind] font-medium text-slate-400 tracking-wider uppercase mb-1">
                         {item.label}
                       </span>
-                      <span className="text-xs font-bold text-slate-700 tracking-tight">
+                      <span className="font-['Times_New_Roman'] font-normal text-[10px] leading-[20px] tracking-[0px] align-middle uppercase text-slate-700">
                         {item.value}
                       </span>
                     </div>
@@ -212,7 +214,7 @@ export default function WaterToWireSection() {
 
           {/* ELEVATION DROP BADGE PILL AT BOTTOM */}
           <div className="mt-12 flex justify-center relative z-10">
-            <div className="inline-flex items-center gap-2 bg-[#fff8eb] border border-[#fde68a] text-amber-700 font-bold text-xs sm:text-sm px-6 py-2.5 rounded-full shadow-2xs">
+            <div className="inline-flex items-center gap-2 bg-[#FEF5E7] border border-[#FCE1B3] text-amber-700 font-[Manrope] font-medium text-[12px] leading-[20px] tracking-[2px] align-middle px-6 py-2.5 rounded-full shadow-2xs">
               <FiArrowDown className="w-4 h-4 text-amber-600" />
               <span>690.10 m elevation drop</span>
             </div>

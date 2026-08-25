@@ -15,25 +15,25 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <div className="w-12 h-12 relative flex items-center justify-center rounded-full bg-slate-50 shadow-sm border border-slate-100">
-            <Image src={logo} width={32} height={32} unoptimized className="text-xs font-bold text-[var(--landingPagePrimaryColor)]" alt='logo'></Image>
+            <Image src={logo} fill unoptimized className="text-xs font-bold text-[var(--landingPagePrimaryColor)]" alt='logo'></Image>
           </div>
         </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-10">
-          <Link href="/" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-medium text-[15px] transition-colors">
+          <Link href="/" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-['Manrope'] font-medium text-[16px] leading-[26px] tracking-[0px] align-middle transition-colors">
             Home
           </Link>
-          <Link href="#aboutUs" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-medium text-[15px] transition-colors">
+          <Link href="#aboutUs" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-['Manrope'] font-medium text-[16px] leading-[26px] tracking-[0px] align-middle transition-colors">
             About Us
           </Link>
-          <Link href="#gallery" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-medium text-[15px] transition-colors">
+          <Link href="#gallery" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-['Manrope'] font-medium text-[16px] leading-[26px] tracking-[0px] align-middle transition-colors">
             Gallery
           </Link>
-          <Link href="#team" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-medium text-[15px] transition-colors">
+          <Link href="#team" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-['Manrope'] font-medium text-[16px] leading-[26px] tracking-[0px] align-middle transition-colors">
             Our Team
           </Link>
-          <Link href="#projectOverview" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-medium text-[15px] transition-colors">
+          <Link href="#projectOverview" className="text-[var(--textColorOnLightBg)] hover:text-[var(--landingPagePrimaryColor)] font-['Manrope'] font-medium text-[16px] leading-[26px] tracking-[0px] align-middle transition-colors">
             Project Overview
           </Link>
         </nav>
@@ -43,13 +43,13 @@ export default function Navbar() {
           <Link 
           
             href="#contact" 
-            className="px-6 py-2.5 bg-[var(--landingPagePrimaryColor)] hover:opacity-90 text-[var(--lightWhite)] font-medium text-sm rounded-full transition-all duration-200 shadow-sm hover:shadow-md"
+            className="px-6 py-2.5 bg-[var(--landingPagePrimaryColor)] hover:opacity-90 text-[var(--lightWhite)] font-['Manrope'] font-semibold text-[16px] leading-[24px] tracking-[0px] text-center align-middle rounded-full transition-all duration-200 shadow-sm hover:shadow-md"
           >
             Contact Us
           </Link>
           <Link 
             href="/login" 
-            className="px-6 py-2.5 bg-[var(--landingPagePrimaryColor)] hover:opacity-90 text-[var(--lightWhite)] font-medium text-sm rounded-full transition-all duration-200 shadow-sm hover:shadow-md"
+            className="px-6 py-2.5 bg-[var(--landingPagePrimaryColor)] hover:opacity-90 text-[var(--lightWhite)] font-['Manrope'] font-semibold text-[16px] leading-[24px] tracking-[0px] text-center align-middle rounded-full transition-all duration-200 shadow-sm hover:shadow-md"
           >
             Login
           </Link>

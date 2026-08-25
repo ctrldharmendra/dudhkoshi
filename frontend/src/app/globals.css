@@ -31,7 +31,6 @@
 
 
 
-
 --notFoundTextColor:#475569;
   /* -------- */
   --adminPrimaryColor : #8200db;
@@ -52,13 +51,14 @@
   /* THESE ARE LANDING PAGE VARIABLE  */
   --landingPagePrimaryColor: #1E7EBB;
   --landingPageSecondaryColor: #64748b;
+  --landingPageTertiaryColor: #186596;
   --lightWhite: #FFFFFF;
   --textColorOnLightBg:#45484D;
   --highlightBg:#FEF5E7;
   --hightlightText:#F59E0B;
   --primaryTextColorLanding:#45484D;
   --primaryTextColorLanding2:#565A4A;
-
+  --primaryTextColorLanding3:#186596;
   --landingPageColorPrimary2:#175F8C;
   --halfBorderColor:#186596;
 
@@ -125,7 +125,7 @@ content: "";
   position: absolute;
   left: 40px;
   right: 40px;
-  bottom: -30px;
+  bottom: 79px;
   height: 30px;
   background: #DDF2FF;
   filter: blur(25px);

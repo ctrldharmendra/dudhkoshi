@@ -83,14 +83,14 @@ export default function ContactSection() {
 {/* ! HERE  */}
 {/* HEADING  */}
       <div 
-        className="relative bg-[#ecf4fde0] border-2 border-[#ffffff] z-10 p-8 min-h-[474px] max-h-[474px] mt-[67px] max-w-[1216px] min-w-[1216px] rounded-[37px] sm:p-12 md:p-16 backdrop-blur-[2px]"
+        className="relative bg-[#BBBBBBD4]/89 border-2 border-[#ffffff] z-10 p-8 min-h-[474px] max-h-[474px] mt-[67px] max-w-[1216px] min-w-[1216px] rounded-[45px] sm:p-12 md:p-16 backdrop-blur-[6px]"
       >
         {/* Header Content */}
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#1E3A8A] tracking-tight mb-3">
+          <h1 className="text-[32px] font-[Manrope] font-bold leading-none tracking-[0] text-center capitalize text-[#175F8C] mb-6">
             Get In Touch With Us
           </h1>
-          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
+          <p className="font-[Hind] font-medium text-[20px] text-[#45484D] leading-8 tracking-[0] text-center">
             Partner with us in engineering a sustainable future. Our team is ready to discuss infrastructure, environmental impact, or general inquiries.
           </p>
         </div>
@@ -99,30 +99,30 @@ export default function ContactSection() {
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
           
           {/* Email Us */}
-          <div className="bg-white/85 backdrop-blur-md p-5 sm:p-6 rounded-2xl border border-white/80 shadow-xs flex flex-col items-center text-center hover:shadow-md transition-all">
-            <div className="w-9 h-9 rounded-full border border-[#1E7EBB]/30 flex items-center justify-center text-[#1E7EBB] mb-3">
-              <FiMail className="w-4 h-4" />
+          <div className="bg-white/62 backdrop-blur-md p-5 sm:p-6 rounded-2xl border-[0.85px] border-white/80 shadow-xs flex flex-col items-center text-center hover:shadow-md transition-all">
+            <div className="w-9 h-9 flex items-center justify-center text-[#186596] mb-3">
+              <FiMail className="w-6 h-6 stroke-2" />
             </div>
-            <span className="text-xs font-bold text-[#1E7EBB] mb-1">Email Us</span>
-            <span className="text-[11px] font-medium text-slate-600 break-all">aayududhkoshi@gmail.com</span>
+            <span className="font-[Hind] font-medium text-[16px] leading-[20px] tracking-[0px] text-center align-middle text-[#186596] mb-1">Email Us</span>
+            <span className="font-[Hind] font-medium text-[14px] leading-[20px] tracking-[0px] align-middle lowercase text-[#45484D] break-all">aayududhkoshi@gmail.com</span>
           </div>
 
           {/* Call Us */}
-          <div className="bg-white/85 backdrop-blur-md p-5 sm:p-6 rounded-2xl border border-white/80 shadow-xs flex flex-col items-center text-center hover:shadow-md transition-all">
-            <div className="w-9 h-9 rounded-full border border-[#1E7EBB]/30 flex items-center justify-center text-[#1E7EBB] mb-3">
-              <FiPhone className="w-4 h-4" />
+          <div className="bg-white/62 backdrop-blur-md p-5 sm:p-6 rounded-2xl border-[0.85px] border-white/80 shadow-xs flex flex-col items-center text-center hover:shadow-md transition-all">
+            <div className="w-9 h-9  flex items-center justify-center text-[#186596] mb-3">
+              <FiPhone className="w-6 h-6 stroke-2" />
             </div>
-            <span className="text-xs font-bold text-[#1E7EBB] mb-1">Call Us</span>
-            <span className="text-[11px] font-medium text-slate-600">00977-1-4102710</span>
+            <span className="font-[Hind] font-medium text-[16px] leading-[20px] tracking-[0px] text-center align-middle text-[#186596] mb-1">Call Us</span>
+            <span className="font-[Hind] font-medium text-[14px] leading-[20px] tracking-[0px] align-middle text-[#45484D] break-all">00977-1-4102710</span>
           </div>
 
           {/* Visit Us */}
-          <div className="bg-white/85 backdrop-blur-md p-5 sm:p-6 rounded-2xl border border-white/80 shadow-xs flex flex-col items-center text-center hover:shadow-md transition-all">
-            <div className="w-9 h-9 rounded-full border border-[#1E7EBB]/30 flex items-center justify-center text-[#1E7EBB] mb-3">
-              <FiMapPin className="w-4 h-4" />
+          <div className="bg-white/62 backdrop-blur-md p-5 sm:p-6 rounded-2xl border-[0.85px] border-white/80 shadow-xs flex flex-col items-center text-center hover:shadow-md transition-all">
+            <div className="w-9 h-9 flex items-center justify-center text-[#186596] mb-3">
+              <FiMapPin className="w-6 h-6 stroke-2" />
             </div>
-            <span className="text-xs font-bold text-[#1E7EBB] mb-1">Visit Us</span>
-            <span className="text-[11px] font-medium text-slate-600">Sama Marga, Naxal, Kathmandu, Nepal</span>
+            <span className="font-[Hind] font-medium text-[16px] leading-[20px] tracking-[0px] text-center align-middle text-[#186596] mb-1">Visit Us</span>
+            <span className="font-[Hind] font-medium text-[14px] leading-[20px] tracking-[0px] align-middle text-[#45484D] break-all">Sama Marga, Naxal, Kathmandu, Nepal</span>
           </div>
 
         </div>
@@ -134,7 +134,7 @@ export default function ContactSection() {
           </div>
 <div className='flex justify-center w-full contactUsForm'> 
           {/* ---------------- SECTION 2: FORM & SIDEBAR ---------------- */}
-        <div className="bg-white max-w-[1216px] rounded-[32px] p-6 sm:p-10 border border-slate-100 shadow-sm box">
+        <div className="bg-white max-w-[1216px] rounded-[24px] p-6 sm:p-10 border border-slate-100 shadow-sm box">
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
             
@@ -146,7 +146,7 @@ export default function ContactSection() {
 
      
   }
-              <h2 className="text-2xl font-extrabold text-[#1E3A8A] mb-6">
+              <h2 className="font-[Manrope] font-bold text-[32px] leading-[41.6px] tracking-[0px] align-middle text-[#186596] mb-6">
                 Send an Inquiry
               </h2>
 
@@ -157,12 +157,12 @@ export default function ContactSection() {
                   
                   {/* Full Name */}
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[11px] font-bold text-slate-600">
+                    <label className="font-[Hind] font-bold text-[14px] leading-[20px] tracking-[0px] align-middle text-[#45484D]">
                       Full Name
                     </label>
                     <input
                     style={{
-                      padding:"20px !important", borderRadius:"32px !important"
+                      padding:"20px !important", borderRadius:"16px !important"
                     }}
                       type="text"
                       placeholder="John Doe"
@@ -175,12 +175,12 @@ export default function ContactSection() {
 
                   {/* Email Address */}
                   <div className="flex flex-col gap-1.5">
-                    <label className="text-[11px] font-bold text-slate-600">
+                    <label className="font-[Hind] font-bold text-[14px] leading-[20px] tracking-[0px] align-middle text-[#45484D]">
                       Email Address
                     </label>
                     <input
                          style={{
-                      padding:"20px !important", borderRadius:"32px !important"
+                      padding:"20px !important", borderRadius:"16px !important"
                     }}
                       type="email"
                       placeholder="john@engineering.com"
@@ -195,7 +195,7 @@ export default function ContactSection() {
 
                 {/* Subject / Department Dropdown */}
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-bold text-slate-600">
+                  <label className="font-[Hind] font-bold text-[14px] leading-[20px] tracking-[0px] align-middle text-[#45484D]">
                     Subject / Department
                   </label>
                   <div className="relative">
@@ -215,7 +215,7 @@ export default function ContactSection() {
 
                 {/* Message Field */}
                 <div className="flex flex-col gap-1.5">
-                  <label className="text-[11px] font-bold text-slate-600">
+                  <label className="font-[Hind] font-bold text-[14px] leading-[20px] tracking-[0px] align-middle text-[#45484D]">
                     Message
                   </label>
                   <textarea
