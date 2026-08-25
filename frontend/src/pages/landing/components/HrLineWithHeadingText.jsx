@@ -14,7 +14,7 @@ const HrLineWithHeadingText = ({text}) => {
                 text-[12px]
                 leading-[20px]
                 tracking-[2px]
-                text-[var(--landingPagePrimaryColor)]
+                text-[var(--landingPageTertiaryColor)]
                 uppercase
                 pb-2
                 mb-6

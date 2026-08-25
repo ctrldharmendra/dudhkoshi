@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState } from 'react';
-import { FiZap, FiArrowRight, FiChevronUp, FiChevronDown, FiArrowDown } from 'react-icons/fi';
+import { FiArrowRight, FiChevronUp, FiChevronDown, FiArrowDown } from 'react-icons/fi';
+import { ImPower } from "react-icons/im";
+
 import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
 import Image from 'next/image';
 import waterToWire from "../../../../public/landing/waterToWire/waterToWire.png";
@@ -138,7 +140,7 @@ export default function WaterToWireSection() {
                     <div>
                       {/* Icon Badge */}
                       <div className="w-9 h-9 rounded-xl bg-[#eaf4fc] text-[#1E7EBB] flex items-center justify-center mb-5">
-                        <FiZap className="w-5 h-5 fill-[#1E7EBB]/20" />
+                        <ImPower className="w-5 h-5 fill-[#175F8C]" />
                       </div>
 
                       {/* Header Title */}

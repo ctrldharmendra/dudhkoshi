@@ -1,5 +1,7 @@
 import React from 'react';
-import { FiZap, FiArrowRight, FiArrowDown } from 'react-icons/fi';
+import { FiArrowRight, FiArrowDown } from 'react-icons/fi';
+import { ImPower } from "react-icons/im";
+
 import { GoArrowRight } from 'react-icons/go';
 
 export default function PowerEvacuationSection() {
@@ -56,7 +58,7 @@ export default function PowerEvacuationSection() {
                   
                   {/* Lightning Icon Badge */}
                   <div className="w-10 h-10 rounded-xl bg-[#eaf4fc] text-[#1E7EBB] flex items-center justify-center mb-5">
-                    <FiZap className="w-5 h-5 fill-[#1E7EBB]/20" />
+                    <ImPower className="w-5 h-5 fill-[#175F8C]" />
                   </div>
 
                   {/* Card Title */}

@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import { 
-  FiZap, FiTrendingUp, FiCpu, FiDroplet, 
+  FiTrendingUp, FiCpu, FiDroplet, 
   FiChevronDown, FiChevronUp, FiLayers, FiActivity,
   FiShield, FiInfo
 } from 'react-icons/fi';
+import { ImPower } from "react-icons/im";
+
 import SectionBadge from '../../components/reusable/HeadingAndPara/SectionBage';
 import MainHeading from '../../components/reusable/HeadingAndPara/MainHeading';
 import SectionParagraph from '../../components/reusable/HeadingAndPara/SectionParagraph';
@@ -37,7 +39,7 @@ export default function TechnicalSpecifications() {
 
   const topCards = [
     {
-      icon: <FiZap className="text-xl" style={{ color: 'var(--color-primary)' }} />,
+      icon: <ImPower className="text-xl" style={{ color: 'var(--color-primary)' }} />,
       label: 'INSTALLED CAPACITY',
       status: 'NOMINAL',
       statusKey: 'nominal',

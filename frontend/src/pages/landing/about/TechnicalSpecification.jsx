@@ -1,6 +1,9 @@
 import React from 'react';
 import Accordion from './Accordion';
-import { FiZap, FiAirplay, FiDroplet } from 'react-icons/fi';
+import { BiWater } from "react-icons/bi";
+import { ImPower } from "react-icons/im";
+import { IoWaterOutline } from "react-icons/io5";
+
 import technicalSpecificationIMG from "../../../../public/landing/realImage/9.png";
 // import technicalSpecificationIMG from "../../../../public/landing/aboutUsTechnicalSpecification.png";
 import Image from 'next/image';
@@ -68,10 +71,10 @@ export default function TechnicalSpecification() {
           {/* Left Column: Blue Feature Card (4 cols on lg screens) */}
           <div className="lg:col-span-4 bg-[var(--landingPagePrimaryColor)] text-white rounded-3xl p-8 flex flex-col justify-between shadow-sm">
             <div>
-              <p className="text-[11px] font-bold tracking-wider text-white/80 uppercase mb-3">
+              <p className="font-['Manrope'] font-bold text-[16px] leading-[20px] tracking-[0px] align-middle text-white/80 uppercase mb-3">
                 DUDHKHOSHI HYDROPOWER
               </p>
-              <h3 className="text-2xl font-bold mb-4 leading-snug">
+              <h3 className="font-['Manrope'] font-medium text-[24px] leading-[100%] tracking-[0%] mb-4">
                 Engineering the Future
               </h3>
               <p className="text-[20px] text-white/90 leading-relaxed font-normal">
@@ -102,7 +105,7 @@ export default function TechnicalSpecification() {
               <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="w-10 h-10 rounded-lg bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-6">
-                    <FiZap className="w-5 h-5" />
+                    <ImPower className="w-5 h-5 fill-[#175F8C]" />
                   </div>
                   <p className="text-xs font-semibold text-[var(--textColorOnLightBg)]">Installed Capacity</p>
                   <p className="text-2xl font-extrabold text-[var(--landingPagePrimaryColor)] mt-2">
@@ -120,7 +123,7 @@ export default function TechnicalSpecification() {
               <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="w-10 h-10 rounded-lg bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-6">
-                    <FiAirplay className="w-5 h-5" />
+                    <BiWater className="w-5 h-5 fill-[#175F8C]" />
                   </div>
                   <p className="text-xs font-semibold text-[var(--textColorOnLightBg)]">Design Discharge</p>
                   <p className="text-2xl font-extrabold text-[var(--landingPagePrimaryColor)] mt-2">
@@ -138,7 +141,7 @@ export default function TechnicalSpecification() {
               <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="w-10 h-10 rounded-lg bg-[#FFF8E7] flex items-center justify-center text-amber-500 mb-6">
-                    <FiDroplet className="w-5 h-5" />
+                    <IoWaterOutline className="w-5 h-5 fill-[#175F8C]" />
                   </div>
                   <p className="text-xs font-semibold text-[var(--textColorOnLightBg)]">Gross Head</p>
                   <p className="text-2xl font-extrabold text-[var(--landingPagePrimaryColor)] mt-2">
