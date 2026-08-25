@@ -6,6 +6,7 @@ import {
   FiChevronDown, FiChevronUp, FiLayers, FiActivity,
   FiShield, FiInfo
 } from 'react-icons/fi';
+import { MdWater } from "react-icons/md";
 import { ImPower } from "react-icons/im";
 
 import SectionBadge from '../../components/reusable/HeadingAndPara/SectionBage';
@@ -102,7 +103,7 @@ export default function TechnicalSpecifications() {
     },
     {
       title: 'Water Conveyance System',
-      icon: <FiDroplet className="text-lg text-cyan-500" />,
+      icon: <MdWater className="text-lg text-cyan-500" />,
       content: (
         <div className="space-y-3 text-sm">
           <div className="flex justify-between py-2 border-b border-slate-100"><span className="text-[var(--text-muted)] font-medium">APPROACH CULVERT LENGTH</span><span className="font-bold text-[var(--text-secondary)]">145 m</span></div>

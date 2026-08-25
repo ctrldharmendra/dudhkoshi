@@ -8,6 +8,7 @@ import {
   FiCpu, 
   FiShare2 
 } from 'react-icons/fi';
+import { MdWater } from "react-icons/md";
 import StyledSubHeadingWithPill from '../components/StyledSubHeadingWithPill';
 import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
 
@@ -15,7 +16,7 @@ export default function ProjectOverviewSection() {
   // Tab Navigation items matching the sample icons & labels
   const tabs = [
     { id: 'scheme', label: 'Scheme & Capacity', icon: FiZap },
-    { id: 'conveyance', label: 'Water Conveyance', icon: FiDroplet },
+    { id: 'conveyance', label: 'Water Conveyance', icon: MdWater },
     { id: 'powerhouse', label: 'Powerhouse', icon: FiHome },
     { id: 'turbine', label: 'Turbine & Generator', icon: FiCpu },
     { id: 'evacuation', label: 'Power Evacuation', icon: FiShare2 },
@@ -40,7 +41,7 @@ const specsData = {
     },
     conveyance: {
       title: "Water Conveyance",
-      icon: FiDroplet,
+      icon: MdWater,
       data: [
         { parameter: "Headrace Tunnel Length", value: "4,791 m", formula: "formula : L_t" },
         { parameter: "Headrace Tunnel Type", value: "Concrete Lined Inverted D-Shaped", formula: "" },
@@ -139,7 +140,7 @@ Run-of-River Hydroelectric Scheme.
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`w-full flex items-center gap-3.5 px-5 py-3.5 rounded-[6px] text-left text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
+                  className={`w-full flex items-center gap-3.5 px-5 py-3.5 rounded-[6px] text-left font-[Hind] font-bold text-[16px] sm:text-[14px] leading-[20px] tracking-[0px] transition-all duration-200 cursor-pointer ${
                     isActive
                       ? "bg-white text-[#1E7EBB]  border-slate-100 ring-1 ring-sky-100"
                       : "bg-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-200/40 border border-transparent"
@@ -175,17 +176,17 @@ Run-of-River Hydroelectric Scheme.
                       className="grid grid-cols-1 sm:grid-cols-12 items-center py-3 border-b border-slate-100 last:border-0 gap-1 sm:gap-2"
                     >
                       {/* Parameter Name */}
-                      <span className="sm:col-span-4 text-xs font-semibold text-slate-600">
+                      <span className="sm:col-span-4 text-xs font-medium">
                         {item.parameter}
                       </span>
 
                       {/* Parameter Value */}
-                      <span className="sm:col-span-4 text-xs sm:text-sm font-bold text-slate-800">
+                      <span className="sm:col-span-4 text-xs sm:text-sm font-medium text-slate-800">
                         {item.value}
                       </span>
 
                       {/* Formula (Italicized style matching image) */}
-                      <span style={{letterSpacing:"0.6px"}} className="font-libertinus sm:col-span-4 font-bold text-[11px] tracking-tighter text-[#8E8E93] text-left sm:text-right">
+                      <span style={{letterSpacing:"0.6px"}} className="font-libertinus sm:col-span-4 font-medium font-stretch-extra-expanded text-[11px] tracking-tighter text-[#8E8E93] sm:text-left">
                         {item.formula}
                       </span>
                     </div>

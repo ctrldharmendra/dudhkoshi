@@ -8,7 +8,7 @@ export default function MapCard({
   return (
     <div className="w-full">
       {/* Coordinates Badge */}
-      <div className="mb-4 flex min-h-[33px] w-fit mx-auto items-center gap-1.5 rounded-full border border-[#B9D7EA] px-3.5 py-1.5 text-[11px] font-bold tracking-tight text-[var(--landingPagePrimaryColor,#1E7EBB)] shadow-xs">
+      <div className="mb-4 flex min-h-[33px] w-fit mx-auto items-center gap-1.5 rounded-full border border-[#B9D7EA] px-3.5 py-1.5 font-[Hind] font-bold text-[12px] leading-[20px] tracking-[2px] align-middle text-[var(--primaryTextColorLanding3,#1E7EBB)] shadow-xs">
         <HiLocationMarker className="h-3.5 w-3.5 shrink-0 text-[var(--landingPagePrimaryColor,#1E7EBB)]" />
 
         <span>{coordinates}</span>

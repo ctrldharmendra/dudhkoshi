@@ -50,13 +50,13 @@ export default function MissionStrategySection() {
                 Deliver reliable renewable energy through sustainable hydropower development for Nepal’s future growth.
               </h2>
 
-              <p className="text-xs  sm:text-sm text-[var(--primaryTextColorLanding)] leading-relaxed  mb-8">
+              <p className="font-[Hind] font-normal text-[16px] leading-[20px] tracking-[0px] align-middle text-[var(--primaryTextColorLanding)] mb-8">
                 We believe in power that respects the planet. Our strategy integrates technical excellence with deep social responsibility to create a resilient energy ecosystem.
               </p>
             </div>
 
             {/* Graphic Illustration Card Frame */}
-            <div className="bg-[#BFCFD8]/60 p-5 rounded-[32px] border border-white/30 shadow-inner">
+            <div className="bg-[#DDECF5]/90 p-5 rounded-[32px] border border-white/90 shadow-inner">
 
               <div className="bg-[#EBF2F7] relative rounded-2xl p-6 shadow-sm overflow-hidden border border-white flex flex-col justify-between min-h-[300px]">
 <Image  src={missionStrategyIMG} width={100} height={100} className="absolute hidden lg:flex  w-full rounded-[9px] top-0 left-0 z-0" alt="mountains"  unoptimized/>
@@ -124,13 +124,13 @@ export default function MissionStrategySection() {
                 className="bg-[var(--lightWhite)] transition-all duration-200 rounded-3xl p-7 md:p-8 border border-white/50 shadow-xs flex flex-col justify-between min-h-[170px]"
               >
                 <div>
-                  <span className="text-xs font-bold text-[var(--landingPagePrimaryColor)] block mb-2">
+                  <span className="font-[Hind] font-medium text-[16px] leading-[20px] tracking-[0px] align-middle uppercase text-[var(--landingPagePrimaryColor)] block mb-2">
                     {card.number}
                   </span>
                   <h3 className="text-xl md:text-2xl font-bold text-[#334155] mb-3">
                     {card.title}
                   </h3>
-                  <p className="text-xs md:text-sm text-[var(--textColorOnLightBg)] leading-relaxed font-normal mb-5">
+                  <p className="font-[Hind] font-normal text-[16px] leading-[20px] tracking-[0px] align-middle text-[var(--textColorOnLightBg)] mb-5">
                     {card.description}
                   </p>
                 </div>

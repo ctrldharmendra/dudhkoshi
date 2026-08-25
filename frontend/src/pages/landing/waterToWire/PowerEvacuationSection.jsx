@@ -67,12 +67,12 @@ export default function PowerEvacuationSection() {
                   </h4>
 
                   {/* Card Subtitle */}
-                  <p className="text-base sm:text-lg font-extrabold text-slate-800 leading-snug mb-3">
+                  <p className="text-base sm:text-lg font-medium leading-snug mb-3">
                     {card.subtitle}
                   </p>
 
                   {/* Dimension/Details Text */}
-                  <p className="text-[11px] sm:text-xs font-semibold text-[#1E7EBB] tracking-tight">
+                  <p className="text-[10px] sm:text-xs font-medium text-[#1E7EBB] tracking-tight">
                     {card.details}
                   </p>
 
