@@ -156,7 +156,7 @@ export default function FaqSection() {
                     onClick={() => toggleAccordion(faq.id)}
                     className="font-title w-full flex items-center justify-between p-5 sm:p-6 text-left cursor-pointer transition-colors hover:bg-slate-50/50"
                   >
-                    <span className="text-[14px] font-bold text-slate-800 pr-4 leading-snug">
+                    <span className="text-[14px] font-bold text-[#3E4145] pr-4 leading-snug">
                       {faq.number} {faq.question}
                     </span>
 

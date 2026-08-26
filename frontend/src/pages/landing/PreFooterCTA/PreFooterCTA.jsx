@@ -103,7 +103,7 @@ export default function PreFooterCTA() {
                 {/* Primary Button */}
                 <Link
                   href="#"
-                  className="font-[Manrope] w-full sm:w-auto px-7 py-3 rounded-full text-base font-semibold leading-6 text-center align-middle transition-all duration-200 hover:brightness-110 active:scale-95 shadow-sm"
+                  className="font-[Manrope] w-full sm:w-auto px-7 py-3 rounded-full text-base font-semibold tracking-wide leading-6 text-center align-middle transition-all duration-200 hover:brightness-110 active:scale-95 shadow-sm"
                   style={{
                     backgroundColor: 'white',
                     color: '#1E7EBB',
@@ -115,7 +115,7 @@ export default function PreFooterCTA() {
                 {/* Secondary Outlined Button */}
                 <Link
                   href="#"
-                  className="font-[Manrope] w-full sm:w-auto px-7 py-3 rounded-full text-base font-semibold leading-6 text-center align-middle transition-all duration-200 hover:brightness-110 active:scale-95 shadow-sm"
+                  className="font-[Manrope] w-full sm:w-auto px-7 py-3 rounded-full text-base font-semibold leading-6 text-center tracking-wide align-middle transition-all duration-200 hover:brightness-110 active:scale-95 shadow-sm"
                   style={{
                     border: '1px solid #B9D7EA',
                     color: '#DDECF5',

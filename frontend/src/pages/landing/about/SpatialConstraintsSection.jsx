@@ -42,7 +42,7 @@ export default function SpatialConstraintsSection() {
   <div className="p-6 sm:border-r border-[#d1d1d63b] border-b border-[#d1d1d63b]">
     {/* Terrain */}
                  <div className="flex flex-col gap-2">
-                <div className="w-9 h-9 rounded-xl bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
+                <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
                   <LiaMountainSolid className="w-4 h-4" />
                 </div>
                 <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]">
@@ -57,7 +57,7 @@ export default function SpatialConstraintsSection() {
   <div className="p-6 border-b border-[#d1d1d63b]">
     {/* Access */}
                   <div className="flex flex-col gap-2">
-                <div className="w-9 h-9 rounded-xl bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
+                <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
                   <IoCarOutline className="w-4 h-4" />
 
                 </div>
@@ -73,7 +73,7 @@ export default function SpatialConstraintsSection() {
 
   <div className="p-6 sm:border-r border-[#d1d1d63b]">
       <div className="flex flex-col gap-2">
-                <div className="w-9 h-9 rounded-xl bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
+                <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
                   <IoWaterOutline className="w-4 h-4" />
                 </div>
                 <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]">
@@ -90,7 +90,7 @@ export default function SpatialConstraintsSection() {
   <div className="p-6">
     {/* Context */}
                 <div className="flex flex-col gap-2">
-                <div className="w-9 h-9 rounded-xl bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
+                <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
                   <RiLightbulbFlashLine className="w-4 h-4" />
                 </div>
                 <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]"
