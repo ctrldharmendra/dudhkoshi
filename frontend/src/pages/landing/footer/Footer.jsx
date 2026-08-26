@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-
+import logo from "../../../../public/landing/logo.png"
+import Image from 'next/image';
 export default function Footer() {
   return (
     <footer className="w-full relative bg-[#edf6fc] mt-[40px] pt-4 sm:px-6 lg:px-8 font-sans antialiased overflow-hidden"
@@ -23,22 +24,8 @@ export default function Footer() {
               {/* Logo & Brand Name */}
               <Link href="/" className="inline-flex items-center gap-3 group">
                 {/* Hydropower Logo Icon */}
-                <div className="w-10 h-10 rounded-full bg-[#1E7EBB] flex items-center justify-center shrink-0 shadow-xs">
-                  <svg 
-                    className="w-6 h-6 text-white" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                  >
-                    <path d="M12 2v8" />
-                    <path d="M18 10V5a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1v5" />
-                    <path d="M3 13h18" />
-                    <path d="M4 17h16" />
-                    <path d="M5 21h14" />
-                  </svg>
+                <div>
+                   <Image src={logo} fill unoptimized className="text-xs font-bold text-[var(--landingPagePrimaryColor)]" alt='logo'></Image>
                 </div>
 
                 <span className="text-2xl font-manrope-medium font-medium text-[#373A3E]">

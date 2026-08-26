@@ -46,7 +46,7 @@ export default function MissionStrategySection() {
             <div>
    <HrLineWithHeadingText text="OUR MISSION & STRATEGY"></HrLineWithHeadingText>
 
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[#334155] leading-tight mb-6">
+              <h2 className="text-2xl text-[24px] font-bold text-[#45484D] leading-tight mb-6">
                 Deliver reliable renewable energy through sustainable hydropower development for Nepal’s future growth.
               </h2>
 
@@ -121,7 +121,7 @@ export default function MissionStrategySection() {
             {cardsData.map((card, idx) => (
               <div 
                 key={idx}
-                className="bg-[var(--lightWhite)] transition-all duration-200 rounded-3xl p-7 md:p-8 border border-white/50 shadow-xs flex flex-col justify-between min-h-[170px]"
+                className="bg-[var(--lightWhite)] transition-all duration-200 rounded-3xl p-7 md:p-8 border border-[#E9F2F8]/50 shadow-xs flex flex-col justify-between min-h-[170px]"
               >
                 <div>
                   <span className="font-[Hind] font-medium text-[16px] leading-[20px] tracking-[0px] align-middle uppercase text-[var(--landingPagePrimaryColor)] block mb-2">
@@ -138,7 +138,7 @@ export default function MissionStrategySection() {
                 <div>
                   <a 
                     href={card.linkUrl}
-                    className="inline-flex items-center gap-2 text-xs md:text-sm font-semibold text-[var(--landingPagePrimaryColor)]  group"
+                    className="inline-flex items-center gap-2 text-xs md:text-sm font-[500px] text-[var(--landingPagePrimaryColor)]  group"
                   >
                     <span>{card.linkText}</span>
                     <FiArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
