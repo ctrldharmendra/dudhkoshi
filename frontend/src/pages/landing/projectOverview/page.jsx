@@ -140,14 +140,20 @@ Run-of-River Hydroelectric Scheme.
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`w-full flex items-center gap-3.5 px-5 py-3.5 rounded-[6px] text-left font-[Hind] font-bold text-[16px] sm:text-[14px] leading-[20px] tracking-[0px] transition-all duration-200 cursor-pointer ${
+                  className={`w-full flex items-center gap-3.5 px-5 py-3.5 rounded-[6px] text-left font-[Hind] font-[500] text-[16px] sm:text-[14px] leading-[20px] tracking-[0px] transition-all duration-200 cursor-pointer ${
                     isActive
                       ? "bg-white text-[#1E7EBB]  border-slate-100 ring-1 ring-sky-100"
-                      : "bg-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-200/40 border border-transparent"
+                      : "bg-transparent hover:text-slate-800 hover:bg-slate-200/40 border border-transparent"
                   }`}
                 >
-                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#1E7EBB]" : "text-slate-400"}`} />
-                  <span className="truncate">{tab.label}</span>
+                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#1E7EBB]" : "text-[500]"}`} />
+                  <span className="truncate font-[500]"
+                        style={{
+                          
+    fontWeight: '500',
+
+                        }}
+                        >{tab.label}</span>
                 </button>
               );
             })}
