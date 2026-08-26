@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import { FiPlus, FiMinus } from 'react-icons/fi';
 import HrLineWithHeadingText from '../landing/components/HrLineWithHeadingText';
+import StyledSubHeadingWithPill from '../landing/components/StyledSubHeadingWithPill';
+
 
 export default function FaqSection() {
   // Active Category State
@@ -80,6 +82,22 @@ export default function FaqSection() {
 
   return (
     <section className="w-full mt-[110px] bg-white py-12 px-4 sm:px-6 lg:px-8 font-sans antialiased text-[#45484D]">
+
+      <div className="text-center max-w-3xl mx-auto mb-16">
+
+
+          <StyledSubHeadingWithPill text="Frequently Asked Questions"></StyledSubHeadingWithPill>
+
+          {/* Main Title */}
+          <h2 className="font-['Manrope'] font-bold text-[32px] leading-[44px] tracking-[0%] text-center capitalize text-[var(--landingPageColorPrimary2)] mb-4">
+          Project FAQs
+          </h2>
+
+          {/* Subtitle */}
+          <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]">
+    Expert answers to our most frequently asked questions regarding hydro-infrastructure and sustainability initiatives.
+          </p>
+        </div>
       <div className="max-w-[1440px] mx-auto">
         
         {/* TOP HEADER & CATEGORY TABS ROW */}
@@ -105,13 +123,13 @@ export default function FaqSection() {
                   }}
                   className={`text-xs sm:text-sm font-medium transition-all relative py-1 cursor-pointer whitespace-nowrap ${
                     isActive 
-                      ? 'text-[#1E7EBB] font-semibold' 
+                      ? 'text-[#1E7EBB] font-medium' 
                       : 'text-slate-500 hover:text-slate-800'
                   }`}
                 >
                   {category}
                   {isActive && (
-                    <span className="absolute bottom-[-17px] left-0 w-full h-[2px] bg-[#1E7EBB] transition-all" />
+                    <span  />
                   )}
                 </button>
               );
@@ -121,7 +139,7 @@ export default function FaqSection() {
         </div>
 
         {/* CONTAINER CANVAS */}
-        <div className="bg-[#f0f7fd]/80 rounded-[32px] p-4 sm:p-8 md:p-10 border border-sky-100/60 transition-all duration-300">
+        <div className="bg-[radial-gradient(165.62%_611.95%_at_-31.04%_123.76%,#DDF2FF_0%,#FFFFFF_40.92%,#DDF2FF_100%)] rounded-[32px] p-4 sm:p-8 md:p-10 border border-sky-100/60 transition-all duration-300">
           
           {/* FAQS LIST */}
           <div className="space-y-4">
@@ -138,7 +156,7 @@ export default function FaqSection() {
                     onClick={() => toggleAccordion(faq.id)}
                     className="font-title w-full flex items-center justify-between p-5 sm:p-6 text-left cursor-pointer transition-colors hover:bg-slate-50/50"
                   >
-                    <span className="text-xs sm:text-sm md:text-base font-bold text-slate-800 pr-4 leading-snug">
+                    <span className="text-[14px] font-bold text-slate-800 pr-4 leading-snug">
                       {faq.number} {faq.question}
                     </span>
 
@@ -154,7 +172,7 @@ export default function FaqSection() {
 
                   {/* Answer Body (Animated Expand) */}
                   {isOpen && (
-                    <div className="font-body px-5 pb-6 sm:px-6 sm:pb-6 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal border-t border-transparent">
+                    <div className="font-body px-5 pb-6 sm:px-6 sm:pb-6 text-[14px] leading-relaxed font-normal border-t border-transparent">
                       {faq.answer}
                     </div>
                   )}

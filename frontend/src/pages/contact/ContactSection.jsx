@@ -83,7 +83,7 @@ export default function ContactSection() {
 {/* ! HERE  */}
 {/* HEADING  */}
       <div 
-        className="relative bg-[#BBBBBBD4]/89 border-2 border-[#ffffff] z-10 p-8 min-h-[474px] max-h-[474px] mt-[67px] max-w-[1216px] min-w-[1216px] rounded-[45px] sm:p-12 md:p-16 backdrop-blur-[6px]"
+        className="relative bg-[#E9F2F8D4]/83 border-2 border-[#ffffff] z-10 p-8 min-h-[474px] max-h-[474px] mt-[67px] max-w-[1216px] min-w-[1216px] rounded-[45px] sm:p-12 md:p-16 backdrop-blur-[6px]"
       >
         {/* Header Content */}
         <div className="text-center max-w-2xl mx-auto mb-10">
@@ -162,13 +162,13 @@ export default function ContactSection() {
                     </label>
                     <input
                     style={{
-                      padding:"20px !important", borderRadius:"16px !important"
+                      padding:"20px !important", borderRadius:"32px !important"
                     }}
                       type="text"
                       placeholder="John Doe"
                       value={formData.fullName}
                       onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                      className="w-full border border-slate-200 text-xs text-slate-700 placeholder-slate-300 focus:outline-none focus:border-[#1E7EBB] focus:ring-1 focus:ring-[#1E7EBB] transition-colors bg-white/50"
+                      className="w-full border border-slate-200 font-['Hind'] font-normal text-[16px] leading-[100%] tracking-[0px] align-middle text-[#C5C6C8] placeholder-slate-300 focus:outline-none focus:border-[#1E7EBB] focus:ring-1 focus:ring-[#1E7EBB] transition-colors bg-white/50"
                       required
                     />
                   </div>
@@ -180,13 +180,13 @@ export default function ContactSection() {
                     </label>
                     <input
                          style={{
-                      padding:"20px !important", borderRadius:"16px !important"
+                      padding:"20px !important", borderRadius:"32px !important"
                     }}
                       type="email"
                       placeholder="john@engineering.com"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="w-full border border-slate-200 text-xs text-slate-700 placeholder-slate-300 focus:outline-none focus:border-[#1E7EBB] focus:ring-1 focus:ring-[#1E7EBB] transition-colors bg-white/50"
+                      className="w-full border border-slate-200 font-['Hind'] font-normal text-[16px] leading-[100%] tracking-[0px] align-middle text-[#C5C6C8] placeholder-slate-300 focus:outline-none focus:border-[#1E7EBB] focus:ring-1 focus:ring-[#1E7EBB] transition-colors bg-white/50"
                       required
                     />
                   </div>
@@ -202,7 +202,7 @@ export default function ContactSection() {
                     <select
                       value={formData.subject}
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                      className="w-full px-4 py-3 rounded-xl border border-slate-200 text-xs text-slate-700 appearance-none bg-white/50 focus:outline-none focus:border-[#1E7EBB] focus:ring-1 focus:ring-[#1E7EBB] transition-colors cursor-pointer pr-10"
+                      className="w-full px-4 py-3 rounded-xl border border-slate-200 font-['Hind'] font-normal text-[14px] leading-[34px] tracking-[0px] align-middle text-[#45484D] appearance-none bg-white/50 focus:outline-none focus:border-[#1E7EBB] focus:ring-1 focus:ring-[#1E7EBB] transition-colors cursor-pointer pr-10"
                     >
                       <option value="Technical Infrastructure">Technical Infrastructure</option>
                       <option value="Environmental Impact">Environmental Impact</option>
@@ -223,7 +223,7 @@ export default function ContactSection() {
                     placeholder="Describe your technical inquiry or proposal..."
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 text-xs text-slate-700 placeholder-slate-300 focus:outline-none focus:border-[#1E7EBB] focus:ring-1 focus:ring-[#1E7EBB] transition-colors bg-white/50 resize-none"
+                    className="w-full px-4 py-3 rounded-xl border border-slate-200 font-['Hind'] font-normal text-[16px] leading-[24px] tracking-[0px] align-middle text-[#45484D] placeholder:text-[#C5C6C8] focus:outline-none focus:border-[#1E7EBB] focus:ring-1 focus:ring-[#1E7EBB] transition-colors bg-white/50 resize-none"
                     required
                   />
                 </div>
@@ -231,7 +231,7 @@ export default function ContactSection() {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full py-3.5 rounded-xl text-xs font-bold text-white transition-all duration-200 shadow-sm hover:opacity-95 active:scale-[0.99] cursor-pointer mt-2"
+                  className="w-full py-3.5 rounded-xl font-['Manrope'] font-semibold text-[16px] leading-[24px] tracking-[0px] text-center align-middle text-[#FFFFFF] transition-all duration-200 shadow-sm hover:opacity-95 active:scale-[0.99] cursor-pointer mt-2"
                   style={{ backgroundColor: '#1E7EBB' }}
                 >
                   Send Message
@@ -244,19 +244,19 @@ export default function ContactSection() {
             <div className="lg:col-span-5 space-y-6">
               
               {/* Global Headquarter Box */}
-              <div className="bg-[#f8fafc] rounded-2xl p-5 border border-slate-200/80">
-                <h3 className="text-xs font-bold text-slate-700 mb-1">
+              <div className="rounded-2xl p-5 border border-slate-200/80">
+                <h3 className="font-['Manrope'] font-bold text-[20px] leading-[32px] tracking-[0px] align-middle capitalize text-[#45484D] mb-1">
                   Global Headquarter
                 </h3>
                 
                 <div className="flex items-center justify-between mb-4">
-                  <span className="text-xs font-bold text-[#1E7EBB]">
+                  <span className="font-[Manrope] font-normal text-base leading-none tracking-normal text-[#1E7EBB]">
                     Sama Marga, Naxal, Kathmandu
                   </span>
                   
                   {/* Currently Open Badge */}
                   <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 border border-emerald-200 text-[10px] font-semibold text-emerald-700">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#006C49] animate-pulse"></span>
                     Currently Open
                   </span>
                 </div>
@@ -287,7 +287,7 @@ export default function ContactSection() {
               </div>
 
               {/* Follow Us Box */}
-              <div className="bg-[#f8fafc] rounded-2xl p-5 border border-slate-200/80">
+              <div className="rounded-2xl p-5 border border-slate-200/80">
                 <h3 className="text-xs font-bold text-[#1E3A8A] mb-3">
                   Follow Us
                 </h3>

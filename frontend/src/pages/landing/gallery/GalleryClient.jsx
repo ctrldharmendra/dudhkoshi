@@ -39,7 +39,7 @@ export default  function GalleryClient({ initialGallery }) {
   return (
     <div className="w-full max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
-       <div className="text-center max-w-3xl mx-auto mb-16">
+       <div className="text-center max-w-3xl mx-auto mb-16 pt-[100px]">
 
 
           <StyledSubHeadingWithPill text="Gallery"></StyledSubHeadingWithPill>
@@ -71,8 +71,8 @@ export default  function GalleryClient({ initialGallery }) {
                   onClick={() => handleCategoryChange(cat)}
                   className={`px-5 py-2 rounded-full text-[15px] font-medium transition-all duration-200 cursor-pointer whitespace-nowrap ${
                     isActive
-                      ? "bg-[var(--landingPagePrimaryColor,#1E7EBB)] text-white shadow-sm"
-                      : "bg-[#eef4f8] text-[#45484D] hover:bg-gray-200"
+                      ? "bg-[var(--landingPagePrimaryColor,#1E7EBB)] border-[1px] border-[#1B71A8] text-white shadow-sm"
+                      : "bg-[#E9F2F8] text-[#45484D] hover:bg-[#1E7EBB]/40"
                   }`}
                 >
                   {cat}
@@ -85,7 +85,7 @@ export default  function GalleryClient({ initialGallery }) {
         {/* Right Toggle View Mode */}
         <button
           onClick={() => setIsGridView(!isGridView)}
-          className="self-end md:self-auto inline-flex items-center gap-2 text-xs font-semibold text-[#45484D] hover:text-[var(--landingPagePrimaryColor,#1E7EBB)] transition-colors cursor-pointer"
+          className="self-end md:self-auto inline-flex items-center gap-2 font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[var(--landingPagePrimaryColor,#1E7EBB)] transition-colors cursor-pointer"
         >
           {isGridView ? (
             <>
@@ -136,7 +136,7 @@ export default  function GalleryClient({ initialGallery }) {
         /* 2. THREE-ITEM HORIZON SLIDER VIEW */
         <div className="relative flex flex-col items-center">
           
-          <div className="relative w-full h-[320px] sm:h-[420px] md:h-[500px] flex items-center justify-center overflow-hidden py-4">
+          <div className="relative w-full h-[320px] sm:h-[420px] md:h-[500px] flex items-center justify-center overflow-hidden py-4 pb-20">
             {filteredGallery?.map((item, index) => {
               const total = filteredGallery?.length;
               
@@ -153,7 +153,7 @@ export default  function GalleryClient({ initialGallery }) {
               return (
                 <div
                   key={item.id}
-                  className={`absolute transition-all duration-500 ease-in-out rounded-3xl overflow-hidden shadow-xl border-4 border-white ${
+                  className={`absolute transition-all duration-500 ease-in-out rounded-3xl overflow-hidden shadow-xl border-6 border-white ${
                     position === "center"
                       ? "z-30 w-[85%] sm:w-[70%] md:w-[62%] h-full scale-100 opacity-100 shadow-2xl"
                       : position === "left"
@@ -199,7 +199,7 @@ export default  function GalleryClient({ initialGallery }) {
           </div>
 
           {/* Bottom Progress Bar Indicators */}
-          <div className="flex items-center justify-center gap-2 mt-8">
+          <div className="flex items-center justify-center gap-2 mt-4">
             {filteredGallery?.map((_, idx) => (
               <button
                 key={idx}

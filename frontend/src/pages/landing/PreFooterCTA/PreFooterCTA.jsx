@@ -41,26 +41,35 @@ export default function PreFooterCTA() {
       <div className="max-w-[1320px] mx-auto relative z-10">
         
         {/* --- DIAGONAL GRADIENT BORDER WRAPPER (TOP-LEFT GLOW) --- */}
-        <div 
-          className="relative rounded-[28px] p-[1.5px] shadow-2xl overflow-hidden"
-          style={{
-            /* 135deg gradient creates the sharp bright highlight at the top-left corner,
-               fading smoothly down the left & right sides toward the bottom-right */
-            background: 'linear-gradient(317deg, #ffffff 1%, #D8F0FF 15%, #1F92D9 18%, #0583d1 75%, rgb(255 255 255) 100%)',
-          }}
-        >
-          
-          {/* --- INNER CARD CONTENT CONTAINER --- */}
-          <div 
-            className="relative rounded-[26.5px] h-full w-full p-8 sm:p-14 md:p-20 text-center overflow-hidden"
-            style={{
-              // Inner backdrop radial glow centered towards the upper section 
-              background: 'radial-gradient(110% 110% at 50% 25%, #186899 15%, #0E4669 55%, #0A3048 100%)',
-                  // background: 'radial-gradient(circle, #0a304854 -56%, #0a3048 49%)',
-                  
-            }}
-          >
+<div
+  className="relative rounded-[28px] shadow-2xl overflow-hidden"
+  style={{
+    background:
+      "radial-gradient(44.27% 99.44% at 50% 50%, rgba(31, 146, 217, 0.94) 0%, rgba(24, 104, 153, 0.93) 41.37%, rgba(14, 70, 105, 0.98) 72.14%, rgba(10, 48, 72, 0.62) 100%)",
+  }}
+>
+            {/* Gradient border */}
+            <div
+              className="absolute inset-0 rounded-[28px] pointer-events-none"
+              style={{
+                padding: "4px",
+                background:
+                  "linear-gradient(102.32deg, #D8F0FF 10.79%, #1971A8 30.03%, #066CAD 53.97%, #1971A8 83.49%, #C1E7FF 92.25%)",
+                WebkitMask:
+                  "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
+                WebkitMaskComposite: "xor",
+                maskComposite: "exclude",
+              }}
+            />
 
+            {/* Card */}
+            <div
+              className="relative rounded-[24px] h-full w-full p-8 sm:p-14 md:p-20 text-center overflow-hidden"
+              style={{
+                background:
+                  "radial-gradient(44.27% 99.44% at 50% 50%, rgba(31, 146, 217, 0.10) 0%, rgba(24, 104, 153, 0.10) 41.37%, rgba(14, 70, 105, 0.10) 72.14%, rgba(10, 48, 72, 0.07) 100%)",
+              }}
+            >
 
             
             {/* Content Wrapper */}
@@ -69,7 +78,12 @@ export default function PreFooterCTA() {
               {/* Heading */}
               <h2 
                 className="text-2xl sm:text-4xl md:text-[44px] font-extrabold tracking-tight leading-[1.2]"
-                style={{ color: '#D8F0FF' }}
+                style={{
+                    backgroundImage:
+                      "linear-gradient(90deg, rgba(255, 255, 255, 0.51) -10.06%, #FFFFFF 47.61%, rgba(255, 255, 255, 0.51) 113.42%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
               >
                 Sustainable Energy for a <br className="hidden sm:inline" />
                 Brighter Tomorrow.
@@ -78,7 +92,7 @@ export default function PreFooterCTA() {
               {/* Subtitle */}
               <p 
                 className="font-body text-sm sm:text-base font-normal max-w-2xl mx-auto leading-relaxed"
-                style={{ color: '#C1E7FF', opacity: 0.88 }}
+                style={{ color:'#FFFFFF'}}
               >
                 We harness Nepal's rivers to deliver reliable, sustainable hydropower lighting homes, empowering communities, and building a cleaner future.
               </p>
@@ -89,7 +103,7 @@ export default function PreFooterCTA() {
                 {/* Primary Button */}
                 <Link
                   href="#"
-                  className="font-body w-full sm:w-auto px-7 py-3 rounded-full text-sm font-semibold transition-all duration-200 hover:brightness-110 active:scale-95 shadow-sm"
+                  className="font-[Manrope] w-full sm:w-auto px-7 py-3 rounded-full text-base font-semibold leading-6 text-center align-middle transition-all duration-200 hover:brightness-110 active:scale-95 shadow-sm"
                   style={{
                     backgroundColor: 'white',
                     color: '#1E7EBB',
@@ -101,10 +115,10 @@ export default function PreFooterCTA() {
                 {/* Secondary Outlined Button */}
                 <Link
                   href="#"
-                  className="w-full sm:w-auto px-7 py-3 rounded-full text-sm font-semibold transition-all duration-200 hover:bg-white/5 active:scale-95 border"
+                  className="font-[Manrope] w-full sm:w-auto px-7 py-3 rounded-full text-base font-semibold leading-6 text-center align-middle transition-all duration-200 hover:brightness-110 active:scale-95 shadow-sm"
                   style={{
-                    borderColor: '#B9D7EA',
-                    color: '#D8F0FF',
+                    border: '1px solid #B9D7EA',
+                    color: '#DDECF5',
                   }}
                 >
                   Learn More
@@ -115,6 +129,8 @@ export default function PreFooterCTA() {
             </div>
 
           </div>
+
+          
         </div>
 
       </div>

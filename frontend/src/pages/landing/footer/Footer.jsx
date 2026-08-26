@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export default function Footer() {
   return (
-    <footer className="w-full relative bg-[#edf6fc] mt-[40px]  pt-12 pb-16 px-4 sm:px-6 lg:px-8 font-sans antialiased overflow-hidden"
+    <footer className="w-full relative bg-[#edf6fc] mt-[40px] pt-4 sm:px-6 lg:px-8 font-sans antialiased overflow-hidden"
           style={{
         borderTopLeftRadius: '60px',
         borderTopRightRadius: '60px',
@@ -41,13 +41,13 @@ export default function Footer() {
                   </svg>
                 </div>
 
-                <span className="text-xl font-manrope-bold tracking-tight text-[#373A3E]">
+                <span className="text-2xl font-manrope-medium font-medium text-[#373A3E]">
                   Dudhkoshi <span className="text-[#1E7EBB]">Hydropower</span>
                 </span>
               </Link>
 
               {/* Description */}
-              <p className="text-xs font-body sm:text-sm text-[#45484D] leading-relaxed max-w-sm font-normal">
+              <p className="text-base font-[Hind] font-normal text-[#45484D] leading-[26px] tracking-normal max-w-sm">
                 Building Nepal's clean energy future through sustainable, community-rooted hydropower infrastructure.
               </p>
             </div>
@@ -57,22 +57,24 @@ export default function Footer() {
               
               {/* COLUMN 1: COMPANY */}
               <div className="space-y-3.5">
-                <h3 className=" text-sm font-bold text-[#373A3E]">
+                <h3 className="text-xl font-[Manrope] font-medium leading-8 tracking-normal text-[#373A3E]">
                   Company
                 </h3>
                 <ul className="space-y-2.5 text-xs sm:text-sm">
                   <li>
-                    <Link href="#" className="text-[#45484D] hover:text-[#1E7EBB] transition-colors">
+                    <Link href="#" className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[#1E7EBB] transition-colors">
                       About Us
                     </Link>
                   </li>
                   <li>
-                    <Link href="#" className="text-[#45484D] hover:text-[#1E7EBB] transition-colors">
+                    <Link href="#" className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[#1E7EBB] transition-colors"
+>
                       Our Team
                     </Link>
                   </li>
                   <li>
-                    <Link href="#" className="text-[#45484D] hover:text-[#1E7EBB] transition-colors">
+                    <Link href="#" className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[#1E7EBB] transition-colors"
+>
                       Gallery
                     </Link>
                   </li>
@@ -81,22 +83,24 @@ export default function Footer() {
 
               {/* COLUMN 2: PROJECT */}
               <div className="font-body space-y-3.5">
-                <h3 className="text-sm font-bold text-[#373A3E]">
+                <h3 className="text-xl font-[Manrope] font-medium leading-8 tracking-normal text-[#373A3E]">
                   Project
                 </h3>
                 <ul className="space-y-2.5 text-xs sm:text-sm">
                   <li>
-                    <Link href="#" className="text-[#45484D] hover:text-[#1E7EBB] transition-colors">
+                    <Link href="#" className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[#1E7EBB] transition-colors"
+>
                       Dudhkoshi 2
                     </Link>
                   </li>
                   <li>
-                    <Link href="#" className="text-[#45484D] hover:text-[#1E7EBB] transition-colors">
+                    <Link href="#" className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[#1E7EBB] transition-colors"
+>
                       Reports
                     </Link>
                   </li>
                   <li>
-                    <Link href="#" className="text-[#45484D] hover:text-[#1E7EBB] transition-colors">
+                    <Link href="#" className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[#1E7EBB] transition-colors">
                       Financial Overview
                     </Link>
                   </li>
@@ -105,14 +109,14 @@ export default function Footer() {
 
               {/* COLUMN 3: CONTACT */}
               <div className="font-body space-y-3.5">
-                <h3 className="text-sm font-bold text-[#373A3E]">
+                <h3 className="text-xl font-[Manrope] font-medium leading-8 tracking-normal text-[#373A3E]">
                   Contact
                 </h3>
                 <ul className="space-y-2.5 text-xs sm:text-sm">
                   <li>
                     <a 
                       href="mailto:aayududhkoshi@gmail.com" 
-                      className="text-[#1E7EBB] hover:underline break-all font-medium"
+                      className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#1E7EBB] hover:underline break-all"
                     >
                       aayududhkoshi@gmail.com
                     </a>
@@ -120,12 +124,13 @@ export default function Footer() {
                   <li>
                     <a 
                       href="tel:0097714102710" 
-                      className="text-[#1E7EBB] hover:underline font-medium"
+                      className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#1E7EBB] hover:underline"
+
                     >
                       00977-1- 4102710
                     </a>
                   </li>
-                  <li className="text-[#45484D]">
+                  <li className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[#1E7EBB] transition-colors">
                     Sama Marga, Naxal Kathmandu, Nepal
                   </li>
                 </ul>
@@ -139,7 +144,11 @@ export default function Footer() {
           <div className="w-full h-[1px] bg-slate-100 my-2" />
 
           {/* BOTTOM SECTION: COPYRIGHT & LEGAL LINKS */}
-          <div className="font-body pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] sm:text-xs text-[#45484D]">
+          <div 
+          // className="font-body pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] sm:text-xs text-[#45484D]"
+          className="font-[Hind] pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-normal text-base leading-[140%] tracking-normal text-[#45484D]"
+          >
+
             <p>
               © 2026 Dudhkoshi Hydropower Nepal Pvt. Ltd. All rights reserved.
             </p>
@@ -173,7 +182,9 @@ export default function Footer() {
     leading-none
   "
   aria-hidden="true"
-  style={{ height: 'calc(1em - 15px)' }}
+  style={{ height: 'calc(1em - 15px)',
+    
+   }}
 >
   <span
     className="
@@ -186,7 +197,7 @@ export default function Footer() {
       whitespace-nowrap
     "
   >
-    Dudhkoshi 2
+    Dudhkoshi2
   </span>
 </div>
 
