@@ -162,7 +162,7 @@ export default function ContactSection() {
                     </label>
                     <input
                     style={{
-                      padding:"20px !important", borderRadius:"32px !important"
+                      padding:"20px !important", borderRadius:"16px !important"
                     }}
                       type="text"
                       placeholder="John Doe"
@@ -180,7 +180,7 @@ export default function ContactSection() {
                     </label>
                     <input
                          style={{
-                      padding:"20px !important", borderRadius:"32px !important"
+                      padding:"20px !important", borderRadius:"16px !important"
                     }}
                       type="email"
                       placeholder="john@engineering.com"
@@ -288,7 +288,7 @@ export default function ContactSection() {
 
               {/* Follow Us Box */}
               <div className="rounded-2xl p-5 border border-slate-200/80">
-                <h3 className="text-xs font-bold text-[#1E3A8A] mb-3">
+                <h3 className="text-[20px] leading-[20px] font-medium text-[#186596] mb-5">
                   Follow Us
                 </h3>
 
