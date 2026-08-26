@@ -154,7 +154,7 @@ export default function WaterToWireSection() {
                       </p>
 
                       {/* Summary Text */}
-                      <p className="text-[11px] text-slate-600 text-[#45484D] font-medium leading-relaxed mb-4">
+                      <p className="text-[14px] text-slate-600 text-[#45484D] font-medium leading-relaxed mb-4">
                         {step.summary}
                       </p>
                     </div>
@@ -201,7 +201,7 @@ export default function WaterToWireSection() {
                       <span className="text-[10px] leading-[20px] font-[Hind] font-medium text-slate-400 tracking-wider uppercase mb-1">
                         {item.label}
                       </span>
-                      <span className="font-['Times_New_Roman'] font-normal text-[10px] leading-[20px] tracking-[0px] align-middle uppercase text-slate-700">
+                      <span className="font-['Times_New_Roman'] font-normal text-[12px] leading-[20px] tracking-[0px] align-middle uppercase text-slate-700">
                         {item.value}
                       </span>
                     </div>

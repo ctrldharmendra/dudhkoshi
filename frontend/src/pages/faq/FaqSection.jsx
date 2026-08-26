@@ -172,7 +172,7 @@ export default function FaqSection() {
 
                   {/* Answer Body (Animated Expand) */}
                   {isOpen && (
-                    <div className="font-body px-5 pb-6 sm:px-6 sm:pb-6 text-[14px] leading-relaxed font-normal border-t border-transparent">
+                    <div className="font-body px-5 pb-6 sm:px-6 sm:pb-6 text-[15px] leading-relaxed font-normal border-t border-transparent">
                       {faq.answer}
                     </div>
                   )}

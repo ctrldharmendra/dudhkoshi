@@ -176,17 +176,17 @@ Run-of-River Hydroelectric Scheme.
                       className="grid grid-cols-1 sm:grid-cols-12 items-center py-3 border-b border-slate-100 last:border-0 gap-1 sm:gap-2"
                     >
                       {/* Parameter Name */}
-                      <span className="sm:col-span-4 text-xs font-medium">
+                      <span className="sm:col-span-4 text-[14px] font-medium">
                         {item.parameter}
                       </span>
 
                       {/* Parameter Value */}
-                      <span className="sm:col-span-4 text-xs sm:text-sm font-medium text-slate-800">
+                      <span className="sm:col-span-4 text-xs sm:text-[14px] font-medium text-slate-800">
                         {item.value}
                       </span>
 
                       {/* Formula (Italicized style matching image) */}
-                      <span style={{letterSpacing:"0.6px"}} className="font-libertinus sm:col-span-4 font-medium font-stretch-extra-expanded text-[11px] tracking-tighter text-[#8E8E93] sm:text-left">
+                      <span style={{letterSpacing:"0.6px"}} className="font-libertinus sm:col-span-4 font-medium font-stretch-extra-expanded text-[14px] tracking-tighter text-[#8E8E93] sm:text-left">
                         {item.formula}
                       </span>
                     </div>
@@ -195,7 +195,7 @@ Run-of-River Hydroelectric Scheme.
 
                 {/* Bottom Note Section */}
                 {currentContent.note && (
-                  <div className="pt-2 flex items-start gap-2 text-[11px] sm:text-xs text-slate-500 leading-relaxed font-normal">
+                  <div className="pt-2 flex items-start gap-2 text-[15px]  text-slate-500 leading-relaxed font-normal">
                     <span className="font-bold text-slate-700 shrink-0">Note :</span>
                     <p>{currentContent.note}</p>
                   </div>

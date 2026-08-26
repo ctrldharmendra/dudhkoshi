@@ -53,7 +53,7 @@ export default function ShowReinvitationDoc({ data = [] }) {
 
       <div className="relative">
 
-        {data.map((item, index) => (
+        {data?.map((item, index) => (
 
           <div
             key={item.id}
@@ -101,7 +101,6 @@ export default function ShowReinvitationDoc({ data = [] }) {
 
             {/* File Card */}
             <div
-              onClick={() => openFile(item?.file)}
               className={`
                 mb-8
                 pt-[26px]
@@ -137,8 +136,9 @@ export default function ShowReinvitationDoc({ data = [] }) {
                 </div>
 
 
-                {item.file && (
+                {item?.file && (
                   <FaExternalLinkAlt
+                                onClick={() => openFile(item?.file)}
                     className="text-blue-500"
                     size={15}
                   />
@@ -147,7 +147,7 @@ export default function ShowReinvitationDoc({ data = [] }) {
               </div>
 
 
-              {!item.file && (
+              {!item?.file && (
                 <p className="mt-2 text-xs text-red-500">
                   File not available
                 </p>
@@ -170,14 +170,13 @@ export default function ShowReinvitationDoc({ data = [] }) {
 }
   {
     item?.answer &&(
-      <Attachment file={item?.file} fileBaseUrl={BASE_URL} label="Question document" />
+      <Attachment file={item?.answer?.file} fileBaseUrl={BASE_URL} label="Question document" />
 
     )
                         
 
   }
             </div>
-
           </div>
 
         ))}

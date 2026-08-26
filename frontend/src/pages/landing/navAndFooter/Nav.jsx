@@ -51,7 +51,7 @@ export default function Navbar() {
             href="/login" 
             className="px-6 py-2.5 bg-[var(--landingPagePrimaryColor)] hover:opacity-90 text-[var(--lightWhite)] font-['Manrope'] font-semibold text-[16px] leading-[24px] tracking-[0px] text-center align-middle rounded-full transition-all duration-200 shadow-sm hover:shadow-md"
           >
-            Login
+            Tender
           </Link>
         </div>
 

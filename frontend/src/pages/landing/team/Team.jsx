@@ -39,8 +39,8 @@ const teamMembersData = [
     avatar: abhigya.src,
     photo: abhigya.src,
     bio: [
-      'Abhigya Malla, Holds Masters in Professional Accountancy and Commerce in Finance (Macquarie University, Australia).',
-      'Vice President/Finance Controller at High Himalaya Hydro Construction Pvt. Ltd. Project developer and youth contractor, involved in Aayu Malun -21 MW, Puwa Khola - 4 MW, Hongu Khola - 28.9 MW, Midim Khola - 3 MW, and Upper Tamor A - 60 MW. Managing Director of Union Hydropower Public Ltd.'
+      'Abhigya Malla is a finance professional, project developer, and emerging leader in Nepal’s hydropower and construction sector. She holds a Master’s degree in Professional Accountancy and a Master’s in Commerce with a specialization in Finance from Macquarie University, Australia. She currently serves as Vice President and Finance Controller at High Himalaya Hydro Construction Pvt. Ltd., where she is involved in the development and management of several hydropower projects.',
+      'Her portfolio includes Aayu Malun (21 MW), Puwa Khola (4 MW), Hongu Khola (28.9 MW), Midim Khola (3 MW), and Upper Tamor A (60 MW). As a youth contractor and project developer, she combines strong financial expertise with practical experience in infrastructure development. She also serves as Managing Director of Union Hydropower Public Ltd., further demonstrating her leadership and commitment to Nepal’s growing hydropower industry.'
     ],
     metadata: [
       { label: 'Background', value: 'Australia Master’s Alumnus' },
@@ -48,23 +48,23 @@ const teamMembersData = [
       { label: 'Focus', value: 'Finance & Contractor' }
     ]
   },
-  {
-    id: '3',
-    name: 'Devendra Adhikari',
-    role: 'Director',
-    category: 'Directors',
-    avatar: devendra.src,
-    photo: devendra.src,
-    bio: [
-      'Devendra Adhikari, Holds Masters in Professional Accountancy and Commerce in Finance (Macquarie University, Australia).',
-      'A seasoned entrepreneur with 30+ years of experience in trading, export, agriculture, and real estate; former Director of Lumbini Finance and Lumbini Bikash Bank; active capital market investor and real estate developer.'
-    ],
-    metadata: [
-      { label: 'Background', value: 'UK Master’s Alumnus' },
-      { label: 'Experience', value: '30+ Years' },
-      { label: 'Focus', value: 'Real estate & Investor' }
-    ]
-  },
+  // {
+  //   id: '3',
+  //   name: 'Devendra Adhikari',
+  //   role: 'Director',
+  //   category: 'Directors',
+  //   avatar: devendra.src,
+  //   photo: devendra.src,
+  //   bio: [
+  //     'Devendra Adhikari, Holds Masters in Professional Accountancy and Commerce in Finance (Macquarie University, Australia).',
+  //     'A seasoned entrepreneur with 30+ years of experience in trading, export, agriculture, and real estate; former Director of Lumbini Finance and Lumbini Bikash Bank; active capital market investor and real estate developer.'
+  //   ],
+  //   metadata: [
+  //     { label: 'Background', value: 'UK Master’s Alumnus' },
+  //     { label: 'Experience', value: '30+ Years' },
+  //     { label: 'Focus', value: 'Real estate & Investor' }
+  //   ]
+  // },
   {
     id: '4',
     name: 'Bikram Gautam',
@@ -90,8 +90,8 @@ const teamMembersData = [
     avatar: arun.src,
     photo: arun.src,
     bio: [
-      'Arun Kumar Agarwal manages day-to-day operations, procurement, and financial control across all operational units.',
-      'His disciplined management approach ensures project timelines and budget benchmarks are consistently met.'
+      'Arun Kumar Agarwal is a prominent businessman with extensive experience in the construction, infrastructure, trading, and retail sectors. As the driving force behind Rajesh Trade Link, he has played an important role in building and expanding a strong business presence across the country. His entrepreneurial portfolio also includes RTL Mall and Goyal Aluminum, reflecting his diverse interests and ability to manage businesses across multiple industries.',
+      ' With a focus on quality, reliability, and long-term growth, he has developed an extensive nationwide distribution network that enables his businesses to effectively serve customers and partners in different markets. His leadership is characterized by strategic vision, strong business relationships, and a commitment to sustainable growth. Through his ventures, he continues to contribute to the development of construction, infrastructure, distribution, and commercial sectors while strengthening his position as an influential entrepreneur.'
     ],
     metadata: [
       { label: 'Background', value: 'Operations Management' },
