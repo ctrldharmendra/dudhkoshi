@@ -174,20 +174,20 @@ export default  function GalleryClient({ initialGallery }) {
 
                   {/* Left Arrow Button (On Left Peek Image) */}
                   {position === "left" && (
-                    <button
-                      onClick={handlePrev}
-                      className="absolute left-[46px] top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/70 border border-[white]  transition-all cursor-pointer z-40"
-                      aria-label="Previous image"
-                    >
-                      <IoArrowBackOutline className="w-5 h-5 text-[white]" />
-                    </button>
+              <button
+  onClick={handlePrev}
+  className="absolute left-[46px] top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/25  flex items-center justify-center text-white ring-2 ring-white/80 hover:bg-white/40 transition-all duration-200 cursor-pointer z-40 shadow-lg"
+  aria-label="Previous image"
+>
+  <IoArrowBackOutline className="w-6 h-6 text-white" />
+</button>
                   )}
 
                   {/* Right Arrow Button (On Right Peek Image) */}
                   {position === "right" && (
                     <button
                       onClick={handleNext}
-                      className="absolute right-[46px] top-1/2 -translate-y-1/2 w-9 h-9 rounded-full bg-white/40 backdrop-blur-md flex items-center justify-center text-white hover:bg-white/70 border border-[white]  transition-all cursor-pointer z-40"
+                      className="absolute right-[46px] top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/25  flex items-center justify-center text-white ring-2 ring-white/80 hover:bg-white/40 transition-all duration-200 cursor-pointer z-40 shadow-lg"
                       aria-label="Next image"
                     >
                       <IoArrowForwardSharp className="w-5 h-5 text-white" />

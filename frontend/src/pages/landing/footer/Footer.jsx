@@ -44,9 +44,9 @@ export default function Footer() {
               
               {/* COLUMN 1: COMPANY */}
               <div className="space-y-3.5">
-                <h3 className="text-xl font-[Manrope] font-medium leading-8 tracking-normal text-[#373A3E]">
+                <div className="text-[20px] font-[manropeMedium] leading-8 tracking-normal text-[#373A3E]">
                   Company
-                </h3>
+                </div>
                 <ul className="space-y-2.5 text-xs sm:text-sm">
                   <li>
                     <Link href="#" className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[#1E7EBB] transition-colors">
@@ -70,9 +70,9 @@ export default function Footer() {
 
               {/* COLUMN 2: PROJECT */}
               <div className="font-body space-y-3.5">
-                <h3 className="text-xl font-[Manrope] font-medium leading-8 tracking-normal text-[#373A3E]">
+                <div className="text-[20px] font-[manropeMedium] leading-8 tracking-normal text-[#373A3E]">
                   Project
-                </h3>
+                </div>
                 <ul className="space-y-2.5 text-xs sm:text-sm">
                   <li>
                     <Link href="#" className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[#1E7EBB] transition-colors"
@@ -96,9 +96,9 @@ export default function Footer() {
 
               {/* COLUMN 3: CONTACT */}
               <div className="font-body space-y-3.5">
-                <h3 className="text-xl font-[Manrope] font-medium leading-8 tracking-normal text-[#373A3E]">
+                <div className="text-[20px] font-[manropeMedium] leading-8 tracking-normal text-[#373A3E]">
                   Contact
-                </h3>
+                </div>
                 <ul className="space-y-2.5 text-xs sm:text-sm">
                   <li>
                     <a 

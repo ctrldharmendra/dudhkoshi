@@ -83,7 +83,7 @@ export default function FaqSection() {
   return (
     <section className="w-full mt-[110px] bg-white py-12 px-4 sm:px-6 lg:px-8 font-sans antialiased text-[#45484D]">
 
-      <div className="text-center max-w-3xl mx-auto mb-16">
+      <div className="text-center max-w-full mx-auto mb-16">
 
 
           <StyledSubHeadingWithPill text="Frequently Asked Questions"></StyledSubHeadingWithPill>

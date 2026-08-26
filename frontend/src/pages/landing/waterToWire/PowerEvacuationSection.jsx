@@ -3,18 +3,21 @@ import { FiArrowRight, FiArrowDown } from 'react-icons/fi';
 import { ImPower } from "react-icons/im";
 
 import { GoArrowRight } from 'react-icons/go';
+import { FaConnectdevelop } from 'react-icons/fa';
 
 export default function PowerEvacuationSection() {
   const cardsData = [
     {
       id: 'powerhouse',
       title: 'POWERHOUSE',
+      icon: <ImPower />,
       subtitle: 'Surface',
       details: '55 M × 26.5 M × 35.3 M',
     },
     {
       id: 'grid-connection',
       title: 'GRID CONNECTION',
+      icon: <FaConnectdevelop  />,
       subtitle: "null",
       details: "null", // Power Evacuation data (voltage, line length, conductor, hub) not provided for Dudhkoshi-2
     },
@@ -58,7 +61,9 @@ export default function PowerEvacuationSection() {
                   
                   {/* Lightning Icon Badge */}
                   <div className="w-10 h-10 rounded-xl bg-[#eaf4fc] text-[#1E7EBB] flex items-center justify-center mb-5">
-                    <ImPower className="w-5 h-5 fill-[#175F8C]" />
+                 {
+                   card.icon
+                 }
                   </div>
 
                   {/* Card Title */}

@@ -8,6 +8,10 @@ import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
 import Image from 'next/image';
 import waterToWire from "../../../../public/landing/waterToWire/waterToWire.png";
 import PowerEvacuationSection from './PowerEvacuationSection';
+import { FaNetworkWired } from 'react-icons/fa';
+import { GiFlameTunnel } from 'react-icons/gi';
+import { SiSaltproject } from 'react-icons/si';
+import { LiaProjectDiagramSolid } from 'react-icons/lia';
 
 export default function WaterToWireSection() {
   // Step cards dataset matching the design
@@ -16,6 +20,7 @@ export default function WaterToWireSection() {
       id: 'headworks',
       title: 'HEADWORKS',
       subtitle: 'Barrage',
+      icon: <FaNetworkWired   />,
       summary: 'Diversion, Intake, Desanding',
       componentsLabel: 'HEADWORKS COMPONENTS',
       details: [
@@ -36,6 +41,7 @@ export default function WaterToWireSection() {
       id: 'headrace-tunnel',
       title: 'HEADRACE TUNNEL',
       subtitle: '4,791 M',
+      icon: <GiFlameTunnel   />,
       summary: 'Concrete Lined Inverted D-Shaped • 5.6 M Finished Dia.',
       componentsLabel: 'HEADRACE TUNNEL COMPONENTS',
       details: [
@@ -49,6 +55,7 @@ export default function WaterToWireSection() {
       id: 'surge-shaft',
       title: 'SURGE SHAFT',
       subtitle: '69 M',
+      icon: <SiSaltproject    />,
       summary: 'Restricted Orifice • Ø 16.0 M',
       componentsLabel: 'SURGE SHAFT COMPONENTS',
       details: [
@@ -64,6 +71,7 @@ export default function WaterToWireSection() {
       title: 'PENSTOCK',
       subtitle: 'Underground',
       summary: 'Ø 4.6 M • Surge Shaft to Powerhouse',
+      icon: <LiaProjectDiagramSolid     />,
       componentsLabel: 'PENSTOCK COMPONENTS',
       details: [
         { label: 'MATERIAL', value: "NULL" },
@@ -140,7 +148,9 @@ export default function WaterToWireSection() {
                     <div>
                       {/* Icon Badge */}
                       <div className="w-9 h-9 rounded-xl bg-[#eaf4fc] text-[#1E7EBB] flex items-center justify-center mb-5">
-                        <ImPower className="w-5 h-5 fill-[#175F8C]" />
+                       {
+                         step.icon
+                       }
                       </div>
 
                       {/* Header Title */}

@@ -393,6 +393,9 @@ body {
 .font-manrope-bold {
   font-family: var(--font-manrope-bold);
 }
+.manropeMedium {
+  font-family: var(--font-manropeMedium);
+}
 
 .font-libertinus {
   font-family: var(--font-libertinus);
