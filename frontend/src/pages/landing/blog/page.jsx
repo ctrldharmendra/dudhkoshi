@@ -77,7 +77,7 @@ Meet the multi-disciplinary team of engineers, environmental scientists, and str
 
         {/* Section Label */}
         <div className="mb-6">
-          <span className="text-[11px] font-bold tracking-widest text-[#1E7EBB] uppercase border-b border-[#1E7EBB]/40 pb-0.5 inline-block">
+          <span className="text-[11px] font-bold tracking-widest text-[#1E7EBB] uppercase border-b-[2px] border-[#1E7EBB]/40 pb-0.5 inline-block">
             UPDATES
           </span>
         </div>
