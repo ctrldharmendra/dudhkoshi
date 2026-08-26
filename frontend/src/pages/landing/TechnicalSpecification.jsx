@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { 
   FiTrendingUp, FiCpu, FiDroplet, 
   FiChevronDown, FiChevronUp, FiLayers, FiActivity,
-  FiShield, FiInfo
+  FiShield, FiInfo,
+  FiZap
 } from 'react-icons/fi';
 import { MdWater } from "react-icons/md";
 import { ImPower } from "react-icons/im";
