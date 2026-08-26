@@ -162,7 +162,7 @@ export default function ContactSection() {
                     </label>
                     <input
                     style={{
-                      padding:"20px !important", borderRadius:"32px !important"
+                      padding:"20px !important", borderRadius:"16px !important"
                     }}
                       type="text"
                       placeholder="John Doe"
@@ -180,7 +180,7 @@ export default function ContactSection() {
                     </label>
                     <input
                          style={{
-                      padding:"20px !important", borderRadius:"32px !important"
+                      padding:"20px !important", borderRadius:"16px !important"
                     }}
                       type="email"
                       placeholder="john@engineering.com"
