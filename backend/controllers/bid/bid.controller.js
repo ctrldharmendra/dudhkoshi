@@ -564,6 +564,8 @@ const getAllBids = asyncHandler(async (req, res) => {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 4;
 
+    // console.log(limit, "limit")
+
     const search = req.query.search || "";
     const status = req.query.status || "";
     const fromDate = req.query.from || "";
@@ -702,6 +704,7 @@ if(!hasViewPermission) return res.json(new ApiError(403, [],"No Permission To Vi
     const [[countResult]] = await pool.query(countQuery, countValues);
 
     const total = countResult.total;
+    
 
     return res.status(200).json(
       new ApiResponse(
@@ -737,6 +740,7 @@ const getSingleBidForm = asyncHandler(async (req, res)=>{
 // Combine both results into one response object:
    const {id} = req.params; //particular bid id
 
+
    // PERMISSION 
     const roleWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
   if(!roleWithPermission || roleWithPermission.length<=0) return res.json(new ApiResponse(403, "No Any Permission found!"))
@@ -749,7 +753,14 @@ if(!hasViewPermission) return res.json(new ApiError(403, [],"No Permission To Vi
 // PERMISSION END
 
    try {
+// check if this bid has applied any user of not 
+const [isThisBidAppliedByAnyone] = await pool.query(
+  `SELECT id FROM bid_applications WHERE bid_id = ?`,
+  [id]
+)
+// console.log(isThisBidAppliedByAnyone, "isThisBidAppliedByAnyone")
       //  Get main bid information
+      let isBidClosed = false;
         const [bidMasterRow] = await pool.query(
             `
             SELECT 
@@ -764,7 +775,11 @@ if(!hasViewPermission) return res.json(new ApiError(403, [],"No Permission To Vi
                 created_at,
                 updated_at, 
                 updated_by,
-                              estimatedAmt,
+                           awarded_to,
+       awarded_by,
+       awarded_at,
+       award_status,
+  estimatedAmt,
 isEstimatedIncludingVat,
 bidSecurityAmnt,
 bidSecurityValidityInDays,
@@ -783,6 +798,15 @@ contractNo
                 "Bid not found."
             )
         )
+
+            // STEP 3 — CHECK BID IS STILL OPEN
+    const now = new Date();
+    if (bidMasterRow[0]?.closeDate) {
+      const closeDate = new Date(bidMasterRow[0]?.closeDate);
+      if (now >= closeDate) {
+        isBidClosed = true;
+      }
+    }
 
 
       
@@ -818,6 +842,8 @@ contractNo
         ...bid,
         fields: bidFields,
         attachments:attachments,
+        isBidClosed: isBidClosed,
+        isThisBidAppliedByAnyone: isThisBidAppliedByAnyone
     };
 
     return res.status(200).json(
@@ -1221,8 +1247,6 @@ if(!hasApplyBidPermission) return res.json(new ApiError(403, [],"No Permission T
 const getBidApplicants = asyncHandler(async (req, res)=>{
   const selectedBidId = req.params.id;
 
-
-
 try {
 
 
@@ -1291,10 +1315,14 @@ if (!bidId || !applicationId || isNaN(bidId) || isNaN(applicationId)) {
     // console.log(userWithPermission, "userWithPermission")
 if(!userWithPermission || userWithPermission.length<1) return res.json(new ApiResponse(403, "", "No Any Permission!"))
 
-    // if no "crete_user" permission then show error 
+    // if no "view_applicants" permission then show error 
 const hasViewApplicantsPermission = userWithPermission.some(
     p => p.permission_name === 'view_applicants'
 );
+
+// if(!hasViewApplicantsPermission) return res.json(new ApiResponse(403, "", "No Permission To View Applicants."))
+
+// console.log(hasViewApplicantsPermission, "hasViewApplicantsPermission")
 
 // check if requested bid closed | if closed then only show | check via closeDate field if its greater than today's date
 const [bidDetsWithCloseField] = await pool.query(
@@ -1360,6 +1388,7 @@ if (bidDynamiDocumentDets.length === 0) {
           id,
           publishDate,
           openDate,
+          closeDate,
           title,
           description,
           status,
@@ -1442,7 +1471,7 @@ const applicantAllDets = {
 });
 
 
-// // how many bid this user has applied | required: userId
+//  how many bid this user has applied | required: userId
 const getBidApplicantsCount = asyncHandler(async (req, res) => {
   try {
 
@@ -1553,7 +1582,13 @@ const getAppliedBid = asyncHandler(async (req, res) => {
         bm.awarded_by,
         bm.awarded_at,
         ba.status AS applicationStatus,
-        ba.id AS applicationId
+        ba.id AS applicationId,
+
+            CASE 
+      WHEN bm.awarded_to = ? THEN TRUE
+      ELSE FALSE
+    END AS isThisAwardedToMe
+
       FROM bid_master bm
       INNER JOIN bid_applications ba
         ON bm.id = ba.bid_id
@@ -1567,6 +1602,7 @@ const getAppliedBid = asyncHandler(async (req, res) => {
       LIMIT ? OFFSET ?
       `,
       [
+          req.user.id,
         req.user.id,
         searchValue,
         searchValue,
@@ -1577,6 +1613,38 @@ const getAppliedBid = asyncHandler(async (req, res) => {
       ]
     );
 
+    // GET IF THIS USER HAS BEEN REPROPOSED FOR PARTICULAR BID OR NOT 
+    const bidIds = rows.map(row => row.id);
+    if (bidIds.length > 0) {
+  const placeholders = bidIds.map(() => '?').join(', ');
+
+  const [attachments] = await pool.query(
+    `SELECT 
+      id,
+      title,
+      file,
+      bidId,
+      userId,
+      createdBy,
+      createdAt
+     FROM reinvitation_attachment
+     WHERE bidId IN (${placeholders})
+     AND userId = ?`,       // ← only for logged-in user
+    [...bidIds, req.user.id]
+  );
+
+  reinvitationAttachments = attachments;
+}
+
+const bidsWithAttachments = rows.map(bid => ({
+  ...bid,
+  reinvitationAttachments: reinvitationAttachments.filter(
+    att => att.bidId === bid.id
+  )
+}));
+
+// console.log(bidsWithAttachments, "bidsWithAttachments")
+    // GET IF THIS USER HAS BEEN REPROPOSED FOR PARTICULAR BID OR NOT END 
 
     const totalPages = Math.ceil(total / limit);
 
@@ -1585,7 +1653,7 @@ const getAppliedBid = asyncHandler(async (req, res) => {
       new ApiResponse(
         200,
         {
-          bids: rows,
+          bids: bidsWithAttachments,
           pagination: {
             total,
             page,
@@ -1612,7 +1680,175 @@ const getAppliedBid = asyncHandler(async (req, res) => {
 });
 
 
-// get the details of bid who created 
+// GET ONLY ACTIVE BID 
+const getAllActiveAndNotAppliedBids = asyncHandler(async (req, res) => {
+  try {
+    // Read query parameters
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 4;
+
+    const search = req.query.search || "";
+    const status = req.query.status || "";
+    const fromDate = req.query.from || "";
+    const toDate = req.query.to || "";
+
+    // Logged-in user
+    const loggedInUserId = req.user.id;
+
+// PERMISSION 
+    const roleWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
+  if(!roleWithPermission || roleWithPermission.length<=0) return res.json(new ApiResponse(403, "No Any Permission found!"))
+
+    // if no "add_permission" permission then show error 
+const hasViewPermission = roleWithPermission.some(
+    p => p.permission_name === 'view_bid'
+);
+if(!hasViewPermission) return res.json(new ApiError(403, [],"No Permission To View Bid."))
+// PERMISSION END
+
+    const offset = (page - 1) * limit;
+
+    //SELECT QUERY 
+let selectQuery = `
+  SELECT
+    bm.id,
+    bm.publishDate,
+    bm.openDate,
+    bm.title,
+    bm.description,
+    bm.status,
+    bm.user_id,
+    bm.created_at,
+    bm.closeDate,
+    bm.award_status,
+    bm.awarded_to,
+    bm.awarded_by,
+    bm.awarded_at,
+
+    u.name AS createdBy,
+    u.id AS createdByUserId,
+    u.email AS createdByEmail,
+    u.dp AS createdByDp,
+
+    ba.id AS applicationId,
+    ba.status AS applicationStatus,
+
+    EXISTS (
+      SELECT 1
+      FROM bid_applications ba2
+      WHERE ba2.bid_id = bm.id
+    ) AS hasAnybodyAppliedYet
+
+  FROM bid_master bm
+
+  LEFT JOIN users u
+    ON u.id = bm.user_id
+
+  LEFT JOIN bid_applications ba
+    ON ba.bid_id = bm.id
+   AND ba.applicant_user_id = ?
+
+  WHERE 1=1
+
+    -- Only bids that are not awarded
+    AND (
+      bm.award_status IS NULL
+      OR bm.award_status = 'NOT_AWARDED'
+    )
+
+    -- Only bids whose close date has not passed
+    AND bm.closeDate >= NOW()
+    AND bm.openDate <= NOW()
+
+    -- Exclude bids already applied by the logged-in user
+    AND ba.id IS NULL
+`;
+const selectValues = [loggedInUserId];
+
+if (search) {
+  selectQuery += ` AND bm.title LIKE ?`;   
+  selectValues.push(`%${search}%`);
+}
+if (status) {
+  selectQuery += ` AND bm.status = ?`;
+  selectValues.push(status);
+}
+if (fromDate) {
+  selectQuery += ` AND bm.created_at >= ?`;
+  selectValues.push(fromDate);
+}
+if (toDate) {
+  selectQuery += ` AND bm.created_at <= ?`;
+  selectValues.push(toDate);
+}
+
+// Pagination —
+selectQuery += ` ORDER BY bm.created_at DESC LIMIT ? OFFSET ?`;
+selectValues.push(limit);
+selectValues.push(offset);
+
+const [bids] = await pool.query(selectQuery, selectValues);
+
+let countQuery = `
+  SELECT COUNT(DISTINCT bm.id) AS total
+  FROM bid_master bm
+  LEFT JOIN bid_applications ba
+    ON ba.bid_id = bm.id
+   AND ba.applicant_user_id = ?
+  WHERE 1=1
+  AND (
+    bm.award_status IS NULL
+    OR bm.award_status = 'NOT_AWARDED'
+  )
+  AND bm.closeDate >= NOW()
+  AND bm.openDate <= NOW()
+  AND ba.id IS NULL
+`;
+const countValues = [loggedInUserId];
+
+if (search) {
+  countQuery += ` AND bm.title LIKE ?`;
+  countValues.push(`%${search}%`);
+}
+if (status) {
+  countQuery += ` AND bm.status = ?`;
+  countValues.push(status);
+}
+if (fromDate) {
+  countQuery += ` AND bm.created_at >= ?`;
+  countValues.push(fromDate);
+}
+if (toDate) {
+  countQuery += ` AND bm.created_at <= ?`;
+  countValues.push(toDate);
+}
+
+const [[countResult]] = await pool.query(countQuery, countValues);
+const total = countResult.total;
+
+    return res.status(200).json(
+      new ApiResponse(
+        200,
+        {
+          bids,
+          pagination: {
+            page,
+            limit,
+            total,
+            totalPages: Math.ceil(total / limit),
+            hasNextPage: page < Math.ceil(total / limit),
+            hasPreviousPage: page > 1,
+          },
+        },
+        "Bids fetched successfully."
+      )
+    );
+  } catch (error) {
+    return res.status(500).json(
+      new ApiError(500, "Failed to fetch bids.", error.message)
+    );
+  }
+});
 
 module.exports = {
     createBidForm,
@@ -1625,4 +1861,5 @@ module.exports = {
     editBidForm,
     getAppliedBid,
     getBidApplicantsCount,
+    getAllActiveAndNotAppliedBids,
 }

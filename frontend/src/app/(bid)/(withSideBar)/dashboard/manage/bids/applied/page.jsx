@@ -17,6 +17,8 @@ import { getRolePermissionLoggedInUser } from '@/app/(bid)/redux/slices/rolesAnd
 import { hasPermission } from '@/helper/helper';
 import { getLoggedInUserBids } from '@/app/(bid)/redux/slices/bids/bidApplicationSlice';
 import { IoIosEye } from 'react-icons/io';
+import { GiPin } from 'react-icons/gi';
+import { BsFillChatSquareQuoteFill } from 'react-icons/bs';
 
 
 
@@ -27,7 +29,7 @@ const pathname = usePathname();
 
   const allBids = useSelector((state) => state?.bidApplication?.loggedInUserBidsList?.bids ??  []);  //all bids object
   const allBidsLoading = useSelector((state) => state?.bidApplication?.loggedInUserBidsListLoading);  //all loading state
-  // console.log(allBids, "allbids")
+  // console.log(allBids, "allbids") 
 
   const searchParams = useSearchParams();
 
@@ -139,16 +141,14 @@ params.set("to", dateFilter.to);
 
     const columns = useMemo(
   () => [
-    {
-      id: "serial",
-      header: "#",
-      cell: ({ row, table }) =>
-        row.index +
-        1 +
-        table.getState().pagination.pageIndex *
-          table.getState().pagination.pageSize,
-    },
 
+{
+  id: "serial",
+  header: "#",
+  cell: ({ row }) => {
+    return (bidPage - 1) * limit + row.index + 1;
+  },
+},
     {
       accessorKey: "title",
       header: "Bid Title",
@@ -198,18 +198,36 @@ params.set("to", dateFilter.to);
     },
 
     {
-      accessorKey: "status",
-      header: "Status",
+      accessorKey: "award_status",
+      header: "Award Status",
       cell: ({ row }) => {
           const isExpired = new Date() > new Date(row?.original?.closeDate);
  return row?.original?.award_status ==="AWARDED" ? (
   <Link href={`/dashboard/manage/users/${row?.original?.awarded_to}`} className="" title='See Winner'> 
     <button className="px-2 text-[15px] py-1 rounded-md bg-green-200 hover:underline cursor-pointer text-green-600 rounded-md">
-      Awarded
+      Awarded  {row?.original?.isThisAwardedToMe == true ? "(You)" : ""}
     </button>
   </Link>
 ) : (
-    isExpired ? (
+       <button className="px-2 text-[15px] py-1 rounded-md bg-red-200 hover:underline cursor-pointer text-red-600 rounded-md">
+     Not Awarded to Anyone  
+    </button>
+);
+      },
+    },
+  
+    {
+      accessorKey: "created_at",
+      header: "Created",
+      cell: ({ getValue }) =>
+        new Date(getValue()).toLocaleDateString("en-GB"),
+    },
+    {
+      accessorKey: "",
+      header: "Bid Status",
+      cell: ({ row }) => {
+          const isExpired = new Date() > new Date(row?.original?.closeDate);
+      return    isExpired ? (
       <div className="">
         <button className="px-2 text-[15px] py-1 rounded-md bg-red-100 text-red-600 rounded-md">
           Closed
@@ -220,15 +238,7 @@ params.set("to", dateFilter.to);
       Active
       </button>
     )
-);
       },
-    },
-  
-    {
-      accessorKey: "created_at",
-      header: "Created",
-      cell: ({ getValue }) =>
-        new Date(getValue()).toLocaleDateString("en-GB"),
     },
 
     {
@@ -245,6 +255,17 @@ params.set("to", dateFilter.to);
   row?.original?.applicationStatus && row?.original?.applicationId && (
 <div className='flex flex-col gap-[3px]'>
   <button className='bg-gray-300 px-2 text-[15px] py-0 rounded-md cursor-not-allowed opacity-50" disabled' title='You Already Applied'>Applied</button>
+  {/* <button className='bg-gray-300 px-2 text-[15px] py-0 rounded-md cursor-not-allowed opacity-50" disabled' title='Neither Won nor Rejected'>{row?.original?.applicationStatus}</button> PENDING STATUTS */}
+
+</div>    
+  )
+}
+{
+  row?.original?.reinvitationAttachments?.length > 0 && (
+<div className='flex flex-col gap-[3px]'>
+  <Link href={`/dashboard/manage/bids/applied/requoted?b=${row?.original?.id}&id=${row?.original?.applicationId}`} className='bg-[#f3b4b4ab] text-[#7c0000] h-9 w-9 rounded-full hover:scale-105 flex items-center justify-center transition' title='You have got Requoted'>
+    <BsFillChatSquareQuoteFill ></BsFillChatSquareQuoteFill>
+  </Link>
   {/* <button className='bg-gray-300 px-2 text-[15px] py-0 rounded-md cursor-not-allowed opacity-50" disabled' title='Neither Won nor Rejected'>{row?.original?.applicationStatus}</button> PENDING STATUTS */}
 
 </div>    
@@ -271,7 +292,7 @@ params.set("to", dateFilter.to);
       },
     },
   ],
-  []
+  [bidPage, limit]
 );
 
 
@@ -287,7 +308,7 @@ params.set("to", dateFilter.to);
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
   });
 
 

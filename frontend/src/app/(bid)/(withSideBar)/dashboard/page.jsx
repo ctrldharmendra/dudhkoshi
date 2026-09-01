@@ -45,6 +45,7 @@ export default function Dashboard(){
     const allBidsLoading = useSelector((state) => state?.bidForm?.allBidFormLoading);  //all loading state
 
 // console.log(allBids, "allBids")
+console.log(baseContentUrl, "baseContentUrl")
 
 //FIRST : check if logged in role has permission to view bid or not 
 //FIRST : fetch permissions on mount

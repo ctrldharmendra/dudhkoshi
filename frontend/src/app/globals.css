@@ -31,7 +31,6 @@
 
 
 
-
 --notFoundTextColor:#475569;
   /* -------- */
   --adminPrimaryColor : #8200db;
@@ -52,22 +51,27 @@
   /* THESE ARE LANDING PAGE VARIABLE  */
   --landingPagePrimaryColor: #1E7EBB;
   --landingPageSecondaryColor: #64748b;
+  --landingPageTertiaryColor: #186596;
   --lightWhite: #FFFFFF;
   --textColorOnLightBg:#45484D;
   --highlightBg:#FEF5E7;
   --hightlightText:#F59E0B;
+  --primaryTextColorLanding:#45484D;
+  --primaryTextColorLanding2:#565A4A;
+  --primaryTextColorLanding3:#186596;
+  --landingPageColorPrimary2:#175F8C;
+  --halfBorderColor:#186596;
 
 
   /* THESE ARE LANDING PAGE VARIABLE END  */
 }
-
+ 
 
  
 :root {
   --landingPagePrimaryColor: #1e7ebb;
   --landingPageSecondaryColor: #64748b;
   --lightWhite: #ffffff;
-  --textColorOnLightBg: #45484d;
 }
  
 /* Entrance animation used by the hero content + card row.
@@ -83,20 +87,101 @@
     transform: translateY(0);
   }
 }
+
 /* LANDING PAGE CSS  */
+.bottomSec{
+  background: radial-gradient(circle, rgba(31, 146, 217, 1) 0%, rgba(14, 70, 105, 1) 62%)
+}
+.footerCTA{
+background: linear-gradient(0deg, rgba(48, 125, 193, 0.58) 12%, rgba(71, 145, 232, 0) 38%, rgba(255, 255, 255, 0.01) 87%)
+}
+.foterLargeText{
+  background: linear-gradient(180deg, #e4e4e4 0%, #7e7e7e 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 21%;
+}
+/* .footerCtaParent{
+      background: linear-gradient(rgba(0, 0, 0, 1.5), rgba(0, 0, 0, .8)), url(/landing/footer/bottomSectionBg.jpg);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), url(/landing/footer/bottomSectionBg.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+} */
+.contactUsForm{
+      position: absolute;
+    top: 50%;
+    transform: translateY(41%);
+}
+.box {
+  position: relative;
+  background: #fff;
+  border-radius: 24px;
+  overflow: visible;
+}
+
+.box::after {
+content: "";
+  position: absolute;
+  left: 40px;
+  right: 40px;
+  bottom: 79px;
+  height: 30px;
+  background: #DDF2FF;
+  filter: blur(25px);
+  opacity: 0.9;
+  z-index: -1;
+}
+.heroGradientText{
+  background: linear-gradient(90deg, #1E7EBB 15.4%, #45484D 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+/* BACKGROUND  */
 .heroParentStyled{
   background-size: cover;
   background-position: center 30%;
-  border-radius: 0px 0px 80px 80px;
+  border-radius: 0px 0px 63px 63px;
+}
+.contactUsParentStyled{
+  background-size: cover;
+  background-position: center 30%;
+}
+.aboutUsBg{
+      background: radial-gradient(ellipse 675px 428px at 70% 70%, #ddf2ffe3 0%, rgb(221 242 255 / 49%) -37%, rgb(221 242 255 / 77%) -60%, #FFFFFF 100%);
+}
+.accordionBg{
+  background: -webkit-linear-gradient(89deg, hsla(0, 0%, 100%, 1) 40%, hsla(203, 100%, 93%, 1) 88%);
 }
 .heroBg{
-  background: #FAFAFA;
-background: linear-gradient(178deg,rgba(250, 250, 250, 1) 35%, rgba(221, 236, 245, 1) 100%);
+background: linear-gradient(180deg, #FAFAFA 4.07%, #DDECF5 77.79%);
 }
 .missionStrategyBg{
   background: #EBF7FF;
 background: linear-gradient(351deg,rgba(235, 247, 255, 1) 0%, rgba(255, 255, 255, 1) 100%);
 }
+.spatialAboutUsBg{
+  background-color: #ffffff;
+  background-image: radial-gradient(
+    ellipse 70% 60% at 52% 100%, 
+    #DDF2FF 0%, 
+    rgba(221, 242, 255, 0) 70%
+  );
+  background-repeat: no-repeat;
+}
+.teamBg{
+    background: linear-gradient(19deg, #b6e0fc6b 14%, #fff 90%);
+}
+.galleryBg{
+background: radial-gradient(79.57% 35.97% at 51.46% 72.77%, #A4DBFF 0%, #FFFFFF 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+}
+.newsEventsBg{
+background: radial-gradient(46.42% 65.17% at 37.88% 50%, #DDF2FF 0%, #FFFFFF 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+}
+.projectOverViewCardTopBg{
+  background: linear-gradient(90deg, rgba(255, 255, 255, 1) 12%, rgba(221, 242, 255, 0.79) 85%)
+}
+/* BACKGROUND END  */
 /* LANDING PAGE CSS END */
 .twoLinePara{
      overflow: hidden;
@@ -197,20 +282,9 @@ font-size: 19px !important;
   font-size: 25px;
 }
 body {
-  /* background-color: var(--bg-light); */
+    font-family: var(--font-hind);
   color: var(--text-primary);
-  font-family: var(--font-myfont), sans-serif;
 
-    /* background: linear-gradient(
-    to top right,
-    #ff94f7c4,
-    #e1e7ec,
-    #ddf1f3,
-    #e1faef,
-    #ff94f7c4
-  ); */
-
-      background: linear-gradient(to top right, #ffffff, #1E7EBB) 0 0 / cover no-repeat fixed;
   
 }
 
@@ -308,8 +382,38 @@ body {
 *::-webkit-scrollbar-thumb:hover {
   background-color: #880000;
 }
+/* ! SUCT%OM FONT  */
+.font-title {
+  font-family: var(--font-manrope);
+}
+
+.font-body {
+  font-family: var(--font-hind);
+}
+.font-manrope-bold {
+  font-family: var(--font-manrope-bold);
+}
+.manropeMedium {
+  font-family: var(--font-manropeMedium);
+}
+
+.font-libertinus {
+  font-family: var(--font-libertinus);
+}
+/* .blackStrok{
+  -webkit-text-stroke: 1.4px #1f2937;
+} */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-manrope);
+}
 
 
+/* ! SUCT%OM FONT  */
 
 /* CONFETTIT  */
 .confetti{
@@ -362,3 +466,11 @@ body {
 
 }
 /* CONFETTIT END */
+
+@media (max-width: 1200px) {
+.contactUsForm{
+      position: relative !important;
+    top: 0 !important;
+    transform: none !important;
+}
+}

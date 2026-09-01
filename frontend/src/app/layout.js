@@ -4,27 +4,38 @@ import "./globals.css";
 // import myfont from "../font/KaTeX_Main-Regular.12644167.woff2";
 // import ToastProvider from "../components/toast/ToastProvider";
 // import Footer from "@/components/Misc/Footer/Footer";
-
 import localFont from "next/font/local";
 import ToastProvider from "@/lib/ToastProvider";
 // import AOSInit from "@/components/AOSInit";
 // import Navbar from "@/components/Header/Navbar/Navbar";
 
 
-const myFont = localFont({
-  src: "../font/KaTeX_Main-Regular.12644167.woff2",
-  variable: "--font-myfont",
+// ! CUSTOM FONT END 
+export const manrope = localFont({
+  src: "../font/Manrope-Regular.woff2",
+  variable: "--font-manrope",
+});
+export const manropeMedium = localFont({
+  src: "../font/Manrope-Medium.woff2",
+  variable: "--font-manropeMedium",
 });
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"], 
+export const libertinus = localFont({
+  src: "../font/libertinus-math-v1-latin-regular.woff2",
+  variable: "--font-libertinus",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+export const manropeBold = localFont({
+  src: "../font/Manrope-ExtraBold.woff2",
+  variable: "--font-manrope-bold",
 });
+
+export const hind = localFont({
+  src: "../font/Hind-Regular.woff2",
+  variable: "--font-hind",
+});
+// ! CUSTOM FONT END 
+
 
 export const metadata = {
   title: "Dudhkoshi | Clean Hydropower & Renewable Energy Provider",
@@ -35,7 +46,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={myFont.variable}>
+    <html lang="en" className={`${manrope.variable} ${hind.variable} ${manropeBold.variable} ${libertinus.variable} ${manropeMedium.variable}`}>
           <head>
         <noscript>
           <style>{`
@@ -54,7 +65,7 @@ export default function RootLayout({ children }) {
         </noscript>
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        // className={`${myFont.className} ${paraFont.className}`}
       >
 
 

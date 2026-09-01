@@ -2,6 +2,7 @@
 
 import React from "react";
 import { FiPlus } from "react-icons/fi";
+import { nanoid } from "nanoid";
 
 const BidAttachment = ({ bidData, setBidData }) => {
   // console.log(bidData)
@@ -11,7 +12,7 @@ const BidAttachment = ({ bidData, setBidData }) => {
       attachments: [
         ...prev.attachments,
         {
-          id: crypto.randomUUID(),
+         id: nanoid(),
           title: "",
           attachment: null,
         },

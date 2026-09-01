@@ -1,7 +1,7 @@
 "use client"
 
 import { applyBid } from '@/app/(bid)/redux/slices/bids/bidApplicationSlice';
-import { getParticularBidForm } from '@/app/(bid)/redux/slices/bids/bidFormSlice';
+import { clearParticularBidForm, getParticularBidForm } from '@/app/(bid)/redux/slices/bids/bidFormSlice';
 import { getRolePermissionLoggedInUser } from '@/app/(bid)/redux/slices/rolesAndPermissionSlice';
 import TinyLoader from '@/components/reusable/loader/TinyLoader';
 import { hasPermission } from '@/helper/helper';
@@ -18,11 +18,31 @@ import HelpTextPopup from './HelpTextPopup'
 
 export default function FormToApply({ bid }) {
 const dispatch = useDispatch();
+
 const router = useRouter();
   const bidFormData = useSelector((state) => state?.bidForm?.particularBidForm);  //Particular BId Data Form
   const particularBidFormLoading = useSelector((state) => state?.bidForm?.particularBidFormLoading);  //Particular BId Data Form Loading
   const applyBidLoading = useSelector((state) => state?.bidApplication?.applyBidLoading);  //Applying loading
   console.log(bidFormData, "bidFormData")
+
+   const [bidReady, setBidReady] = useState(false)
+const [fieldErrors, setFieldErrors] = useState({});
+// 1. Initialize form state properly ensuring metadata is linked to the keys
+const [formData, setFormData] = useState(() => {
+  const initial = {};
+  bidFormData?.fields?.forEach(field => {
+    initial[field.id] = {
+      field_id: field.id,
+      value: field.field_type === 'file' ? null : "",
+      type: field.field_type,
+      previewUrl: "",
+      fileIndex: 0
+    };
+  });
+  return initial;
+});
+const [activeHelpField, setActiveHelpField] = useState(null) 
+  
 // console.log(applyBidLoading)
 
 //FIRST : check if logged in role has permission to view bid or not 
@@ -41,7 +61,6 @@ const canCreateBid = hasPermission(permissionOfLoggedInRoleOfUser, "apply_bid");
 const permissionChecked = !loading && !!permissionOfLoggedInRoleOfUser;
 const hasBidAccess = canViewBid && canCreateBid;
 
-const [fieldErrors, setFieldErrors] = useState({});
 
 useEffect(() => {
   if (!permissionChecked) return;
@@ -61,31 +80,37 @@ useEffect(() => {
   hasBidAccess,
   dispatch,
 ]);
+
 // Fetch only when permission exists END 
 // -----------------------------------------------------
- 
+  // CLEAR THE PREVIOS OLD DATA OF SELECTED BID FORM
+  // Clear stale data immediately on mount
+useEffect(() => {
+  dispatch(clearParticularBidForm())
+}, [])
+
+// Replace your existing isBidClosed useEffect with this
+useEffect(() => {
+  if (!bidFormData) return  // still loading — do nothing
+
+  if (bidFormData?.isBidClosed) {
+    router.replace("/forbidden")  // closed — redirect
+    return
+  }
+
+  //  Only reach here if bid exists AND is open
+  setBidReady(true)
+}, [bidFormData])
+  // CLEAR THE PREVIOS OLD DATA OF SELECTED BID FORM END
 
 
 
   
   // Guard clause if data hasn't arrived
-  if (!bidFormData || bidFormData == {} || bidFormData == undefined) return <div className="p-6 text-center text-[#000000)]">Loading bid criteria...</div>;
+  // if (!bidFormData || bidFormData == {} || bidFormData == undefined) return <div className="p-6 text-center text-[#000000)]">Loading bid criteria...</div>;
 
 
-// 1. Initialize form state properly ensuring metadata is linked to the keys
-const [formData, setFormData] = useState(() => {
-  const initial = {};
-  bidFormData?.fields?.forEach(field => {
-    initial[field.id] = {
-      field_id: field.id,
-      value: field.field_type === 'file' ? null : "",
-      type: field.field_type,
-      previewUrl: "",
-      fileIndex: 0
-    };
-  });
-  return initial;
-});
+
 
 // 2. CORRECTION HERE: Explicitly pass your keys to prevent them from dropping on state change
 const handleInputChange = (fieldId, val, type) => {
@@ -254,10 +279,6 @@ setFieldErrors({});
 
   // DYNAMIC FIELD SHOWIUNG 
 
-// ── inside your component, add this state ──────────────────────
-const [activeHelpField, setActiveHelpField] = useState(null) 
-// stores { fieldName, helpText } of whichever ? was clicked, or null
-
 
 // LOADING 
 if (!permissionChecked) {
@@ -272,7 +293,7 @@ if (!hasBidAccess) {
   // redirect is already in-flight via the effect above
   return null;
 }
-if (particularBidFormLoading) {
+if (particularBidFormLoading  || !bidReady) {
   return (
     <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
       <TinyLoader />
@@ -298,7 +319,7 @@ if (applyBidLoading) {
     </div>
     <div>
       <span className="text-[10px] font-black tracking-widest text-emerald-600 uppercase bg-emerald-50 px-2.5 py-0.5 rounded-full">
-        • {bidFormData.status}
+        • {bidFormData?.status}
       </span>
       <h1 className="text-xl md:text-2xl font-black text-[var(--blackText,#090909)] mt-1 leading-tight">
         {bidFormData?.title}
@@ -312,10 +333,10 @@ if (applyBidLoading) {
 
   <div className="flex flex-wrap gap-4 text-m font-bold text-gray-500 mb-4">
     <span className="flex items-center gap-1.5">
-      <FiCalendar /> Open Date: {formatDateFriendly(bidFormData.openDate)}
+      <FiCalendar /> Open Date: {formatDateFriendly(bidFormData?.openDate)}
     </span>
     <span className="flex items-center gap-1.5 text-rose-600">
-      <FiCalendar /> Close Date: {formatDateFriendly(bidFormData.closeDate)}
+      <FiCalendar /> Close Date: {formatDateFriendly(bidFormData?.closeDate)}
     </span>
   </div>
 
@@ -324,7 +345,7 @@ if (applyBidLoading) {
     {bidFormData?.contractNo && (
       <div className="bg-slate-50 rounded-lg p-3">
         <p className="text-xs text-gray-500">Contract No.</p>
-        <p className="font-semibold">{bidFormData.contractNo}</p>
+        <p className="font-semibold">{bidFormData?.contractNo}</p>
       </div>
     )}
 
@@ -333,7 +354,7 @@ if (applyBidLoading) {
     {bidFormData?.bidSecurityAmnt != null && (
       <div className="bg-slate-50 rounded-lg p-3">
         <p className="text-xs text-gray-500">Bid Security Amount</p>
-        <p className="font-semibold">{bidFormData.bidSecurityAmnt}</p>
+        <p className="font-semibold">{bidFormData?.bidSecurityAmnt}</p>
       </div>
     )}
 
@@ -341,7 +362,7 @@ if (applyBidLoading) {
       <div className="bg-slate-50 rounded-lg p-3">
         <p className="text-xs text-gray-500">Bid Security Validity</p>
         <p className="font-semibold">
-          {bidFormData.bidSecurityValidityInDays} Days
+          {bidFormData?.bidSecurityValidityInDays} Days
         </p>
       </div>
     )}
@@ -350,7 +371,7 @@ if (applyBidLoading) {
       <div className="bg-slate-50 rounded-lg p-3">
         <p className="text-xs text-gray-500">Is Bid Document Refundable</p>
         <p className="font-semibold">
-          {bidFormData.bidDocumentRefundable ? "Yes" : "No"}
+          {bidFormData?.bidDocumentRefundable ? "Yes" : "No"}
         </p>
       </div>
     )}
@@ -358,7 +379,7 @@ if (applyBidLoading) {
       <div className="bg-slate-50 rounded-lg p-3">
         <p className="text-xs text-gray-500">Bid Document Refundable</p>
         <p className="font-semibold">
-          {bidFormData.bidDocumentRefundable}
+          {bidFormData?.bidDocumentRefundable}
         </p>
       </div>
     )}

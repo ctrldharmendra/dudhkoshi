@@ -42,7 +42,7 @@ const Page = () => {
     fields: [{ field_name: "", field_type: "text", label:"", isRequired:0, displayOrder:"", helpText:""  }],
   })
 
-  console.log(bidData, "biddata")
+  // console.log(particularBidFormData, "bidparticularBidFormDatadata")
   // Add this state in the parent Page component
 const [attachmentState, setAttachmentState] = useState({
   deleteIds: [],
@@ -151,6 +151,10 @@ const [attachmentState, setAttachmentState] = useState({
       </div>
     )
   }
+
+// console.log(particularBidFormData?.isThisBidAppliedByAnyone?.length >= 1, "isThisBidAppliedByAnyone")
+
+  if(particularBidFormData?.isThisBidAppliedByAnyone?.length >= 1) return null;
 
   return (
     <div className="w-full mx-auto pt-4 bg-transparent">

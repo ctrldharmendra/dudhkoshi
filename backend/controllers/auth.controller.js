@@ -6,6 +6,7 @@ const bcrypt = require('bcrypt');
 const { saveFiles } = require("../middlewares/upload");
 const jwt = require('jsonwebtoken');
 const ms = require("ms");
+const helper = require('../helper/helper');
 
 
 // TOKEN  
@@ -50,7 +51,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 
 
-    if(!name || !tokenFromFrontend) return res.json(new ApiError(400, "", "Required Name, Password and valid token. ")) 
+    if(!name || !tokenFromFrontend || !orgName) return res.json(new ApiError(400, "", "Name, Password Org. Name, Owner Name, PAN Required ")) 
     if(panNo.length < 9 || panNo.length > 9) return res.json(new ApiError(400, "", "Invalid Pan Number")) 
     if(password.length < 9 || password.length > 20) return res.json(new ApiError(400, "", "Password Must be between 9 to 20 characters.")) 
       
@@ -425,6 +426,101 @@ const [rows] = await pool.query(
 
 })
 
+// CREATE USER | BY ADMIN 
+const createUserByAdmin = asyncHandler(async (req, res)=>{
+  if(!req?.body) return res.json(new ApiError(409, "", "All filed Required"))
+ let { name,email, gender, password, role_id, cPassword }  = req?.body;
+
+  role_id = Number(role_id);
+
+  // console.log( name,email, gender, password, role_id, cPassword )
+
+    if(!name || !email || !gender || !password || !role_id || !cPassword) return res.status(400).json(new ApiError(400, "", "All Fields Required here."))
+      if(password.length < 9 || password.length > 20) return res.status(400).json(new ApiError(400, "", "Password Must be between 9 to 20 characters."))
+     if(cPassword.length < 9 || cPassword.length > 20) return res.status(400).json(new ApiError(400, "", "Confirm Password Must be between 9 to 20 characters."))
+
+      // bidders roleid is 2 which is not allowed to create from here 
+      if(role_id === 2) return res.status(400).json(new ApiError(400, "", "Bidders Cant be created from here ."))
+
+      if (password !== cPassword) {
+  return res
+    .status(400)
+    .json(new ApiError(400, "", "Passwords do not match."));
+}
+      
+      const connection = await pool.getConnection();
+      try {
+        // check if logged in user has permission to create user 
+        // Logged in usermust have access to "create_user"  || TO GENERATE LINK 
+const userWithPermission = await helper.returnRolePermissionOfLoggedIn(req, res);
+if(!userWithPermission || userWithPermission.length === 0) return res.status(403).json(new ApiResponse(403, "No Any Permission!"))
+
+    // if no "crete_user" permission then show error 
+const hasCreateUserPermission = userWithPermission.some(
+    p => p.permission_name === 'create_user'
+);
+
+if(!hasCreateUserPermission) return res.status(403).json(new ApiError(403, [],"No Permission To Create User."))
+
+
+
+
+// check if the user alreday registered with this email 
+        const [isUserExists] = await connection.query(
+          `SELECT email FROM users WHERE email = ?`,
+          [email]
+        )
+        if(isUserExists.length>=1){
+            return res.status(409).json(new ApiError(409, "This email is already Registered:" ,"This email is already Registered:"))
+        }
+
+const hashedPassword = await bcrypt.hash(password, 10);
+
+
+// STEP 1:Now Save the user in DB
+          await connection.beginTransaction();
+const [result] = await connection.query(
+        'INSERT INTO users (name, email, gender, password, role_id, isActive) VALUES (?,?,?,?,?,?)',
+        [name, email, gender, hashedPassword, role_id, 1]
+)
+  
+// now insert into organization table 
+const [resultOrgTable] = await connection.query(
+  `INSERT INTO organizations (orgName, ownerName, phnNumber, panNo, vatNo, contactPerson, contactPersonsPhNo, contactPersonsEmail, physicalAddress, user_id)
+   VALUES(?,?,?,?,?,?,?,?,?,?)`,
+   [null, null, null, null, null, null, null, null, null, result?.insertId]
+)
+    
+
+  await connection.commit();
+return res.status(201).json(new ApiResponse(201, result, "Success."))
+
+  } catch (error) {
+      await connection.rollback();
+   
+  if (error.code === "ER_DUP_ENTRY") {
+    return res.status(409).json(
+      new ApiError(
+        409,
+        "",
+        "User already exists."
+      )
+    );
+  }
+
+  return res.status(500).json(
+    new ApiError(
+      500,
+      "",
+      error.message
+    )
+  );
+} finally {
+  connection.release();
+}
+
+})
+
 module.exports = {
     registerUser,
     loginUser,
@@ -433,4 +529,5 @@ module.exports = {
     logOutAll,
     authMe,
     changePassword,
+    createUserByAdmin,
 }

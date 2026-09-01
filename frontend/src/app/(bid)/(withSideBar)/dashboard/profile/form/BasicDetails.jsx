@@ -1,3 +1,5 @@
+
+"use client";
 import { updateBasicDetailsloggedInUser } from '@/app/(bid)/redux/slices/users/userSlice';
 import TinyLoader from '@/components/reusable/loader/TinyLoader';
 import React, { useEffect, useState } from 'react'

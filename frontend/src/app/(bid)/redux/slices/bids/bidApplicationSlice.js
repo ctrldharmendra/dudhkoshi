@@ -27,7 +27,7 @@ export const getApplicantDocumentForParticularBid = createAsyncThunk(
     const { data } = await axiosInstance.get(
       `/api/bid/${bidId}/application/${applicationId}/documents`
     );
-    console.log(data, "particular bid docs")
+    // console.log(data, "SLI:particular bid docs")
       return data?.data;
 
     } catch (err) {

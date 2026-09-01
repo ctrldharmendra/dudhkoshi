@@ -97,6 +97,46 @@ console.log(data, "data")
 );
 
 
+
+// ALLL USERS GET 
+  export const getAllUsers = createAsyncThunk(
+  'getAllUsers',
+  async ({}, thunkAPI) => {
+    try {
+
+      const { data } = await axiosInstance.get(`/api/user/users`);
+
+      // console.log(data?.data, "FROM Gell all users IN REGISTER SLICE ")
+      return data?.data ? data?.data : data;
+
+    } catch (err) {
+      toast.error(err.response.data.errors || "Something Went Wrong...");
+      console.log(err.response)
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+
+// CREATE A USER | BY ADMIN 
+  export const createUserByAdmin = createAsyncThunk(
+  'createUserByAdmin',
+  async ({formData}, thunkAPI) => {
+    try {
+
+      const { data } = await axiosInstance.post(`/api/auth/create-user`, formData);
+
+      // console.log(data, "FROM CREATE USER IN REGISTER SLICE ")
+      return data?.data ? data?.data : data;
+
+    } catch (err) {
+      toast.error(err.response.data.errors || "Something Went Wrong...");
+      console.log(err.response)
+      return thunkAPI.rejectWithValue(err.message);
+    }
+  }
+);
+
+
 const registrationSlice = createSlice({
   name: 'registrationSlice',
   initialState: {
@@ -106,6 +146,10 @@ const registrationSlice = createSlice({
 
   emailContentsLoading:false,
   emailContents:[],
+  allUsers:[],
+  allUsersLoading:false,
+
+  createUserByAdminLoading:false,
 
     error: "",
     lastFetched: "",
@@ -152,7 +196,36 @@ const registrationSlice = createSlice({
         state.emailContentsLoading = false;
         state.error = action.payload;
       });
+      // create user by admin 
+    builder
+      .addCase(createUserByAdmin.pending, (state) => {
+        state.createUserByAdminLoading = true;
+      })
+      .addCase(createUserByAdmin.fulfilled, (state, action) => {
+        state.createUserByAdminLoading = false;
+        // state.emailContents = action.payload;
+      })
+      .addCase(createUserByAdmin.rejected, (state, action) => {
+        state.createUserByAdminLoading = false;
+        // state.error = action.payload;
+      });
+
+      // GET ALL USERS
+      builder
+        .addCase(getAllUsers.pending, (state) => {
+          state.allUsersLoading = true;
+        })
+        .addCase(getAllUsers.fulfilled, (state, action) => {
+          state.allUsersLoading = false;
+          state.allUsers = action.payload;
+        })
+        .addCase(getAllUsers.rejected, (state, action) => {
+          state.allUsersLoading = false;
+          state.error = action.payload;
+        });
   },
+
+
 });
 
 export default registrationSlice.reducer;

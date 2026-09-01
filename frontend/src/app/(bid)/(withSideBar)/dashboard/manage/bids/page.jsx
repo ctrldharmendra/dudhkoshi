@@ -16,7 +16,7 @@ import { HiOutlinePlus, HiOutlineUserGroup } from 'react-icons/hi';
 import { getRolePermissionLoggedInUser } from '@/app/(bid)/redux/slices/rolesAndPermissionSlice';
 import { hasPermission } from '@/helper/helper';
 
-
+const EMPTY_ARR = [];
 
 
 const page = () => {
@@ -24,10 +24,13 @@ const dispatch = useDispatch();
 const router = useRouter();
 const pathname = usePathname();
 
-  const allBids = useSelector((state) => state?.bidForm?.allBidFormFromDb?.bids ??  []);  //all bids object
+const allBids = useSelector(
+  (state) => state?.bidForm?.allBidFormFromDb?.bids ?? EMPTY_ARR
+);
   const allBidsLoading = useSelector((state) => state?.bidForm?.allBidFormLoading);  //all loading state
-console.log(allBids, "albids")
+// console.log(allBids, "albids")
 
+console.log(allBids.length , "bid length");
   
 
   const searchParams = useSearchParams();
@@ -143,15 +146,24 @@ params.set("to", dateFilter.to);
 
     const columns = useMemo(
   () => [
-    {
-      id: "serial",
-      header: "#",
-      cell: ({ row, table }) =>
-        row.index +
-        1 +
-        table.getState().pagination.pageIndex *
-          table.getState().pagination.pageSize,
-    },
+// {
+//   id: "serial",
+//   header: "#",
+//   cell: ({ row, table }) => {
+//     const visibleIndex = table
+//       .getRowModel()
+//       .rows.findIndex(r => r.id === row.id);
+
+//     return visibleIndex + 1 + (bidPage - 1) * limit;
+//   },
+// },
+{
+  id: "serial",
+  header: "#",
+  cell: ({ row }) => {
+    return (bidPage - 1) * limit + row.index + 1;
+  },
+},
 
     {
       accessorKey: "title",
@@ -299,7 +311,7 @@ params.set("to", dateFilter.to);
       },
     },
   ],
-  []
+  [bidPage, limit]
 );
 
 
@@ -315,7 +327,7 @@ params.set("to", dateFilter.to);
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
+    // getPaginationRowModel: getPaginationRowModel(),
   });
 
 
@@ -584,7 +596,14 @@ if (allBidsLoading) {
 
   </div>
 
-  <select value={limit} onChange={(e) => setLimit(Number(e.target.value))} className="rounded-lg border px-3 py-2">
+  <select value={limit} onChange={(e) =>
+   {
+      setLimit(Number(e.target.value))
+      console.log(Number(e.target.value), "LIMT")
+   }
+
+     
+     } className="rounded-lg border px-3 py-2">
     <option value={4}>4 rows</option>
     <option value={10}>10 rows</option>
     <option value={20}>20 rows</option>

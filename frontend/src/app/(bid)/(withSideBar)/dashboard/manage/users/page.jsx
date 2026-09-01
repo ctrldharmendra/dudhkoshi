@@ -22,52 +22,43 @@ import { useRouter } from 'next/navigation';
 import { getRolePermissionLoggedInUser } from "@/app/(bid)/redux/slices/rolesAndPermissionSlice";
 import {  hasPermission } from '@/helper/helper';
 import TinyLoader from '@/components/reusable/loader/TinyLoader';
+import { setIsAddOpened } from '@/app/(bid)/redux/slices/activitySlice';
+import Modal from '@/components/adminComponents/modal/Modal';
+import { FaUserEdit } from 'react-icons/fa';
+import AddUser from './components/AddUser';
+import { getAllUsers } from '@/app/(bid)/redux/slices/registerSlice';
 
 
 
 const user = () => {
   const router = useRouter();
- const [users, setUsers] = useState([])  
 
    const dispatch = useDispatch();
    //-- it will have all permission of loggedInuser in array
 
 const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
 const { loadingOfGetRolePermission } = useSelector((state) => state.roleAndPermission);
+const allUsersLoading = useSelector((state) => state?.registration?.allUsersLoading);  //loading state creating user
+const allUsers = useSelector((state) => state?.registration?.allUsers);  //users array
 // console.log(permissionOfLoggedInRoleOfUser)
 
+  const isAddOpened = useSelector((state) => state?.activity?.isAddOpened);    //isEdit popup opened?
 
 
   
 
-  // fetch all user function 
-     const fetchAllUser = async () => {
+  // fetch all user function
+  const fetchAllUser = async () => {
+    try {
+      const { data } = await dispatch(getAllUsers({}));
+    } catch (error) {
+      console.log("Fetch user error:", error);
+    } finally {
+    }
+  };
 
-        try {
-
-            const {data} = await axios.get(
-                "/api/user/users",
-                {
-                    withCredentials: true,
-                }
-            );
-            setUsers(data?.data)
-        } catch(error){
-
-            console.log(
-                "Fetch user error:",
-                error
-            );
-        } finally {
-
-
-
-        }
-
-    };
-
-
-
+// console.log(allUsers, "allUsers")
+ 
 // | run permission to check logged in user has permission to : view_user, create_user or not
     useEffect(()=>{
       dispatch(getRolePermissionLoggedInUser({}))
@@ -96,9 +87,9 @@ useEffect(() => {
   fetchAllUser();
 }, [loadingOfGetRolePermission, permissionOfLoggedInRoleOfUser, router]);
 
-
+  
 // if loading show loader 
-if (loadingOfGetRolePermission) {
+if (loadingOfGetRolePermission || allUsersLoading) {
   return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
    <TinyLoader></TinyLoader>
   </div>;
@@ -110,6 +101,17 @@ if (loadingOfGetRolePermission) {
     
 
  <div className=" mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700 px-4 sm:px-6 lg:px-8 py-6">
+
+      <Modal
+        isModalOpen={isAddOpened}
+        onClose={() => dispatch(setIsAddOpened(false))}
+        icon={<FaUserEdit />}
+        // title="Update Details"
+        // description="You can Only Update Role of a User."
+      >
+        <AddUser></AddUser>
+      </Modal>
+
         {/* HEADER */}
         <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-1">
           <div>
@@ -124,6 +126,7 @@ if (loadingOfGetRolePermission) {
       
           {
             isThisRoleHasAddUserPermission &&     <button
+                      onClick={()=>dispatch(setIsAddOpened(true))}
             
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 sm:px-6 sm:py-3 rounded-xl sm:rounded-2xl font-bold shadow-lg flex items-center gap-2 transition-all hover:scale-105 w-full sm:w-auto justify-center text-sm sm:text-base"
           >
@@ -136,16 +139,16 @@ if (loadingOfGetRolePermission) {
         {/* STATS CARDS */}
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-2">
    
-   <AllRoleUserCount users={users}></AllRoleUserCount>
+   <AllRoleUserCount users={allUsers}></AllRoleUserCount>
         </div>
 
         {/* FILTER AND SEARCH BAR */}
 
 
-{Array.isArray(users) ? (
+{Array.isArray(allUsers) ? (
   <>
 <Suspense fallback={<TableLoader></TableLoader>}>
-  <UserList users={users}/>
+  <UserList users={allUsers}/>
   
 </Suspense>
   </>

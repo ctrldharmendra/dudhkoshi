@@ -84,7 +84,7 @@ export default function UserDetails({ id }) {
   // SECOND :Fetch only when permission exists
   // SECOND: fetch bids only when access is confirmed
   useEffect(() => {
-    if (!permissionChecked || !canDeleteUser, !canChangeRole, !viewUsers) return;
+  if (!permissionChecked || !canDeleteUser || !canChangeRole || !viewUsers) return;
   
     dispatch(getParticularUser({id}));
     dispatch(getParticularUserAppliedBid({userId:id}))

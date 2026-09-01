@@ -36,6 +36,11 @@ router.route('/change-password').patch(
    authenticateAccessToken, 
     authController.changePassword
 );
+// POST | CREAE USER BY ADMIN 
+router.route('/create-user').post(
+   authenticateAccessToken, 
+    authController.createUserByAdmin
+);
 
 
 

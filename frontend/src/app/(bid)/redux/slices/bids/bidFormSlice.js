@@ -102,9 +102,10 @@ export const getParticularBidForm = createAsyncThunk(
     const { data } = await axiosInstance.get(
       `/api/bid/bidform/${id}`
     );
+    console.log(data?.data, "DATA")
       return data?.data;
     } catch (err) {
-      toast.error(err.response?.data?.message || err.message);
+      toast.error(err.response?.data?.errors || "Something Went Wrong.");
       return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
     }
   }
@@ -161,6 +162,41 @@ export const editBidForm = createAsyncThunk(
   }
 );
 
+
+
+// GET ALL ACTIVE, NON AWARDED BID 
+export const getAllActiveNonAwardedBid = createAsyncThunk(
+  'getAllActiveNonAwardedBid',
+  async ({ bidPage, bidSearch, limit, from, to}, thunkAPI) => {
+    try {
+        const params = new URLSearchParams();
+
+    params.set("page", bidPage);
+    params.set("limit", limit);
+
+    if (bidSearch) {
+      params.set("search", bidSearch);
+    }
+
+    if (from) {
+      params.set("from", from);
+    }
+
+    if (to) {
+      params.set("to", to);
+    }
+
+    const { data } = await axiosInstance.get(
+      `/api/bid/active?${params.toString()}`
+    );
+    console.log(data, "all bid")
+      return data?.data;
+    } catch (err) {
+      toast.error(err.response?.data?.message || err.message);
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
 const bidFormSlice = createSlice({
   name: 'bidFormSlice',
   initialState: {
@@ -170,15 +206,22 @@ const bidFormSlice = createSlice({
 
     createBidFormLoading:false,
 
-    particularBidForm:{},
+    particularBidForm:null,
     particularBidFormLoading:false,
+
+    activeBidLoading:false,
+    activeBids:[],
 
 
     
     error: "",
     lastFetched: "",
   },
-  reducers: {},
+   reducers: {
+    clearParticularBidForm: (state) => {
+      state.particularBidForm = null
+    }
+  },
 
   extraReducers: (builder) => {
     // GET | GET ALL BID FORM FROM DB
@@ -220,7 +263,22 @@ const bidFormSlice = createSlice({
         state.error = action.payload;
       });
 
+      // GET ACTIVE BID 
+      builder
+      .addCase(getAllActiveNonAwardedBid.pending, (state) => {
+        state.activeBidLoading = true;
+      })
+      .addCase(getAllActiveNonAwardedBid.fulfilled, (state, action) => {
+        state.activeBidLoading = false;
+        state.activeBids = action.payload;
+      })
+      .addCase(getAllActiveNonAwardedBid.rejected, (state, action) => {
+        state.activeBidLoading = false;
+        state.error = action.payload;
+      });
+
   },
 });
 
+export const { clearParticularBidForm } = bidFormSlice.actions
 export default bidFormSlice.reducer;

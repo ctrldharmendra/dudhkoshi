@@ -45,11 +45,7 @@ const nextConfig = {
             ? "http://localhost:5001/api/:path*"
 
             // Production backend
-            : "https://test.aayumalunhydro.com.np/api/:path*",
-      },
-                  {
-        source: "/uploads/:path*",
-        destination: "https://test.aayumalunhydro.com.np/uploads/:path*",
+            : "https://dudhkoshihydro.aayumalunhydro.com.np/api/:path*",
       },
     ];
   },

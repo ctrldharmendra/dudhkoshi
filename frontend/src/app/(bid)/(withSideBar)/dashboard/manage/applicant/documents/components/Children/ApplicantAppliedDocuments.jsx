@@ -1,8 +1,8 @@
 "use client"
 
 import Link from 'next/link';
-import React, { useState } from 'react';
-import { FaAward } from 'react-icons/fa';
+import React, { useEffect, useState } from 'react';
+import { FaAward, FaUserEdit } from 'react-icons/fa';
 import { FiPaperclip, FiAlignLeft, FiHash, FiDownload } from 'react-icons/fi';
 import { GrView } from 'react-icons/gr';
 import AwardConfirmationModal from './award/Award';
@@ -10,6 +10,11 @@ import { createAward } from '@/app/(bid)/redux/slices/award/awardSlice';
 import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from 'react-redux';
 import TinyLoader from '@/components/reusable/loader/TinyLoader';
+import Modal from '@/components/adminComponents/modal/Modal';
+import Reinvitation from './reinvitation/Reinvitation';
+import { setIsAddOpened } from '@/app/(bid)/redux/slices/activitySlice';
+import { getBidderReproposeDoc } from '@/app/(bid)/redux/slices/bidRepropose/biReproposeSlice';
+import ShowReinvitationDoc from './reinvitation/ShowReinvitationDoc';
 
 export default function ApplicantAppliedDocuments({ bidDynamicDocumentDetails, applicantDetails, bidMasterDetails, awardedBy, bidWinnerDetails}) {
 const dispatch = useDispatch()
@@ -17,6 +22,8 @@ const baseContentPath = process.env.NEXT_PUBLIC_BASE_CONTENT_URL
   if (!bidDynamicDocumentDetails || bidDynamicDocumentDetails.length === 0) return null;
 
   const [awardConfirmationModalOpen, setAwardConfirmationModalOpen] = useState(false)
+
+  const isAddOpened = useSelector((state) => state?.activity?.isAddOpened); // state of reinvitation popup
 
 
   // console.log(bidDynamicDocumentDetails, "bidDynamicDocumentDetails")
@@ -39,11 +46,22 @@ const baseContentPath = process.env.NEXT_PUBLIC_BASE_CONTENT_URL
   };
 
 
+  // APPLICABT REPROPOSED DOCUMENT 
+  const bidReproposeData = useSelector((state) => state?.bidRepropse?.bidReproposeData);
+  const bidReproposeLoading = useSelector((state) => state?.bidRepropse?.bidReproposeLoading);
+console.log(bidReproposeData, "bidReproposeData")
+  useEffect(() => {
+      dispatch(getBidderReproposeDoc({bidId: bidMasterDetails?.id, userId: applicantDetails?.user_id}))
+  }, [])
+
+  // APPLICABT REPROPOSED DOCUMENT END
+
+
 
   // HANDLE AWARD 
 
 const awardLoading = useSelector((state) => state?.award?.awardLoading);
-console.log(awardLoading, "awardLoadingStat")
+// console.log(awardLoading, "awardLoadingStat")
   const handleAward = async () => {
       // applicantDetails?.user_id  --user id
       // bidMasterDetails?.id  -- bidId 
@@ -53,7 +71,6 @@ console.log(awardLoading, "awardLoadingStat")
     if (createAward.fulfilled.match(resultAction)) {
         setAwardConfirmationModalOpen(false)
         toast.success("Awarded successfully")
-
         // refresh the page 
         window.location.reload();
 
@@ -62,9 +79,9 @@ console.log(awardLoading, "awardLoadingStat")
     setAwardConfirmationModalOpen(false);
   }
 
-  }
+  } 
   // HANDLE AWARD END
-if(awardLoading){
+if(awardLoading || bidReproposeLoading){
       return <div className='bg-[var(--loadingMainBg)] min-h-screen flex items-center justify-center'>
    <TinyLoader></TinyLoader>
   </div>;
@@ -74,6 +91,22 @@ if(awardLoading){
   return (
     <>
     <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm">
+
+{/* REINVITATION POPUP  */}
+      <Modal
+        isModalOpen={isAddOpened}
+        onClose={() => dispatch(setIsAddOpened(false))}
+        icon={<FaUserEdit />}
+        title="Select File"
+        // description="You can Only Update Role of a User."
+      >
+      <Reinvitation applicantDetails={applicantDetails} bidMasterDetails={bidMasterDetails}></Reinvitation>
+      </Modal>
+
+
+{/* REINVITATION POPUP END  */}
+
+
       <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-50">
         <div className="w-12 h-12 rounded-xl flex items-center justify-center text-xl bg-amber-50 text-amber-600">
           <FiPaperclip />
@@ -132,8 +165,22 @@ if(awardLoading){
 
     </div>
 
-{/* AWWARD BTN PARENT  */}
+{/* AWWARD , REINVITATATION BTN PARENT  */}
     <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm flex justify-end">
+
+      <div className='flex gap-4'>
+        {/* REINVITATION BTN  */}
+        {
+          bidMasterDetails?.award_status !=="AWARDED" && (
+    <button type="button" 
+    className="w-40 py-3 active:scale-95 transition text-sm text-white rounded-xl bg-slate-700"
+     onClick={() => dispatch(setIsAddOpened(true))}>
+      <p className="mb-0.5">Reinvite</p>
+    </button>
+          )
+        }
+
+
 {
   bidMasterDetails?.award_status ==="AWARDED" && bidMasterDetails?.awarded_to !== null && bidMasterDetails?.awarded_by !== null ? (
 <button
@@ -154,8 +201,12 @@ if(awardLoading){
     className=" absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/30 to-transparent transition-transform duration-700 group-hover:translate-x-full"/>
   <FaAward
     className=" relative text-lg transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110"/><span className="relative">Award</span>
+
 </button>
 }
+      </div>
+
+
 
 <AwardConfirmationModal
   open={awardConfirmationModalOpen}
@@ -167,6 +218,19 @@ if(awardLoading){
   // bidMasterDetails={bidMasterDetails}
 />
 </div>
+
+
+
+{/* REPROPOSE DOC TO SHOW  */}
+{
+  bidReproposeData?.length > 0 && 
+      <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-8 shadow-sm ">
+      <h1 className='text-xl font-black text-[var(--blackText,#090909)]'> Repropose Documents</h1>
+      <ShowReinvitationDoc data={bidReproposeData}></ShowReinvitationDoc>
+
+</div>
+}
+{/* REPROPOSE DOC TO SHOW END */}
     </>
 
   );

@@ -14,13 +14,21 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { TbEyeSearch } from "react-icons/tb";
 import { useDispatch, useSelector } from 'react-redux';
+import RoleFilterDropdown from "./RoleFilterDropdown";
 
-export default function UserList({ users}) {
+export default function UserList({ users }) {
   const [sorting, setSorting] = useState([]);
   const [globalFilter, setGlobalFilter] = useState("");
+  const [selectedRole, setSelectedRole] = useState(null);
 
   const dispatch = useDispatch();
 
+  //  Memoize so the array reference is stable across renders
+  const filteredUsers = useMemo(() => {
+    return selectedRole
+      ? users?.filter((u) => u.roleName === selectedRole)
+      : users;
+  }, [users, selectedRole]);
 
   const columns = useMemo(
     () => [
@@ -112,13 +120,13 @@ export default function UserList({ users}) {
     []
   );
 
+
+  // console.log(filteredUsers, "fltrd")
+
   const table = useReactTable({
-    data: users,
+    data: filteredUsers, 
     columns,
-    state: {
-      sorting,
-      globalFilter,
-    },
+    state: { sorting, globalFilter },
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
     getCoreRowModel: getCoreRowModel(),
@@ -135,14 +143,31 @@ export default function UserList({ users}) {
 
   return (
     <div className="space-y-5">
-      <div className="flex justify-between items-center">
+      {/* <div className="flex justify-between items-center">
         <input
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
           placeholder="Search users..."
           className="w-full md:w-96 px-4 py-2 rounded-lg border border-[#52a9ff] focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-      </div>
+      </div> */}
+
+      <div className="flex items-center gap-3">
+  <input
+    value={globalFilter ?? ""}
+    onChange={(e) => setGlobalFilter(e.target.value)}
+    placeholder="Search users..."
+    className="w-full md:w-96 px-4 py-2 rounded-lg border border-[#52a9ff] focus:outline-none focus:ring-2 focus:ring-blue-500"
+  />
+
+  <RoleFilterDropdown
+    users={users}
+  onRoleSelect={(role) => {
+    console.log("Parent received:", role);
+    setSelectedRole(role);
+  }}
+  />
+</div>
 
       <div className="overflow-x-auto border border-gray-200 shadow-sm">
         <table className="min-w-full text-sm">

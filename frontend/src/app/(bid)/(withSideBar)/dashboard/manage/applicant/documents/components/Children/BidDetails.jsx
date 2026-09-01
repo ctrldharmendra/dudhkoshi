@@ -59,18 +59,24 @@ export default function BidDetails({ bidMasterDetails, applicantDetails }) {
         </div>
         <div>
           <span className="text-[10px] font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1 mb-1">
-            <FiCalendar /> Submission Opening
+            <FiCalendar /> Open Date
           </span>
           <p className="text-sm font-bold text-slate-700">{formatDate(bidMasterDetails?.openDate)}</p>
         </div>
         <div>
           <span className="text-[10px] font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1 mb-1">
-            <FiActivity /> Status
+            <FiCalendar /> Close Date
+          </span>
+          <p className="text-sm font-bold text-slate-700">{formatDate(bidMasterDetails?.closeDate)}</p>
+        </div>
+        <div>
+          <span className="text-[10px] font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1 mb-1">
+            <FiActivity /> Award Status
           </span>
           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black ${
-            bidMasterDetails?.status === 'ACTIVE' ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-600'
+            bidMasterDetails?.award_status === 'AWARDED' ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-600'
           }`}>
-            • {bidMasterDetails?.status}
+            • {bidMasterDetails?.award_status}
           </span>
         </div>
       </div>

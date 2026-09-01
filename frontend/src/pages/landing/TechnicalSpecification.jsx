@@ -2,10 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { 
-  FiZap, FiTrendingUp, FiCpu, FiDroplet, 
+  FiTrendingUp, FiCpu, FiDroplet, 
   FiChevronDown, FiChevronUp, FiLayers, FiActivity,
-  FiShield, FiInfo
+  FiShield, FiInfo,
+  FiZap
 } from 'react-icons/fi';
+import { MdWater } from "react-icons/md";
+import { ImPower } from "react-icons/im";
+
 import SectionBadge from '../../components/reusable/HeadingAndPara/SectionBage';
 import MainHeading from '../../components/reusable/HeadingAndPara/MainHeading';
 import SectionParagraph from '../../components/reusable/HeadingAndPara/SectionParagraph';
@@ -37,7 +41,7 @@ export default function TechnicalSpecifications() {
 
   const topCards = [
     {
-      icon: <FiZap className="text-xl" style={{ color: 'var(--color-primary)' }} />,
+      icon: <ImPower className="text-xl" style={{ color: 'var(--color-primary)' }} />,
       label: 'INSTALLED CAPACITY',
       status: 'NOMINAL',
       statusKey: 'nominal',
@@ -100,7 +104,7 @@ export default function TechnicalSpecifications() {
     },
     {
       title: 'Water Conveyance System',
-      icon: <FiDroplet className="text-lg text-cyan-500" />,
+      icon: <MdWater className="text-lg text-cyan-500" />,
       content: (
         <div className="space-y-3 text-sm">
           <div className="flex justify-between py-2 border-b border-slate-100"><span className="text-[var(--text-muted)] font-medium">APPROACH CULVERT LENGTH</span><span className="font-bold text-[var(--text-secondary)]">145 m</span></div>

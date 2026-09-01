@@ -8,6 +8,7 @@ import {
 import SectionBadge from '../../components/reusable/HeadingAndPara/SectionBage';
 import MainHeading from '../../components/reusable/HeadingAndPara/MainHeading';
 import SectionParagraph from '../../components/reusable/HeadingAndPara/SectionParagraph';
+import { FaNetworkWired } from 'react-icons/fa';
 
 
 export default function WaterToWireSystem() {
@@ -35,7 +36,7 @@ export default function WaterToWireSystem() {
       title: 'HEADWORKS',
       spec: 'Boulder Lined Weir',
       desc: 'Diversion, intake & settling',
-      icon: <FiLayers />,
+      icon: <FaNetworkWired  />,
       components: [
         { name: 'DIVERSION WEIR', val: 'Boulder Lined, 15 m' },
         { name: 'SPILLWAY', val: 'Free overflow, 2.5 m × 2.5 m' },

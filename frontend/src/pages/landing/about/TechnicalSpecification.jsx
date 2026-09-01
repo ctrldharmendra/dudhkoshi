@@ -1,12 +1,17 @@
 import React from 'react';
 import Accordion from './Accordion';
-import { FiZap, FiAirplay, FiDroplet } from 'react-icons/fi';
-import technicalSpecificationIMG from "../../../../public/landing/aboutUsTechnicalSpecification.png";
+import { BiWater } from "react-icons/bi";
+import { ImPower } from "react-icons/im";
+import { IoWaterOutline } from "react-icons/io5";
+
+import technicalSpecificationIMG from "../../../../public/landing/realImage/9.png";
+// import technicalSpecificationIMG from "../../../../public/landing/aboutUsTechnicalSpecification.png";
 import Image from 'next/image';
 import SpatialConstraintsSection from './SpatialConstraintsSection';
 import MissionStrategySection from './MissionStrategySection';
 import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
-import StatsBanner from './StatsBanner';
+// import StatsBanner from './StatsBanner';
+import StyledSubHeadingWithPill from '../components/StyledSubHeadingWithPill';
 
 export default function TechnicalSpecification() {
   // Accordion Data Array (Easily add more items to test scrollability)
@@ -32,30 +37,24 @@ export default function TechnicalSpecification() {
   return (
     <>
     <section 
-      className="w-full bg-[#F5FAFF] py-16 px-4 sm:px-6 lg:px-8 font-sans antialiased"
+      className="w-full aboutUsBg py-16 px-4 sm:px-6 lg:px-8 antialiased"
+      id="aboutUs"
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1438px] mx-auto">
         
         {/* Top Centered Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">
-          {/* About Us Pill Header */}
-          <div className="flex items-center justify-center gap-3 mb-6">
-            <span className="h-[1px] w-20 bg-gradient-to-r from-transparent to-[#1E7EBB]/30"></span>
-            <span className="w-2 h-2 rounded-full bg-[var(--landingPagePrimaryColor)]"></span>
-            <span className="border border-[var(--landingPagePrimaryColor)] text-[var(--landingPagePrimaryColor)] text-xs font-semibold px-4 py-1.5 rounded-full bg-white shadow-xs">
-              About us
-            </span>
-            <span className="w-2 h-2 rounded-full bg-[var(--landingPagePrimaryColor)]"></span>
-            <span className="h-[1px] w-20 bg-gradient-to-l from-transparent to-[#1E7EBB]/30"></span>
-          </div>
+
+
+          <StyledSubHeadingWithPill text="About us"></StyledSubHeadingWithPill>
 
           {/* Main Title */}
-          <h2 className="text-3xl md:text-4xl font-extrabold text-[var(--landingPagePrimaryColor)] tracking-tight leading-tight mb-4">
+          <h2 className="font-['Manrope'] font-bold text-[32px] leading-[44px] tracking-[0%] text-center capitalize text-[var(--landingPageColorPrimary2)] mb-4">
             Empowering Nepal With <br className="hidden sm:inline" /> Clean Hydropower Solutions
           </h2>
 
           {/* Subtitle */}
-          <p className="text-sm md:text-base text-[var(--landingPageSecondaryColor)] leading-relaxed">
+          <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]">
             Dudhkhoshi Hydropower Nepal Pvt. Ltd. operates the Dudhkhoshi-2 (Jaleshwor) project a 95.7 MW optimized facility engineered for the highest efficiency and reliability.
           </p>
         </div>
@@ -67,18 +66,18 @@ export default function TechnicalSpecification() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-[45px] items-stretch">
           
           {/* Left Column: Blue Feature Card (4 cols on lg screens) */}
-          <div className="lg:col-span-4 bg-[var(--landingPagePrimaryColor)] text-white rounded-3xl p-8 flex flex-col justify-between shadow-sm">
+          <div className="lg:col-span-4 bg-[var(--landingPagePrimaryColor)] text-white rounded-3xl p-10 flex flex-col justify-between shadow-sm">
             <div>
-              <p className="text-[11px] font-bold tracking-wider text-white/80 uppercase mb-3">
+              <p className="font-['Manrope'] font-bold font-[900px] text-[16px] leading-[20px] tracking-[0px] align-middle text-white uppercase mb-3">
                 DUDHKHOSHI HYDROPOWER
               </p>
-              <h3 className="text-2xl font-bold mb-4 leading-snug">
+              <h3 className="font-['Manrope'] font-bold text-[24px] leading-[64px] tracking-[0%] mb-4">
                 Engineering the Future
               </h3>
-              <p className="text-xs text-white/90 leading-relaxed font-normal">
+              <p className="text-[20px] text-white leading-relaxed font-normal">
                 Dudhkhoshi Hydropower Nepal Pvt. Ltd. operates the Dudhkhoshi-2 (Jaleshwor) project a 95.7 MW optimized facility engineered for the highest efficiency and reliability.
               </p>
             </div>
@@ -106,15 +105,15 @@ export default function TechnicalSpecification() {
               <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="w-10 h-10 rounded-lg bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-6">
-                    <FiZap className="w-5 h-5" />
+                    <ImPower className="w-5 h-5 fill-[#175F8C]" />
                   </div>
-                  <p className="text-xs font-semibold text-[var(--textColorOnLightBg)]">Installed Capacity</p>
-                  <p className="text-2xl font-extrabold text-[var(--landingPagePrimaryColor)] mt-2">
-                    95.7 <span className="text-base font-medium text-gray-500">MW</span>
+                  <p className="text-base font-bold text-[var(--textColorOnLightBg)] leading-5 tracking-normal">Installed Capacity</p>
+                  <p className="font-[Manrope] text-[32px] font-normal leading-[33px] tracking-normal text-[var(--landingPageTertiaryColor)] mt-[16px]">
+                    95.7 <span className="font-[Manrope] text-[32px] font-normal leading-[33px] tracking-normal align-middle text-[#45484D]">MW</span>
                   </p>
                 </div>
-                <div className="pt-4 mt-4 border-t border-gray-50">
-                  <span className="text-[10px] font-bold tracking-wider text-[var(--landingPagePrimaryColor)] uppercase">
+                <div className="pt-4 mt-4 border-t border-[#E9F2F8]">
+                  <span className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-normal align-middle text-[var(--landingPagePrimaryColor)] uppercase">
                     ANNUAL OUTPUT
                   </span>
                 </div>
@@ -124,15 +123,15 @@ export default function TechnicalSpecification() {
               <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="w-10 h-10 rounded-lg bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-6">
-                    <FiAirplay className="w-5 h-5" />
+                    <BiWater className="w-5 h-5 fill-[#175F8C]" />
                   </div>
-                  <p className="text-xs font-semibold text-[var(--textColorOnLightBg)]">Design Discharge</p>
-                  <p className="text-2xl font-extrabold text-[var(--landingPagePrimaryColor)] mt-2">
-                    83.5 <span className="text-base font-medium text-gray-500">m³/s</span>
+                  <p className="text-base font-bold text-[var(--textColorOnLightBg)] leading-5 tracking-normal">Design Discharge</p>
+                  <p className="font-[Manrope] text-[32px] font-normal leading-[33px] tracking-normal align-middle text-[var(--landingPageTertiaryColor)] mt-[16px]">
+                    83.5 <span className="font-[Manrope] text-[32px] font-normal leading-[33px] tracking-normal align-middle text-[#45484D]">m³/s</span>
                   </p>
                 </div>
-                <div className="pt-4 mt-4 border-t border-gray-50">
-                  <span className="text-[10px] font-bold tracking-wider text-[var(--landingPagePrimaryColor)] uppercase">
+                <div className="pt-4 mt-4 border-t border-[#E9F2F8]">
+                  <span className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-normal align-middle text-[var(--landingPagePrimaryColor)] uppercase">
                     PEAKING ROR
                   </span>
                 </div>
@@ -142,15 +141,15 @@ export default function TechnicalSpecification() {
               <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="w-10 h-10 rounded-lg bg-[#FFF8E7] flex items-center justify-center text-amber-500 mb-6">
-                    <FiDroplet className="w-5 h-5" />
+                    <IoWaterOutline className="w-5 h-5 fill-[#175F8C]" />
                   </div>
-                  <p className="text-xs font-semibold text-[var(--textColorOnLightBg)]">Gross Head</p>
-                  <p className="text-2xl font-extrabold text-[var(--landingPagePrimaryColor)] mt-2">
-                    144.5 <span className="text-base font-medium text-gray-500">M</span>
+                  <p className="text-base font-bold text-[var(--textColorOnLightBg)] leading-5 tracking-normal">Gross Head</p>
+                  <p className="font-[Manrope] text-[32px] font-normal leading-[33px] tracking-normal text-[var(--landingPageTertiaryColor)] mt-[16px]">
+                    144.5 <span className="font-[Manrope] text-[32px] font-normal leading-[33px] tracking-normal align-middle text-[#45484D]">M</span>
                   </p>
                 </div>
-                <div className="pt-4 mt-4 border-t border-gray-50">
-                  <span className="text-[10px] font-bold tracking-wider text-[var(--landingPagePrimaryColor)] uppercase">
+                <div className="pt-4 mt-4 border-t border-[#E9F2F8]">
+                  <span className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-normal align-middle text-[var(--landingPagePrimaryColor)] uppercase">
                     HIGH-DROP HYDRO
                   </span>
                 </div>
@@ -163,13 +162,11 @@ export default function TechnicalSpecification() {
               
               {/* Left text inside bottom card */}
               <div className="md:col-span-5">
-                <span className="text-[10px] font-bold tracking-wider text-[var(--landingPagePrimaryColor)] uppercase">
-                  EST . 2070 B.S.
-                </span>
-                <h4 className="text-xl font-bold text-[var(--textColorOnLightBg)] mt-2 mb-3">
+                <span className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-normal align-middle text-[var(--landingPagePrimaryColor)] uppercase">EST . 2070 B.S.</span>
+                <h4 className="font-[Manrope] text-[24px] font-bold leading-[40px] tracking-normal align-middle text-[var(--textColorOnLightBg)] mt-2 mb-3">
                   Unshakable Foundations
                 </h4>
-                <p className="text-xs text-[var(--landingPageSecondaryColor)] leading-relaxed">
+                <p className="font-[Hind] text-[14px] font-normal leading-[20px] tracking-normal align-middle text-[var(--primaryTextColorLanding)]">
                   Our journey is built on a foundation of integrity, where every project is planned and executed with exact precision to create a lasting bedrock for both economic and environmental security.
                 </p>
               </div>
@@ -189,7 +186,7 @@ export default function TechnicalSpecification() {
     </section>
     <SpatialConstraintsSection></SpatialConstraintsSection>
     <MissionStrategySection></MissionStrategySection>
-    <StatsBanner></StatsBanner>
+    {/* <StatsBanner></StatsBanner> */}
     </>
   );
 }

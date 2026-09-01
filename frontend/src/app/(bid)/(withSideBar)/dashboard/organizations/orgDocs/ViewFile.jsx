@@ -1,3 +1,6 @@
+
+
+"use client";
 import React from "react";
 import { FiFile, FiExternalLink } from "react-icons/fi";
 import useProtectedFile from "@/helper/useProtectedFile";

@@ -228,7 +228,7 @@ if (!permissionChecked) {
         onClose={() => setisLogoutPopupOpened(false)}
         icon={<CiLogin />}
         title="Are You Sure?"
-        description="Are You Sure to Perform this Deletion?"
+        description="Are You Sure to Log out?"
       >
 
 <div className="flex justify-center gap-[45px]">

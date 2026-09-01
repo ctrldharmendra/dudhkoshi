@@ -142,11 +142,11 @@ if (!hasBidAccess) {
   {/* Status */}
   <div className="group p-4 rounded-xl border border-[#f1f1f1] bg-[#8200db17] shadow-sm hover:shadow-md transition-all">
     <p className="text-xs uppercase tracking-wider font-bold text-[var(--adminPrimaryColor)]">
-      Status
+      Award Status
     </p>
 
     <span className="inline-flex mt-2 px-3 py-1 rounded-full text-xs font-bold bg-[var(--adminPrimaryColor)] text-[var(--whiteText)]">
-      {particularBidFormData?.status}
+      {particularBidFormData?.award_status || "N/A"}
     </span>
   </div>
 
@@ -208,7 +208,7 @@ if (!hasBidAccess) {
         className="p-4 rounded-xl border border-[#f1f1f1] bg-[var(--whiteBg)] shadow-sm"
       >
         <p className="text-xs uppercase tracking-wider font-bold text-[var(--greyText)]">
-         Label:  {field.label}
+         Placeholder:  {field.label}
         </p>
 
         <p className="mt-2 text-base font-bold text-[var(--blackText)]">

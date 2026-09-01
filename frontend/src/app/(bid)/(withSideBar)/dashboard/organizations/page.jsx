@@ -38,15 +38,15 @@ const handleEditOrganization = (org) => {
   setSelectedRow(org.id);
 
   setOrganizationForm({
-    orgName: org.orgName,
-    ownerName: org.ownerName,
-    phnNumber: org.phnNumber,
-    panNo: org.panNo,
-    vatNo: org.vatNo,
-    contactPerson: org.contactPerson,
-    contactPersonsPhNo: org.contactPersonsPhNo,
-    contactPersonsEmail: org.contactPersonsEmail,
-    physicalAddress: org.physicalAddress,
+    orgName: org.orgName ?? "",
+    ownerName: org.ownerName ?? "",
+    phnNumber: org.phnNumber ?? "",
+    panNo: org.panNo ?? "",
+    vatNo: org.vatNo ?? "",
+    contactPerson: org.contactPerson ?? "",
+    contactPersonsPhNo: org.contactPersonsPhNo ?? "",
+    contactPersonsEmail: org.contactPersonsEmail ?? "",
+    physicalAddress: org.physicalAddress ?? "",
   });
 
   setIsEditingOrganization(true);
@@ -206,12 +206,12 @@ name:"physicalAddress",
 full:true
 }
 
-].map((item)=>(
+]?.map((item)=>(
 
 
 <div
-key={item.name}
-className={`rounded-xl p-4 ${item.full ? "sm:col-span-2":""}`}
+key={item?.name || ""}
+className={`rounded-xl p-4 ${item?.full ? "sm:col-span-2":""}`}
 style={{background:"var(--iconBgColro)"}}
 >
 
@@ -219,18 +219,20 @@ style={{background:"var(--iconBgColro)"}}
 className="text-sm mb-2"
 style={{color:"var(--greyText)"}}
 >
-{item.label}
+{item?.label || ""}
 </p>
 
 
 <input
 type="text"
-name={item.name}
+name={item?.name || ""}
 
 value={
-selectedRow === org.id && isEditingOrganization
-? organizationForm[item.name]
-: org[item.name]
+  (
+    selectedRow === org.id && isEditingOrganization
+      ? organizationForm[item.name]
+      : org[item.name]
+  ) ?? ""
 }
 disabled={ !(selectedRow === org.id && isEditingOrganization)} onChange={handleOrganizationChange} className="w-full bg-transparent outline-none font-semibold"
 

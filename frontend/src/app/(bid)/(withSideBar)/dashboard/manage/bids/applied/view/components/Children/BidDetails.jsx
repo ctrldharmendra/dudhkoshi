@@ -52,18 +52,24 @@ export default function BidDetails({ bidMasterDetails, attachments, applicantDet
         </div>
         <div>
           <span className="text-[10px] font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1 mb-1">
+            <FiCalendar /> Close Date
+          </span>
+          <p className="text-sm font-bold text-slate-700">{formatDate(bidMasterDetails?.closeDate)}</p>
+        </div>
+        <div>
+          <span className="text-[10px] font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1 mb-1">
             <FiCalendar /> Submission Opening
           </span>
           <p className="text-sm font-bold text-slate-700">{formatDate(bidMasterDetails?.openDate)}</p>
         </div>
         <div>
           <span className="text-[10px] font-bold text-gray-700 uppercase tracking-wider flex items-center gap-1 mb-1">
-            <FiActivity /> Status
+            <FiActivity /> Award Status
           </span>
           <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-black ${
-            bidMasterDetails?.status === 'ACTIVE' ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-600'
+            bidMasterDetails?.award_status === 'AWARDED' ? 'bg-emerald-100 text-emerald-800' : 'bg-gray-100 text-gray-600'
           }`}>
-            • {bidMasterDetails?.status}
+            • {bidMasterDetails?.award_status}
           </span>
         </div>
       </div>
@@ -128,8 +134,8 @@ export default function BidDetails({ bidMasterDetails, attachments, applicantDet
   </div>
 
       {/* Description Layout Block */}
-      <div>
-        <span className="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-1">Project Details & Objectives</span>
+      <div className="mt-4">
+        <span className="text-xs font-bold text-gray-600 uppercase tracking-wide block mb-1">Project Description</span>
         <p className=" text-gray-700 text-[18px] md:text-[20px] font-medium leading-relaxed whitespace-pre-line bg-white border border-gray-100 rounded-xl p-4 shadow-2xs">
           {bidMasterDetails?.description}
         </p>
