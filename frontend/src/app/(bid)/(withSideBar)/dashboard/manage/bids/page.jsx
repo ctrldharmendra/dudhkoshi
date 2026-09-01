@@ -16,7 +16,7 @@ import { HiOutlinePlus, HiOutlineUserGroup } from 'react-icons/hi';
 import { getRolePermissionLoggedInUser } from '@/app/(bid)/redux/slices/rolesAndPermissionSlice';
 import { hasPermission } from '@/helper/helper';
 
-
+const EMPTY_ARR = [];
 
 
 const page = () => {
@@ -24,7 +24,9 @@ const dispatch = useDispatch();
 const router = useRouter();
 const pathname = usePathname();
 
-  const allBids = useSelector((state) => state?.bidForm?.allBidFormFromDb?.bids ??  []);  //all bids object
+const allBids = useSelector(
+  (state) => state?.bidForm?.allBidFormFromDb?.bids ?? EMPTY_ARR
+);
   const allBidsLoading = useSelector((state) => state?.bidForm?.allBidFormLoading);  //all loading state
 // console.log(allBids, "albids")
 
