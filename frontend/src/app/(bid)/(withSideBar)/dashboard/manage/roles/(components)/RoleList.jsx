@@ -72,7 +72,7 @@ const [isDropDownDisabled, setisDropDownDisabled] = useState(true)
     () => [
    {
   id: "serial",
-  header: "ID",
+  header: "SNo.",
   cell: ({ row, table }) => {
     return (
       row.index +
@@ -287,7 +287,7 @@ const [isDropDownDisabled, setisDropDownDisabled] = useState(true)
             {table.getRowModel().rows.map((row) => (
               <tr
                 key={row.id}
-                className="border-t hover:bg-gray-50 transition"
+                className=" hover:bg-gray-50 transition"
               >
                 {row.getVisibleCells().map((cell) => (
                   <td key={cell.id} className="px-1 py-1">
