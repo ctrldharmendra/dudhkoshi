@@ -586,17 +586,11 @@ items-center
 justify-center
 ">
 <Image
-
-src={"/uploads"+item?.createdByDp ? '/'+item?.createdByDp : unknownDp}
-
-width={80}
-
-height={80}
-
-alt="profile"
-
-className=" rounded-full max-w-[49px] max-w-[49px] max-h-[49px] max-h-[49px] border-1 border-blue-100
-"
+    src={item?.createdByDp ? `/uploads/${item.createdByDp}` : unknownDp}
+    width={80}
+    height={80}
+    alt="profile"
+    className="rounded-full max-w-[49px] max-h-[49px] border border-blue-100"
 />
 
 </div>
