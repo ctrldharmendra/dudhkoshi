@@ -45,7 +45,7 @@ export default function Dashboard(){
     const allBidsLoading = useSelector((state) => state?.bidForm?.allBidFormLoading);  //all loading state
 
 // console.log(allBids, "allBids")
-console.log(baseContentUrl, "baseContentUrl")
+// console.log(baseContentUrl, "baseContentUrl")
 
 //FIRST : check if logged in role has permission to view bid or not 
 //FIRST : fetch permissions on mount
@@ -586,8 +586,8 @@ items-center
 justify-center
 ">
 <Image
-unoptimized
-src={item?.createdByDp ? '/'+item?.createdByDp : unknownDp}
+
+src={"/uploads"+item?.createdByDp ? '/'+item?.createdByDp : unknownDp}
 
 width={80}
 
