@@ -47,6 +47,10 @@ const nextConfig = {
             // Production backend
             : "https://dudhkoshihydro.aayumalunhydro.com.np/api/:path*",
       },
+        {
+        source: "/uploads/:path*",
+        destination: "https://dudhkoshihydro.aayumalunhydro.com.np/uploads/:path*",
+      },
     ];
   },
 
