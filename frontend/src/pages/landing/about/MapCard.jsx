@@ -1,5 +1,8 @@
+import Image from "next/image";
 import React from "react";
 import { HiLocationMarker } from "react-icons/hi";
+import mapImage from "../../../../public/landing/MapOld.jpeg"
+
 
 export default function MapCard({
   coordinates = `27°21'53"-27°25'15"N, 86°37'35"-86°41'15"E`,
@@ -20,13 +23,20 @@ export default function MapCard({
         <div
           className={`relative w-full h:[200px] lg:h-[450px] overflow-hidden rounded-[32px] border border-blue-100/60 bg-slate-100 shadow-lg`}
         >
-          <iframe
+          {/* <iframe
             src={mapUrl}
             title="Location map"
             className="absolute inset-0 h-full w-full border-0"
             loading="lazy"
             allowFullScreen
             referrerPolicy="strict-origin-when-cross-origin"
+          /> */}
+          <Image
+            src={mapImage}
+            alt="Location map"
+            width={300}
+            height={300}
+            className="absolute inset-0 h-full w-full object-cover"
           />
         </div>
       </div>
