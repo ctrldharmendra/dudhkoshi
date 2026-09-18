@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.12.0",
+    "@tailwindcss/postcss": "^4",
     "@tanstack/react-table": "^8.21.3",
     "axios": "^1.18.0",
     "nanoid": "^6.0.0",
@@ -22,14 +23,13 @@
     "react-redux": "^9.3.0",
     "react-table": "^7.8.0",
     "redux-persist": "^6.0.0",
+    "tailwindcss": "^4.1.17",
     "uuid": "^14.0.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
     "baseline-browser-mapping": "^2.10.0",
     "eslint": "^9",
-    "eslint-config-next": "15.5.5",
-    "tailwindcss": "^4.1.17"
+    "eslint-config-next": "15.5.5"
   }
 }
