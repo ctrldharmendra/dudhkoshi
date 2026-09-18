@@ -196,9 +196,9 @@ export default function TeamSection() {
           
           {/* LEFT SIDE: SELECT PERSONNEL LIST (5 Cols on lg) */}
           <div className="lg:col-span-4 flex flex-col gap-4 border-b lg:border-b-0 lg:border-r border-gray-400/20 pb-6 lg:pb-0 lg:pr-6">
-            <span className="font-[Manrope] font-bold text-[12px] leading-[20px] tracking-[2px] align-middle text-[var(--landingPagePrimaryColor)] uppercase mb-2">
+            {/* <span className="font-[Manrope] font-bold text-[12px] leading-[20px] tracking-[2px] align-middle text-[var(--landingPagePrimaryColor)] uppercase mb-2">
               SELECT PERSONNEL
-            </span>
+            </span> */}
 
             <div className="flex flex-col gap-3 max-h-[500px] overflow-y-auto pr-1">
               {filteredMembers.map((member) => {
