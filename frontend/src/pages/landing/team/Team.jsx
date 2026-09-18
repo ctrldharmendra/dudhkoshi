@@ -69,7 +69,7 @@ const teamMembersData = [
     id: '4',
     name: 'Bikram Gautam',
     role: 'Chief Engineer',
-    category: 'Engineering',
+    category: 'Director',
     avatar: bikram.src,
     photo: bikram.src,
     bio: [
@@ -85,7 +85,7 @@ const teamMembersData = [
   {
     id: '5',
     name: 'Arun Kumar Agarwal',
-    role: 'General Manager',
+    role: 'Director',
     category: 'Management',
     avatar: arun.src,
     photo: arun.src,
