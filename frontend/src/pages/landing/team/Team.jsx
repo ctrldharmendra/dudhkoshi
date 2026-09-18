@@ -68,7 +68,7 @@ const teamMembersData = [
   {
     id: '4',
     name: 'Bikram Gautam',
-    role: 'Chief Engineer',
+    role: 'Director',
     category: 'Director',
     avatar: bikram.src,
     photo: bikram.src,
