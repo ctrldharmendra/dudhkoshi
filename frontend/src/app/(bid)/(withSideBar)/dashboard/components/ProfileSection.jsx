@@ -48,6 +48,7 @@ const ProfileSection = () => {
 
 
     // console.log(user, "from profi")
+    console.log(user)
 
     useEffect(()=>{
 
@@ -58,7 +59,6 @@ const ProfileSection = () => {
 
   return (
 <>
-
 
 <div className="flex flex-col items-center">
 

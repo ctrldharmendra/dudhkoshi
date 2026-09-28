@@ -52,6 +52,18 @@ const protectedFileRoutes = require('../routes/protectFile/protectFile.routes')
 // bid 
 const bidRoutes = require('../routes/bid/bid.routes')
 
+// ANDMI PANEL 
+const heroRoutes = require('../routes/adminPanel/hero.routes')
+const aboutusRoutes = require('../routes/adminPanel/aboutus.routes')
+const teamRoutes = require('../routes/adminPanel/team.routes')
+const projectOverviewRoutes = require('../routes/adminPanel/projectOverview.routes')
+const contactsRoutes = require('../routes/adminPanel/contacts.routes')
+const galleryRoutes = require('../routes/adminPanel/gallery.routes')
+const faqsRoutes = require('../routes/adminPanel/faqs.routes')
+const blogRoutes = require('../routes/adminPanel/blog.routes')
+const miscRoutes = require('../routes/adminPanel/misccellaneous.routes')
+// ANDMI PANEL END 
+
 
 // console.log("cwd:", process.cwd());
 
@@ -63,7 +75,7 @@ app.get("/debug", (req, res) => {
 });
 
 
-// ROUTE DECLARATION
+// ROUTE DECLARATION  ---BID----
 app.use('/api/user', userRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/invite', invitationRoutes);
@@ -74,13 +86,26 @@ app.use('/api/userorg', userOrganizationRoute)
 app.use('/api/auction', awardRoute) //-- award
 app.use('/api/resetpass', forgotPasswordRoutes)
 app.use('/api/proposal', reproposeRoutes)
-
-
 // TESTING ONLY
 app.use('/', protectedFileRoutes)
-
 // bid 
 app.use('/api/bid', bidRoutes)
+// ROUTE DECLARATION  ---BID---- END
+
+
+// ROUTE DECLARATION ---ADMIN PANEL----
+app.use('/api/admin/hero', heroRoutes)
+app.use('/api/admin/aboutus', aboutusRoutes)
+app.use('/api/admin/team', teamRoutes)
+app.use('/api/admin/projectoverview', projectOverviewRoutes)
+app.use('/api/admin/contacts', contactsRoutes)
+app.use('/api/admin/gallery', galleryRoutes)
+app.use('/api/admin/faqs', faqsRoutes)
+app.use('/api/admin/blog', blogRoutes)
+app.use('/api/admin/misc', miscRoutes)
+// ROUTE DECLARATION ---ADMIN PANEL END----
+
+
 
 
 

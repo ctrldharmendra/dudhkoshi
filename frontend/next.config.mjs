@@ -19,6 +19,7 @@
 const nextConfig = {
 
   images: {
+        dangerouslyAllowLocalIP: true, 
     remotePatterns: [
       {
         protocol: 'https',
@@ -28,6 +29,27 @@ const nextConfig = {
       protocol: "http",
       hostname: "localhost",
       port: "5001",
+           pathname: '/uploads/**',
+    },
+  {
+      protocol: "http",
+      hostname: "localhost",
+      port: "3000",
+           pathname: '/uploads/**',
+    },
+  {
+      protocol: "http",
+      hostname: "127.0.0.1",
+      port: "5001",
+           pathname: '/uploads/**',
+    },
+  {
+      protocol: "https",
+      hostname: "thumbs.dreamstime.com",
+    },
+  {
+      protocol: "https",
+      hostname: "dudhkoshihydro.aayumalunhydro.com.np",
     },
     ],
   },
@@ -47,9 +69,20 @@ const nextConfig = {
             // Production backend
             : "https://dudhkoshihydro.aayumalunhydro.com.np/api/:path*",
       },
-        {
+      //   {
+      //   source: "/uploads/:path*",
+      //   destination: "https://dudhkoshihydro.aayumalunhydro.com.np/uploads/:path*",
+      // },
+            {
         source: "/uploads/:path*",
-        destination: "https://dudhkoshihydro.aayumalunhydro.com.np/uploads/:path*",
+
+        // Local development
+        destination:
+          process.env.NODE_ENV === "development"
+            ? "http://localhost:5001/uploads/:path*"
+
+            // Production backend
+            : "https://dudhkoshihydro.aayumalunhydro.com.np/uploads/:path*",
       },
     ];
   },

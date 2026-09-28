@@ -41,7 +41,16 @@ export default function RootLayout({ children }) {
     <>
     <div className="min-h-screen bg-slate-100">
 
-      <StoreProvider>
+      <StoreProvider
+      
+       position="top-right"
+  containerStyle={{
+    zIndex: 9999999999,
+  }}
+  toastOptions={{
+    duration: 3000,
+  }}
+      >
       <Sidebar/>
 
 

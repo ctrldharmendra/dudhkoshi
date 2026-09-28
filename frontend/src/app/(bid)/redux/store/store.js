@@ -17,6 +17,11 @@ import awardReducer from "../slices/award/awardSlice"
 import bidRepropseReducer from "../slices/bidRepropose/biReproposeSlice"
 
 
+// ADMIN PANEL | LANDING PAGE
+import landingPageAdmminReducer from "../slices/LandingPageAdminPanel/landingAdminSlice"
+// ADMIN PANEL | LANDING PAGE
+
+
 import fontScaleReducer from "../slices/accessibility/fontScaleSlice"
 
 const rootReducer = combineReducers({
@@ -33,7 +38,7 @@ const rootReducer = combineReducers({
   award:awardReducer,
   bidRepropse:bidRepropseReducer,
 
-
+landingPageAdmmin: landingPageAdmminReducer,
   accessibility: fontScaleReducer,
 });
 

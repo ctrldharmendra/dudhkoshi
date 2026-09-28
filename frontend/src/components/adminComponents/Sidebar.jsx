@@ -167,6 +167,28 @@ const menuItems = [
       }
     ].filter(Boolean),
   },
+    {
+    title: "Landing Page Contents",
+    icon: GrUserAdmin,
+    children: [
+      permissions.viewPermissions && {
+        title: "Hero Section",
+        path: "/admin/hero",
+      },
+      permissions.viewPermissions && {
+        title: "Hero Cards Section",
+        path: "/admin/herocards",
+      },
+      permissions.viewPermissions && {
+        title: "About Us Section",
+        path: "/admin/about",
+      },
+      permissions.viewPermissions && {
+        title: "Team Section",
+        path: "/admin/team",
+      },
+    ].filter(Boolean),
+  },
 ].filter(item => !item.children || item.children.length > 0);
 
 const handleLogout = async () => {
@@ -287,44 +309,14 @@ lg:hidden
 
 <aside
 
-className={`
-fixed
-top-0
-left-0
-h-screen
-bg-slate-900
-text-white
-z-50
-transition-all
-duration-300
-ease-in-out
-
-${collapsed ? "w-20":"w-72"}
-
-${mobileOpen 
-? "translate-x-0"
-:"-translate-x-full lg:translate-x-0"
-}
-
-`}
+className={` fixed top-0 left-0 h-screen bg-slate-900 text-white z-50 transition-all duration-300 ease-in-out ${collapsed ? "w-20":"w-72"} ${mobileOpen  ? "translate-x-0" :"-translate-x-full lg:translate-x-0"}`}
 
 >
 
 {/* Header */}
 
 <div
-className="
-h-20
-flex
-items-center
-justify-between
-px-5
-border-b
-border-slate-700
-"
->
-
-
+className=" h-20 flex items-center justify-between px-5 border-b border-slate-700">
 {
 !collapsed &&
 <div>
@@ -346,17 +338,7 @@ Hydro Dashboard
 
 onClick={()=>setCollapsed(!collapsed)}
 
-className="
-hidden
-lg:block
-hover:bg-slate-800
-p-2
-rounded-lg
-"
-
->
-
-{
+className=" hidden lg:block hover:bg-slate-800 p-2 rounded-lg ">{
 collapsed
 ?
 <FiChevronRight/>

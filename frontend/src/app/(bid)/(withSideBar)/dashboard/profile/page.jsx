@@ -20,7 +20,7 @@ const ProfilePage = () => {
 const [selectedImage, setSelectedImage] = useState(null);
 
 
-console.log(process.env.NEXT_PUBLIC_BASE_CONTENT_URL)
+// console.log(process.env.NEXT_PUBLIC_BASE_CONTENT_URL)
 
 
 

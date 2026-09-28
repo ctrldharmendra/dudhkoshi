@@ -109,7 +109,7 @@ export default function UpperNav() {
       </button>
 </div>
 
-      <ul className={`absolute top-full right-0 mt-2 w-60 bg-white border border-gray-300 rounded shadow-md py-1 transition-all duration-150 origin-top ${open ? "opacity-100 scale-100 visible" : "opacity-0 scale-95 invisible"}`}>
+      <ul className={`absolute top-full right-0 mt-2 w-60 bg-white border border-gray-300 z-[99999] rounded shadow-md py-1 transition-all duration-150 origin-top ${open ? "opacity-100 scale-100 visible" : "opacity-0 scale-95 invisible"}`}>
         <li className=" py-2 text-[16px] hover:bg-gray-500/10 cursor-pointer hover:bg-gray-500/10 cursor-pointer" onClick={() => setOpen((prev) => !prev)}>
         <Link href="/dashboard/profile" className="px-4 py-2 ">
           Update Profile
