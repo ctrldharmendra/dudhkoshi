@@ -14,6 +14,9 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { getHeroCards, updateHeroCard } from "@/app/(bid)/redux/slices/LandingPageAdminPanel/landingAdminSlice";
 import Loading from "../components/Loading";
+import { hasPermission } from "@/helper/helper";
+import { getRolePermissionLoggedInUser } from "@/app/(bid)/redux/slices/rolesAndPermissionSlice";
+import { useRouter } from "next/navigation";
 
 // =====================================================
 // FIXED HERO CARDS
@@ -44,10 +47,46 @@ const cards = [
 ];
 
 export default function TeamPage() {
+
+  const dispatch = useDispatch();
+
+// CHECK PERMISSION 
+const router = useRouter();
+const [permissionChecked, setpermissionChecked] = useState(false)
+  const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
+  const loadingRole  = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);  //loading state
+
+      useEffect(()=>{
+      dispatch(getRolePermissionLoggedInUser({}))
+    },[]);
+
+useEffect(() => {
+  if (loadingRole) return;
+  if (!permissionOfLoggedInRoleOfUser){
+    setpermissionChecked(false)
+    return 
+  } 
+
+  const canUpdateLandingPage = hasPermission(permissionOfLoggedInRoleOfUser, "update_landing_page_content");
+  if (!canUpdateLandingPage) {
+    return router.replace("/forbidden");
+  }
+  else{
+    setpermissionChecked(true)
+  }
+
+}, [loadingRole, permissionOfLoggedInRoleOfUser, router]);
+  // CHECK PERMISSION END 
+// Fetch content ONLY after permission is confirmed
+useEffect(() => {
+  if (!permissionChecked) return;
+   dispatch(getHeroCards({}))
+}, [permissionChecked, dispatch]);
+
+
   const [isEditing, setIsEditing] = useState(false);
   const [selectedCardIndex, setSelectedCardIndex] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  const dispatch = useDispatch();
     const baseContentUrl = process.env.NEXT_PUBLIC_BASE_CONTENT_URL; 
 
     const [currentCardId, setCurrentCardId] = useState(null)
@@ -58,9 +97,7 @@ export default function TeamPage() {
   // console.log(herocardsdata, "herocardsdata")
   const [cardData, setCardData] = useState(null);
 
-useEffect(() => {
-dispatch(getHeroCards({}))
-}, [])
+
 
 
   const [editCard, setEditCard] = useState({
@@ -158,15 +195,6 @@ if(herocardsdata?.length>0){
     return;
   }
 
-  if (
-    !editCard.keye ||
-    !editCard.valuee ||
-    !editCard.title ||
-    !editCard.para
-  ) {
-    toast.error("Please fill all fields");
-    return;
-  }
 
 
 const formData = new FormData();

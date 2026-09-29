@@ -34,6 +34,11 @@ router.route('/').get(
 router.route('/:id').get(   
     projectOverview.getProjectOverViewById
 );
+// delete particular project overview by id
+router.route('/:id').delete(
+    authenticateAccessToken,
+    projectOverview.deleteProjectOverViewById
+);
 
 // WIRES SYSTEM 
 // create 
@@ -53,6 +58,11 @@ router.route('/wiresys/water/:id').get(
 router.route('/wiresys/water/:id').put(
     authenticateAccessToken,
     projectOverview.updateWireSystem
+)
+// delete wire system
+router.route('/wiresys/water/:id').delete(
+    authenticateAccessToken,
+    projectOverview.deleteWireSystemById
 )
 
 // ROJECT EVACUATION 

@@ -18,6 +18,9 @@ import DestroyerPopup from "../components/DestroyerPopup";
 import { addTeam, deleteTeam, getTeam, updateTeam } from "@/app/(bid)/redux/slices/LandingPageAdminPanel/landingAdminSlice";
 import { useDispatch, useSelector } from "react-redux";
 import Loading from "../components/Loading";
+import { hasPermission } from "@/helper/helper";
+import { useRouter } from "next/navigation";
+import { getRolePermissionLoggedInUser } from "@/app/(bid)/redux/slices/rolesAndPermissionSlice";
 
 
 
@@ -39,6 +42,44 @@ const emptyMember = {
 export default function TeamPage() {
   const [teamData, setTeamData] = useState();
 const dispatch = useDispatch();
+
+
+// CHECK PERMISSION 
+const router = useRouter();
+const [permissionChecked, setpermissionChecked] = useState(false)
+  const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
+  const loadingRole  = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);  //loading state
+
+      useEffect(()=>{
+      dispatch(getRolePermissionLoggedInUser({}))
+    },[]);
+
+useEffect(() => {
+  if (loadingRole) return;
+  if (!permissionOfLoggedInRoleOfUser){
+    setpermissionChecked(false)
+    return 
+  } 
+
+  const canUpdateLandingPage = hasPermission(permissionOfLoggedInRoleOfUser, "update_landing_page_content");
+  if (!canUpdateLandingPage) {
+    return router.replace("/forbidden");
+  }
+  else{
+    setpermissionChecked(true)
+  }
+
+}, [loadingRole, permissionOfLoggedInRoleOfUser, router]);
+  // CHECK PERMISSION END 
+// Fetch content ONLY after permission is confirmed
+useEffect(() => {
+  if (!permissionChecked) return;
+  dispatch(getTeam({}))
+}, [permissionChecked, dispatch]);
+
+
+
+
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -58,9 +99,7 @@ const dispatch = useDispatch();
     const team = useSelector((state) => state?.landingPageAdmmin?.team); 
     const loading = useSelector((state) => state?.landingPageAdmmin?.teamLoading); 
 
-useEffect(() => {
-  dispatch(getTeam({}))
-}, [])
+
 useEffect(() => {
 setTeamData(team)
 }, [team])

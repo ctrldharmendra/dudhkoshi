@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   HiOutlineKey,
   HiOutlineDocumentText,
@@ -20,12 +20,21 @@ import { FaCaretDown } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
 import toast from "react-hot-toast";
 import DestroyerPopup from "../components/DestroyerPopup";
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../components/Loading";
+import {
+  createTechnicalParameter,
+  deleteTechnicalParameter,
+  getTechnicalParameter,
+  updateTechnicalParameter,
+} from "@/app/(bid)/redux/slices/LandingPageAdminPanel/landingAdminSlice";
 
-// =====================================================
 // CONSTANTS
-// =====================================================
-
 const TITLE_MAX_LENGTH = 50;
+
+// temporary key for content rows that are not saved yet
+const createRowKey = () =>
+  `new-row-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
 const EMPTY_TECH_CARD = {
   icon: "",
@@ -34,10 +43,7 @@ const EMPTY_TECH_CARD = {
   contentData: [],
 };
 
-// =====================================================
 // ICONS
-// =====================================================
-
 const CARD_ICONS = {
   lightning: HiOutlineLightningBolt,
   water: MdOutlineWater,
@@ -55,226 +61,29 @@ const getCardIcon = (icon, props = {}) => {
   return <Icon {...props} />;
 };
 
-// =====================================================
-// TECHNICAL PARAMETERS DATA
-// =====================================================
+// API CATEGORY -> UI CARD
+const mapCategoryToCard = (category) => ({
+  id: category?.categoryId,
+  icon: category?.categoryIcon || "",
+  title: category?.categoryTitle || "",
+  note: category?.categoryNote || "",
+  contentData: Array.isArray(category?.contents)
+    ? category.contents.map((content) => ({
+      id: content?.contentId,
+      conTitle: content?.contentTitle || "",
+      data: content?.contentData || "",
+      formula: content?.contentFormula || "",
+    }))
+    : [],
+});
 
-const tech_parameters = [
-  {
-    icon: "lightning",
-    title: "Scheme and Capacity",
-    note:
-      "It is a 95.7 MW, 6-hour peaking run-of-river hydropower project located in Solukhumbu, Koshi Province. The project utilizes the Dudhkoshi River to generate clean and reliable energy for Nepal.",
-    contentData: [
-      {
-        id: 1,
-        conTitle: "Installed Capacity",
-        data: "95.7 MW",
-        formula: "P = ρ·g·Q·Hₙ·η",
-      },
-      {
-        id: 2,
-        conTitle: "Gross Head",
-        data: "144.5 m",
-        formula: "H_g = Z_intake − Z_powerhouse",
-      },
-      {
-        id: 3,
-        conTitle: "Net Head",
-        data: "NULL",
-        formula: "Hₙ = H_g − ∑hf",
-      },
-      {
-        id: 4,
-        conTitle: "Design Discharge",
-        data: "83.5 m³/s",
-        formula: "Q = A·v",
-      },
-      {
-        id: 5,
-        conTitle: "Type of Scheme",
-        data: "Run-of-River (6-hour Peaking)",
-        formula: "",
-      },
-    ],
-  },
-
-  {
-    icon: "water",
-    title: "Water Conveyance",
-    note:
-      "Designed with underground tunneling structures to minimize environmental impact while maintaining optimum hydraulic efficiency.",
-    contentData: [
-      {
-        id: 6,
-        conTitle: "Headrace Tunnel Length",
-        data: "4,791 m",
-        formula: "L_t",
-      },
-      {
-        id: 7,
-        conTitle: "Headrace Tunnel Type",
-        data: "Concrete Lined Inverted D-Shaped",
-        formula: "",
-      },
-      {
-        id: 8,
-        conTitle: "Tunnel Diameter",
-        data: "5.6 m (finished)",
-        formula: "D = 2·r",
-      },
-      {
-        id: 9,
-        conTitle: "Surge Shaft Type",
-        data: "Restricted Orifice Surge Shaft",
-        formula: "",
-      },
-      {
-        id: 10,
-        conTitle: "Surge Shaft Height",
-        data: "69 m",
-        formula: "",
-      },
-      {
-        id: 11,
-        conTitle: "Surge Shaft Internal Diameter",
-        data: "16.0 m",
-        formula: "",
-      },
-      {
-        id: 12,
-        conTitle: "Penstock Type",
-        data: "Underground",
-        formula: "",
-      },
-      {
-        id: 13,
-        conTitle: "Penstock Length",
-        data:
-          "80 m (Surge Shaft–Drop Shaft) + 96.97 m (Drop Shaft) + 96.62 m (Inclined Penstock Tunnel)",
-        formula: "L_p",
-      },
-      {
-        id: 14,
-        conTitle: "Penstock Internal Diameter",
-        data: "4.6 m",
-        formula: "",
-      },
-    ],
-  },
-
-  {
-    icon: "house",
-    title: "Powerhouse",
-    note:
-      "Houses state-of-the-art control units and multi-stage generating equipment engineered for high-head operational efficiency.",
-    contentData: [
-      {
-        id: 15,
-        conTitle: "Powerhouse Type",
-        data: "Surface Powerhouse",
-        formula: "",
-      },
-      {
-        id: 16,
-        conTitle: "Dimensions (L x W x H)",
-        data: "55m x 26.5m x 35.3m",
-        formula: "V = L·W·H",
-      },
-      {
-        id: 17,
-        conTitle: "Design Tailwater Level",
-        data: "644.5 masl",
-        formula: "",
-      },
-      {
-        id: 18,
-        conTitle: "Tailrace Tunnels",
-        data: "2 nos., 94.30 m long, 5.5m x 3.45m each",
-        formula: "",
-      },
-    ],
-  },
-
-  {
-    icon: "turbine",
-    title: "Turbine & Generator",
-    note:
-      "Vertical axis Francis turbines selected for the project's head and discharge conditions.",
-    contentData: [
-      {
-        id: 19,
-        conTitle: "Turbine Type",
-        data: "Vertical Axis Francis",
-        formula: "",
-      },
-      {
-        id: 20,
-        conTitle: "Number of Units",
-        data: "2 Units",
-        formula: "",
-      },
-      {
-        id: 21,
-        conTitle: "Rated Output per Unit",
-        data: "47.845 MW",
-        formula: "",
-      },
-      {
-        id: 22,
-        conTitle: "Installed Capacity",
-        data: "95.7 MW",
-        formula: "",
-      },
-      {
-        id: 23,
-        conTitle: "Rated Efficiency",
-        data: "NULL",
-        formula: "η_overall",
-      },
-      {
-        id: 24,
-        conTitle: "Generator Output",
-        data: "NULL",
-        formula: "S = P / PF",
-      },
-    ],
-  },
-
-  {
-    icon: "share",
-    title: "Power Evacuation",
-    note:
-      "Power evacuation details for this project have not yet been provided by the client — placeholder values above must be replaced before publishing.",
-    contentData: [
-      {
-        id: 25,
-        conTitle: "Transmission Voltage",
-        data: "TBD — not provided for Dudhkoshi-2",
-        formula: "",
-      },
-      {
-        id: 26,
-        conTitle: "Interconnection Point",
-        data: "TBD — not provided for Dudhkoshi-2",
-        formula: "",
-      },
-      {
-        id: 27,
-        conTitle: "Transmission Line Length",
-        data: "TBD — not provided for Dudhkoshi-2",
-        formula: "L_line",
-      },
-    ],
-  },
-];
-
-// =====================================================
-// COMPONENT
-// =====================================================
 
 export default function ProjectOverviewPage() {
-  const [techCards, setTechCards] = useState(tech_parameters);
+  const dispatch = useDispatch();
+
+  const [techCards, setTechCards] = useState([]);
+
+  const [saving, setSaving] = useState(false);
 
   const [isEditing, setIsEditing] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
@@ -288,6 +97,25 @@ export default function ProjectOverviewPage() {
 
   const [expandedTechCards, setExpandedTechCards] = useState({});
 
+  // ids of saved content rows removed in the editor (deleted on save)
+  const [deletedContentIds, setDeletedContentIds] = useState([]);
+
+  // redux state
+  const technicalParameter = useSelector((state) => state?.landingPageAdmmin?.technicalParameters);
+  const loading = useSelector((state) => state?.landingPageAdmmin?.technicalParametersLoading);
+
+  // fetch technical parameters on mount
+  useEffect(() => {
+    dispatch(getTechnicalParameter({}));
+  }, [dispatch]);
+
+  // keep local state in sync with the API response
+  useEffect(() => {
+    if (Array.isArray(technicalParameter)) {
+      setTechCards(technicalParameter.map(mapCategoryToCard));
+    }
+  }, [technicalParameter]);
+
 
   // CARD EXPAND TOGGLE
   const toggleTechCard = (index) => {
@@ -298,10 +126,7 @@ export default function ProjectOverviewPage() {
   };
 
 
-  // =====================================================
   // RESET EDIT STATE
-  // =====================================================
-
   const resetEditState = () => {
     setEditTechCard({
       ...EMPTY_TECH_CARD,
@@ -309,12 +134,12 @@ export default function ProjectOverviewPage() {
     });
 
     setSelectedCardIndex(null);
+
+    setDeletedContentIds([]);
   };
 
-  // =====================================================
-  // CLOSE EDIT / ADD MODAL
-  // =====================================================
 
+  // CLOSE EDIT / ADD MODAL
   const closeEditModal = () => {
     setIsEditing(false);
     setIsAdding(false);
@@ -349,6 +174,8 @@ export default function ProjectOverviewPage() {
         : [],
     });
 
+    setDeletedContentIds([]);
+
     setIsEditing(true);
   };
 
@@ -379,7 +206,7 @@ export default function ProjectOverviewPage() {
   // CONFIRM DELETE
   // =====================================================
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (cardToDelete === null) return;
 
     const card = techCards[cardToDelete];
@@ -391,36 +218,36 @@ export default function ProjectOverviewPage() {
       return;
     }
 
-    console.log("Deleted Technical Specification:", card);
+    if (!card.id) {
+      toast.error("Category not found");
+      setIsDeleteModalOpen(false);
+      setCardToDelete(null);
+      return;
+    }
 
-    setTechCards((prev) =>
-      prev.filter((_, index) => index !== cardToDelete)
+    setSaving(true);
+
+    const result = await dispatch(
+      deleteTechnicalParameter({ id: card.id })
     );
 
-    toast.success("Technical parameter removed successfully.");
+    setSaving(false);
+
+    if (result.payload?.statusCode === 200 || result.payload?.statusCode === 201) {
+      toast.success(result.payload.message);
+
+      dispatch(getTechnicalParameter({}));
+    }
 
     setIsDeleteModalOpen(false);
     setCardToDelete(null);
   };
 
   // =====================================================
-  // GENERATE CONTENT ID
-  // =====================================================
-
-  const generateContentId = () => {
-    const ids = techCards.flatMap((card) =>
-      Array.isArray(card.contentData)
-        ? card.contentData
-          .map((item) => item.id)
-          .filter((id) => typeof id === "number")
-        : []
-    );
-
-    return ids.length ? Math.max(...ids) + 1 : 1;
-  };
-
-  // =====================================================
   // ADD TECHNICAL CONTENT
+
+  // New rows have no database id yet, so they get a temporary
+  // key for React and are inserted when the card is saved.
   // =====================================================
 
   const handleAddTechContent = () => {
@@ -429,7 +256,8 @@ export default function ProjectOverviewPage() {
       contentData: [
         ...prev.contentData,
         {
-          id: generateContentId(),
+          id: null,
+          rowKey: createRowKey(),
           conTitle: "",
           data: "",
           formula: "",
@@ -443,6 +271,14 @@ export default function ProjectOverviewPage() {
   // =====================================================
 
   const handleRemoveTechContent = (contentIndex) => {
+    const removedRow = editTechCard.contentData[contentIndex];
+
+    // a saved row has to be deleted in the database when the card is saved,
+    // new rows only exist locally and can just be dropped
+    if (removedRow?.id !== null && removedRow?.id !== undefined) {
+      setDeletedContentIds((prevIds) => [...prevIds, removedRow.id]);
+    }
+
     setEditTechCard((prev) => ({
       ...prev,
       contentData: prev.contentData.filter(
@@ -521,7 +357,8 @@ export default function ProjectOverviewPage() {
     title: editTechCard.title.trim(),
     note: editTechCard.note.trim(),
     contentData: editTechCard.contentData.map((content) => ({
-      id: content.id,
+      // rows without an id are new and get inserted by the API
+      id: content.id ?? null,
       conTitle: content.conTitle.trim(),
       data: content.data.trim(),
       formula: content.formula.trim(),
@@ -532,25 +369,42 @@ export default function ProjectOverviewPage() {
   // ADD TECHNICAL CARD
   // =====================================================
 
-  const handleAddTechCard = () => {
+  const handleAddTechCard = async () => {
     if (!validateTechCard()) return;
 
     const newCard = formatTechCard();
 
-    console.log("Added Technical Specification:", newCard);
+    setSaving(true);
 
-    setTechCards((prev) => [...prev, newCard]);
+    const result = await dispatch(
+      createTechnicalParameter({
+        icon: newCard.icon,
+        title: newCard.title,
+        note: newCard.note,
+        contentData: newCard.contentData.map((content) => ({
+          conTitle: content.conTitle,
+          data: content.data,
+          formula: content.formula,
+        })),
+      })
+    );
 
-    toast.success("Technical parameter added successfully");
+    setSaving(false);
 
-    closeEditModal();
+    if (result.payload?.statusCode === 200 || result.payload?.statusCode === 201) {
+      toast.success(result.payload.message);
+
+      dispatch(getTechnicalParameter({}));
+
+      closeEditModal();
+    }
   };
 
   // =====================================================
   // UPDATE TECHNICAL CARD
   // =====================================================
 
-  const handleUpdateTechCard = () => {
+  const handleUpdateTechCard = async () => {
     if (selectedCardIndex === null) {
       toast.error("No card selected");
       return;
@@ -560,30 +414,47 @@ export default function ProjectOverviewPage() {
 
     const updatedCard = formatTechCard();
 
-    console.log(
-      "Updated Technical Specification:",
-      updatedCard
+    const categoryId = techCards[selectedCardIndex]?.id;
+
+    if (!categoryId) {
+      toast.error("Category not found");
+      return;
+    }
+
+    setSaving(true);
+
+    const result = await dispatch(
+      updateTechnicalParameter({
+        id: categoryId,
+        formData: {
+          ...updatedCard,
+          deletedContentIds,
+        },
+      })
     );
 
-    setTechCards((prev) =>
-      prev.map((card, index) =>
-        index === selectedCardIndex
-          ? {
-            ...card,
-            ...updatedCard,
-          }
-          : card
-      )
-    );
+    setSaving(false);
 
-    toast.success("Technical parameter updated successfully");
+    if (result.payload?.statusCode === 200 || result.payload?.statusCode === 201) {
+      toast.success(result.payload.message);
 
-    closeEditModal();
+      dispatch(getTechnicalParameter({}));
+
+      closeEditModal();
+    }
   };
 
   // =====================================================
   // RENDER
   // =====================================================
+
+  if (loading || saving) {
+    return (
+      <div className="fixed inset-0 z-[9999999] flex h-screen w-full items-center justify-center bg-[#000000cf]">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <>
@@ -1262,7 +1133,7 @@ export default function ProjectOverviewPage() {
                 {editTechCard.contentData.map(
                   (content, contentIndex) => (
                     <div
-                      key={content.id}
+                      key={content.rowKey ?? content.id}
                       className="
                         relative
                         rounded-2xl
@@ -1363,10 +1234,8 @@ export default function ProjectOverviewPage() {
   );
 }
 
-// =====================================================
-// CONTENT INPUT
-// =====================================================
 
+// CONTENT INPUT
 function ContentInput({
   label,
   value,
@@ -1400,10 +1269,7 @@ function ContentInput({
   );
 }
 
-// =====================================================
 // REUSABLE ICON SELECTOR
-// =====================================================
-
 function IconSelector({
   value,
   onChange,

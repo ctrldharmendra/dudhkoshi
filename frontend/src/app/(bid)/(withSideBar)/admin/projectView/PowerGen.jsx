@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   HiOutlineKey,
   HiOutlineViewGrid,
@@ -14,6 +14,12 @@ import { FaNetworkWired } from "react-icons/fa6";
 import { CiEdit } from "react-icons/ci";
 import toast from "react-hot-toast";
 import DestroyerPopup from "../components/DestroyerPopup";
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../components/Loading";
+import {
+  getPowerEvacuation,
+  updatePowerEvacuation,
+} from "@/app/(bid)/redux/slices/LandingPageAdminPanel/landingAdminSlice";
 
 // =====================================================
 // CONSTANTS
@@ -26,29 +32,6 @@ const EMPTY_GENERATION_CARD = {
   title2: "",
   para: "",
 };
-
-// =====================================================
-// GENERATION & POWER EVACUATION
-// =====================================================
-
-const gen_and_power = [
-  {
-    id: 1,
-    icon: "generator",
-    title: "Powerhouse",
-    title2: "Surface",
-    para:
-      "55 M × 26.5 M × 35.3 M",
-  },
-  {
-    id: 2,
-    icon: "share",
-    title: "Grid Connection",
-    title2: "Generator Output",
-    para:
-      "The two generating units convert the mechanical rotation of the turbine shafts into electrical energy with a combined installed capacity of 95.7 MW.",
-  },
-];
 
 // =====================================================
 // ICONS
@@ -76,8 +59,36 @@ const ICON_OPTIONS = [
 // =====================================================
 
 export default function ProjectOverviewPage() {
+  const dispatch = useDispatch();
+
   const [generationCards, setGenerationCards] =
-    useState(gen_and_power);
+    useState([]);
+
+  const [saving, setSaving] = useState(false);
+
+  // redux state
+  const powerEvacuation = useSelector((state) => state?.landingPageAdmmin?.powerEvacuation);
+  const loading = useSelector((state) => state?.landingPageAdmmin?.powerEvacuationLoading);
+
+  // fetch generation & power evacuation on mount
+  useEffect(() => {
+    dispatch(getPowerEvacuation({}));
+  }, [dispatch]);
+
+  // keep local state in sync with the API response
+  useEffect(() => {
+    if (Array.isArray(powerEvacuation)) {
+      setGenerationCards(
+        powerEvacuation.map((item) => ({
+          id: item?.id,
+          icon: item?.icon || "",
+          title: item?.title || "",
+          title2: item?.title2 || "",
+          para: item?.para || "",
+        }))
+      );
+    }
+  }, [powerEvacuation]);
 
   const [isEditing, setIsEditing] = useState(false);
   const [selectedCardIndex, setSelectedCardIndex] =
@@ -161,7 +172,7 @@ export default function ProjectOverviewPage() {
   // UPDATE
   // =====================================================
 
-  const handleUpdateGenerationCard = () => {
+  const handleUpdateGenerationCard = async () => {
     if (selectedCardIndex === null) {
       toast.error("No card selected");
       return;
@@ -178,32 +189,44 @@ export default function ProjectOverviewPage() {
       para: editGenerationCard.para.trim(),
     };
 
-    console.log(
-      "Updated Generation Card:",
-      updatedCard
+    const evacuationId = generationCards[selectedCardIndex]?.id;
+
+    if (!evacuationId) {
+      toast.error("Card not found");
+      return;
+    }
+
+    setSaving(true);
+
+    const result = await dispatch(
+      updatePowerEvacuation({
+        id: evacuationId,
+        formData: updatedCard,
+      })
     );
 
-    setGenerationCards((prev) =>
-      prev.map((card, index) =>
-        index === selectedCardIndex
-          ? {
-            ...card,
-            ...updatedCard,
-          }
-          : card
-      )
-    );
+    setSaving(false);
 
-    toast.success(
-      "Generation and Power Evacuation updated successfully"
-    );
+    if (result.payload?.statusCode === 200 || result.payload?.statusCode === 201) {
+      toast.success(result.payload.message);
 
-    resetEditState();
+      dispatch(getPowerEvacuation({}));
+
+      resetEditState();
+    }
   };
 
   // =====================================================
   // RENDER
   // =====================================================
+
+  if (loading || saving) {
+    return (
+      <div className="fixed inset-0 z-[9999999] flex h-screen w-full items-center justify-center bg-[#000000cf]">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">

@@ -25,10 +25,13 @@ import { getAboutSpatialConstrants, getAboutTechnicalSpecs, updateAboutSpatialCo
 import Loading from "../components/Loading";
 import { useDispatch, useSelector } from "react-redux";
 import Image from "next/image";
+import { getRolePermissionLoggedInUser } from "@/app/(bid)/redux/slices/rolesAndPermissionSlice";
+import { hasPermission } from "@/helper/helper";
+import { useRouter } from "next/navigation";
 
 
 
-const TITLE_MAX_LENGTH = 20;
+const TITLE_MAX_LENGTH = 30;
 
 
 
@@ -44,7 +47,7 @@ const cardIcons = {
   IoCarOutline: <IoCarOutline />,
   RiLightbulbFlashLine: <RiLightbulbFlashLine />,
   BsHouseGearFill: <BsHouseGearFill />
-};
+}; 
 
 const getCardIcon = (icon) => cardIcons[icon] ?? "?";
 
@@ -52,7 +55,43 @@ const getCardIcon = (icon) => cardIcons[icon] ?? "?";
 export default function AboutPage() {
   const [isEditing, setIsEditing] = useState(false);
 const dispatch = useDispatch();
-  // "technical" | "spatial"
+// "technical" | "spatial"
+
+// CHECK PERMISSION 
+const router = useRouter();
+const [permissionChecked, setpermissionChecked] = useState(false)
+  const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
+  const loadingRole  = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);  //loading state
+
+      useEffect(()=>{
+      dispatch(getRolePermissionLoggedInUser({}))
+    },[]);
+
+useEffect(() => {
+  if (loadingRole) return;
+  if (!permissionOfLoggedInRoleOfUser){
+    setpermissionChecked(false)
+    return 
+  } 
+
+  const canUpdateLandingPage = hasPermission(permissionOfLoggedInRoleOfUser, "update_landing_page_content");
+  if (!canUpdateLandingPage) {
+    return router.replace("/forbidden");
+  }
+  else{
+    setpermissionChecked(true)
+  }
+
+}, [loadingRole, permissionOfLoggedInRoleOfUser]);
+  // CHECK PERMISSION END 
+// Fetch content ONLY after permission is confirmed
+useEffect(() => {
+  if (!permissionChecked) return;
+
+  dispatch(getAboutTechnicalSpecs());
+  dispatch(getAboutSpatialConstrants());
+}, [permissionChecked, dispatch]);
+
   const [selectedSection, setSelectedSection] = useState(null);
 
   const [selectedCardIndex, setSelectedCardIndex] = useState(null);
@@ -72,10 +111,7 @@ const dispatch = useDispatch();
     const loading = useSelector((state) => state?.landingPageAdmmin?.aboutTechnicalSpecsLoading || state?.landingPageAdmmin?.aboutSpatialConstrantsLoading); 
 
     const [updateLoading, setupdateLoading] = useState(false);
-  useEffect(() => {
-    dispatch(getAboutTechnicalSpecs())
-    dispatch(getAboutSpatialConstrants())
-  }, [])
+
 
   useEffect(() => {
     if(technicalSpecificaition?.length>0){
@@ -233,6 +269,9 @@ const card = cards?.find(card => card.id == index);
 
   // UPDATE TECHNICAL CARD
   if (selectedSection === "technical") {
+    if (selectedCardIndex === 1) {
+      if(editCard.title3.length>170) return toast.error("Less than 170 characters")
+    }
     setupdateLoading(true)
 const formData = new FormData();
     formData.append("title", editCard.title);
@@ -258,10 +297,7 @@ const formData = new FormData();
 
   // UPDATE SPATIAL CARD
   if (selectedSection === "spatial") {
-    if(editCard.title3.length>160){
-      toast.error("This paragraph must be 160 characters or less");
-      return ;
-    }
+
 const result = await dispatch(updateAboutSpatialConstrants({formData:editCard, id:selectedCardDbId}));
 if(result.payload.statusCode === 200){
   toast.success(result.payload.message)
@@ -307,7 +343,7 @@ if(result.payload.statusCode === 200){
   // RENDER
   const isFeatureCard = selectedSection === "technical" && selectedCardIndex === 1;
 
-  if(loading || technicalCards?.length===0 || technicalCards == null || updateLoading){
+  if(loading || technicalCards?.length===0 || technicalCards == null || updateLoading || loadingRole){
     return <div className="fixed inset-0 z-[9999999] flex h-screen w-full items-center justify-center bg-[#000000cf]">
     <Loading />
   </div>
@@ -1025,34 +1061,17 @@ if(result.payload.statusCode === 200){
                 <label className="flex items-center gap-2 text-sm font-semibold text-slate-700">
                   <HiOutlineDocumentText className="text-indigo-500" />
 
-                  {selectedSection === "spatial"
-                    ? "Description"
-                    : isFeatureCard
-                      ? "Description"
-                      : "Title 3"}
+                  {selectedSection === "spatial" ? "Description" : isFeatureCard ? "Description" : "Title 3"}
+     
+                  {selectedSection === "spatial" ? <span className="text-red-500 text-xs">Keep Less than 170 characters for better Layout. </span> : isFeatureCard ? <span className="text-red-500 text-xs">Keep Less than 170 characters for better Layout. </span> : ""}
                 </label>
+               
 
-                {isTechnicalShortCard && (
-                  <span
-                    className={`text-xs ${editCard.title3.length >=
-                      TITLE_MAX_LENGTH
-                      ? "text-red-500 font-semibold"
-                      : "text-slate-400"
-                      }`}
-                  >
-                    {editCard.title3.length}/
-                    {TITLE_MAX_LENGTH}
-                  </span>
-                )}
+    
               </div>
 
               <textarea
                 value={editCard.title3}
-                maxLength={
-                  isTechnicalShortCard
-                    ? TITLE_MAX_LENGTH
-                    : undefined
-                }
                 onChange={(e) =>
                   setEditCard((prev) => ({
                     ...prev,
@@ -1087,7 +1106,7 @@ if(result.payload.statusCode === 200){
                   transition-all
                   resize-none
                 "
-              />
+              /> 
             </div>
 
             {/* =================================================

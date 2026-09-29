@@ -18,10 +18,47 @@ import toast from "react-hot-toast";
 import Loading from "../components/Loading";
 import { editHeroSection, getHero } from "@/app/(bid)/redux/slices/LandingPageAdminPanel/landingAdminSlice";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { getRolePermissionLoggedInUser } from "@/app/(bid)/redux/slices/rolesAndPermissionSlice";
+import { hasPermission } from "@/helper/helper";
 
 export default function Page() {
   const dispatch = useDispatch();
   // const baseContentUrl = process.env.NEXT_PUBLIC_BASE_CONTENT_URL;
+
+// CHECK PERMISSION 
+const router = useRouter();
+const [permissionChecked, setpermissionChecked] = useState(false)
+  const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
+  const loadingRole  = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);  //loading state
+
+      useEffect(()=>{
+      dispatch(getRolePermissionLoggedInUser({}))
+    },[]);
+
+useEffect(() => {
+  if (loadingRole) return;
+  if (!permissionOfLoggedInRoleOfUser){
+    setpermissionChecked(false)
+    return 
+  } 
+
+  const canUpdateLandingPage = hasPermission(permissionOfLoggedInRoleOfUser, "update_landing_page_content");
+  if (!canUpdateLandingPage) {
+    return router.replace("/forbidden");
+  }
+  else{
+    setpermissionChecked(true)
+  }
+
+}, [loadingRole, permissionOfLoggedInRoleOfUser, router]);
+  // CHECK PERMISSION END 
+// Fetch content ONLY after permission is confirmed
+useEffect(() => {
+  if (!permissionChecked) return;
+    dispatch(getHero());
+}, [permissionChecked, dispatch]);
+  
 
   const herodata = useSelector((state) => state?.landingPageAdmmin?.heroSection); 
   const heroLoading = useSelector((state) => state?.landingPageAdmmin?.heroSecLoading); 
@@ -31,10 +68,8 @@ export default function Page() {
   const loading = heroLoading;
 
 
-// get hero data 
-  useEffect(() => {
-    dispatch(getHero());
-  }, [dispatch]);
+
+
   const [heroData, setHeroData] = useState({
     shortTitle: "",
     title:"", 
@@ -63,7 +98,6 @@ if(herodata?.length>0){
   // IMAGE MODAL STATES
   // =========================================================
 
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   // =========================================================
@@ -176,7 +210,7 @@ if(herodata?.length>0){
     }
 
     setSelectedImageId(null);
-    setIsDeleteModalOpen(false);
+
   };
 
   // =========================================================
@@ -507,17 +541,6 @@ if(loading){
 
                   <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedImageId(images[0].id);
-                        setIsDeleteModalOpen(true);
-                      }}
-                      className="rounded-full bg-red-600 p-3 text-white transition-transform hover:scale-110"
-                      title="Delete image"
-                    >
-                      <HiOutlineTrash size={20} />
-                    </button>
 
                   </div>
 
@@ -559,26 +582,7 @@ if(loading){
           </div>
         </div>
 
-        {/* ===================================================
-            DELETE IMAGE MODAL
-        ==================================================== */}
 
-        <DestroyerPopup
-          isOpen={isDeleteModalOpen}
-          onClose={() => {
-            setIsDeleteModalOpen(false);
-            setSelectedImageId(null);
-          }}
-          title="Remove Image?"
-          primaryAction={confirmDelete}
-          actionText="Yes, Delete"
-          loading={loading}
-        >
-          <p>
-            This action cannot be undone. This image will be permanently
-            removed from your hero section.
-          </p>
-        </DestroyerPopup>
 
         {/* ===================================================
             ADD IMAGE MODAL

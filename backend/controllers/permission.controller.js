@@ -198,7 +198,7 @@ if(!hasViewPermissionAccess) return res.json(new ApiError(403, [],"No Permission
     const [result] = await pool.query(
         `SELECT * FROM permissions`
     )
-
+// console.log(result)
     return res.json(new ApiResponse(200, result, "All Permissions"))
 
 })

@@ -45,7 +45,7 @@ export const deletePermissionFn = createAsyncThunk(
       });
 
       console.log(data, "data")
-      toast.success("Role Add Scuccess.")
+      toast.success(" Scuccess.")
       thunkAPI.dispatch(setIsPermissisonOpened(false));
       return data?.data;
 

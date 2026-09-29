@@ -87,6 +87,7 @@ const dispatch = useDispatch();
 
   viewRoles: hasPermission(permissionOfLoggedInRoleOfUser, "view_role"),
   viewPermissions: hasPermission(permissionOfLoggedInRoleOfUser, "view_Permission"),
+  updateLandingPage: hasPermission(permissionOfLoggedInRoleOfUser, "update_landing_page_content"),
 
   createBids: hasPermission(permissionOfLoggedInRoleOfUser, "create_bid"),
   applyBid: hasPermission(permissionOfLoggedInRoleOfUser, "apply_bid"),
@@ -171,21 +172,41 @@ const menuItems = [
     title: "Landing Page Contents",
     icon: GrUserAdmin,
     children: [
-      permissions.viewPermissions && {
+      permissions.updateLandingPage && {
         title: "Hero Section",
         path: "/admin/hero",
       },
-      permissions.viewPermissions && {
+      permissions.updateLandingPage && {
         title: "Hero Cards Section",
         path: "/admin/herocards",
       },
-      permissions.viewPermissions && {
+      permissions.updateLandingPage && {
         title: "About Us Section",
         path: "/admin/about",
       },
-      permissions.viewPermissions && {
+      permissions.updateLandingPage && {
         title: "Team Section",
         path: "/admin/team",
+      },
+      permissions.updateLandingPage && {
+        title: "Technical Parameter",
+        path: "/admin/projectView",
+      },
+            permissions.updateLandingPage && {
+        title: "Gallery Section",
+        path: "/admin/gallery",
+      },
+            permissions.updateLandingPage && {
+        title: "FAQs Section",
+        path: "/admin/faqs",
+      },
+            permissions.updateLandingPage && {
+        title: "Client Messages",
+        path: "/admin/messages",
+      },
+            permissions.updateLandingPage && {
+        title: "Others Section",
+        path: "/admin/others",
       },
     ].filter(Boolean),
   },

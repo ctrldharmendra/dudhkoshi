@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   HiOutlineKey,
   HiOutlineViewGrid,
@@ -20,128 +20,33 @@ import { TbBuildingTunnel } from "react-icons/tb";
 import { CiEdit } from "react-icons/ci";
 import toast from "react-hot-toast";
 import DestroyerPopup from "../components/DestroyerPopup";
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../components/Loading";
+import {
+  createWireSystem,
+  deleteWireSystem,
+  getWireSystem,
+  updateWireSystem,
+} from "@/app/(bid)/redux/slices/LandingPageAdminPanel/landingAdminSlice";
 
 // =====================================================
-// INITIAL DATA
+// API RESPONSE -> UI CARD
 // =====================================================
 
-const water_to_wire = [
-  {
-    icon: "river",
-    title: "Headworks",
-    title2: "Intake & Diversion",
-    title3: "Capturing the Flow",
-    contentData: [
-      {
-        title: "River Intake",
-        para:
-          "Water is diverted from the river through a controlled intake structure.",
-      },
-      {
-        title: "Desilting Basin",
-        para:
-          "Removes sediment and protects downstream hydraulic equipment.",
-      },
-      {
-        title: "Flow Regulation",
-        para:
-          "Gates and control structures regulate the water entering the system.",
-      },
-    ],
-  },
-  {
-    icon: "tunnel",
-    title: "Headrace Tunnels",
-    title2: "Headrace System",
-    title3: "Moving Water Efficiently",
-    contentData: [
-      {
-        title: "Headrace Tunnel",
-        para:
-          "Carries diverted water from the intake toward the powerhouse.",
-      },
-      {
-        title: "Surge Shaft",
-        para:
-          "Controls pressure fluctuations during changes in turbine operation.",
-      },
-      {
-        title: "Penstock",
-        para:
-          "Delivers high-pressure water from the surge system to the turbines.",
-      },
-    ],
-  },
-  {
-    icon: "turbine",
-    title: "Surge Shaft",
-    title2: "Turbine Conversion",
-    title3: "Turning Head into Motion",
-    contentData: [
-      {
-        title: "Water Pressure",
-        para:
-          "Available hydraulic head creates pressure and velocity at the turbine.",
-      },
-      {
-        title: "Turbine Runner",
-        para:
-          "Water drives the runner and converts hydraulic energy into mechanical energy.",
-      },
-      {
-        title: "Draft Tube",
-        para:
-          "Recovers kinetic energy and directs discharged water toward the tailrace.",
-      },
-    ],
-  },
-  {
-    icon: "power",
-    title: "Penstock",
-    title2: "Generator System",
-    title3: "Mechanical to Electrical",
-    contentData: [
-      {
-        title: "Generator Shaft",
-        para:
-          "The turbine shaft transfers rotational energy to the generator.",
-      },
-      {
-        title: "Generator",
-        para:
-          "Mechanical rotation is converted into electrical power.",
-      },
-      {
-        title: "Transformer",
-        para:
-          "Generated voltage is stepped up for efficient power transmission.",
-      },
-    ],
-  },
-  {
-    icon: "share",
-    title: "Power Evacuation",
-    title2: "Transmission",
-    title3: "Delivering Power to the Grid",
-    contentData: [
-      {
-        title: "Switchyard",
-        para:
-          "Controls and protects the electrical connection between the plant and grid.",
-      },
-      {
-        title: "Transmission Line",
-        para:
-          "Carries generated electricity from the powerhouse to the grid connection point.",
-      },
-      {
-        title: "Grid Connection",
-        para:
-          "Power is delivered to the national transmission network.",
-      },
-    ],
-  },
-];
+const mapWireSystemToCard = (system) => ({
+  id: system?.id,
+  icon: system?.icon || "",
+  title: system?.title || "",
+  title2: system?.title2 || "",
+  title3: system?.title3 || "",
+  contentData: Array.isArray(system?.contents)
+    ? system.contents.map((content) => ({
+      id: content?.id,
+      title: content?.title || "",
+      para: content?.para || "",
+    }))
+    : [],
+});
 
 // =====================================================
 // CONSTANTS
@@ -198,11 +103,31 @@ const getCardIcon = (icon) =>
 // =====================================================
 
 export default function ProjectOverviewPage() {
+  const dispatch = useDispatch();
+
   const [waterWireCards, setWaterWireCards] =
-    useState(water_to_wire);
+    useState([]);
+
+  const [saving, setSaving] = useState(false);
 
 const [expandedWaterWireCards, setExpandedWaterWireCards] =
   useState({});
+
+  // redux state
+  const wireSystems = useSelector((state) => state?.landingPageAdmmin?.wireSystems);
+  const loading = useSelector((state) => state?.landingPageAdmmin?.wireSystemsLoading);
+
+  // fetch wire systems on mount
+  useEffect(() => {
+    dispatch(getWireSystem({}));
+  }, [dispatch]);
+
+  // keep local state in sync with the API response
+  useEffect(() => {
+    if (Array.isArray(wireSystems)) {
+      setWaterWireCards(wireSystems.map(mapWireSystemToCard));
+    }
+  }, [wireSystems]);
 
   const toggleWaterWireCard = (index) => {
   setExpandedWaterWireCards((prev) => ({
@@ -225,6 +150,9 @@ const [expandedWaterWireCards, setExpandedWaterWireCards] =
   const [editWaterWireCard, setEditWaterWireCard] =
     useState(EMPTY_CARD);
 
+  // ids of saved content rows removed in the editor (deleted on save)
+  const [deletedContentIds, setDeletedContentIds] = useState([]);
+
   // =====================================================
   // EDITOR HELPERS
   // =====================================================
@@ -234,6 +162,7 @@ const [expandedWaterWireCards, setExpandedWaterWireCards] =
     setIsAdding(false);
     setSelectedCardIndex(null);
     setEditWaterWireCard(EMPTY_CARD);
+    setDeletedContentIds([]);
   };
 
   const updateField = (field, value) => {
@@ -290,6 +219,8 @@ const [expandedWaterWireCards, setExpandedWaterWireCards] =
     title3: editWaterWireCard.title3.trim(),
     contentData: editWaterWireCard.contentData.map(
       (content) => ({
+        // rows without an id are new and get inserted by the API
+        id: content.id ?? null,
         title: content.title.trim(),
         para: content.para.trim(),
       })
@@ -311,17 +242,21 @@ const [expandedWaterWireCards, setExpandedWaterWireCards] =
     setSelectedCardIndex(index);
 
     setEditWaterWireCard({
+      id: card.id,
       icon: card.icon || "",
       title: card.title || "",
       title2: card.title2 || "",
       title3: card.title3 || "",
       contentData: Array.isArray(card.contentData)
         ? card.contentData.map((item) => ({
-            title: item.title || "",
-            para: item.para || "",
-          }))
+          id: item.id,
+          title: item.title || "",
+          para: item.para || "",
+        }))
         : [],
     });
+
+    setDeletedContentIds([]);
 
     setIsEditing(true);
   };
@@ -333,6 +268,7 @@ const [expandedWaterWireCards, setExpandedWaterWireCards] =
   const handleOpenAddWaterWireCard = () => {
     setSelectedCardIndex(null);
     setEditWaterWireCard(EMPTY_CARD);
+    setDeletedContentIds([]);
     setIsAdding(true);
   };
 
@@ -355,7 +291,7 @@ const [expandedWaterWireCards, setExpandedWaterWireCards] =
     setCardToDelete(null);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (cardToDelete === null) return;
 
     const card = waterWireCards[cardToDelete];
@@ -366,15 +302,25 @@ const [expandedWaterWireCards, setExpandedWaterWireCards] =
       return;
     }
 
-    console.log("Deleted Water to Wire Card:", card);
+    if (!card.id) {
+      toast.error("System not found");
+      closeDeleteModal();
+      return;
+    }
 
-    setWaterWireCards((prev) =>
-      prev.filter((_, index) => index !== cardToDelete)
+    setSaving(true);
+
+    const result = await dispatch(
+      deleteWireSystem({ id: card.id })
     );
 
-    toast.success(
-      "Water to Wire system removed successfully."
-    );
+    setSaving(false);
+
+    if (result.payload?.statusCode === 200 || result.payload?.statusCode === 201) {
+      toast.success(result.payload.message);
+
+      dispatch(getWireSystem({}));
+    }
 
     closeDeleteModal();
   };
@@ -395,8 +341,15 @@ const [expandedWaterWireCards, setExpandedWaterWireCards] =
       ],
     }));
   };
-
   const handleRemoveWaterContent = (contentIndex) => {
+    const removedRow = editWaterWireCard.contentData[contentIndex];
+
+    // a saved row has to be deleted in the database when the system is saved,
+    // new rows only exist locally and can just be dropped
+    if (removedRow?.id !== null && removedRow?.id !== undefined) {
+      setDeletedContentIds((prevIds) => [...prevIds, removedRow.id]);
+    }
+
     setEditWaterWireCard((prev) => ({
       ...prev,
       contentData: prev.contentData.filter(
@@ -428,30 +381,42 @@ const [expandedWaterWireCards, setExpandedWaterWireCards] =
   // ADD CARD
   // =====================================================
 
-  const handleAddWaterWireCard = () => {
+  const handleAddWaterWireCard = async () => {
     if (!validateCard()) return;
 
     const newCard = buildCard();
 
-    console.log("Added Water to Wire Card:", newCard);
+    setSaving(true);
 
-    setWaterWireCards((prev) => [
-      ...prev,
-      newCard,
-    ]);
-
-    toast.success(
-      "Water to Wire system added successfully"
+    const result = await dispatch(
+      createWireSystem({
+        icon: newCard.icon,
+        title: newCard.title,
+        title2: newCard.title2,
+        title3: newCard.title3,
+        contentData: newCard.contentData.map((content) => ({
+          title: content.title,
+          para: content.para,
+        })),
+      })
     );
 
-    resetEditor();
+    setSaving(false);
+
+    if (result.payload?.statusCode === 200 || result.payload?.statusCode === 201) {
+      toast.success(result.payload.message);
+
+      dispatch(getWireSystem({}));
+
+      resetEditor();
+    }
   };
 
   // =====================================================
   // UPDATE CARD
   // =====================================================
 
-  const handleUpdateWaterWireCard = () => {
+  const handleUpdateWaterWireCard = async () => {
     if (selectedCardIndex === null) {
       toast.error("No card selected");
       return;
@@ -461,32 +426,55 @@ const [expandedWaterWireCards, setExpandedWaterWireCards] =
 
     const updatedCard = buildCard();
 
-    console.log(
-      "Updated Water to Wire Card:",
-      updatedCard
+    const systemId = waterWireCards[selectedCardIndex]?.id;
+
+    if (!systemId) {
+      toast.error("System not found");
+      return;
+    }
+
+    setSaving(true);
+
+    const result = await dispatch(
+      updateWireSystem({
+        id: systemId,
+        formData: {
+          icon: updatedCard.icon,
+          title: updatedCard.title,
+          title2: updatedCard.title2,
+          title3: updatedCard.title3,
+          contentData: updatedCard.contentData.map((content) => ({
+            id: content.id ?? null,
+            title: content.title,
+            para: content.para,
+          })),
+          deletedContentIds,
+        },
+      })
     );
 
-    setWaterWireCards((prev) =>
-      prev.map((card, index) =>
-        index === selectedCardIndex
-          ? {
-              ...card,
-              ...updatedCard,
-            }
-          : card
-      )
-    );
+    setSaving(false);
 
-    toast.success(
-      "Water to Wire System updated successfully"
-    );
+    if (result.payload?.statusCode === 200 || result.payload?.statusCode === 201) {
+      toast.success(result.payload.message);
 
-    resetEditor();
+      dispatch(getWireSystem({}));
+
+      resetEditor();
+    }
   };
 
   // =====================================================
   // RENDER
   // =====================================================
+
+  if (loading || saving) {
+    return (
+      <div className="fixed inset-0 z-[9999999] flex h-screen w-full items-center justify-center bg-[#000000cf]">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <>

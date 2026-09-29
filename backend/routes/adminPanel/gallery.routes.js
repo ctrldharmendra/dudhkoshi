@@ -23,6 +23,13 @@ router.route('/:id').delete(
     gallery.deleteGallery
 );
 
+// update gallery
+router.route('/:id').put(
+    authenticateAccessToken,
+    upload({folder: 'landingPage/gallery'}).single('image'),
+    gallery.updateGalleryById
+);
+
 // get all gallery
 router.route('/').get(
     gallery.getGallery

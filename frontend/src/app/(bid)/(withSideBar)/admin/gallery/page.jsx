@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   HiOutlinePhotograph,
   HiOutlinePlus,
@@ -11,39 +11,17 @@ import {
 import { CiEdit } from "react-icons/ci";
 import toast from "react-hot-toast";
 import DestroyerPopup from "../components/DestroyerPopup";
-
-/* =========================================================
-   TEMPORARY LOCAL GALLERY DATA
-
-   Backend-ready structure:
-
-   {
-     id,
-     image,
-     category
-   }
-
-   category is optional.
-   Empty string "" means no category.
-========================================================= */
-
-const initialGalleryData = [
-  {
-    id: 1,
-    image: "/gallery/infrastructure-1.jpg",
-    category: "infrastructure",
-  },
-  {
-    id: 2,
-    image: "/gallery/community-1.jpg",
-    category: "community",
-  },
-  {
-    id: 3,
-    image: "/gallery/events-1.jpg",
-    category: "events",
-  },
-];
+import { useDispatch, useSelector } from "react-redux";
+import Loading from "../components/Loading";
+import {
+  addGalleryImage,
+  deleteGalleryImage,
+  getGallery,
+  updateGalleryImage,
+} from "@/app/(bid)/redux/slices/LandingPageAdminPanel/landingAdminSlice";
+import { useRouter } from "next/navigation";
+import { hasPermission } from "@/helper/helper";
+import { getRolePermissionLoggedInUser } from "@/app/(bid)/redux/slices/rolesAndPermissionSlice";
 
 /* =========================================================
    GALLERY CATEGORIES
@@ -177,7 +155,7 @@ const getImageSrc = (image) => {
     return image;
   }
 
-  return `${process.env.NEXT_PUBLIC_BASE_CONTENT_URL}${image}`;
+  return `${process.env.NEXT_PUBLIC_BASE_CONTENT_URL}/${image}`;
 };
 
 /* =========================================================
@@ -185,21 +163,58 @@ const getImageSrc = (image) => {
 ========================================================= */
 
 export default function GalleryPage() {
+  const dispatch = useDispatch();
+
+
+  // CHECK PERMISSION 
+const router = useRouter();
+const [permissionChecked, setpermissionChecked] = useState(false)
+  const permissionOfLoggedInRoleOfUser = useSelector((state) => state?.roleAndPermission?.permissionOfLoggedInRoleOfUser);   
+  const loadingRole  = useSelector((state) => state.roleAndPermission?.loadingOfGetRolePermission);  //loading state
+
+      useEffect(()=>{
+      dispatch(getRolePermissionLoggedInUser({}))
+    },[]);
+
+useEffect(() => {
+  if (loadingRole) return;
+  if (!permissionOfLoggedInRoleOfUser){
+    setpermissionChecked(false)
+    return 
+  } 
+
+  const canUpdateLandingPage = hasPermission(permissionOfLoggedInRoleOfUser, "update_landing_page_content");
+  if (!canUpdateLandingPage) {
+    return router.replace("/forbidden");
+  }
+  else{
+    setpermissionChecked(true)
+  }
+
+}, [loadingRole, permissionOfLoggedInRoleOfUser, router]);
+  // CHECK PERMISSION END 
+// Fetch content ONLY after permission is confirmed
+useEffect(() => {
+  if (!permissionChecked) return;
+    dispatch(getGallery({}));
+
+}, [permissionChecked, dispatch]);
+
+  const [saving, setSaving] = useState(false);
+
   /* =========================================================
-     LOCAL GALLERY DATA
+     GALLERY DATA
 
-     TEMPORARY IMPLEMENTATION
-
-     Later this can become:
-
-     const galleryData = useSelector(
-       (state) => state.gallery.galleryData
-     );
+     Comes from the backend:
+     { id, image, category }
   ========================================================= */
 
-  const [galleryData, setGalleryData] = useState(
-    initialGalleryData
-  );
+  const gallery = useSelector((state) => state?.landingPageAdmmin?.gallery);
+  const loading = useSelector((state) => state?.landingPageAdmmin?.galleryLoading);
+
+  const galleryData = Array.isArray(gallery) ? gallery : [];
+
+
 
   /* =========================================================
      GALLERY FILTER
@@ -377,49 +392,33 @@ export default function GalleryPage() {
 
 
 /* =========================================================
-   CREATE / UPLOAD LOCAL GALLERY IMAGE
+   CREATE / UPLOAD GALLERY IMAGE
 ========================================================= */
 
-const handleUploadImage = () => {
-  if (!selectedFile) {
+const handleUploadImage = async () => {
+  if (!selectedFile?.file) {
     toast.error("Please select an image.");
     return;
   }
 
-  // Create exactly the object you want to display/send
-  const uploadedImage = {
-    image: selectedFile.preview,
-    category: category || "",
-  };
+  const formData = new FormData();
 
-  // Console output
-  console.log(
-    "Uploaded Gallery Image:",
-    uploadedImage
-  );
+  formData.append("image", selectedFile.file);
+  formData.append("category", category || "");
 
-  // Generate temporary local ID
-  const newId =
-    galleryData.length > 0
-      ? Math.max(
-          ...galleryData.map((item) => Number(item.id))
-        ) + 1
-      : 1;
+  setSaving(true);
 
-  // Update local gallery
-  const newImage = {
-    id: newId,
-    ...uploadedImage,
-  };
+  const result = await dispatch(addGalleryImage({ formData }));
 
-  setGalleryData((prev) => [
-    ...prev,
-    newImage,
-  ]);
+  setSaving(false);
 
-  toast.success("Image added successfully.");
+  if (result.payload?.statusCode === 200 || result.payload?.statusCode === 201) {
+    toast.success(result.payload.message);
 
-  closeAddModal();
+    dispatch(getGallery({}));
+
+    closeAddModal();
+  }
 };
 
 
@@ -468,47 +467,46 @@ const handleUploadImage = () => {
   };
 
 /* =========================================================
-   UPDATE LOCAL GALLERY IMAGE
+   UPDATE GALLERY IMAGE
+
+   Updates the category and, when a new file is picked,
+   replaces the stored image.
 ========================================================= */
 
-const handleUpdateImage = () => {
- 
+const handleUpdateImage = async () => {
   if (!editingImage) {
     toast.error("No image selected.");
     return;
   }
 
-  // Create exactly the object you want to display/send
-  const updatedImage = {
-    image: selectedFile?.preview || editingImage.image,
-    category: category || "",
-  };
+  const formData = new FormData();
 
-  // Console output
-  console.log(
-    "Updated Gallery Image:",
-    updatedImage
+  formData.append("category", category || "");
+
+  /*
+   * The image is optional: only send it when the user
+   * picked a replacement. Otherwise the existing image
+   * is kept.
+   */
+  if (selectedFile?.file) {
+    formData.append("image", selectedFile.file);
+  }
+
+  setSaving(true);
+
+  const result = await dispatch(
+    updateGalleryImage({ formData, id: editingImage.id })
   );
 
-  // Update local gallery data
-  setGalleryData((prev) =>
-    prev.map((item) => {
-      if (item.id !== editingImage.id) {
-        return item;
-      }
+  setSaving(false);
 
-      return {
-        ...item,
-        ...updatedImage,
-      };
-    })
-  );
+  if (result.payload?.statusCode === 200 || result.payload?.statusCode === 201) {
+    toast.success(result.payload.message);
 
-  toast.success(
-    "Gallery image updated successfully."
-  );
+    dispatch(getGallery({}));
 
-  closeEditModal();
+    closeEditModal();
+  }
 };
 
   /* =========================================================
@@ -535,18 +533,24 @@ const handleUpdateImage = () => {
      CONFIRM DELETE
   ========================================================= */
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (imageToDelete === null) {
       return;
     }
 
-    setGalleryData((prev) =>
-      prev.filter(
-        (item) => item.id !== imageToDelete
-      )
+    setSaving(true);
+
+    const result = await dispatch(
+      deleteGalleryImage({ id: imageToDelete })
     );
 
-    toast.success("Image removed successfully.");
+    setSaving(false);
+
+    if (result.payload?.statusCode === 200 || result.payload?.statusCode === 201) {
+      toast.success(result.payload.message);
+
+      dispatch(getGallery({}));
+    }
 
     closeDeleteModal();
   };
@@ -554,6 +558,14 @@ const handleUpdateImage = () => {
   /* =========================================================
      RENDER
   ========================================================= */
+
+  if (loading || saving) {
+    return (
+      <div className="fixed inset-0 z-[9999999] flex h-screen w-full items-center justify-center bg-[#000000cf]">
+        <Loading />
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700">
