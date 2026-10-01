@@ -5,8 +5,9 @@ import { FiPlus, FiMinus } from 'react-icons/fi';
 import HrLineWithHeadingText from '../landing/components/HrLineWithHeadingText';
 import StyledSubHeadingWithPill from '../landing/components/StyledSubHeadingWithPill';
 
-
 export default function FaqSection() {
+
+  
   // Active Category State
   const [activeTab, setActiveTab] = useState('Technical');
   

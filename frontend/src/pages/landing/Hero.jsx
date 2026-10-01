@@ -43,10 +43,10 @@ export default function HeroPage() {
 
               {/* Main Display Headline */}
             <h1 className="mx-auto max-w-5xl text-center font-manrope text-4xl font-bold leading-[100%] tracking-[0%] md:text-6xl lg:text-[64px]">
-              <span className="heroGradientText block pb-[3px]">
+              <span className="heroGradientText pb-[20px] block pb-[3px]">
                 Clean Energy
               </span>
-              <span className="heroGradientText block pb-[3px] mt-[20px]">
+              <span className="heroGradientText  block pb-[3px]">
                 Unstoppable Flow
               </span>
             </h1>
