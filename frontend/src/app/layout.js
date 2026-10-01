@@ -6,7 +6,7 @@ import "./globals.css";
 // import Footer from "@/components/Misc/Footer/Footer";
 import localFont from "next/font/local";
 import ToastProvider from "@/lib/ToastProvider";
-// import AOSInit from "@/components/AOSInit";
+import AOSInit from "@/components/other/AOSInit";
 // import Navbar from "@/components/Header/Navbar/Navbar";
 
 
@@ -70,8 +70,8 @@ export default function RootLayout({ children }) {
 
 
         {/* <Navbar></Navbar> */}
-        {/*
-        <AOSInit /> */}
+        {/**/}
+        <AOSInit /> 
          <ToastProvider />
         {children}
         {/* <Footer></Footer> */}

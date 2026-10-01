@@ -20,6 +20,7 @@
     "@tiptap/extension-text-style": "^2.27.3",
     "@tiptap/react": "^2.27.3",
     "@tiptap/starter-kit": "^2.27.3",
+    "aos": "^2.3.4",
     "axios": "^1.18.0",
     "cookies-next": "^4.3.0",
     "framer-motion": "^13.4.4",

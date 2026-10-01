@@ -11,7 +11,8 @@ import StyledSubHeadingLine from './components/StyledSubHeadingLine';
 export default function HeroPage() {
   return (
     <div 
-      className=" bg-white flex flex-col antialiased  heroBg"
+      className=" bg-white flex flex-col antialiased   heroBg"
+
     >
       {/* Responsive Navbar */}
       <Navbar />
@@ -43,10 +44,10 @@ export default function HeroPage() {
 
               {/* Main Display Headline */}
             <h1 className="mx-auto max-w-5xl text-center font-manrope text-4xl font-bold leading-[100%] tracking-[0%] md:text-6xl lg:text-[64px]">
-              <span className="heroGradientText pb-[20px] block pb-[3px]">
+              <span className="heroGradientText  pb-[20px] block pb-[3px]"       data-aos="fade-up">
                 Clean Energy
               </span>
-              <span className="heroGradientText  block pb-[3px]">
+              <span className="heroGradientText  block pb-[3px]"       data-aos="fade-up">
                 Unstoppable Flow
               </span>
             </h1>
