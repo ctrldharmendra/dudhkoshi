@@ -208,6 +208,10 @@ const menuItems = [
         title: "Others Section",
         path: "/admin/others",
       },
+            permissions.updateLandingPage && {
+        title: "News Section",
+        path: "/admin/news",
+      },
     ].filter(Boolean),
   },
 ].filter(item => !item.children || item.children.length > 0);

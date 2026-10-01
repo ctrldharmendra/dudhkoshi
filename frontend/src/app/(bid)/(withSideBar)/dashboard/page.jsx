@@ -586,10 +586,11 @@ items-center
 justify-center
 ">
 <Image
-    src={item?.createdByDp ? `/uploads/${item.createdByDp}` : unknownDp}
+    src={item?.createdByDp ? `${process.env.NEXT_PUBLIC_BASE_CONTENT_URL}/${item?.createdByDp}` : unknownDp}
     width={80}
     height={80}
     alt="profile"
+    unoptimized={true}
     className="rounded-full max-w-[49px] max-h-[49px] border border-blue-100"
 />
 

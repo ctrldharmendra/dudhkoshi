@@ -37,7 +37,6 @@ router.route('/').get(
 
 // delete blog 
 router.route('/:id').delete(
-    authenticateAccessToken,
     blog.deleteBlog
 );
 

@@ -13,43 +13,61 @@ import {
   HiOutlinePhotograph,
 } from "react-icons/hi";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  getAllBlogs,
-  createBlog,
-  deleteBlog,
-  updateBlog,
-  setCurrentBlog,
-  clearCurrentBlog,
-} from "../redux/slices/blogSlice/blogSlice";
+
+
+
 import Loading from "../components/Loading";
 import toast from "react-hot-toast";
 import DestroyerPopup from "../components/DestroyerPopup";
 import RichTextEditor from "../components/RichTextEditor";
+import { createNews, deleteNews, getAllNews, updateBlog } from "@/app/(bid)/redux/slices/LandingPageAdminPanel/landingAdminSlice";
 
 export default function BlogPage() {
   const dispatch = useDispatch();
-  const blogData = useSelector((state) => state.blogs.blogData);
-  const loading = useSelector((state) => state.blogs.loading);
-  const currentBlog = useSelector((state) => state.blogs.currentBlog);
+  const blogData = useSelector((state) => state?.landingPageAdmmin?.news?.data);
+  const loading = useSelector((state) => state?.landingPageAdmmin?.newsLoading);
+  const pagination = useSelector((state) => state?.landingPageAdmmin?.news?.pagination);
 
+  const [currentBlog, setcurrentBlog] = useState(null)
+// console.log(blogData, "blogData")
+// console.log(pagination, "pagination")
   /* ============================
      LOCAL STATE
   ============================ */
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+
   const [blogToDelete, setBlogToDelete] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const fileInputRef = useRef(null);
+  
+  const [content, setContent] = useState("");
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+
+
+
+
+  
+  
+  
+  const [limit, setlimit] = useState(10);
+  const [page, setpage] = useState(1);
+  const [titleSearch, setTitleSearch] = useState("");
 
   /* ============================
      FETCH DATA
   ============================ */
   useEffect(() => {
-    dispatch(getAllBlogs());
+    dispatch(getAllNews({limit, page, title:titleSearch}));
   }, [dispatch]);
+
+useEffect(() => {
+    dispatch(getAllNews({limit, page, title:titleSearch}));
+
+}, [page, limit]);
+
 
   /* ============================
      HANDLERS
@@ -81,6 +99,10 @@ export default function BlogPage() {
       toast.error("Please enter a title");
       return;
     }
+  if(!category.trim()) {
+    toast.error("Please enter a category");
+    return;
+  }
 
     if (!content.trim() || content === '<p><br></p>') {
       toast.error("Please enter some content");
@@ -95,55 +117,76 @@ export default function BlogPage() {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("content", content);
+    formData.append("category", category);
     if (selectedFile?.file) {
       formData.append("coverImage", selectedFile.file);
     }
 
     try {
-      if (isEditMode && currentBlog) {
-        await dispatch(updateBlog({ id: currentBlog.id, formData }));
-      } else {
-        await dispatch(createBlog(formData));
+      if (isEditMode === true && currentBlog) {
+        const result = await dispatch(updateBlog({formData, id:currentBlog}));
+        if(result.payload.statusCode === 200 || result.payload.statusCode === 201){
+          toast.success(result.payload.message)
+          dispatch(getAllNews({limit, page, title:titleSearch}));
+          resetForm();
+          setIsModalOpen(false);
+        }
+
+      } 
+      else if(!isEditMode) {
+       console.log(isEditMode, "N")
+const result = await dispatch(createNews({formData}));
+if(result.payload.statusCode === 200){
+toast.success(result.payload.message)
+dispatch(getAllNews({limit, page, title:titleSearch}));
+
+}
       }
       
       resetForm();
       setIsModalOpen(false);
-      dispatch(getAllBlogs()); // Refresh the list
+      // dispatch(getAllBlogs()); // Refresh the list
     } catch (error) {
       console.error("Error submitting blog:", error);
     }
   };
 
   const handleEdit = (blog) => {
-    dispatch(setCurrentBlog(blog));
+    setcurrentBlog(blog.id)
     setTitle(blog.title);
     setContent(blog.content);
+    setCategory(blog.category);
     setIsEditMode(true);
     setIsModalOpen(true);
     
     // Set existing cover image
-    if (blog.cover_image) {
+    if (blog.coverImage) {
       setSelectedFile({
-        preview: `${process.env.NEXT_PUBLIC_BASE_CONTENT_URL}uploads/blogs/${blog.cover_image}`,
-        name: blog.cover_image,
+        preview: `${process.env.NEXT_PUBLIC_BASE_CONTENT_URL}/${blog.coverImage}`,
+        name: blog.coverImage,
       });
     }
   };
 
   const handleDelete = async () => {
     if (blogToDelete) {
-      await dispatch(deleteBlog(blogToDelete));
-      setIsDeleteModalOpen(false);
-      setBlogToDelete(null);
+     const result = await dispatch(deleteNews({id:blogToDelete}));
+      if(result.payload.statusCode === 200 || result.payload.statusCode === 201){
+        toast.success(result.payload.message)
+        dispatch(getAllNews({limit, page, title:titleSearch}));
+        setIsDeleteModalOpen(false);
+        setBlogToDelete(null);
+      }
     }
   };
 
   const resetForm = () => {
     setTitle("");
     setContent("");
+    setCategory("");
     setSelectedFile(null);
     setIsEditMode(false);
-    dispatch(clearCurrentBlog());
+setcurrentBlog(null)
     if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
@@ -213,8 +256,8 @@ export default function BlogPage() {
                 <div className="relative aspect-[16/9] overflow-hidden bg-gradient-to-br from-slate-50 to-slate-100">
                   <img
                     src={
-                      blog.cover_image
-                        ? `${process.env.NEXT_PUBLIC_BASE_CONTENT_URL}uploads/blogs/${blog.cover_image}`
+                      blog.coverImage
+                        ? `${process.env.NEXT_PUBLIC_BASE_CONTENT_URL}/${blog.coverImage}`
                         : `https://via.placeholder.com/400x225/4f46e5/ffffff?text=${encodeURIComponent(blog.title.substring(0, 20))}`
                     }
                     alt={blog.title}
@@ -416,6 +459,104 @@ export default function BlogPage() {
                 className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm sm:text-base"
               />
             </div>
+            <div>
+              <label className="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
+                <HiOutlineDocumentText className="text-indigo-500 w-4 h-4 sm:w-5 sm:h-5" />
+                Blog Category | Select a category
+              </label>
+
+<div className="flex flex-wrap gap-[5px] mb-1">
+  <span className="rounded-full border border-gray-300 bg-white px-6 py-2.5 text-sm font-semibold text-gray-700 shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition-colors category-btn" onClick={(e)=>{
+    e.preventDefault();
+    setCategory(e.target.innerText || "")
+          document.querySelectorAll(".category-btn").forEach((el) => {
+      el.classList.remove("bg-green-500", "text-white");
+      el.classList.add("bg-white", "text-gray-700");
+    });
+
+    e.currentTarget.classList.remove("bg-white", "text-gray-700");
+    e.currentTarget.classList.add("bg-green-500", "text-white");
+  }}>Random</span>
+  <span
+  className="rounded-full border border-gray-300 bg-white px-6 py-2.5 text-sm font-semibold text-gray-700 shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition-colors category-btn"
+  onClick={(e)=>{
+    e.preventDefault();
+    setCategory(e.target.innerText || "")
+      document.querySelectorAll(".category-btn").forEach((el) => {
+      el.classList.remove("bg-green-500", "text-white");
+      el.classList.add("bg-white", "text-gray-700");
+    });
+
+    e.currentTarget.classList.remove("bg-white", "text-gray-700");
+    e.currentTarget.classList.add("bg-green-500", "text-white");
+  }}
+  >Miscellaneous</span>
+  <span
+  className="rounded-full border border-gray-300 bg-white px-6 py-2.5 text-sm font-semibold text-gray-700 shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition-colors category-btn"
+  onClick={(e)=>{
+    e.preventDefault();
+    setCategory(e.target.innerText || "")
+      document.querySelectorAll(".category-btn").forEach((el) => {
+      el.classList.remove("bg-green-500", "text-white");
+      el.classList.add("bg-white", "text-gray-700");
+    });
+
+    e.currentTarget.classList.remove("bg-white", "text-gray-700");
+    e.currentTarget.classList.add("bg-green-500", "text-white");
+  }}
+  >Events</span>
+  <span
+  className="rounded-full border border-gray-300 bg-white px-6 py-2.5 text-sm font-semibold text-gray-700 shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition-colors category-btn"
+  onClick={(e)=>{
+    e.preventDefault();
+    setCategory(e.target.innerText || "")
+      document.querySelectorAll(".category-btn").forEach((el) => {
+      el.classList.remove("bg-green-500", "text-white");
+      el.classList.add("bg-white", "text-gray-700");
+    });
+
+    e.currentTarget.classList.remove("bg-white", "text-gray-700");
+    e.currentTarget.classList.add("bg-green-500", "text-white");
+  }}
+  >Updates</span>
+  <span
+  className="rounded-full border border-gray-300 bg-white px-6 py-2.5 text-sm font-semibold text-gray-700 shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition-colors category-btn"
+  onClick={(e)=>{
+    e.preventDefault();
+    setCategory(e.target.innerText || "")
+    document.querySelectorAll(".category-btn").forEach((el) => {
+      el.classList.remove("bg-green-500", "text-white");
+      el.classList.add("bg-white", "text-gray-700");
+    });
+
+    e.currentTarget.classList.remove("bg-white", "text-gray-700");
+    e.currentTarget.classList.add("bg-green-500", "text-white");
+  }}
+  >Occasion</span>
+  <span
+  className="rounded-full border border-gray-300 bg-white px-6 py-2.5 text-sm font-semibold text-gray-700 shadow-sm  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-600 transition-colors category-btn"
+  onClick={(e)=>{
+    e.preventDefault();
+    setCategory(e.target.innerText || "")
+      document.querySelectorAll(".category-btn").forEach((el) => {
+      el.classList.remove("bg-green-500", "text-white");
+      el.classList.add("bg-white", "text-gray-700");
+    });
+
+    e.currentTarget.classList.remove("bg-white", "text-gray-700");
+    e.currentTarget.classList.add("bg-green-500", "text-white");
+  }}
+  >News</span>
+</div>
+
+              <input
+                type="text"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                placeholder="Enter blog Category"
+                className="w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all text-sm sm:text-base"
+              />
+            </div>
 
             {/* Content Editor */}
             <div>
@@ -436,6 +577,74 @@ export default function BlogPage() {
             </div>
           </div>
         </DestroyerPopup>
+
+        {/* pagination  */}
+<div className="mt-6 px-5 py-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+
+  <p className="text-sm text-[var(--greyText)]">
+    Page <span className="font-semibold text-black">{page}</span> of{" "}
+    <span className="font-semibold text-black">{pagination?.totalPages}</span>
+  </p>
+
+  <div className="flex items-center gap-2">
+
+
+<button
+  disabled={!pagination?.isPrevious}
+  onClick={() => {
+    if (pagination?.isPrevious) {
+      setpage((prev) => prev - 1);
+    }
+  }}
+  className={`
+    rounded-lg px-4 py-2 font-medium transition-all duration-200 border
+    ${
+      pagination?.isPrevious
+        ? "bg-[var(--adminPrimaryColor)] text-white border-[var(--adminPrimaryColor)] hover:opacity-90 active:scale-95 cursor-pointer"
+        : "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-70"
+    }
+  `}
+>
+   ← Prev
+</button>
+
+<button
+  disabled={!pagination?.isNext}
+  onClick={() => {
+    if (pagination?.isNext) {
+      setpage((prev) => prev + 1);
+    }
+  }}
+  className={`
+    rounded-lg px-4 py-2 font-medium transition-all duration-200 border
+    ${
+      pagination?.isNext
+        ? "bg-[var(--adminPrimaryColor)] text-white border-[var(--adminPrimaryColor)] hover:opacity-90 active:scale-95 cursor-pointer"
+        : "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed opacity-70"
+    }
+  `}
+>
+  Next →
+</button>
+        
+
+
+  </div>
+
+  <select value={limit} onChange={(e) =>
+   {
+      setlimit(Number(e.target.value))
+   }
+
+     
+     } className="rounded-lg border px-3 py-2">
+    <option value={4}>4 rows</option>
+    <option value={10}>10 rows</option>
+    <option value={20}>20 rows</option>
+    <option value={50}>50 rows</option>
+  </select>
+
+</div>
       </div>
     </>
   );

@@ -520,6 +520,68 @@ export const deleteMessage = createAsyncThunk(
 );
 // MESSAGES SECTION END
 
+
+// NEWS SECTION START
+export const getAllNews = createAsyncThunk(
+  'getAllNews',
+  async ( {limit, page, title}, thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.get(`/api/admin/blog?page=${page}&limit=${limit}&title=${title}`);
+      // console.log(data)
+      return data;
+    } catch (err) {
+        console.log(err)
+      toast.error(err.response?.data?.message || 'Failed');
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+export const createNews = createAsyncThunk(
+  'createNews',
+  async ( {formData},  thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.post(`/api/admin/blog`,
+         formData
+    );
+      return data;
+    } catch (err) {
+        console.log(err)
+      toast.error(err.response?.data?.message || 'Failed');
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+export const deleteNews = createAsyncThunk(
+  'deleteNews',
+  async ( {id},  thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.delete(`/api/admin/blog/${id}`);
+      return data;
+    } catch (err) {
+        console.log(err)
+      toast.error(err.response?.data?.message || 'Failed');
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+export const updateBlog = createAsyncThunk(
+  'updateBlog',
+  async ( {formData, id},  thunkAPI) => {
+    try {
+      const { data } = await axiosInstance.put(`/api/admin/blog/${id}`,
+         formData
+    );
+      return data;
+    } catch (err) {
+        console.log(err)
+      toast.error(err.response?.data?.message || 'Failed');
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+// NEWS SECTION ENDS
+
+
 const landingAdminSectionSlice = createSlice({
   name: 'landingAdminSectionSlice',
   initialState: {
@@ -559,6 +621,10 @@ const landingAdminSectionSlice = createSlice({
 
     team:null,
     teamLoading:false,
+
+    news:null,
+    newsLoading:false,
+    newsTotalCount:0,
 
 
     error: "",
@@ -710,6 +776,19 @@ const landingAdminSectionSlice = createSlice({
       })
       .addCase(getMessages.rejected, (state, action) => {
         state.messagesLoading = false;    
+      });
+
+      // news 
+      builder
+      .addCase(getAllNews.pending, (state) => {
+        state.newsLoading = true;
+      })
+      .addCase(getAllNews.fulfilled, (state, action) => {
+        state.newsLoading = false;
+        state.news = action.payload;
+      })
+      .addCase(getAllNews.rejected, (state, action) => {
+        state.newsLoading = false;    
       });
   },
 });

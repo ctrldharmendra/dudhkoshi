@@ -15,8 +15,8 @@ router.get(
 
     const isPublicLandingPage =
       Array.isArray(path)
-        ? path[0] === "landingPage"
-        : typeof path === "string" && path.split("/")[0] === "landingPage";
+        ? path[0] =="landingPage"
+        : typeof path === "string" && path.split("/")[0] =="landingPage";
 
     if (isPublicLandingPage) {
       return next();

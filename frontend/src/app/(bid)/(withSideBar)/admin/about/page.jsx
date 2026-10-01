@@ -82,7 +82,7 @@ useEffect(() => {
     setpermissionChecked(true)
   }
 
-}, [loadingRole, permissionOfLoggedInRoleOfUser]);
+}, [loadingRole, permissionOfLoggedInRoleOfUser, router]);
   // CHECK PERMISSION END 
 // Fetch content ONLY after permission is confirmed
 useEffect(() => {

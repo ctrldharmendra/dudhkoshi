@@ -40,12 +40,12 @@ const ViewFile = ({ attachments = [] }) => {
                   {file.title}
                 </h3>
 
-                <p
+                {/* <p
                   className="text-sm text-gray-500 truncate mt-1"
                   title={file.file}
                 >
                   {file.file.split("/").pop()}
-                </p>
+                </p> */}
 
                 <button
                   onClick={() =>
@@ -55,6 +55,7 @@ const ViewFile = ({ attachments = [] }) => {
                 >
                   <FiExternalLink />
                   View
+                  {/* {`${baseUrl}/${file.file}`} */}
                 </button>
               </div>
             </div>
