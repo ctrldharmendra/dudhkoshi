@@ -48,12 +48,31 @@ export default function ProjectOverviewSection() {
     // -------------------
     const technicalParameterData = useSelector((state) => state?.landingPageAdmmin?.technicalParameters);
     const technicalParametersLoading = useSelector((state) => state?.landingPageAdmmin?.technicalParametersLoading);
+
+    const [activeTab, setActiveTab] = useState(
+  technicalParameterData?.[0]?.categoryId
+);
+
+
+    const currentCategory = technicalParameterData?.find(
+  (item) => item.categoryId === activeTab
+);
+
+const currentContent = currentCategory?.contents || [];
+
+const ContentIcon =
+  Icon[currentCategory?.categoryIcon] || FiZap;
+
+const ContentNoteCurrent =
+  currentCategory?.categoryNote || "";
+
+
      // -------------------
  
         useEffect(() => {
       dispatch(getTechnicalParameter({}))
         }, [])
-        // console.log(technicalParameterData, "technicalParameterData")
+        console.log(technicalParameterData, "technicalParameterData")
   
   //       categoryIcon
   // categoryId
@@ -68,8 +87,7 @@ export default function ProjectOverviewSection() {
   // }
  
 
-  // Selected tab state
-  const [activeTab, setActiveTab] = useState(0);
+
 
   // Specs dataset for each technical parameter
 const specsData = {
@@ -136,11 +154,7 @@ const specsData = {
       note: "Power evacuation details for this project have not yet been provided by the client — placeholder values above must be replaced before publishing."
     }
   };
-  const currentContent = technicalParameterData?.[activeTab]?.contents || [];
-  // const ContentIcon =  technicalParameterData?.[activeTab]?.categoryIcon;
 
-   const ContentIcon = Icon[technicalParameterData?.[activeTab]?.categoryIcon] || FiZap;
-   const ContentNoteCurrent =technicalParameterData?.[activeTab]?.categoryNote || "";
 
   // console.log(currentContent, "currentContent")
   // console.log(ContentIcon, "ContentIcon")
@@ -153,11 +167,11 @@ console.log(currentContent, "currentContent")
   }, [activeTab])
   
 
-  if(technicalParametersLoading || !currentContent){
-  return <div className="fixed inset-0 z-[9999999] flex h-screen w-full items-center justify-center bg-[#000000cf]">
-  <Loading />
-</div>
-  }
+//   if(technicalParametersLoading || !currentContent){
+//   return <div className="fixed inset-0 z-[9999999] flex h-screen w-full items-center justify-center bg-[#000000cf]">
+//   <Loading />
+// </div>
+//   }
   return (
     <section 
       className="w-full bg-[white] py-16 px-4 sm:px-6 lg:px-8  antialiased text-[#45484D]" 
@@ -205,10 +219,8 @@ Run-of-River Hydroelectric Scheme.
               return (
                 <button 
                   key={tab.categoryId}
-                  onClick={() => {
-                    console.log(tab?.categoryId)
-                    setActiveTab(tab?.categoryId)
-                  }}
+      onClick={() => setActiveTab(tab.categoryId)}
+
                   
                   className={`w-full flex items-center gap-3.5 px-5 py-3.5 rounded-[6px] text-left font-[Hind] font-[500] text-[16px] sm:text-[14px] leading-[20px] tracking-[0px] transition-all duration-200 cursor-pointer ${
                     isActive
