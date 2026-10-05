@@ -52,12 +52,12 @@ export default function PowerEvacuationSection() {
           </h3>
 
           {/* Cards Flow Container */}
-          <div className="font-body relative z-10 flex flex-col justify-between md:flex-row items-center justify-center gap-6 md:gap-12 py-2">
+          <div className="font-body relative z-10 flex flex-col justify-between md:flex-row items-center justify-center gap-6 md:gap-12 py-2" >
             
             {cardsData.map((card, index) => (
               <React.Fragment key={card.id}>
                 {/* Individual Component Card */}
-                <div className="w-full md:w-[396px] bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col items-center text-center">
+                <div className="w-full md:w-[396px] bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col items-center text-center" >
                   
                   {/* Lightning Icon Badge */}
                   <div className="w-10 h-10 rounded-xl bg-[#eaf4fc] text-[#1E7EBB] flex items-center justify-center mb-5">

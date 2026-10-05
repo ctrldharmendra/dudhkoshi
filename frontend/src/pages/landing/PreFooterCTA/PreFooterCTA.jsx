@@ -42,6 +42,7 @@ export default function PreFooterCTA() {
         
         {/* --- DIAGONAL GRADIENT BORDER WRAPPER (TOP-LEFT GLOW) --- */}
 <div
+  data-aos="zoom-in" 
   className="relative rounded-[28px] shadow-2xl overflow-hidden"
   style={{
     background:
@@ -50,6 +51,7 @@ export default function PreFooterCTA() {
 >
             {/* Gradient border */}
             <div
+              
               className="absolute inset-0 rounded-[28px] pointer-events-none"
               style={{
                 padding: "4px",
@@ -64,6 +66,7 @@ export default function PreFooterCTA() {
 
             {/* Card */}
             <div
+              
               className="relative rounded-[24px] h-full w-full p-8 sm:p-14 md:p-20 text-center overflow-hidden"
               style={{
                 background:
@@ -73,14 +76,15 @@ export default function PreFooterCTA() {
 
             
             {/* Content Wrapper */}
-            <div className="relative z-20 max-w-3xl mx-auto space-y-6 sm:space-y-7">
+            <div className="relative z-20 max-w-3xl mx-auto space-y-6 sm:space-y-7" >
               
               {/* Heading */}
               <h2 
+                
                 className="text-2xl sm:text-4xl md:text-[44px] font-extrabold tracking-tight leading-[1.2]"
                 style={{
                     backgroundImage:
-                      "linear-gradient(90deg, rgba(255, 255, 255, 0.51) -10.06%, #FFFFFF 47.61%, rgba(255, 255, 255, 0.51) 113.42%)",
+                      "linear-gradient(90deg, rgba(255, 255, 255, 0.51) -10.06%, #FFFFFF 47.61%, rgba(255, 255, 255, 0.51) 113.42%)" ,
                     WebkitBackgroundClip: "text",
                     WebkitTextFillColor: "transparent",
                   }}
@@ -91,7 +95,7 @@ export default function PreFooterCTA() {
 
               {/* Subtitle */}
               <p 
-                className="font-body text-sm sm:text-base font-normal max-w-2xl mx-auto leading-relaxed"
+                className="font-body text-sm sm:text-base font-normal max-w-2xl mx-auto leading-relaxed" 
                 style={{ color:'#FFFFFF'}}
               >
                 We harness Nepal's rivers to deliver reliable, sustainable hydropower lighting homes, empowering communities, and building a cleaner future.

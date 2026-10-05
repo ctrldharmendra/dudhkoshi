@@ -155,12 +155,12 @@ export default function TeamSection() {
           <StyledSubHeadingWithPill text="Meet our Team"></StyledSubHeadingWithPill>
 
           {/* Main Title */}
-          <h2 className="font-['Manrope'] font-bold text-[32px] leading-[44px] tracking-[0%] text-center capitalize text-[var(--landingPageColorPrimary2)] mb-4">
+          <h2 className="font-['Manrope'] font-bold text-[32px] leading-[44px] tracking-[0%] text-center capitalize text-[var(--landingPageColorPrimary2)] mb-4" data-aos="fade-up">
           Meet our team behind our success
           </h2>
 
           {/* Subtitle */}
-          <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]">
+          <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]" data-aos="fade-up">
     Meet the multi-disciplinary team of engineers, environmental scientists, and strategic investors driving the 95.7 MW Dudhkoshi vision toward sustainable energy independence.
           </p>
         </div>

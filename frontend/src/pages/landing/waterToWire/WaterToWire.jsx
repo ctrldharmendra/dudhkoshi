@@ -105,13 +105,13 @@ export default function WaterToWireSection() {
     >
 
         
-      <div className=" mx-auto">
+      <div className=" mx-auto" >
 
         {/* Top Header Label */}
    <HrLineWithHeadingText text="Water to Wire System"></HrLineWithHeadingText>
 
         {/* Main Background Canvas Container with Subtle Grid Pattern */}
-        <div className="relative  rounded-[16px] overflow-hidden p-6 sm:p-10 border border-[#E5E5EA] shadow-xs backdrop-blur-xs">
+        <div className="relative  rounded-[16px] overflow-hidden p-6 sm:p-10 border border-[#E5E5EA] shadow-xs backdrop-blur-xs" >
           
 
                             <Image
@@ -125,20 +125,21 @@ export default function WaterToWireSection() {
         </Image>
 
           {/* Canvas Subtitle */}
-          <h3 className="text-xs sm:text-sm font-bold tracking-wider text-slate-600 uppercase mb-8 relative z-10">
+          <h3 className="text-xs sm:text-sm font-bold tracking-wider text-slate-600 uppercase mb-8 relative z-10" >
             WATER INTAKE & CONVEYANCE
           </h3>
 
           {/* TOP STEP CARDS FLOW GRID */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 relative z-10 items-stretch">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 relative z-10 items-stretch" >
             {stepsData.map((step, index) => {
               const isActive = activeCardId === step.id;
 
               return (
-                <div key={step.id} className="relative flex flex-col justify-between">
+                <div key={step.id} className="relative flex flex-col justify-between" >
                   {/* Card Box */}
                   <div 
                     onClick={() => handleToggleCard(step.id)}
+                    
                     className={`bg-white rounded-2xl p-5 sm:p-6 border transition-all duration-300 cursor-pointer flex flex-col justify-between h-full shadow-xs hover:shadow-md ${
                       isActive 
                         ? 'border-[#1E7EBB] ring-2 ring-sky-200/60 shadow-md' 
@@ -147,7 +148,8 @@ export default function WaterToWireSection() {
                   >
                     <div>
                       {/* Icon Badge */}
-                      <div className="w-9 h-9 rounded-xl bg-[#eaf4fc] text-[#1E7EBB] flex items-center justify-center mb-5">
+                      <div className="w-9 h-9 rounded-xl bg-[#eaf4fc] text-[#1E7EBB] flex items-center justify-center mb-5"
+                      >
                        {
                          step.icon
                        }

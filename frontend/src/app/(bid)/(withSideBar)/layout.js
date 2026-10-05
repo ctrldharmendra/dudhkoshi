@@ -41,7 +41,7 @@ export default function RootLayout({ children }) {
     <>
     <div className="min-h-screen bg-slate-100">
 
-      <StoreProvider
+      {/* <StoreProvider
       
        position="top-right"
   containerStyle={{
@@ -50,7 +50,7 @@ export default function RootLayout({ children }) {
   toastOptions={{
     duration: 3000,
   }}
-      >
+      > */}
       <Sidebar/>
 
 
@@ -69,7 +69,7 @@ transition-all
           {children}
     
 </main>
-          </StoreProvider>
+          {/* </StoreProvider> */}
 
       <ToastProvider
         position="top-right"

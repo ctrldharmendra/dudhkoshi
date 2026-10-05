@@ -1,7 +1,7 @@
 import React from 'react'
 
 const StyledSubHeadingWithPill = ({ text }) => (
-  <div className="flex items-center justify-center gap-4 mb-6">
+  <div className="flex items-center justify-center gap-4 mb-6" data-aos="fade-down">
     <div className="hidden sm:flex items-center">
       <span className="h-[2px] w-[260px] bg-gradient-to-r from-transparent to-[#004cb9]/40" />
       <span className="w-2.5 h-2.5 rounded-full bg-[var(--landingPagePrimaryColor)]" />

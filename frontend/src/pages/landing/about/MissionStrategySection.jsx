@@ -56,13 +56,14 @@ export default function MissionStrategySection() {
             </div>
 
             {/* Graphic Illustration Card Frame */}
-            <div className="bg-[#DDECF5]/90 p-5 rounded-[32px] border border-white/90 shadow-inner">
+            <div className="bg-[#DDECF5]/90 p-5 rounded-[32px] border border-white/90 shadow-inner"  data-aos="fade-up"
+     data-aos-duration="4000">
 
               <div className="bg-[#EBF2F7] relative rounded-2xl p-6 shadow-sm overflow-hidden border border-white flex flex-col justify-between min-h-[300px]">
 <Image  src={missionStrategyIMG} width={100} height={100} className="absolute hidden lg:flex  w-full rounded-[9px] top-0 left-0 z-0" alt="mountains"  unoptimized/>
                 
                 {/* Upper Diagram Layout */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center z-[12]">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center z-[12]" >
                   <div>
                     <h4 className="text-[18px] font-bold text-[black] leading-snug">
                       Deliver reliable <br />
@@ -117,11 +118,11 @@ export default function MissionStrategySection() {
           </div>
 
           {/* Right Column: 3 Stacked Strategy Cards (7 Cols on lg) */} 
-          <div className="lg:col-span-7 flex flex-col gap-5">
+          <div className="lg:col-span-7 flex flex-col gap-5"  >
             {cardsData.map((card, idx) => (
               <div 
                 key={idx}
-                className="bg-[var(--lightWhite)] transition-all duration-200 rounded-3xl p-7 md:p-8 border border-[#E9F2F8]/50 shadow-xs flex flex-col justify-between min-h-[170px]"
+                className="bg-[var(--lightWhite)] transition-all duration-200 rounded-3xl p-7 md:p-8 border border-[#E9F2F8]/50 shadow-xs flex flex-col justify-between min-h-[170px]" data-aos="fade-left"
               >
                 <div>
                   <span className="font-[Hind] font-medium text-[16px] leading-[20px] tracking-[0px] align-middle uppercase text-[var(--landingPagePrimaryColor)] block mb-2">

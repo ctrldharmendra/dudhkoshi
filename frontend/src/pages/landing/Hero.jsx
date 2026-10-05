@@ -37,7 +37,7 @@ export default function HeroPage() {
             {/* <div className="absolute inset-x-0 bottom-0 h-[40%] bg-gradient-to-t from-[var(--lightWhite)] via-[var(--lightWhite)]/30 to-transparent pointer-events-none"></div> */}
 
             {/* 3. Interactive/Text Layer (Sits on top of the gradient masks) */}
-            <div className="relative z-10 w-full text-center flex flex-col items-center">
+            <div className="relative z-10 w-full text-center flex flex-col items-center" >
               
               {/* Styled Subheading Line */}
 <StyledSubHeadingLine text="Dudhkhoshi Hydropower Limited"></StyledSubHeadingLine>
@@ -54,7 +54,7 @@ export default function HeroPage() {
 
 
               {/* Subtext Paragraph */}
-              <p className="mt-6 hidden lg:flex text-[20px] text-[var(--primaryTextColorLanding)] font-['Hind'] font-normal leading-[1.6] max-w-4xl mx-auto px-4">
+              <p className="mt-6 hidden lg:flex text-[20px] text-[var(--primaryTextColorLanding)] font-['Hind'] font-normal leading-[1.6] max-w-4xl mx-auto px-4" data-aos="fade-up">
                 Dudhkhoshi Hydropower Nepal Pvt. Ltd. is driving Nepal’s clean energy future. Committed to meeting the country’s 
                 expanding power demands, we build sustainable, reliable hydropower solutions rooted in our foundational vision to 
                 harness the nation’s incredible water resources.
@@ -78,7 +78,7 @@ export default function HeroPage() {
           <div className="absolute -bottom-[40px] lg:-bottom-[40px] left-0 right-0 max-w-6xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-[3fr_2fr_1fr] gap-6 z-20">
             
             {/* Card 1: Solukhumbu Project */}
-            <div className="bg-[#ffffff95] backdrop-blur-[2px] rounded-3xl gap-[12px] p-4 border-[2px] border-white/95 shadow-xl flex flex-row items-center justify-center ">
+            <div className="bg-[#ffffff95] backdrop-blur-[2px] rounded-3xl gap-[12px] p-4 border-[2px] border-white/95 shadow-xl flex flex-row items-center justify-center" data-aos="fade-left">
               <div className="relative w-full h-36 rounded-2xl overflow-hidden">
                 <Image 
                   src={heroBottom1} 
@@ -102,7 +102,7 @@ export default function HeroPage() {
             </div>
 
             {/* Card 2: Technical Description */}
-            <div className="bg-[#ffffff95] backdrop-blur-[2px] rounded-3xl p-6 border-[2px] border-white/95 shadow-xl hidden lg:flex flex-col justify-center min-h-[220px]">
+            <div className="bg-[#ffffff95] backdrop-blur-[2px] rounded-3xl p-6 border-[2px] border-white/95 shadow-xl hidden lg:flex flex-col justify-center min-h-[220px]"data-aos="fade-left">
               <p className="text-[var(--textColorOnLightBg)] text-[14px] leading-relaxed font-medium">
                 High-efficiency PRoR design ensuring 6 hours of peak power, even during dry seasons.
               </p>
@@ -113,7 +113,7 @@ export default function HeroPage() {
             </div>
 
             {/* Card 3: Capacity Details */}
-            <div className="bg-[#ffffff95] backdrop-blur-[2px] rounded-3xl p-4 border-[2px] border-white/95 shadow-xl hidden lg:flex flex-col gap-12">
+            <div className="bg-[#ffffff95] backdrop-blur-[2px] rounded-3xl p-4 border-[2px] border-white/95 shadow-xl hidden lg:flex flex-col gap-12" data-aos="fade-left">
               <div className="relative w-[133px] h-[82px] rounded-2xl overflow-hidden">
                 <Image 
                   src={heroCardImg2} 

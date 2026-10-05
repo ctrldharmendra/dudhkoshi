@@ -106,14 +106,14 @@ export default function WaterToWireSystem() {
     <section className="w-full max-w-[1300px] mx-auto px-6 py-16 ">
       
       {/* Dynamic Schematic Headers */}
-      <div className="flex flex-col items-center text-center">
+      <div className="flex flex-col items-center text-center" >
         <SectionBadge text="SYSTEM BLOCK SCHEMATIC" />
         <MainHeading text="Water-to-Wire System" />
         <SectionParagraph text="System flow diagram • Key equipment parameters and dimension tracking matrices." />
       </div>
 
       {/* Main Schematic Terminal Blueprint Box */}
-      <div className="w-full border border-slate-200/80 rounded-2xl shadow-sm p-6 md:p-8 mt-6">
+      <div className="w-full border border-slate-200/80 rounded-2xl shadow-sm p-6 md:p-8 mt-6" >
         
         {/* Section Tag 1: Upper Flow */}
         <div className="text-[10px] font-black tracking-widest text-sky-600 uppercase mb-6 flex items-center gap-1.5">
@@ -122,13 +122,13 @@ export default function WaterToWireSystem() {
         </div>
 
         {/* --- FLOW GRID SECTION 1 --- */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center relative">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-center relative" >
           {systemNodes.map((node, idx) => {
             const isSelected = activeNode === idx;
             const currentTheme = badgeColors[idx] || { bg: '#f1f5f9', text: '#334155', border: '#e2e8f0' };
 
             return (
-              <div key={idx} className="flex items-center w-full group relative">
+              <div key={idx} className="flex items-center w-full group relative" data-aos="zoom-out">
                 
                 {/* Core Interactive Node Wrapper Card */}
                 <div 
@@ -141,7 +141,7 @@ export default function WaterToWireSystem() {
                 >
                   {/* Hexagon style round structural badge identifier placeholder */}
                   <div 
-                    className="w-10 h-10 rounded-xl mx-auto flex items-center justify-center text-lg mb-3 transition-colors border"
+                    className="w-10 h-10 rounded-xl mx-auto flex items-center justify-center text-lg mb-3 transition-colors border" 
                     style={{ backgroundColor: currentTheme.bg, color: currentTheme.text, borderColor: currentTheme.border }}
                   >
                     {node.icon}
@@ -165,7 +165,7 @@ export default function WaterToWireSystem() {
                   </p>
 
                   {/* Dropdown status toggler visual hint */}
-                  <div className="mt-3 pt-2 border-t border-slate-50 flex items-center justify-center gap-1 text-[14px] font-bold text-sky-600">
+                  <div className="mt-3 pt-2 border-t border-slate-50 flex items-center justify-center gap-1 text-[14px] font-bold text-sky-600" >
                     <span>Components</span>
                     {isSelected ? <FiChevronUp /> : <FiChevronDown />}
                   </div>

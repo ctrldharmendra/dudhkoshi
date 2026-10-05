@@ -42,10 +42,10 @@ export default function SpatialConstraintsSection() {
   <div className="p-6 sm:border-r border-[#d1d1d63b] border-b border-[#d1d1d63b]">
     {/* Terrain */}
                  <div className="flex flex-col gap-2">
-                <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
+                <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1" data-aos="zoom-in-down">
                   <LiaMountainSolid className="w-4 h-4" />
                 </div>
-                <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]">
+                <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]"data-aos="zoom-in-down">
                   TERRAIN
                 </h4>
                 <p className="font-[Hind] text-[16px] font-normal leading-[20px] tracking-[0px] align-middle text-[var(--textColorOnLightBg)]">
@@ -57,11 +57,11 @@ export default function SpatialConstraintsSection() {
   <div className="p-6 border-b border-[#d1d1d63b]">
     {/* Access */}
                   <div className="flex flex-col gap-2">
-                <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
+                <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1" data-aos="zoom-in-down">
                   <IoCarOutline className="w-4 h-4" />
 
                 </div>
-                <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]">
+                <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]" data-aos="zoom-in-down">
                   ACCESS
                 </h4>
                 <p className="font-[Hind] text-[16px] font-normal leading-[20px] tracking-[0px] align-middle text-[var(--textColorOnLightBg)]">
@@ -73,10 +73,10 @@ export default function SpatialConstraintsSection() {
 
   <div className="p-6 sm:border-r border-[#d1d1d63b]">
       <div className="flex flex-col gap-2">
-                <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
+                <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1" data-aos="zoom-in-down">
                   <IoWaterOutline className="w-4 h-4" />
                 </div>
-                <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]">
+                <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]" data-aos="zoom-in-down">
                   WATER SOURCE
                 </h4>
                 <div className="font-[Hind] text-[16px] font-normal leading-[20px] tracking-[0px] align-middle text-[var(--textColorOnLightBg)]">
@@ -90,10 +90,10 @@ export default function SpatialConstraintsSection() {
   <div className="p-6">
     {/* Context */}
                 <div className="flex flex-col gap-2">
-                <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1">
+                <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1" data-aos="zoom-in-down">
                   <RiLightbulbFlashLine className="w-4 h-4" />
                 </div>
-                <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]"
+                <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]" data-aos="zoom-in-down"
 >
                   CONTEXT
                 </h4>

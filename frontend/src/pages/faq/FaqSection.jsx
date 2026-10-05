@@ -90,12 +90,12 @@ export default function FaqSection() {
           <StyledSubHeadingWithPill text="Frequently Asked Questions"></StyledSubHeadingWithPill>
 
           {/* Main Title */}
-          <h2 className="font-['Manrope'] font-bold text-[32px] leading-[44px] tracking-[0%] text-center capitalize text-[var(--landingPageColorPrimary2)] mb-4">
+          <h2 className="font-['Manrope'] font-bold text-[32px] leading-[44px] tracking-[0%] text-center capitalize text-[var(--landingPageColorPrimary2)] mb-4"  data-aos="fade-up">
           Project FAQs
           </h2>
 
           {/* Subtitle */}
-          <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]">
+          <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]"  data-aos="fade-up">
     Expert answers to our most frequently asked questions regarding hydro-infrastructure and sustainability initiatives.
           </p>
         </div>

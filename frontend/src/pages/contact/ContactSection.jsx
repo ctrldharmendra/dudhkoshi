@@ -83,11 +83,11 @@ export default function ContactSection() {
 {/* ! HERE  */}
 {/* HEADING  */}
       <div 
-        className="relative bg-[#E9F2F8D4]/83 border-2 border-[#ffffff] z-10 p-8 min-h-[474px] max-h-[474px] mt-[67px] max-w-[1216px] min-w-[1216px] rounded-[45px] sm:p-12 md:p-16 backdrop-blur-[6px]"
+        className="relative bg-[#E9F2F8D4]/83 border-2 border-[#ffffff] z-10 p-8 min-h-[474px] max-h-[474px] mt-[67px] max-w-[1216px] min-w-[1216px] rounded-[45px] sm:p-12 md:p-16 backdrop-blur-[6px]" data-aos="zoom-out"
       >
         {/* Header Content */}
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <h1 className="text-[32px] font-[Manrope] font-bold leading-none tracking-[0] text-center capitalize text-[#175F8C] mb-6">
+          <h1 className="text-[32px] font-[Manrope] font-bold leading-none tracking-[0] text-center capitalize text-[#175F8C] mb-6" >
             Get In Touch With Us
           </h1>
           <p className="font-[Hind] font-medium text-[20px] text-[#45484D] leading-8 tracking-[0] text-center">
@@ -244,7 +244,7 @@ export default function ContactSection() {
             <div className="lg:col-span-5 space-y-6">
               
               {/* Global Headquarter Box */}
-              <div className="rounded-2xl p-5 border border-slate-200/80">
+              <div className="rounded-2xl p-5 border border-slate-200/80" data-aos="zoom-out">
                 <h3 className="font-['Manrope'] font-bold text-[20px] leading-[32px] tracking-[0px] align-middle capitalize text-[#45484D] mb-1">
                   Global Headquarter
                 </h3>

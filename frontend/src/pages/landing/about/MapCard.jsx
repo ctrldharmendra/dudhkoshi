@@ -11,7 +11,7 @@ export default function MapCard({
   return (
     <div className="w-full">
       {/* Coordinates Badge */}
-      <div className="mb-4 flex min-h-[33px] w-fit mx-auto items-center gap-1.5 rounded-full border border-[#B9D7EA] px-3.5 py-1.5 font-[Hind] font-bold text-[12px] leading-[20px] tracking-[2px] align-middle text-[var(--primaryTextColorLanding3,#1E7EBB)] shadow-xs">
+      <div className="mb-4 flex min-h-[33px] w-fit mx-auto items-center gap-1.5 rounded-full border border-[#B9D7EA] px-3.5 py-1.5 font-[Hind] font-bold text-[12px] leading-[20px] tracking-[2px] align-middle text-[var(--primaryTextColorLanding3,#1E7EBB)] shadow-xs" >
         <HiLocationMarker className="h-3.5 w-3.5 shrink-0 text-[var(--landingPagePrimaryColor,#1E7EBB)]" />
 
         <span>{coordinates}</span>
@@ -21,7 +21,7 @@ export default function MapCard({
       <div className="relative w-full rounded-[33px] bg-[#DDECF5] p-3 sm:p-4">
         {/* Map */}
         <div
-          className={`relative w-full h:[200px] lg:h-[450px] overflow-hidden rounded-[32px] border border-blue-100/60 bg-slate-100 shadow-lg`}
+          className={`relative w-full h:[200px] lg:h-[450px] overflow-hidden rounded-[32px] border border-blue-100/60 bg-slate-100 shadow-lg` } data-aos="zoom-in"
         >
           {/* <iframe
             src={mapUrl}

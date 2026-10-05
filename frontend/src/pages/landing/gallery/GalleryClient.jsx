@@ -45,7 +45,7 @@ export default  function GalleryClient({ initialGallery }) {
           <StyledSubHeadingWithPill text="Gallery"></StyledSubHeadingWithPill>
 
           {/* Main Title */}
-          <h2 className="font-['Manrope'] font-bold text-[32px] leading-[100%] tracking-[0%] text-center capitalize text-[var(--landingPageColorPrimary2)] mb-4">
+          <h2 className="font-['Manrope'] font-bold text-[32px] leading-[100%] tracking-[0%] text-center capitalize text-[var(--landingPageColorPrimary2)] mb-4" data-aos="fade-up" >
           Our Visual Journal
           </h2>
 
@@ -69,7 +69,7 @@ export default  function GalleryClient({ initialGallery }) {
                 <button
                   key={cat}
                   onClick={() => handleCategoryChange(cat)}
-                  className={`px-5 py-2 rounded-full text-[15px] font-medium transition-all duration-200 cursor-pointer whitespace-nowrap ${
+                  className={`px-5 py-2 rounded-full text-[15px] font-medium transition-all duration-200 cursor-pointer whitespace-nowrap  ${
                     isActive
                       ? "bg-[var(--landingPagePrimaryColor,#1E7EBB)] border-[1px] border-[#1B71A8] text-white shadow-sm"
                       : "bg-[#E9F2F8] text-[#45484D] hover:bg-[#1E7EBB]/40"
@@ -110,7 +110,7 @@ export default  function GalleryClient({ initialGallery }) {
       ) : isGridView ? (
         
         /* 1. GRID VIEW MODE */
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 animate-fadeIn">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 animate-fadeIn" data-aos="zoom-out">
           {filteredGallery?.map((item) => (
             <div 
               key={item.id}

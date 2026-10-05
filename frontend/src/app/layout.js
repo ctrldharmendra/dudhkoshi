@@ -7,6 +7,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import ToastProvider from "@/lib/ToastProvider";
 import AOSInit from "@/components/other/AOSInit";
+import StoreProvider from "./(bid)/redux/storeProvider/StoreProvider";
 // import Navbar from "@/components/Header/Navbar/Navbar";
 
 
@@ -71,9 +72,20 @@ export default function RootLayout({ children }) {
 
         {/* <Navbar></Navbar> */}
         {/**/}
+        <StoreProvider
+        
+               position="top-right"
+  containerStyle={{
+    zIndex: 9999999999,
+  }}
+  toastOptions={{
+    duration: 3000,
+  }}
+        >
         <AOSInit /> 
          <ToastProvider />
         {children}
+        </StoreProvider>
         {/* <Footer></Footer> */}
       </body>
     </html>

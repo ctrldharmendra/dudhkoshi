@@ -12,7 +12,7 @@ export default function Footer() {
     >
       
       {/* MAIN FLOATING CARD CONTAINER */}
-      <div className="max-w-[1260px] mx-auto relative z-10">
+      <div className="max-w-[1260px] mx-auto relative z-10"data-aos="zoom-in">
         <div className="bg-white rounded-[28px] sm:rounded-[36px] p-6 sm:p-10 md:p-12 shadow-[0_10px_30px_rgba(0,0,0,0.04)] border border-slate-100">
           
           {/* TOP SECTION: GRID LAYOUT */}
@@ -182,7 +182,7 @@ export default function Footer() {
       text-[#1E7EBB]/20 
       uppercase 
       whitespace-nowrap
-    "
+    " data-aos="fade-up"
   >
     Dudhkoshi2
   </span>

@@ -95,7 +95,7 @@ const specsData = {
 
   return (
     <section 
-      className="w-full bg-[white] py-16 px-4 sm:px-6 lg:px-8  antialiased text-[#45484D]"
+      className="w-full bg-[white] py-16 px-4 sm:px-6 lg:px-8  antialiased text-[#45484D]" 
       style={{
         '--landingPagePrimaryColor': '#1E7EBB',
         '--textColorOnLightBg': '#45484D',
@@ -115,35 +115,36 @@ Project Overview
           </h2>
 
           {/* Subtitle */}
-          <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]">
+          <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]" data-aos="fade-up">
 Engineering design data and technical specifications for the Dudhkoshi-2 
 Run-of-River Hydroelectric Scheme.
-          </p>
+          </p >
         </div>
 
         {/* Technical Parameters Label */}
-        <div className="mb-6">
+        <div className="mb-6" >
    <HrLineWithHeadingText text="TECHNICAL PARAMETERS"></HrLineWithHeadingText>
 
         </div>
 
         {/* Main Content Layout Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start" >
           
           {/* LEFT SIDE: TAB NAVIGATION (4 Cols on lg) */}
-          <div className="lg:col-span-4 flex flex-col gap-2.5 overflow-x-auto pb-2 lg:pb-0 scrollbar-none">
+          <div className="lg:col-span-4 flex flex-col gap-2.5 overflow-x-auto pb-2 lg:pb-0 scrollbar-none" data-aos="zoom-in" >
             {tabs.map((tab) => {
               const isActive = activeTab === tab.id;
               const Icon = tab.icon;
 
               return (
-                <button
+                <button 
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
+                  
                   className={`w-full flex items-center gap-3.5 px-5 py-3.5 rounded-[6px] text-left font-[Hind] font-[500] text-[16px] sm:text-[14px] leading-[20px] tracking-[0px] transition-all duration-200 cursor-pointer ${
                     isActive
                       ? "bg-white text-[#1E7EBB]  border-slate-100 ring-1 ring-sky-100"
-                      : "bg-transparent hover:text-slate-800 hover:bg-slate-200/40 border border-transparent"
+                      : "bg-transparent hover:text-slate-800 hover:bg-slate-200/40 border border-transparent" 
                   }`}
                 >
                   <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#1E7EBB]" : "text-[500]"}`} />
@@ -161,21 +162,21 @@ Run-of-River Hydroelectric Scheme.
 
           {/* RIGHT SIDE: SPECIFICATIONS CARD (8 Cols on lg) */}
           <div className="lg:col-span-8">
-            <div className="bg-white rounded-[5px] border border-slate-200/80 shadow-xs overflow-hidden transition-all duration-300">
+            <div className="bg-white rounded-[5px] border border-slate-200/80 shadow-xs overflow-hidden transition-all duration-300" data-aos="zoom-in" >
               
               {/* Card Header Banner */}
-              <div className="projectOverViewCardTopBg px-6 py-4 flex items-center gap-3 border-b border-sky-100">
+              <div className="projectOverViewCardTopBg px-6 py-4 flex items-center gap-3 border-b border-sky-100" data-aos="zoom-in">
                 <div className="w-8 h-8 rounded-lg bg-[#1E7EBB] flex items-center justify-center text-white shrink-0">
                   <ContentIcon className="w-4 h-4" />
                 </div>
-                <h3 className="text-base sm:text-lg font-extrabold text-[#2C3E50]">
+                <h3 className="text-base sm:text-lg font-extrabold text-[#2C3E50]" >
                   {currentContent.title}
                 </h3>
               </div>
 
               {/* Data Table Rows */}
               <div className="p-6 sm:p-8 flex flex-col gap-4">
-                <div className="flex flex-col border-b border-slate-100 pb-2">
+                <div className="flex flex-col border-b border-slate-100 pb-2" >
                   {currentContent.data.map((item, index) => (
                     <div 
                       key={index}

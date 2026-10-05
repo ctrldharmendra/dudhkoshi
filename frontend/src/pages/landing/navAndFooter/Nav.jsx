@@ -103,7 +103,7 @@ export default function Navbar() {
           <Link 
             href="/contact" 
             onClick={() => setIsOpen(false)}
-            className="mt-2 w-full text-center py-3 bg-[var(--landingPagePrimaryColor)] text-[var(--lightWhite)] font-medium rounded-full"
+            className="mt-2 w-full text-center py-3 bg-[var(--landingPagePrimaryColor)] text-[var(--lightWhite)] font-medium rounded-full" 
           >
             Contact Us
           </Link>

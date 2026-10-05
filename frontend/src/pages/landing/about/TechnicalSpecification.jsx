@@ -3,7 +3,6 @@ import Accordion from './Accordion';
 import { BiWater } from "react-icons/bi";
 import { ImPower } from "react-icons/im";
 import { IoWaterOutline } from "react-icons/io5";
-
 import technicalSpecificationIMG from "../../../../public/landing/realImage/9.png";
 // import technicalSpecificationIMG from "../../../../public/landing/aboutUsTechnicalSpecification.png";
 import Image from 'next/image';
@@ -43,18 +42,18 @@ export default function TechnicalSpecification() {
       <div className="max-w-[1438px] mx-auto">
         
         {/* Top Centered Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
 
 
           <StyledSubHeadingWithPill text="About us"></StyledSubHeadingWithPill>
 
           {/* Main Title */}
-          <h2 className="font-['Manrope'] font-bold text-[32px] leading-[44px] tracking-[0%] text-center capitalize text-[var(--landingPageColorPrimary2)] mb-4">
+          <h2 className="font-['Manrope'] font-bold text-[32px] leading-[44px] tracking-[0%] text-center capitalize text-[var(--landingPageColorPrimary2)] mb-4" >
             Empowering Nepal With <br className="hidden sm:inline" /> Clean Hydropower Solutions
           </h2>
 
           {/* Subtitle */}
-          <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]">
+          <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]" >
             Dudhkhoshi Hydropower Nepal Pvt. Ltd. operates the Dudhkhoshi-2 (Jaleshwor) project a 95.7 MW optimized facility engineered for the highest efficiency and reliability.
           </p>
         </div>
@@ -66,15 +65,15 @@ export default function TechnicalSpecification() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-[45px] items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-[45px] items-stretch" >
           
           {/* Left Column: Blue Feature Card (4 cols on lg screens) */}
-          <div className="lg:col-span-4 bg-[var(--landingPagePrimaryColor)] text-white rounded-3xl p-10 flex flex-col justify-between shadow-sm">
+          <div className="lg:col-span-4 bg-[var(--landingPagePrimaryColor)] text-white rounded-3xl p-10 flex flex-col justify-between shadow-sm" data-aos="zoom-in">
             <div>
               <p className="font-['Manrope'] font-bold font-[900px] text-[16px] leading-[20px] tracking-[0px] align-middle text-white uppercase mb-3">
                 DUDHKHOSHI HYDROPOWER
               </p>
-              <h3 className="font-['Manrope'] font-bold text-[24px] leading-[64px] tracking-[0%] mb-4">
+              <h3 className="font-['Manrope'] font-bold text-[24px] leading-[64px] tracking-[0%] mb-4"  >
                 Engineering the Future
               </h3>
               <p className="text-[20px] text-white leading-relaxed font-normal">
@@ -102,7 +101,7 @@ export default function TechnicalSpecification() {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               
               {/* Stat 1 */}
-              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs flex flex-col justify-between">
+              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs flex flex-col justify-between" data-aos="flip-up">
                 <div>
                   <div className="w-10 h-10 rounded-lg bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-6">
                     <ImPower className="w-5 h-5 fill-[#175F8C]" />
@@ -113,20 +112,20 @@ export default function TechnicalSpecification() {
                   </p>
                 </div>
                 <div className="pt-4 mt-4 border-t border-[#E9F2F8]">
-                  <span className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-normal align-middle text-[var(--landingPagePrimaryColor)] uppercase">
+                  <span className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-normal align-middle text-[var(--landingPagePrimaryColor)] uppercase" >
                     ANNUAL OUTPUT
                   </span>
                 </div>
               </div>
 
               {/* Stat 2 */}
-              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs flex flex-col justify-between">
+              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs flex flex-col justify-between" data-aos="flip-up">
                 <div>
-                  <div className="w-10 h-10 rounded-lg bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-6">
+                  <div className="w-10 h-10 rounded-lg bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-6" data-aos="flip-up">
                     <BiWater className="w-5 h-5 fill-[#175F8C]" />
                   </div>
                   <p className="text-base font-bold text-[var(--textColorOnLightBg)] leading-5 tracking-normal">Design Discharge</p>
-                  <p className="font-[Manrope] text-[32px] font-normal leading-[33px] tracking-normal align-middle text-[var(--landingPageTertiaryColor)] mt-[16px]">
+                  <p className="number-animation animate--50 font-[Manrope] text-[32px] font-normal leading-[33px] tracking-normal align-middle text-[var(--landingPageTertiaryColor)] mt-[16px]">
                     83.5 <span className="font-[Manrope] text-[32px] font-normal leading-[33px] tracking-normal align-middle text-[#45484D]">m³/s</span>
                   </p>
                 </div>
@@ -138,7 +137,7 @@ export default function TechnicalSpecification() {
               </div>
 
               {/* Stat 3 */}
-              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs flex flex-col justify-between">
+              <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-xs flex flex-col justify-between" data-aos="flip-up">
                 <div>
                   <div className="w-10 h-10 rounded-lg bg-[#FFF8E7] flex items-center justify-center text-amber-500 mb-6">
                     <IoWaterOutline className="w-5 h-5 fill-[#175F8C]" />
@@ -158,7 +157,7 @@ export default function TechnicalSpecification() {
             </div>
 
             {/* Bottom Card: Unshakable Foundations + Accordion Component */}
-            <div className="bg-white rounded-3xl p-6 md:p-8 border border-gray-100 shadow-xs grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+            <div className="bg-white rounded-3xl p-6 md:p-8 border border-gray-100 shadow-xs grid grid-cols-1 md:grid-cols-12 gap-6 items-center" data-aos="zoom-in-down">
               
               {/* Left text inside bottom card */}
               <div className="md:col-span-5">
