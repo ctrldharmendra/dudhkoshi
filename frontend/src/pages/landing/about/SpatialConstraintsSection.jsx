@@ -2,14 +2,56 @@ import React from 'react';
 import MapCard from './MapCard';
 import { FiTriangle, FiDroplet, FiMapPin } from 'react-icons/fi';
 import { LiaMountainSolid } from "react-icons/lia";
-import { MdLocationOn } from "react-icons/md";
+import { MdLocationOn, MdOutlineWater } from "react-icons/md";
 import { IoCarOutline, IoWaterOutline } from "react-icons/io5";
 import { RiLightbulbFlashLine } from "react-icons/ri";
 import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
 import { SlLocationPin } from 'react-icons/sl';
+import { ImPower } from 'react-icons/im';
+import { HiOutlineClock } from 'react-icons/hi';
+import { BsHouseGearFill } from 'react-icons/bs';
 
 
-export default function SpatialConstraintsSection() {
+export default async function SpatialConstraintsSection({footerData}) {
+const BASE_API = process.env.BASE_API;
+let data = null;
+
+// icon
+// : 
+// "LiaMountainSolid"
+// id
+// : 
+// 1
+// title
+// : 
+// "TERRAIN"
+// title2
+// : 
+// ""
+// title3
+// : 
+// "Steep-
+  try {
+      const res = await fetch(`${BASE_API}/api/admin/aboutus/spatialconstraints`)
+      const json = await res.json()
+      data = json?.data
+  } catch (error) {
+    return <div className='text-[19px] text-center p-[12px] heroSection'>Some Content Could Not be Loaded. </div>
+  }
+
+
+
+const iconMap = {
+  ImPower,
+  MdOutlineWater,
+  IoWaterOutline,
+  HiOutlineClock,
+  LiaMountainSolid,
+  IoCarOutline,
+  RiLightbulbFlashLine,
+  BsHouseGearFill,
+};
+
   return (
     <section 
       className="w-full spatialAboutUsBg py-8 px-4 sm:px-6 lg:px-8 antialiased"
@@ -43,66 +85,88 @@ export default function SpatialConstraintsSection() {
     {/* Terrain */}
                  <div className="flex flex-col gap-2">
                 <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1" data-aos="zoom-in-down">
-                  <LiaMountainSolid className="w-4 h-4" />
+                    {(() => {
+  const Icon = iconMap[data?.[0]?.icon];
+  return Icon ? <Icon className="w-4 h-4" /> : null;
+})()}
+
+                  
                 </div>
                 <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]"data-aos="zoom-in-down">
-                  TERRAIN
+             {data?.[0]?.title}
                 </h4>
                 <p className="font-[Hind] text-[16px] font-normal leading-[20px] tracking-[0px] align-middle text-[var(--textColorOnLightBg)]">
-                  Steep-walled glacial gorge with high metamorphic rock stability. Gradient analyzed at 42° mean.
+                 {data?.[0]?.title3}
                 </p>
               </div>
   </div>
 
-  <div className="p-6 border-b border-[#d1d1d63b]">
     {/* Access */}
+  <div className="p-6 border-b border-[#d1d1d63b]">
                   <div className="flex flex-col gap-2">
                 <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1" data-aos="zoom-in-down">
-                  <IoCarOutline className="w-4 h-4" />
+                                 {(() => {
+  const Icon = iconMap[data?.[1]?.icon];
+  return Icon ? <Icon className="w-4 h-4" /> : null;
+})()}
+
 
                 </div>
                 <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]" data-aos="zoom-in-down">
-                  ACCESS
+               {data?.[1]?.title}
                 </h4>
                 <p className="font-[Hind] text-[16px] font-normal leading-[20px] tracking-[0px] align-middle text-[var(--textColorOnLightBg)]">
-                  <span className="font-[Hind] font-bold text-[16px] leading-[20px] tracking-[0px] align-middle block text-slate-800 mb-1">11 km corridor</span>
-                  Pedestrian and light cargo maintenance access.
+                  <span className="font-[Hind] font-bold text-[16px] leading-[20px] tracking-[0px] align-middle block text-slate-800 mb-1">
+                    {data?.[1]?.title2}
+                  </span>
+              {data?.[1]?.title3}
                 </p>
               </div>
   </div>
-
+{/* 3 */}
   <div className="p-6 sm:border-r border-[#d1d1d63b]">
       <div className="flex flex-col gap-2">
                 <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1" data-aos="zoom-in-down">
-                  <IoWaterOutline className="w-4 h-4" />
+                                     {(() => {
+  const Icon = iconMap[data?.[2]?.icon];
+  return Icon ? <Icon className="w-4 h-4" /> : null;
+})()}
+
                 </div>
                 <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]" data-aos="zoom-in-down">
-                  WATER SOURCE
+                  {data?.[2]?.title}
                 </h4>
                 <div className="font-[Hind] text-[16px] font-normal leading-[20px] tracking-[0px] align-middle text-[var(--textColorOnLightBg)]">
-                  <p className="font-[Hind] font-bold text-[16px] leading-[20px] tracking-[0px] align-middle block text-slate-800 mb-1">Dudhkoshi River</p>
+                  <p className="font-[Hind] font-bold text-[16px] leading-[20px] tracking-[0px] align-middle block text-slate-800 mb-1">
+                    {data?.[2]?.title2}
+                  </p>
                   <p className="font-[Hind] text-[16px] font-normal leading-[20px] tracking-[0px] align-middle text-[var(--primaryTextColorLanding)]">
-                      6 hours a day in dry seasons</p>
+                    {data?.[2]?.title3}
+                  </p>
                 </div>
               </div>
   </div>
-
+{/* 4 */}
   <div className="p-6">
     {/* Context */}
                 <div className="flex flex-col gap-2">
                 <div className="w-9 h-9 rounded-[7px] bg-[#EAF3FA] flex items-center justify-center text-[var(--landingPagePrimaryColor)] mb-1" data-aos="zoom-in-down">
-                  <RiLightbulbFlashLine className="w-4 h-4" />
+                                  {(() => {
+  const Icon = iconMap[data?.[3]?.icon];
+  return Icon ? <Icon className="w-4 h-4" /> : null;
+})()}
+
                 </div>
                 <h4 className="font-[Hind] text-[14px] font-bold leading-[20px] tracking-[0px] align-middle uppercase text-[var(--primaryTextColorLanding3)]" data-aos="zoom-in-down"
 >
-                  CONTEXT
+                  {data?.[3]?.title}
                 </h4>
                 <div className="font-[Hind] text-[16px] font-normal leading-[20px] tracking-[0px] align-middle text-[var(--textColorOnLightBg)]">
                   <p className="font-[Hind] font-bold text-[16px] leading-[20px] tracking-[0px] align-middle block text-slate-800 mb-1">
-                    PEAKING POWER CAPACITY
+                    {data?.[3]?.title2}
                   </p>
                   <p className="font-[Hind] text-[16px] font-normal leading-[20px] tracking-[0px] align-middle text-[var(--primaryTextColorLanding)]">
-                    Glacier-fed perennial flow system with robust discharge during monsoon cycles.
+                    {data?.[3]?.title3}
                   </p>
                 </div>
               </div>
@@ -125,7 +189,7 @@ export default function SpatialConstraintsSection() {
 
           {/* Right Column: Reusable Map Component (6 Cols) */}
           <div className="lg:col-span-6 p-2 rounded-2xl">
-            <MapCard height="h-[480px]" />
+            <MapCard height="h-[480px]" footerData={footerData} />
           </div>
 
         </div>
