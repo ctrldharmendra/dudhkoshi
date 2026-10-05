@@ -178,10 +178,10 @@ const iconMap = {
             <div className="bg-[white] min-h-[93px] max-w-[356px] overflow-hidden rounded-2xl border border-[#FFFFFF] flex flex-col items-center text-center shadow-2xs">
               <div className="pt-[2px] items-center bg-[var(--highlightBg)] min-h-[28px] w-full flex gap-3 justify-center text-center text-amber-600 font-[Manrope] font-bold text-[12px] leading-[20px] tracking-[2px] align-middle uppercase mb-2">
                 <MdLocationOn className="w-4.5 h-3.5 fill-amber-500 text-amber-600" />
-                <span>SOLUKHUMBU</span>
+                <span>{footerData?.aboutUsCardTitle || ""}</span>
               </div>
               <p className="font-[Hind] font-normal text-[12px] leading-[20px] tracking-[0px] text-center align-middle pt-0.5 min-w-full flex justify-center bg-[var(--lightWhite)] text-gray-600 max-w-md">
-                Located in the Solukhumbu District of Koshi Province, this semi-reservoir and peaking run-of-river (PRoR) project
+                {footerData?.aboutUsCardPara || ""}
               </p>
             </div>
 
