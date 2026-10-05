@@ -1,141 +1,111 @@
 "use client";
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from "react";
 
-import kadam from "../../../../public/landing/team/kadamKc.jpeg"
-import abhigya from "../../../../public/landing/team/abhigyamalla.jpeg"
-import arun from "../../../../public/landing/team/arun.jpg"
-import bikram from "../../../../public/landing/team/bikramgautam.jpg"
-import devendra from "../../../../public/landing/team/devendraadhi.jpeg"
-import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
-import StyledSubHeadingWithPill from '../components/StyledSubHeadingWithPill';
+import HrLineWithHeadingText from "../components/HrLineWithHeadingText";
+import StyledSubHeadingWithPill from "../components/StyledSubHeadingWithPill";
 
+import { useDispatch, useSelector } from "react-redux";
+import { getTeam } from "@/app/(bid)/redux/slices/LandingPageAdminPanel/landingAdminSlice";
 
-// Sample Team Data Array
-const teamMembersData = [
-  {
-    id: '1',
-    name: 'Kadam KC',
-    role: 'Chairman',
-    category: 'Directors',
-    avatar: kadam.src,
-    photo: kadam.src,
-    bio: [
-      'Kadam KC, an entrepreneur with a master\'s in environmental science and geotechnical engineering from UK universities, has over 15 years in business.',
-      'His leadership bridges the gap between complex geotechnical requirements and environmental stewardship, ensuring the Dudhkoshi project adheres to the highest global standards.',
-      'While in the UK, he was active in both business and social work. After returning to Nepal, he focused on hydropower, successfully completing Puwa Khola-1 Hydropower (4 MW). He chairs Aayu Entertainments Pvt. Ltd. and is launching Fishtail Dream Park in Pokhara. He also founded Dhaulagiri Construction and Development Pvt. Ltd. and serves on the board of High Himalaya Hydro Construction Pvt. Ltd.'
-    ],
-    metadata: [
-      { label: 'Background', value: 'UK Master\'s Alumnus' },
-      { label: 'Experience', value: '15+ Years' },
-      { label: 'Focus', value: 'Geotechnical & Environmental' }
-    ]
-  },
-  {
-    id: '2',
-    name: 'Abhigya Malla',
-    role: 'Director',
-    category: 'Directors',
-    avatar: abhigya.src,
-    photo: abhigya.src,
-    bio: [
-      'Abhigya Malla is a finance professional, project developer, and emerging leader in Nepal’s hydropower and construction sector. She holds a Master’s degree in Professional Accountancy and a Master’s in Commerce with a specialization in Finance from Macquarie University, Australia. She currently serves as Vice President and Finance Controller at High Himalaya Hydro Construction Pvt. Ltd., where she is involved in the development and management of several hydropower projects.',
-      'Her portfolio includes Aayu Malun (21 MW), Puwa Khola (4 MW), Hongu Khola (28.9 MW), Midim Khola (3 MW), and Upper Tamor A (60 MW). As a youth contractor and project developer, she combines strong financial expertise with practical experience in infrastructure development. She also serves as Managing Director of Union Hydropower Public Ltd., further demonstrating her leadership and commitment to Nepal’s growing hydropower industry.'
-    ],
-    metadata: [
-      { label: 'Background', value: 'Australia Master’s Alumnus' },
-      { label: 'Experience', value: '7+ Years' },
-      { label: 'Focus', value: 'Finance & Contractor' }
-    ]
-  },
-  // {
-  //   id: '3',
-  //   name: 'Devendra Adhikari',
-  //   role: 'Director',
-  //   category: 'Directors',
-  //   avatar: devendra.src,
-  //   photo: devendra.src,
-  //   bio: [
-  //     'Devendra Adhikari, Holds Masters in Professional Accountancy and Commerce in Finance (Macquarie University, Australia).',
-  //     'A seasoned entrepreneur with 30+ years of experience in trading, export, agriculture, and real estate; former Director of Lumbini Finance and Lumbini Bikash Bank; active capital market investor and real estate developer.'
-  //   ],
-  //   metadata: [
-  //     { label: 'Background', value: 'UK Master’s Alumnus' },
-  //     { label: 'Experience', value: '30+ Years' },
-  //     { label: 'Focus', value: 'Real estate & Investor' }
-  //   ]
-  // },
-  {
-    id: '4',
-    name: 'Bikram Gautam',
-    role: 'Director',
-    category: 'Director',
-    avatar: bikram.src,
-    photo: bikram.src,
-    bio: [
-      'Bikram Gautam, With over 15 years of experience leading large-scale manufacturing and construction teams, He brings deep expertise in the Real Estate and Mines business sectors. ',
-      'He has a strong track record in end-to-end product development, operational leadership, and project execution. His experience includes strategic planning, cross-functional team management, process optimization, and delivering high-quality, cost-effective solutions that drive sustainable business growth and long-term value.'
-    ],
-    metadata: [
-      { label: 'Background', value: 'Australia Master’s Alumnus' },
-      { label: 'Experience', value: '7+ Years' },
-      { label: 'Focus', value: 'Finance & Contractor' }
-    ]
-  },
-  {
-    id: '5',
-    name: 'Arun Kumar Agarwal',
-    role: 'Director',
-    category: 'Management',
-    avatar: arun.src,
-    photo: arun.src,
-    bio: [
-      'Arun Kumar Agarwal is a prominent businessman with extensive experience in the construction, infrastructure, trading, and retail sectors. As the driving force behind Rajesh Trade Link, he has played an important role in building and expanding a strong business presence across the country. His entrepreneurial portfolio also includes RTL Mall and Goyal Aluminum, reflecting his diverse interests and ability to manage businesses across multiple industries.',
-      ' With a focus on quality, reliability, and long-term growth, he has developed an extensive nationwide distribution network that enables his businesses to effectively serve customers and partners in different markets. His leadership is characterized by strategic vision, strong business relationships, and a commitment to sustainable growth. Through his ventures, he continues to contribute to the development of construction, infrastructure, distribution, and commercial sectors while strengthening his position as an influential entrepreneur.'
-    ],
-    metadata: [
-      { label: 'Background', value: 'Operations Management' },
-      { label: 'Experience', value: '14+ Years' },
-      { label: 'Focus', value: 'Resource Allocation & PMO' }
-    ]
-  }
-];
+const IMAGE_BASE_URL = process.env.NEXT_PUBLIC_BASE_CONTENT_URL;
 
 export default function TeamSection() {
-  const categories = ['All', 'Directors', 'Engineering', 'Management'];
-  const [activeCategory, setActiveCategory] = useState('All');
-  
-  // Filter team list based on active category tab
-  const filteredMembers = useMemo(() => {
-    if (activeCategory === 'All') return teamMembersData;
-    return teamMembersData.filter(member => member.category === activeCategory);
-  }, [activeCategory]);
+  const dispatch = useDispatch();
 
-  // Track selected member for the detailed right-side view
-  const [selectedMember, setSelectedMember] = useState(teamMembersData[0]);
+  const { team: data = [], loading } = useSelector(
+    (state) => state?.landingPageAdmmin || {}
+  );
+
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [selectedMember, setSelectedMember] = useState(null);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Handle changing member with a smooth transition
+  useEffect(() => {
+    dispatch(getTeam());
+  }, [dispatch]);
+
+
+  const teamMembers = useMemo(() => {
+    if (!Array.isArray(data)) return [];
+
+    return data.map((member) => ({
+      id: String(member.id),
+      name: member.name?.trim() || "",
+      role: member.designation || "",
+      category: "Directors",
+
+      avatar: member.image
+        ? `${IMAGE_BASE_URL}/${member.image}`
+        : "",
+      photo: member.image
+        ? `${IMAGE_BASE_URL}/${member.image}`
+        : "",
+
+      bio: member.description
+        ? member.description.split(/\r?\n\r?\n/)
+        : [],
+
+      metadata: [
+        {
+          label: "Background",
+          value: member.background || "-",
+        },
+        {
+          label: "Experience",
+          value: member.experience || "-",
+        },
+        {
+          label: "Focus",
+          value: member.focus || "-",
+        },
+      ],
+    }));
+  }, [data]);
+
+  useEffect(() => {
+    if (teamMembers.length > 0) {
+      setSelectedMember((current) => current || teamMembers[0]);
+    }
+  }, [teamMembers]);
+
+  const filteredMembers = useMemo(() => {
+    if (activeCategory === "All") {
+      return teamMembers;
+    }
+
+    return teamMembers.filter(
+      (member) => member.category === activeCategory
+    );
+  }, [activeCategory, teamMembers]);
+
   const handleSelectMember = (member) => {
-    if (member.id === selectedMember.id) return;
+    if (!selectedMember || member.id === selectedMember.id) {
+      return;
+    }
+
     setIsAnimating(true);
+
     setTimeout(() => {
       setSelectedMember(member);
       setIsAnimating(false);
-    }, 150); // Short delay for cross-fade effect
+    }, 150);
   };
 
-  // Handle tab change (auto-select first member in new filtered list)
-  const handleTabChange = (category) => {
-    setActiveCategory(category);
-    const newFiltered = category === 'All' 
-      ? teamMembersData 
-      : teamMembersData.filter(m => m.category === category);
-    if (newFiltered.length > 0) {
-      handleSelectMember(newFiltered[0]);
-    }
-  };
+  if (loading) {
+    return (
+      <section className="w-full teamBg py-16 px-4">
+        <div className="max-w-7xl mx-auto text-center">
+          Loading team members...
+        </div>
+      </section>
+    );
+  }
 
+  if (!selectedMember) {
+    return null;
+  }
+    
 
   return (
     <section 
@@ -215,11 +185,13 @@ export default function TeamSection() {
                   >
                     {/* Member Avatar */}
                     <div className="w-12 h-12 rounded-full overflow-hidden shrink-0 border border-white/60 shadow-xs bg-slate-200">
-                      <img 
-                        src={member.avatar} 
-                        alt={member.name} 
-                        style={{objectPosition: 'top'}}
-                        className="w-full h-full object-cover"
+                      <img
+                        src={member.avatar}
+                        alt={member.name}
+                        draggable={false}
+                        onDragStart={(e) => e.preventDefault()}
+                        style={{ objectPosition: "top" }}
+                        className="w-full h-full object-cover select-none"
                       />
                     </div>
 
@@ -249,10 +221,12 @@ export default function TeamSection() {
               {/* Photo & Name Card (5 Cols on md) */}
               <div className="md:col-span-5 flex flex-col items-center text-center">
                 <div className="relative w-full aspect-[4/5] rounded-3xl overflow-hidden shadow-md border border-white/60 bg-slate-200 mb-4">
-                  <img 
-                    src={selectedMember.photo} 
-                    alt={selectedMember.name} 
-                    className="w-full h-full object-top object-cover"
+                  <img
+                    src={selectedMember.photo}
+                    alt={selectedMember.name}
+                    draggable={false}
+                    onDragStart={(e) => e.preventDefault()}
+                    className="w-full h-full object-top object-cover select-none"
                   />
                 </div>
                 <h3 className="font-[Manrope] font-bold text-[24px] leading-[30px] tracking-[0%] text-center text-[var(--landingPageColorPrimary2)]">
