@@ -16,11 +16,24 @@ import FaqSection from '@/pages/faq/FaqSection'
 import PreFooterCTA from '@/pages/landing/PreFooterCTA/PreFooterCTA'
 import Footer from '@/pages/landing/footer/Footer'
 
-const page = () => {
+const page = async () => {
+const BASE_API = process.env.BASE_API;
+let data = null;
+
+
+  try {
+      const res = await fetch(`${BASE_API}/api/admin/misc`)
+      const json = await res.json()
+      data = json?.data?.[0]
+  } catch (error) {
+    return <div className='text-[19px] text-center p-[12px] heroSection'>Some Content Could Not be Loaded. </div>
+  }
+
+console.log(data, "footerData")
   return (
    <>
    <Hero></Hero>  
-   <TechnicalSpecification></TechnicalSpecification>
+   <TechnicalSpecification footerData={data}></TechnicalSpecification>
    <TeamSection></TeamSection>
 
 
