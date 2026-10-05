@@ -1,3 +1,6 @@
+
+
+
 import React from 'react';
 import Navbar from './navAndFooter/Nav';
 import { HiArrowRight, HiLocationMarker } from 'react-icons/hi';
@@ -9,6 +12,9 @@ import heroCardImg2 from "../../../public/landing/realImage/13.png";
 import StyledSubHeadingLine from './components/StyledSubHeadingLine';
 
 export default function HeroPage() {
+
+
+
   return (
     <div 
       className=" bg-white flex flex-col antialiased   heroBg"
