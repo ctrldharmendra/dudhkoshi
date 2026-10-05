@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { 
   FiZap, 
   FiDroplet, 
@@ -8,22 +8,68 @@ import {
   FiCpu, 
   FiShare2 
 } from 'react-icons/fi';
-import { MdWater } from "react-icons/md";
+import { MdOutlineWater, MdWater } from "react-icons/md";
 import StyledSubHeadingWithPill from '../components/StyledSubHeadingWithPill';
 import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
+import { useDispatch, useSelector } from 'react-redux';
+import { getTechnicalParameter } from '@/app/(bid)/redux/slices/LandingPageAdminPanel/landingAdminSlice';
+import Loading from '../components/Loading';
+import { HiOutlineCog, HiOutlineLightningBolt } from 'react-icons/hi';
+import { IoCarOutline, IoWaterOutline } from 'react-icons/io5';
+import { LiaMountainSolid } from 'react-icons/lia';
+import { RiLightbulbFlashLine } from 'react-icons/ri';
+import { BsHouseGearFill } from 'react-icons/bs';
+
 
 export default function ProjectOverviewSection() {
-  // Tab Navigation items matching the sample icons & labels
   const tabs = [
     { id: 'scheme', label: 'Scheme & Capacity', icon: FiZap },
     { id: 'conveyance', label: 'Water Conveyance', icon: MdWater },
     { id: 'powerhouse', label: 'Powerhouse', icon: FiHome },
     { id: 'turbine', label: 'Turbine & Generator', icon: FiCpu },
-    { id: 'evacuation', label: 'Power Evacuation', icon: FiShare2 },
-  ];
+    { id: 'evacuation', label: 'Power Evacuation', icon: FiShare2 }, ];
+
+  const Icon = {
+  lightning: HiOutlineLightningBolt,
+  water: MdOutlineWater,
+  drop: IoWaterOutline,
+  turbine: HiOutlineCog,
+  terrain: LiaMountainSolid,
+  access: IoCarOutline,
+  context: RiLightbulbFlashLine,
+  house: BsHouseGearFill,
+  };
+
+
+
+
+  const dispatch = useDispatch();
+  // Tab Navigation items matching the sample icons & labels
+    // -------------------
+    const technicalParameterData = useSelector((state) => state?.landingPageAdmmin?.technicalParameters);
+    const technicalParametersLoading = useSelector((state) => state?.landingPageAdmmin?.technicalParametersLoading);
+     // -------------------
+ 
+        useEffect(() => {
+      dispatch(getTechnicalParameter({}))
+        }, [])
+        // console.log(technicalParameterData, "technicalParameterData")
+  
+  //       categoryIcon
+  // categoryId
+  // categoryNote
+  // categoryTitle
+  // its content : 
+  // {
+  //     "contentId": 7,
+  //     "contentTitle": "Installed Capacity",
+  //     "contentData": "95.7 MW",
+  //     "contentFormula": "P=ρ·g·Q·Hn·η"
+  // }
+ 
 
   // Selected tab state
-  const [activeTab, setActiveTab] = useState('scheme');
+  const [activeTab, setActiveTab] = useState(0);
 
   // Specs dataset for each technical parameter
 const specsData = {
@@ -90,9 +136,28 @@ const specsData = {
       note: "Power evacuation details for this project have not yet been provided by the client — placeholder values above must be replaced before publishing."
     }
   };
-  const currentContent = specsData[activeTab];
-  const ContentIcon = currentContent.icon;
+  const currentContent = technicalParameterData?.[activeTab]?.contents || [];
+  // const ContentIcon =  technicalParameterData?.[activeTab]?.categoryIcon;
 
+   const ContentIcon = Icon[technicalParameterData?.[activeTab]?.categoryIcon] || FiZap;
+   const ContentNoteCurrent =technicalParameterData?.[activeTab]?.categoryNote || "";
+
+  // console.log(currentContent, "currentContent")
+  // console.log(ContentIcon, "ContentIcon")
+  // console.log(ContentNoteCurrent, "ContentNoteCurrent")
+  console.log(technicalParameterData?.[7]?.contents || [])
+
+
+  useEffect(() => {
+console.log(currentContent, "currentContent")
+  }, [activeTab])
+  
+
+  if(technicalParametersLoading || !currentContent){
+  return <div className="fixed inset-0 z-[9999999] flex h-screen w-full items-center justify-center bg-[#000000cf]">
+  <Loading />
+</div>
+  }
   return (
     <section 
       className="w-full bg-[white] py-16 px-4 sm:px-6 lg:px-8  antialiased text-[#45484D]" 
@@ -132,14 +197,18 @@ Run-of-River Hydroelectric Scheme.
           
           {/* LEFT SIDE: TAB NAVIGATION (4 Cols on lg) */}
           <div className="lg:col-span-4 flex flex-col gap-2.5 overflow-x-auto pb-2 lg:pb-0 scrollbar-none" data-aos="zoom-in" >
-            {tabs.map((tab) => {
-              const isActive = activeTab === tab.id;
-              const Icon = tab.icon;
+            {technicalParameterData && technicalParameterData?.map((tab) => {
+              const isActive = activeTab == tab?.categoryId;
+            
+             const IconComponent = Icon[tab.categoryIcon] || FiZap;
 
               return (
                 <button 
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  key={tab.categoryId}
+                  onClick={() => {
+                    console.log(tab?.categoryId)
+                    setActiveTab(tab?.categoryId)
+                  }}
                   
                   className={`w-full flex items-center gap-3.5 px-5 py-3.5 rounded-[6px] text-left font-[Hind] font-[500] text-[16px] sm:text-[14px] leading-[20px] tracking-[0px] transition-all duration-200 cursor-pointer ${
                     isActive
@@ -147,14 +216,18 @@ Run-of-River Hydroelectric Scheme.
                       : "bg-transparent hover:text-slate-800 hover:bg-slate-200/40 border border-transparent" 
                   }`}
                 >
-                  <Icon className={`w-4 h-4 shrink-0 ${isActive ? "text-[#1E7EBB]" : "text-[500]"}`} />
+                       <IconComponent
+        className={`w-5 h-5 shrink-0 ${
+          isActive ? "text-[#1E7EBB]" : "text-slate-500"
+        }`}
+      />
                   <span className="truncate font-[500]"
                         style={{
                           
     fontWeight: '500',
 
                         }}
-                        >{tab.label}</span>
+                        >{tab.categoryTitle}</span>
                 </button>
               );
             })}
@@ -168,43 +241,45 @@ Run-of-River Hydroelectric Scheme.
               <div className="projectOverViewCardTopBg px-6 py-4 flex items-center gap-3 border-b border-sky-100" data-aos="zoom-in">
                 <div className="w-8 h-8 rounded-lg bg-[#1E7EBB] flex items-center justify-center text-white shrink-0">
                   <ContentIcon className="w-4 h-4" />
+          
+
                 </div>
                 <h3 className="text-base sm:text-lg font-extrabold text-[#2C3E50]" >
-                  {currentContent.title}
+                  {/* {currentContent?.title || ""} */}
                 </h3>
               </div>
 
               {/* Data Table Rows */}
               <div className="p-6 sm:p-8 flex flex-col gap-4">
                 <div className="flex flex-col border-b border-slate-100 pb-2" >
-                  {currentContent.data.map((item, index) => (
+                  {currentContent && currentContent?.map((item, index) => (
                     <div 
                       key={index}
                       className="grid grid-cols-1 sm:grid-cols-12 items-center py-3 border-b border-slate-100 last:border-0 gap-1 sm:gap-2"
                     >
                       {/* Parameter Name */}
                       <span className="sm:col-span-4 text-[14px] font-medium">
-                        {item.parameter}
+                        {item?.contentTitle || ""}
                       </span>
 
                       {/* Parameter Value */}
                       <span className="sm:col-span-4 text-xs sm:text-[14px] font-medium text-slate-800">
-                        {item.value}
+                        {item?.contentData || ""}
                       </span>
 
                       {/* Formula (Italicized style matching image) */}
                       <span style={{letterSpacing:"0.6px"}} className="font-libertinus sm:col-span-4 font-medium font-stretch-extra-expanded text-[14px] tracking-tighter text-[#8E8E93] sm:text-left">
-                        {item.formula}
+                        {item?.contentFormula || ""}
                       </span>
                     </div>
                   ))}
                 </div>
 
                 {/* Bottom Note Section */}
-                {currentContent.note && (
+                {ContentNoteCurrent && (
                   <div className="pt-2 flex items-start gap-2 text-[15px]  text-slate-500 leading-relaxed font-normal">
                     <span className="font-bold text-slate-700 shrink-0">Note :</span>
-                    <p>{currentContent.note}</p>
+                    <p>{ContentNoteCurrent || ""}</p>
                   </div>
                 )}
 

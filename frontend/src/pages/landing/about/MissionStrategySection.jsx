@@ -5,7 +5,7 @@ import Image from 'next/image';
 // import missionStrategyIMG from "../../../../public/landing/realImage/3.jpeg";
 import missionStrategyIMG from "../../../../public/landing/about/rectangularHeroMain2.jpg";
 
-export default function MissionStrategySection() {
+export default function MissionStrategySection({ footerData }) {
   const cardsData = [
     {
       number: "01",
@@ -86,7 +86,7 @@ export default function MissionStrategySection() {
                       <FiZap className="w-3.5 h-3.5" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-extrabold text-[#0972f6]">95.7 MW</p>
+                      <p className="text-[10px] font-extrabold text-[#0972f6]">{footerData?.mw|| ""}</p>
                       <p className="text-[11px] text-gray-500 leading-none">Clean Energy</p>
                     </div>
                   </div>
@@ -96,7 +96,7 @@ export default function MissionStrategySection() {
                       <FiDroplet className="w-3.5 h-3.5" />
                     </div>
                     <div>
-                      <p className="text-[10px] font-extrabold text-[#0972f6]">2.4M tons</p>
+                      <p className="text-[10px] font-extrabold text-[#0972f6]">{footerData?.c02Reduced|| ""}</p>
                       <p className="text-[11px] text-gray-500 leading-none">CO₂ Reduced</p>
                     </div>
                   </div>

@@ -236,7 +236,7 @@ console.log(error)
       </div>
     </section>
     <SpatialConstraintsSection footerData={footerData}></SpatialConstraintsSection>
-    <MissionStrategySection></MissionStrategySection>
+    <MissionStrategySection footerData={footerData}></MissionStrategySection>
     {/* <StatsBanner></StatsBanner> */}
     </>
   );
