@@ -153,40 +153,50 @@ export default function Footer() {
 
         </div>
       </div>
-<div 
+<div
   className="
-    relative 
-    max-w-[1260px] 
-    mx-auto 
-    overflow-hidden 
-    flex 
-    justify-center 
-    items-start 
-    pointer-events-none 
-    select-none 
-    z-0 
-    text-[clamp(35px,11vw,150px)] 
+    relative
+    max-w-[1260px]
+    mx-auto
+    overflow-hidden
+    flex
+    justify-center
+    items-start
+    pointer-events-none
+    select-none
+    z-0
+    text-[clamp(35px,11vw,150px)]
     leading-none
   "
   aria-hidden="true"
-  style={{ height: 'calc(1em - 15px)',
-    
-   }}
+  style={{ height: 'calc(1em - 15px)' }}
 >
   <span
     className="
       font-manrope-bold
       foterLargeText
-      font-extrabold 
-      tracking-widest 
-      text-[#1E7EBB]/20 
-      uppercase 
+      font-extrabold
+      tracking-widest
+      uppercase
       whitespace-nowrap
-    " data-aos="fade-up"
+    "
+    data-aos="fade-up"
   >
-    Dudhkoshi2
+    Dudhkoshi
+    <span
+      className="
+        inline-block
+        text-[1.2em]
+        relative
+        bg-[linear-gradient(180deg,#E4E4E4_42.87%,#7E7E7E_100%)]
+      bg-clip-text
+      "
+    >
+      2
+    </span>
   </span>
 </div>
+
 
     </footer>
   );
