@@ -14,8 +14,8 @@ export default function TeamSection({data: misc}) {
   const dispatch = useDispatch();
 
   
-  console.log("MISC:", misc);
-console.log("TEAM SEC PARA:", misc?.teamSecPara);
+//   console.log("MISC:", misc);
+// console.log("TEAM SEC PARA:", misc?.teamSecPara);
 const {
   team: teamData = [],
   loading: teamLoading

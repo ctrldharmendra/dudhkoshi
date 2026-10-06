@@ -247,7 +247,7 @@ useEffect(() => {
                       key={idx}
                       className="rounded-r-[4px] border-l-[0.5px] border-l-[#1E7EBB] bg-[#E9F2F8]/58 p-[10px] flex flex-col justify-center"
                     >
-                      <span className="text-[10px] leading-[20px] font-[Hind] font-medium text-slate-400 tracking-wider uppercase mb-1">
+                      <span className="text-[11px] leading-[20px] font-[Hind] font-medium text-[black] tracking-wider uppercase mb-1">
                         {item.title}
                       </span>
                       <span className="font-['Times_New_Roman'] font-normal text-[12px] leading-[20px] tracking-[0px] align-middle uppercase text-slate-700">

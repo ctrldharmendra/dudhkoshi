@@ -5,16 +5,16 @@ const Loading = () => {
     <div className='w-full h-full flex items-center relative justify-center z-[999] bg-[#00000026] rounded-[12px]'>
 <div className="w-32 h-32 relative flex items-center justify-center">
   <div
-    className="absolute inset-0 rounded-xl bg-blue-500/20 blur-xl animate-pulse"
+    className="absolute inset-0 rounded-xl animate-pulse"
   ></div>
 
   <div className="w-full h-full relative flex items-center justify-center">
-    <div
+    {/* <div
       className="absolute inset-0 rounded-xl bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 animate-spin blur-sm"
-    ></div>
+    ></div> */}
 
     <div
-      className="absolute inset-1 bg-gray-900 rounded-lg flex items-center justify-center overflow-hidden"
+      className="absolute inset-1  rounded-lg flex items-center justify-center overflow-hidden"
     >
       <div className="flex gap-1 items-center">
         <div

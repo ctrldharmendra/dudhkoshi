@@ -42,7 +42,7 @@ const featuredUpdates = newsItems.slice(0, 2);
 const sidebarNews = newsItems;
 
 
-console.log("NEWS DATA:", news);
+// console.log("NEWS DATA:", news);
 
   return (
     <section 

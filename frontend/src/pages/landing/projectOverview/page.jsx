@@ -63,7 +63,7 @@ useEffect(() => {
 }, [technicalParameterData, activeTab]);
 
 // console.log(technicalParameterData?.[0]?.categoryId, "technicalParameterData?.[0]?.categoryId")
-console.log(activeTab, "activeTab")
+// console.log(activeTab, "activeTab")
 
     const currentCategory = technicalParameterData?.find(
   (item) => item?.categoryId == activeTab 

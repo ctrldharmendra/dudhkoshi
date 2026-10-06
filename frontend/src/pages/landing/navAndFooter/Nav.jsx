@@ -6,8 +6,11 @@ import { HiMenuAlt3, HiX } from 'react-icons/hi';
 import logo from "../../../../public/landing/logo.png"
 import Image from 'next/image';
 
-export default function Navbar() {
+export default function Navbar({footerData}) {
   const [isOpen, setIsOpen] = useState(false);
+
+    const BaseContentUrl = process.env.NEXT_PUBLIC_BASE_CONTENT_URL;
+
 
   return (
     <header className="w-full bg-[var(--lightWhite)] border-b border-gray-100 sticky top-0 z-50 transition-all duration-300">
@@ -15,7 +18,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
           <div className="w-12 h-12 relative flex items-center justify-center rounded-full bg-slate-50 shadow-sm border border-slate-100">
-            <Image src={logo} fill unoptimized className="text-xs font-bold text-[var(--landingPagePrimaryColor)]" alt='logo'></Image>
+            <Image src={BaseContentUrl+"/"+footerData?.logo} fill unoptimized className="text-xs font-bold text-[var(--landingPagePrimaryColor)]" alt='logo'></Image>
           </div>
         </Link>
 

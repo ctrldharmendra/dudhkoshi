@@ -118,8 +118,8 @@ console.log(error)
             <div className="mt-8 rounded-2xl overflow-hidden shadow-inner border border-white/20 h-44">
               <Image 
                 src={data?.[0]?.image ? `${BaseUrl}/${data?.[0]?.image}` : null}
-                width={100}
-                height={100}
+                width={400}
+                height={400}
                  loading="lazy"
                 alt="Engineering Dam" 
                 className="w-full h-full object-cover"

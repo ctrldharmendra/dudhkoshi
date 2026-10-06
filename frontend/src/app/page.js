@@ -29,10 +29,10 @@ let data = null;
     return <div className='text-[19px] text-center p-[12px] heroSection'>Some Content Could Not be Loaded. </div>
   }
 
-console.log(data, "footerData")
+// console.log(data, "footerData")
   return (
    <>
-   <Hero></Hero>  
+   <Hero footerData={data}></Hero>  
    <TechnicalSpecification footerData={data}></TechnicalSpecification>
    <TeamSection data={data}></TeamSection>
 

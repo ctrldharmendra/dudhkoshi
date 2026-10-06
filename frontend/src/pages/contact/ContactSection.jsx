@@ -36,6 +36,7 @@ export default function ContactSection({data}) {
     subject: 'Technical Infrastructure',
     message: ''
   });
+  const BaseContentUrl = process.env.NEXT_PUBLIC_BASE_CONTENT_URL;
 
   const [isLoading, setisLoading] = useState(false)
 
@@ -74,7 +75,8 @@ export default function ContactSection({data}) {
           <div 
             className="relative w-full min-h-[790px] max-h-[790px] contactUsParentStyled overflow-hidden bg-cover bg-center flex flex-col items-center"
             style={{
-              backgroundImage: `url('/landing/realImage/10.png')` 
+                         backgroundImage: `url('${BaseContentUrl}/${data?.inquiryImage}')` 
+
             }}
           >
             {/* 1. Cloudy White Transparency Overlay (Top fading down) */}

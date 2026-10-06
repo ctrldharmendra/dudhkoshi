@@ -180,7 +180,7 @@ const iconMap = {
                 <MdLocationOn className="w-4.5 h-3.5 fill-amber-500 text-amber-600" />
                 <span>{footerData?.aboutUsCardTitle || ""}</span>
               </div>
-              <p className="font-[Hind] font-normal text-[12px] leading-[20px] tracking-[0px] text-center align-middle pt-0.5 min-w-full flex justify-center bg-[var(--lightWhite)] text-gray-600 max-w-md">
+              <p className="font-[Hind] font-normal text-[14px] leading-[20px] tracking-[0px] text-center align-middle pt-0.5 min-w-full flex justify-center bg-[var(--lightWhite)] text-gray-600 max-w-md">
                 {footerData?.aboutUsCardPara || ""}
               </p>
             </div>

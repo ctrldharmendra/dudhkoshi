@@ -10,7 +10,7 @@ import Image from 'next/image';
 import StyledSubHeadingLine from './components/StyledSubHeadingLine';
 import Link from 'next/link';
 
-export default async function HeroPage() {
+export default async function HeroPage({footerData}) {
   let data = null;
   let data2= null;
   const BaseUrl = process.env.BASE_CONTENT_URL;
@@ -41,7 +41,7 @@ console.log(error)
 
     >
       {/* Responsive Navbar */}
-      <Navbar />
+      <Navbar footerData={footerData}></Navbar>
 
       {/* Main Hero Wrapper */}
       <main className="flex-1 flex flex-col pb-[73px]">
@@ -108,8 +108,8 @@ console.log(error)
             <div className="bg-[#ffffff95] backdrop-blur-[2px] rounded-3xl gap-[12px] p-4 border-[2px] border-white/95 shadow-xl flex flex-row items-center justify-center" data-aos="fade-left">
               <div className="relative w-full h-36 rounded-2xl overflow-hidden">
                 <Image 
-                width={100}
-                height={100}
+                width={500}
+                height={500}
                   src={data2?.[0]?.image ? `${BaseUrl}/${data2?.[0].image}` : "Not Found"}
                   alt="Dudhkhoshi-2" 
                   className="w-full h-full object-cover"
@@ -147,8 +147,8 @@ console.log(error)
                 <Image 
                   src={data2?.[2]?.image ? `${BaseUrl}/${data2?.[2].image}` : "Not Found"}
                   alt="River Valley" 
-                  width={100}
-                  height={100}
+                  width={400}
+                  height={400}
                   className="w-full h-full object-cover"
                 />
 
