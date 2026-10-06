@@ -264,19 +264,19 @@ const getBlogById = asyncHandler(async (req, res) => {
 
     if (!exists?.length) return res.status(409).json(new ApiResponse(409, [], "Blog not found."));
 
-    let coverImage = exists?.[0]?.coverImage
+    // let coverImage = exists?.[0]?.coverImage
 
-    if (coverImage) {
-      const fullImgPath = path.join(process.cwd(), "uploads", coverImage);
-      try {
-        await fs.unlink(fullImgPath);
-      } catch (err) {
-        connection.rollback()
-        if (err.code !== "ENOENT") {
-          throw err;
-        }
-      }
-    }
+    // if (coverImage) {
+    //   const fullImgPath = path.join(process.cwd(), "uploads", coverImage);
+    //   try {
+    //     await fs.unlink(fullImgPath);
+    //   } catch (err) {
+    //     connection.rollback()
+    //     if (err.code !== "ENOENT") {
+    //       throw err;
+    //     }
+    //   }
+    // }
 
     const [result] = await connection.query(
       `SELECT * FROM landing_page_blogs WHERE id = ?`,

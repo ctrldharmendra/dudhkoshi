@@ -108,7 +108,8 @@ export default function Footer({ data }) {
                 <ul className="space-y-2.5 text-xs sm:text-sm">
                   <li>
                     <a 
-                      href="mailto:{data?.email}" 
+                    target="_blank"
+                      href={`mailto:${data?.email}`}
                       className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#1E7EBB] hover:underline break-all"
                     >
                       {data?.email}
@@ -116,6 +117,7 @@ export default function Footer({ data }) {
                   </li>
                   <li>
                     <a 
+                    target="_blank"
                       href="tel:0097714102710" 
                       className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#1E7EBB] hover:underline"
 
@@ -124,7 +126,7 @@ export default function Footer({ data }) {
                     </a>
                   </li>
                   <li className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[#1E7EBB] transition-colors">
-                    <Link href={data?.location || ""} target='_blank' >
+                    <Link href={data?.location || ""} target='_blank' rel="noopener noreferrer" >
                     {data?.address}
                   </Link>
                   </li>

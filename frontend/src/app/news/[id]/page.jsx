@@ -41,7 +41,7 @@ export default async function NewsDets(props) {
         
         console.log(blog)
         // Fetch all blogs for "Other Blogs" section
-        const allBlogsApiUrl = `${process.env.BASE_API}/contents/blogs`;
+        const allBlogsApiUrl = `${process.env.BASE_API}/api/admin/blog/`;
         const allBlogsResponse = await fetch(allBlogsApiUrl, {
             cache: "no-store"
         });
@@ -85,8 +85,8 @@ export default async function NewsDets(props) {
         );
     }
 
-    const backgroundImage = blog.cover_image 
-        ? `${process.env.BASE_CONTENT_URL}uploads/blogs/${blog.cover_image}`
+    const backgroundImage = blog.coverImage 
+        ? `${process.env.BASE_CONTENT_URL}/${blog.coverImage}`
         : wp;
 
     return (
@@ -155,20 +155,20 @@ export default async function NewsDets(props) {
             </div> 
 
             {/* Other Blogs Section */}
-            {otherBlogs.length > 0 && (
+            {otherBlogs?.length > 0 && (
                 <div>
                     <div className='max-w-7xl mx-auto mt-8 mb-8 flex gap-4 justify-between'>
                         <h1 className='text-xl ml-3 font-semibold'>Other Blogs</h1>
                     </div>
                     <div style={{justifyItems:"center"}} className="space-y-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 bg-white">
-                        {otherBlogs.map((blogItem, index) => (
+                        {otherBlogs?.map((blogItem, index) => (
                             <div key={blogItem.id || index} className="bg-white max-w-[400px] min-w-[400px] justify-between rounded-2xl rounded-br-[95px] shadow-xl transition-all duration-300 hover:shadow-2xl overflow-hidden flex flex-col h-full">
                                 {/* Image Container */}
                                 <div className="w-full h-auto overflow-hidden p-4">
                                     <Image
                                         width={300}
                                         height={300}
-                                        src={`${process.env.NEXT_PUBLIC_BASE_CONTENT_URL}uploads/blogs/${blogItem.cover_image}`}
+                                        src={`${process.env.NEXT_PUBLIC_BASE_CONTENT_URL}/${blogItem.coverImage}`}
                                         alt={blogItem.title ?? " "}
                                         className="w-[100%] h-[200px] object-cover transition duration-500 ease-in-out hover:scale-[1.03]"
                                         unoptimized
