@@ -30,9 +30,6 @@ export default function GalleryClient() {
     dispatch(getGallery());
   }, [dispatch]);
 
-  // Debug
-  console.log("Gallery Data from Redux:", gallery);
-
   // Make sure we always work with an array
   const galleryData = Array.isArray(gallery) ? gallery : [];
 

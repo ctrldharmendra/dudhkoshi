@@ -1,54 +1,48 @@
-import React from 'react';
+"use client";
+
+import React, { useState, useEffect } from "react";
 import { FiArrowRight, FiCalendar } from 'react-icons/fi';
 import img from "../../../../public/landing/blog/1.jpg";
 import img2 from "../../../../public/landing/blog/2.png";
 import Image from 'next/image';
+import Link from 'next/link';
+
 import StyledSubHeadingWithPill from '../components/StyledSubHeadingWithPill';
 import FinancialHighlights from './FinancialHighlights';
+import { useDispatch, useSelector } from "react-redux";
 
-export default function NewsEventsSection() {
-  // Main featured update cards (Left Grid)
-  const featuredUpdates = [
-    {
-      id: 1,
-      image: img,
-      title: "Laxmi Sunrise Bank-led consortium to invest in 70 MW Dudhkoshi 22",
-      author: "By Dudhkoshi",
-      date: "Feb,27 2026",
-      description: "The project is being constructed at the Dudhkoshi River of the Solukhumbu district with an estimated project cost ...",
-      link: "#"
-    },
-    {
-      id: 2,
-      image: img2,
-      title: "दूधकोशी–२ आयोजनाको क्षमता बढेर पुग्यो ९६ मेगावाट, लागत पनि थपियो",
-      author: "By Dudhkoshi",
-      date: "Feb,27 2026",
-      description: "काठमाडौँ। निजी लगानीमा निर्माण सुरु भएको दूधकोशी–२ अर्धजलासय जलविद्युत आयोजनाको क्षमता बढेर ९५.७ मेगावाट पुगेको छ। यसअघि ७० मेगावाटमा....",
-      link: "#"
-    },
-  ];
+import { getAllNews } from "@/app/(bid)/redux/slices/LandingPageAdminPanel/landingAdminSlice";
 
-  // Sidebar compact articles (Right Side)
-  const sidebarNews = [
-    {
-      id: 1,
-      category: "EVENTS",
-      title: "Laxmi Sunrise Bank-led consortium to invest in 70 MW Dudhkoshi 22",
-      date: "FEB 20, 2026",
-      image: img,
-      link: "#"
-    },
-    {
-      id: 2,
-      category: "EVENTS",
-      title: "Smart Grid Integration: The Next Frontier in Hydropower Management",
-      date: "FEB 20, 2026",
-      image: img2,
-      link: "#"
-    },
-    
-  ];
+const IMAGE_BASE_URL = process.env.NEXT_PUBLIC_BASE_CONTENT_URL;
+
+export default function NewsEventsSection({data}) {
+  const dispatch = useDispatch();
+
+ 
+
+useEffect(() => {
+  dispatch(
+    getAllNews({
+      limit: 6,
+      page: 1,
+      title: "",
+    })
+  );
+}, [dispatch]);
+
+const news = useSelector(
+  (state) => state?.landingPageAdmmin?.news
+);
+
+
+
+
+const newsItems = news?.data ?? [];
+const featuredUpdates = newsItems.slice(0, 2);
+const sidebarNews = newsItems;
+
+
+console.log("NEWS DATA:", news);
 
   return (
     <section 
@@ -71,8 +65,8 @@ export default function NewsEventsSection() {
 
           {/* Subtitle */}
           <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]" data-aos="fade-up">
-Meet the multi-disciplinary team of engineers, environmental scientists, and strategic investors driving the 95.7 MW Dudhkoshi vision toward sustainable energy independence.
-          </p>
+    {data?.blogSecPara}
+               </p>
         </div>
 
         {/* Section Label */}
@@ -100,7 +94,7 @@ Meet the multi-disciplinary team of engineers, environmental scientists, and str
                       height={500}
                       quality={100}
                       unoptimized 
-                      src={item.image} 
+                      src={`${IMAGE_BASE_URL}/${item.coverImage}`} 
                       alt={item.title}
                       className="w-full h-full object-cover" 
                     />
@@ -114,23 +108,30 @@ Meet the multi-disciplinary team of engineers, environmental scientists, and str
                   {/* Meta: Author & Date */}
                   <div className="flex items-center justify-between text-[11px] text-slate-400 font-medium mb-3">
                     <span>{item.author}</span>
-                    <span>{item.date}</span>
+                    <span>
+                      {new Date(item.created_at).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
+                      })}
+                    </span>
+
                   </div>
 
                   {/* Description Snippet */}
                   <p className="text-[14px] text-slate-500 leading-relaxed line-clamp-2 mb-4">
-                    {item.description}
+                    {item.content?.replace(/<[^>]*>/g, "")}
                   </p>
                 </div>
 
                 {/* Read More Link */}
-                <a 
-                  href={item.link}
+                <Link  
+                  href={`/news/${item.id}`}
                   className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#1E7EBB] hover:underline group pt-2 border-t border-slate-100"
                 >
                   <span>Read More</span>
                   <FiArrowRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-1" />
-                </a>
+                </Link >
               </div>
             ))}
           </div>
@@ -156,7 +157,7 @@ Meet the multi-disciplinary team of engineers, environmental scientists, and str
                       height={500}
                       quality={100}
                       unoptimized  
-                    src={item.image} 
+                    src={`${IMAGE_BASE_URL}/${item.coverImage}`} 
                     alt={item.title} 
                     className="w-full h-full object-cover"
                   />
@@ -173,7 +174,14 @@ Meet the multi-disciplinary team of engineers, environmental scientists, and str
 
                   <div className="flex items-center gap-1 text-[10px] text-[#43474F] mt-1">
                     <FiCalendar className="w-3 h-3 text-slate-400" />
-                    <span>{item.date}</span>
+                    <span>
+  {new Date(item.created_at).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  })}
+</span>
+
                   </div>
                 </div>
               </div>

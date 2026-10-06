@@ -49,14 +49,25 @@ export default function ProjectOverviewSection() {
     const technicalParameterData = useSelector((state) => state?.landingPageAdmmin?.technicalParameters);
     const technicalParametersLoading = useSelector((state) => state?.landingPageAdmmin?.technicalParametersLoading);
 
-    const [activeTab, setActiveTab] = useState(
-  technicalParameterData?.[0]?.categoryId
-);
 
+    const [activeTab, setActiveTab] = useState(null);
+
+useEffect(() => {
+  dispatch(getTechnicalParameter({}));
+}, [dispatch]);
+
+useEffect(() => {
+  if (technicalParameterData?.length && activeTab === null) {
+    setActiveTab(technicalParameterData[0].categoryId);
+  }
+}, [technicalParameterData, activeTab]);
+
+// console.log(technicalParameterData?.[0]?.categoryId, "technicalParameterData?.[0]?.categoryId")
+console.log(activeTab, "activeTab")
 
     const currentCategory = technicalParameterData?.find(
-  (item) => item.categoryId === activeTab
-);
+  (item) => item?.categoryId == activeTab 
+);  
 
 const currentContent = currentCategory?.contents || [];
 
@@ -72,7 +83,8 @@ const ContentNoteCurrent =
         useEffect(() => {
       dispatch(getTechnicalParameter({}))
         }, [])
-        console.log(technicalParameterData, "technicalParameterData")
+        // console.log(currentCategory, "currentCategory")
+        // console.log(technicalParameterData, "technicalParameterData")
   
   //       categoryIcon
   // categoryId
@@ -88,84 +100,16 @@ const ContentNoteCurrent =
  
 
 
-
-  // Specs dataset for each technical parameter
-const specsData = {
-    scheme: {
-      title: "Scheme and Capacity",
-      icon: FiZap,
-      data: [
-        { parameter: "Installed Capacity", value: "95.7 MW", formula: "formula : P=ρ·g·Q·Hₙ·η" },
-        { parameter: "Gross Head", value: "144.5 m", formula: "formula : H_g = Z_intake - Z_powerhouse" },
-        { parameter: "Net Head", value: "NULL", formula: "formula : H_n = H_g - ∑hf" },
-        { parameter: "Design Discharge", value: "83.5 m³/s", formula: "formula : Q = A·v" },
-        { parameter: "Type of Scheme", value: "Run-of-River (6-hour Peaking)", formula: "" },
-      ],
-      note: "It is a 95.7 MW, 6-hour peaking run-of-river hydropower project located in Solukhumbu, Koshi Province. The project utilizes the Dudhkoshi River to generate clean and reliable energy for Nepal."
-    },
-    conveyance: {
-      title: "Water Conveyance",
-      icon: MdWater,
-      data: [
-        { parameter: "Headrace Tunnel Length", value: "4,791 m", formula: "formula : L_t" },
-        { parameter: "Headrace Tunnel Type", value: "Concrete Lined Inverted D-Shaped", formula: "" },
-        { parameter: "Tunnel Diameter", value: "5.6 m (finished)", formula: "formula : D = 2·r" },
-        { parameter: "Surge Shaft Type", value: "Restricted Orifice Surge Shaft", formula: "" },
-        { parameter: "Surge Shaft Height", value: "69 m", formula: "" },
-        { parameter: "Surge Shaft Internal Diameter", value: "16.0 m", formula: "" },
-        { parameter: "Penstock Type", value: "Underground", formula: "" },
-        { parameter: "Penstock Length", value: "80 m (Surge Shaft–Drop Shaft) + 96.97 m (Drop Shaft) + 96.62 m (Inclined Penstock Tunnel)", formula: "formula : L_p" },
-        { parameter: "Penstock Internal Diameter", value: "4.6 m", formula: "" },
-      ],
-      note: "Designed with underground tunneling structures to minimize environmental impact while maintaining optimum hydraulic efficiency."
-    },
-    powerhouse: {
-      title: "Powerhouse",
-      icon: FiHome,
-      data: [
-        { parameter: "Powerhouse Type", value: "Surface Powerhouse", formula: "" },
-        { parameter: "Dimensions (L x W x H)", value: "55m x 26.5m x 35.3m", formula: "formula : V = L·W·H" },
-        { parameter: "Design Tailwater Level", value: "644.5 masl", formula: "" },
-        { parameter: "Tailrace Tunnels", value: "2 nos., 94.30 m long, 5.5m x 3.45m each", formula: "" },
-      ],
-      note: "Houses state-of-the-art control units and multi-stage generating equipment engineered for high-head operational efficiency."
-    },
-    turbine: {
-      title: "Turbine & Generator",
-      icon: FiCpu,
-      data: [
-        { parameter: "Turbine Type", value: "Vertical Axis Francis", formula: "" },
-        { parameter: "Number of Units", value: "2 Units", formula: "" },
-        { parameter: "Rated Output per Unit", value: "47.845 MW", formula: "" },
-        { parameter: "Installed Capacity", value: "95.7 MW", formula: "" },
-        { parameter: "Rated Efficiency", value: "NULL", formula: "formula : η_overall" },
-        { parameter: "Generator Output", value: "NULL", formula: "formula : S = P / PF" },
-      ],
-      note: "Vertical axis Francis turbines selected for the project's head and discharge conditions."
-    },
-    evacuation: {
-      title: "Power Evacuation",
-      icon: FiShare2,
-      data: [
-        { parameter: "Transmission Voltage", value: "TBD — not provided for Dudhkoshi-2", formula: "" },
-        { parameter: "Interconnection Point", value: "TBD — not provided for Dudhkoshi-2", formula: "" },
-        { parameter: "Transmission Line Length", value: "TBD — not provided for Dudhkoshi-2", formula: "formula : L_line" },
-      ],
-      note: "Power evacuation details for this project have not yet been provided by the client — placeholder values above must be replaced before publishing."
-    }
-  };
-
-
   // console.log(currentContent, "currentContent")
   // console.log(ContentIcon, "ContentIcon")
   // console.log(ContentNoteCurrent, "ContentNoteCurrent")
 
 
-//   if(technicalParametersLoading || !currentContent){
-//   return <div className="fixed inset-0 z-[9999999] flex h-screen w-full items-center justify-center bg-[#000000cf]">
-//   <Loading />
-// </div>
-//   }
+  if(technicalParametersLoading || !currentContent){
+  return <div className="fixed inset-0 z-[9999999] flex h-screen w-full items-center justify-center bg-[#000000cf]">
+  <Loading />
+</div>
+  }
   return (
     <section 
       className="w-full bg-[white] py-16 px-4 sm:px-6 lg:px-8  antialiased text-[#45484D]" 
@@ -251,7 +195,7 @@ Run-of-River Hydroelectric Scheme.
 
                 </div>
                 <h3 className="text-base sm:text-lg font-extrabold text-[#2C3E50]" >
-                  {/* {currentContent?.title || ""} */}
+                  {currentCategory?.categoryTitle || ""}
                 </h3>
               </div>
 

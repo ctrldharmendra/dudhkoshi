@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-export default function PreFooterCTA() {
+export default function PreFooterCTA({data}) {
   return (
     <section 
       className="w-full relative bottomSec overflow-hidden antialiased pt-12 pb-12 sm:pt-16 sm:pb-16 px-4 sm:px-6 lg:px-8"
@@ -89,8 +89,7 @@ export default function PreFooterCTA() {
                     WebkitTextFillColor: "transparent",
                   }}
               >
-                Sustainable Energy for a <br className="hidden sm:inline" />
-                Brighter Tomorrow.
+                {data?.footerCtaTtitle}
               </h2>
 
               {/* Subtitle */}
@@ -98,7 +97,7 @@ export default function PreFooterCTA() {
                 className="font-body text-sm sm:text-base font-normal max-w-2xl mx-auto leading-relaxed" 
                 style={{ color:'#FFFFFF'}}
               >
-                We harness Nepal's rivers to deliver reliable, sustainable hydropower lighting homes, empowering communities, and building a cleaner future.
+                {data?.footerCtaPara}
               </p>
 
               {/* Action Buttons */}
@@ -106,26 +105,26 @@ export default function PreFooterCTA() {
                 
                 {/* Primary Button */}
                 <Link
-                  href="#"
+                  href={data?.footerCtaBtn1Link || "#"}
                   className="font-[Manrope] w-full sm:w-auto px-7 py-3 rounded-full text-base font-semibold tracking-wide leading-6 text-center align-middle transition-all duration-200 hover:brightness-110 active:scale-95 shadow-sm"
                   style={{
                     backgroundColor: 'white',
                     color: '#1E7EBB',
                   }}
                 >
-                  Join the Revolution
+                  {data?.footerCtaBtn1Text}
                 </Link>
 
                 {/* Secondary Outlined Button */}
                 <Link
-                  href="#"
+                  href={data?.footerCtaBtn2Link || "#"}
                   className="font-[Manrope] w-full sm:w-auto px-7 py-3 rounded-full text-base font-semibold leading-6 text-center tracking-wide align-middle transition-all duration-200 hover:brightness-110 active:scale-95 shadow-sm"
                   style={{
                     border: '1px solid #B9D7EA',
                     color: '#DDECF5',
                   }}
                 >
-                  Learn More
+                  {data?.footerCtaBtn2Tetx}
                 </Link>
 
               </div>

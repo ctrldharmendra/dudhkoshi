@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import logo from "../../../../public/landing/logo.png"
 import Image from 'next/image';
-export default function Footer() {
+export default function Footer({ data }) {
   return (
     <footer className="w-full relative bg-[#edf6fc] mt-[40px] pt-4 sm:px-6 lg:px-8 font-sans antialiased overflow-hidden"
           style={{
@@ -28,14 +28,17 @@ export default function Footer() {
             <Image src={logo} fill unoptimized className="text-xs font-bold text-[var(--landingPagePrimaryColor)]" alt='logo'></Image>
           </div>
 
-                <span className="text-2xl font-manrope-medium font-medium text-[#373A3E]">
-                  Dudhkoshi <span className="text-[#1E7EBB]">Hydropower</span>
+              <span className="text-2xl font-manrope-medium font-medium text-[#373A3E]">
+                {data?.logoName?.split(" ")[0]}{" "}
+                <span className="text-[#1E7EBB]">
+                  {data?.logoName?.split(" ").slice(1).join(" ")}
                 </span>
+              </span>
               </Link>
 
               {/* Description */}
               <p className="text-base font-[Hind] font-normal text-[#45484D] leading-[26px] tracking-normal max-w-sm">
-                Building Nepal's clean energy future through sustainable, community-rooted hydropower infrastructure.
+                {data?.footerDesc}
               </p>
             </div>
 
@@ -102,10 +105,10 @@ export default function Footer() {
                 <ul className="space-y-2.5 text-xs sm:text-sm">
                   <li>
                     <a 
-                      href="mailto:aayududhkoshi@gmail.com" 
+                      href="mailto:{data?.email}" 
                       className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#1E7EBB] hover:underline break-all"
                     >
-                      aayududhkoshi@gmail.com
+                      {data?.email}
                     </a>
                   </li>
                   <li>
@@ -114,11 +117,11 @@ export default function Footer() {
                       className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#1E7EBB] hover:underline"
 
                     >
-                      00977-1- 4102710
+                      {data?.phn}
                     </a>
                   </li>
                   <li className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[#1E7EBB] transition-colors">
-                    Sama Marga, Naxal Kathmandu, Nepal
+                    {data?.address}
                   </li>
                 </ul>
               </div>
@@ -137,7 +140,7 @@ export default function Footer() {
           >
 
             <p>
-              © 2026 Dudhkoshi Hydropower Nepal Pvt. Ltd. All rights reserved.
+              {data?.copyright}
             </p>
 
             <div className="flex items-center gap-2">
@@ -171,32 +174,26 @@ export default function Footer() {
   aria-hidden="true"
   style={{ height: 'calc(1em - 15px)' }}
 >
-  <span
-    className="
-      font-manrope-bold
-      foterLargeText
-      font-extrabold
-      tracking-widest
-      uppercase
-      whitespace-nowrap
-    "
-    data-aos="fade-up"
-  >
-    Dudhkoshi
-    <span
-      className="
-        inline-block
-        text-[1.2em]
-        relative
-        bg-[linear-gradient(180deg,#E4E4E4_42.87%,#7E7E7E_100%)]
-      bg-clip-text
-      "
-    >
-      2
-    </span>
-  </span>
-</div>
+<span
+  className="
+    font-manrope-bold
+    foterLargeText
+    font-extrabold
+    tracking-widest
+    uppercase
+    whitespace-nowrap
+    opacity-100
 
+  "
+  data-aos="fade-up"
+>
+  Dudhkoshi
+  <span className="inline-block text-[1.2em] relative">
+    2
+  </span>
+</span>
+
+</div>
 
     </footer>
   );

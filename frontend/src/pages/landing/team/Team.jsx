@@ -10,12 +10,20 @@ import { getTeam } from "@/app/(bid)/redux/slices/LandingPageAdminPanel/landingA
 
 const IMAGE_BASE_URL = process.env.NEXT_PUBLIC_BASE_CONTENT_URL;
 
-export default function TeamSection() {
+export default function TeamSection({misc}) {
   const dispatch = useDispatch();
 
-  const { team: data = [], loading } = useSelector(
-    (state) => state?.landingPageAdmmin || {}
-  );
+  
+  console.log("MISC:", misc);
+console.log("TEAM SEC PARA:", misc?.teamSecPara);
+
+
+const {
+  team: teamData = [],
+  loading: teamLoading
+} = useSelector(
+  (state) => state?.landingPageAdmmin || {}
+);
 
   const [activeCategory, setActiveCategory] = useState("All");
   const [selectedMember, setSelectedMember] = useState(null);
@@ -25,11 +33,10 @@ export default function TeamSection() {
     dispatch(getTeam());
   }, [dispatch]);
 
-
   const teamMembers = useMemo(() => {
-    if (!Array.isArray(data)) return [];
+    if (!Array.isArray(teamData)) return [];
 
-    return data.map((member) => ({
+    return teamData.map((member) => ({
       id: String(member.id),
       name: member.name?.trim() || "",
       role: member.designation || "",
@@ -61,7 +68,7 @@ export default function TeamSection() {
         },
       ],
     }));
-  }, [data]);
+  }, [teamData]);
 
   useEffect(() => {
     if (teamMembers.length > 0) {
@@ -92,7 +99,7 @@ export default function TeamSection() {
     }, 150);
   };
 
-  if (loading) {
+  if (teamLoading) {
     return (
       <section className="w-full teamBg py-16 px-4">
         <div className="max-w-7xl mx-auto text-center">
@@ -118,7 +125,6 @@ export default function TeamSection() {
       }}
       id="team"
     >
-
           <div className="text-center max-w-3xl mx-auto mb-16">
 
 
@@ -129,10 +135,10 @@ export default function TeamSection() {
           Meet our team behind our success
           </h2>
 
-          {/* Subtitle */}
-          <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]" data-aos="fade-up">
-    Meet the multi-disciplinary team of engineers, environmental scientists, and strategic investors driving the 95.7 MW Dudhkoshi vision toward sustainable energy independence.
-          </p>
+            {/* Subtitle */}
+            <p className="font-['Hind'] font-normal text-[20px] leading-[32px] tracking-[0%] text-center text-[var(--textColorOnLightBg)]" data-aos="fade-up">
+              {misc?.teamSecPara}
+            </p>
         </div>
 
       <div className="max-w-7xl mx-auto">

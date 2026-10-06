@@ -2,7 +2,7 @@ import Hero from '@/pages/landing/Hero'
 import TechnicalSpecification from '@/pages/landing/about/TechnicalSpecification'
 import React from 'react'
 import ProjectTeam from '@/pages/landing/ProjectTeam'
-import TechnicalSpecifications from '@/pages/landing/TechnicalSpecification'
+
 import WaterToWireSystem from '@/pages/landing/WaterToWire'
 import FinancialOverview from '@/pages/landing/FinancialOverview'
 import TeamSection from '@/pages/landing/team/Team'
@@ -34,7 +34,7 @@ console.log(data, "footerData")
    <>
    <Hero></Hero>  
    <TechnicalSpecification footerData={data}></TechnicalSpecification>
-   <TeamSection></TeamSection>
+   <TeamSection data={data}></TeamSection>
 
 
    <ProjectOverviewSection></ProjectOverviewSection>
@@ -42,9 +42,9 @@ console.log(data, "footerData")
    <ContactSection></ContactSection>
       <GalleryPage></GalleryPage>
    <FaqSection></FaqSection>
-      <NewsEventsSection></NewsEventsSection>
-   <PreFooterCTA></PreFooterCTA>
-   <Footer></Footer>
+      <NewsEventsSection data={data}></NewsEventsSection>
+   <PreFooterCTA  data={data}></PreFooterCTA>
+   <Footer data={data}></Footer>
    {/* <TeamSection></TeamSection>
    <ProjectTeam></ProjectTeam>
  <TechnicalSpecifications></TechnicalSpecifications>
