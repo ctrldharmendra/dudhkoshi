@@ -159,13 +159,7 @@ const specsData = {
   // console.log(currentContent, "currentContent")
   // console.log(ContentIcon, "ContentIcon")
   // console.log(ContentNoteCurrent, "ContentNoteCurrent")
-  console.log(technicalParameterData?.[7]?.contents || [])
 
-
-  useEffect(() => {
-console.log(currentContent, "currentContent")
-  }, [activeTab])
-  
 
 //   if(technicalParametersLoading || !currentContent){
 //   return <div className="fixed inset-0 z-[9999999] flex h-screen w-full items-center justify-center bg-[#000000cf]">
