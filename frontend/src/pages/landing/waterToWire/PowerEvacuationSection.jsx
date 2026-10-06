@@ -1,29 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { FiArrowRight, FiArrowDown } from 'react-icons/fi';
 import { ImPower } from "react-icons/im";
 
 import { GoArrowRight } from 'react-icons/go';
-import { FaConnectdevelop } from 'react-icons/fa';
+import { FaConnectdevelop, FaNetworkWired } from 'react-icons/fa';
+import { getPowerEvacuation } from '@/app/(bid)/redux/slices/LandingPageAdminPanel/landingAdminSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { HiLightningBolt, HiOutlineAdjustments, HiOutlineViewGrid } from 'react-icons/hi';
+import { BsHouseGearFill } from 'react-icons/bs';
 
-export default function PowerEvacuationSection() {
-  const cardsData = [
-    {
-      id: 'powerhouse',
-      title: 'POWERHOUSE',
-      icon: <ImPower />,
-      subtitle: 'Surface',
-      details: '55 M × 26.5 M × 35.3 M',
-    },
-    {
-      id: 'grid-connection',
-      title: 'GRID CONNECTION',
-      icon: <FaConnectdevelop  />,
-      subtitle: "null",
-      details: "null", // Power Evacuation data (voltage, line length, conductor, hub) not provided for Dudhkoshi-2
-    },
-  ];
+export default function PowerEvacuationSection({footerData}) {
+  const dispatch = useDispatch();
+const CARD_ICONS = {
+  generator: <BsHouseGearFill />,
+  bolt: <HiLightningBolt />,
+  transformer: <HiOutlineAdjustments />,
+  switchyard: <HiOutlineViewGrid />,
+  share: <FaNetworkWired />,
+};
 
 
+  const data = useSelector  ((state) => state?.landingPageAdmmin?.powerEvacuation); 
+
+  useEffect (() => {
+      dispatch(getPowerEvacuation())
+  }, [])
+  
+// console.log(data, "aslj")
   return (
     <section 
       className="w-full py-12 font-sans antialiased text-[#45484D]"
@@ -54,16 +57,16 @@ export default function PowerEvacuationSection() {
           {/* Cards Flow Container */}
           <div className="font-body relative z-10 flex flex-col justify-between md:flex-row items-center justify-center gap-6 md:gap-12 py-2" >
             
-            {cardsData.map((card, index) => (
+            {data && data?.length>0 && data?.map((card, index) => (
               <React.Fragment key={card.id}>
                 {/* Individual Component Card */}
                 <div className="w-full md:w-[396px] bg-white rounded-2xl p-6 sm:p-8 border border-slate-100 shadow-xs hover:shadow-md transition-all duration-300 flex flex-col items-center text-center" >
                   
                   {/* Lightning Icon Badge */}
                   <div className="w-10 h-10 rounded-xl bg-[#eaf4fc] text-[#1E7EBB] flex items-center justify-center mb-5">
-                 {
-                   card.icon
-                 }
+              {
+                CARD_ICONS[card.icon]
+              }
                   </div>
 
                   {/* Card Title */}
@@ -73,18 +76,18 @@ export default function PowerEvacuationSection() {
 
                   {/* Card Subtitle */}
                   <p className="text-base sm:text-lg font-medium leading-snug mb-3">
-                    {card.subtitle}
+                    {card.title2}
                   </p>
 
                   {/* Dimension/Details Text */}
                   <p className="text-[10px] sm:text-xs font-medium text-[#1E7EBB] tracking-tight">
-                    {card.details}
+                    {card.title3}
                   </p>
 
                 </div>
 
                 {/* Connecting Arrow between cards */}
-                {index < cardsData.length - 1 && (
+                {data && data?.length > 0 && index < data?.length - 1 && (
                   <div className="font-body flex items-center justify-center text-[#1E7EBB] shrink-0 my-2 md:my-0">
                     {/* Horizontal Arrow for Desktop */}
                     <GoArrowRight className="hidden md:block w-[200px] h-7 " />

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FiArrowRight, FiChevronUp, FiChevronDown, FiArrowDown } from 'react-icons/fi';
 import { ImPower } from "react-icons/im";
 
@@ -8,12 +8,46 @@ import HrLineWithHeadingText from '../components/HrLineWithHeadingText';
 import Image from 'next/image';
 import waterToWire from "../../../../public/landing/waterToWire/waterToWire.png";
 import PowerEvacuationSection from './PowerEvacuationSection';
-import { FaNetworkWired } from 'react-icons/fa';
+import { FaConfluence, FaNetworkWired } from 'react-icons/fa';
 import { GiFlameTunnel } from 'react-icons/gi';
 import { SiSaltproject } from 'react-icons/si';
 import { LiaProjectDiagramSolid } from 'react-icons/lia';
+import { useDispatch, useSelector } from 'react-redux';
+import { getWireSystem } from '@/app/(bid)/redux/slices/LandingPageAdminPanel/landingAdminSlice';
+import { FaArrowUpFromGroundWater, FaHouseFloodWater, FaHouseFloodWaterCircleArrowRight } from 'react-icons/fa6';
+import { TbBuildingTunnel } from 'react-icons/tb';
 
-export default function WaterToWireSection() {
+export default function WaterToWireSection({footerData}) {
+
+
+const CARD_ICONS = {
+  river: <FaHouseFloodWater />,
+  tunnel: <TbBuildingTunnel />,
+  turbine: <FaArrowUpFromGroundWater />,
+  power: <FaHouseFloodWaterCircleArrowRight />,
+  share: <FaConfluence />,
+};
+
+
+const dispatch = useDispatch()
+  const data = useSelector((state) => state?.landingPageAdmmin?.wireSystems); 
+
+useEffect(() => {
+ dispatch(getWireSystem())
+}, [])
+
+
+
+// icon
+// id
+// title
+// title2
+// title3
+// CONTENTS:
+// id
+// para
+// title
+
   // Step cards dataset matching the design
   const stepsData = [
     {
@@ -85,15 +119,18 @@ export default function WaterToWireSection() {
     }
   ];
 
-  // Active expanded card ID (default set to 'headworks')
-  const [activeCardId, setActiveCardId] = useState('headworks');
+
+
+
+  const [activeCardId, setActiveCardId] = useState(data?.[0]?.id);
 
   // Toggle or select card for expansion
   const handleToggleCard = (id) => {
-    setActiveCardId((prev) => (prev === id ? "NULL" : id));
+    setActiveCardId((prev) => (prev == id ? "NULL" : id));
   };
 
-  const activeStep = stepsData.find((step) => step.id === activeCardId);
+  const activeStep = data?.find((step) => step.id == activeCardId);
+
 
   return (
     <section 
@@ -131,7 +168,7 @@ export default function WaterToWireSection() {
 
           {/* TOP STEP CARDS FLOW GRID */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 relative z-10 items-stretch" >
-            {stepsData.map((step, index) => {
+            {data && data?.length>0 &&data?.map((step, index) => {
               const isActive = activeCardId === step.id;
 
               return (
@@ -150,9 +187,9 @@ export default function WaterToWireSection() {
                       {/* Icon Badge */}
                       <div className="w-9 h-9 rounded-xl bg-[#eaf4fc] text-[#1E7EBB] flex items-center justify-center mb-5"
                       >
-                       {
-                         step.icon
-                       }
+                  
+                          {CARD_ICONS[step?.icon]}
+                  
                       </div>
 
                       {/* Header Title */}
@@ -162,12 +199,12 @@ export default function WaterToWireSection() {
 
                       {/* Main Subtitle */}
                       <p className="text-sm sm:text-base text-[#45484D] font-bold leading-8 mb-2">
-                        {step.subtitle}
+                        {step.title2}
                       </p>
 
                       {/* Summary Text */}
                       <p className="text-[14px] text-slate-600 text-[#45484D] font-medium leading-relaxed mb-4">
-                        {step.summary}
+                        {step.title3}
                       </p>
                     </div>
 
@@ -183,7 +220,7 @@ export default function WaterToWireSection() {
                   </div>
 
                   {/* Flow Arrow (Visible on Desktop between cards) */}
-                  {index < stepsData.length - 1 && (
+                  {index < data?.length - 1 && (
                     <div className="hidden lg:flex absolute -right-4 top-1/2 -translate-y-1/2 z-20 text-[#1E7EBB]">
                       <FiArrowRight className="w-5 h-5 stroke-[2.5]" />
                     </div>
@@ -200,21 +237,21 @@ export default function WaterToWireSection() {
                 
                 {/* Details Section Label */}
                 <h5 className="text-[10px] font-medium tracking-wider text-[#1E7EBB] uppercase mb-5">
-                  {activeStep.componentsLabel}
+                  {activeStep?.title}
                 </h5>
 
                 {/* Grid of Component Specs */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-                  {activeStep.details.map((item, idx) => (
+                  {activeStep && activeStep?.contents?.map((item, idx) => (
                     <div 
                       key={idx}
                       className="rounded-r-[4px] border-l-[0.5px] border-l-[#1E7EBB] bg-[#E9F2F8]/58 p-[10px] flex flex-col justify-center"
                     >
                       <span className="text-[10px] leading-[20px] font-[Hind] font-medium text-slate-400 tracking-wider uppercase mb-1">
-                        {item.label}
+                        {item.title}
                       </span>
                       <span className="font-['Times_New_Roman'] font-normal text-[12px] leading-[20px] tracking-[0px] align-middle uppercase text-slate-700">
-                        {item.value}
+                        {item.para}
                       </span>
                     </div>
                   ))}
@@ -228,7 +265,7 @@ export default function WaterToWireSection() {
           <div className="mt-12 flex justify-center relative z-10">
             <div className="inline-flex items-center gap-2 bg-[#FEF5E7] border border-[#FCE1B3] text-amber-700 font-[Manrope] font-medium text-[12px] leading-[20px] tracking-[2px] align-middle px-6 py-2.5 rounded-full shadow-2xs">
               <FiArrowDown className="w-4 h-4 text-amber-600" />
-              <span>690.10 m elevation drop</span>
+              <span>{footerData?.powerEvacuationTopNote || ""}</span>
             </div>
           </div>
 

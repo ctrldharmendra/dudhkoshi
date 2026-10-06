@@ -38,7 +38,7 @@ console.log(data, "footerData")
 
 
    <ProjectOverviewSection></ProjectOverviewSection>
-   <WaterToWireSection></WaterToWireSection>
+   <WaterToWireSection footerData={data}></WaterToWireSection>
    <ContactSection></ContactSection>
       <GalleryPage></GalleryPage>
    <FaqSection></FaqSection>
