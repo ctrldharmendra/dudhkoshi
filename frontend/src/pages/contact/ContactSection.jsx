@@ -15,6 +15,8 @@ import {
 } from 'react-icons/fa';
 import { SiX } from 'react-icons/si';
 
+const IMAGE_BASE_URL = process.env.NEXT_PUBLIC_BASE_CONTENT_URL;
+
 
 import { HiArrowRight, HiLocationMarker } from 'react-icons/hi';
 import Image from 'next/image';
@@ -24,9 +26,10 @@ import Loading from '../landing/components/Loading';
 
 import img10 from "../../../public/landing/realImage/12.png";
 import img11 from "../../../public/landing/realImage/11.png";
+import Link from 'next/link';
 
 
-export default function ContactSection() {
+export default function ContactSection({data}) {
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -104,7 +107,7 @@ export default function ContactSection() {
               <FiMail className="w-6 h-6 stroke-2" />
             </div>
             <span className="font-[Hind] font-medium text-[16px] leading-[20px] tracking-[0px] text-center align-middle text-[#186596] mb-1">Email Us</span>
-            <span className="font-[Hind] font-medium text-[14px] leading-[20px] tracking-[0px] align-middle lowercase text-[#45484D] break-all">aayududhkoshi@gmail.com</span>
+            <span className="font-[Hind] font-medium text-[14px] leading-[20px] tracking-[0px] align-middle lowercase text-[#45484D] break-all">{data?.email}</span>
           </div>
 
           {/* Call Us */}
@@ -113,7 +116,7 @@ export default function ContactSection() {
               <FiPhone className="w-6 h-6 stroke-2" />
             </div>
             <span className="font-[Hind] font-medium text-[16px] leading-[20px] tracking-[0px] text-center align-middle text-[#186596] mb-1">Call Us</span>
-            <span className="font-[Hind] font-medium text-[14px] leading-[20px] tracking-[0px] align-middle text-[#45484D] break-all">00977-1-4102710</span>
+            <span className="font-[Hind] font-medium text-[14px] leading-[20px] tracking-[0px] align-middle text-[#45484D] break-all">{data?.phn}</span>
           </div>
 
           {/* Visit Us */}
@@ -121,8 +124,15 @@ export default function ContactSection() {
             <div className="w-9 h-9 flex items-center justify-center text-[#186596] mb-3">
               <FiMapPin className="w-6 h-6 stroke-2" />
             </div>
-            <span className="font-[Hind] font-medium text-[16px] leading-[20px] tracking-[0px] text-center align-middle text-[#186596] mb-1">Visit Us</span>
-            <span className="font-[Hind] font-medium text-[14px] leading-[20px] tracking-[0px] align-middle text-[#45484D] break-all">Sama Marga, Naxal, Kathmandu, Nepal</span>
+            <span className="font-[Hind] font-medium text-[16px] leading-[20px] tracking-[0px] text-center align-middle text-[#186596] mb-1">
+
+                                  <Link href={data?.location || ""} target='_blank' >
+                      Visit Us
+                  </Link>
+            </span>
+            <span className="font-[Hind] font-medium text-[14px] leading-[20px] tracking-[0px] align-middle text-[#45484D] break-all">
+              {data?.address}
+              </span>
           </div>
 
         </div>
@@ -251,7 +261,7 @@ export default function ContactSection() {
                 
                 <div className="flex items-center justify-between mb-4">
                   <span className="font-[Manrope] font-normal text-base leading-none tracking-normal text-[#1E7EBB]">
-                    Sama Marga, Naxal, Kathmandu
+                    {data?.address}
                   </span>
                   
                   {/* Currently Open Badge */}
@@ -268,7 +278,7 @@ export default function ContactSection() {
                   height={100}
                   unoptimized
 
-                    src={img10}
+                    src={`${IMAGE_BASE_URL}/${data?.inquiryImage}`}
                     alt="Global Headquarter Location"
                     className="w-full h-full object-cover" 
                   />
@@ -276,7 +286,7 @@ export default function ContactSection() {
 
                 {/* View On Map Link */}
                 <a 
-                  href="https://maps.app.goo.gl/D2R4KtMgM3Ww5pFJ6" 
+                  href={data?.location} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 text-[11px] font-bold text-[#1E7EBB] hover:underline"
@@ -296,7 +306,7 @@ export default function ContactSection() {
                   
                   {/* Facebook */}
                   <a 
-                    href="#" 
+                    href={data?.fbLink} 
                     aria-label="Facebook"
                     className="w-8 h-8 rounded-full bg-[#1877F2] text-white flex items-center justify-center hover:opacity-90 transition-opacity"
                   >
@@ -305,7 +315,7 @@ export default function ContactSection() {
 
                   {/* X (Twitter) */}
                   <a 
-                    href="#" 
+                    href={data?.xLink}  
                     aria-label="X"
                     className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:opacity-90 transition-opacity"
                   >
@@ -314,7 +324,7 @@ export default function ContactSection() {
 
                   {/* Instagram */}
                   <a 
-                    href="#" 
+                    href={data?.instaLink} 
                     aria-label="Instagram"
                     className="w-8 h-8 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white flex items-center justify-center hover:opacity-90 transition-opacity"
                   >
@@ -323,7 +333,7 @@ export default function ContactSection() {
 
                   {/* YouTube */}
                   <a 
-                    href="#" 
+                    href={data?.ytLink} 
                     aria-label="YouTube"
                     className="w-8 h-8 rounded-full bg-[#FF0000] text-white flex items-center justify-center hover:opacity-90 transition-opacity"
                   >

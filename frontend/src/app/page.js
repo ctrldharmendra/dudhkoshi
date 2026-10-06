@@ -39,7 +39,7 @@ console.log(data, "footerData")
 
    <ProjectOverviewSection></ProjectOverviewSection>
    <WaterToWireSection></WaterToWireSection>
-   <ContactSection></ContactSection>
+   <ContactSection data={data}></ContactSection>
       <GalleryPage></GalleryPage>
    <FaqSection></FaqSection>
       <NewsEventsSection data={data}></NewsEventsSection>

@@ -19,4 +19,4 @@ frontend/.env.local
 frontend/node_modules/
 
 .next
-
+/backend/uploads/

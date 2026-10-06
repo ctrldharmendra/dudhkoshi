@@ -1,7 +1,10 @@
 import React from 'react';
 import Link from 'next/link';
-import logo from "../../../../public/landing/logo.png"
 import Image from 'next/image';
+
+const IMAGE_BASE_URL = process.env.BASE_CONTENT_URL;
+
+
 export default function Footer({ data }) {
   return (
     <footer className="w-full relative bg-[#edf6fc] mt-[40px] pt-4 sm:px-6 lg:px-8 font-sans antialiased overflow-hidden"
@@ -25,7 +28,7 @@ export default function Footer({ data }) {
               <Link href="/" className="inline-flex items-center gap-3 group">
                 {/* Hydropower Logo Icon */}
           <div className="w-12 h-12 relative flex items-center justify-center rounded-full bg-slate-50 shadow-sm border border-slate-100">
-            <Image src={logo} fill unoptimized className="text-xs font-bold text-[var(--landingPagePrimaryColor)]" alt='logo'></Image>
+            <Image src={`${IMAGE_BASE_URL}/${data?.logo}`} fill unoptimized className="text-xs font-bold text-[var(--landingPagePrimaryColor)]" alt='logo'></Image>
           </div>
 
               <span className="text-2xl font-manrope-medium font-medium text-[#373A3E]">
@@ -121,7 +124,9 @@ export default function Footer({ data }) {
                     </a>
                   </li>
                   <li className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[#1E7EBB] transition-colors">
+                    <Link href={data?.location || ""} target='_blank' >
                     {data?.address}
+                  </Link>
                   </li>
                 </ul>
               </div>

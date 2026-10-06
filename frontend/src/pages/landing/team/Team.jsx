@@ -10,14 +10,12 @@ import { getTeam } from "@/app/(bid)/redux/slices/LandingPageAdminPanel/landingA
 
 const IMAGE_BASE_URL = process.env.NEXT_PUBLIC_BASE_CONTENT_URL;
 
-export default function TeamSection({misc}) {
+export default function TeamSection({data: misc}) {
   const dispatch = useDispatch();
 
   
   console.log("MISC:", misc);
 console.log("TEAM SEC PARA:", misc?.teamSecPara);
-
-
 const {
   team: teamData = [],
   loading: teamLoading
@@ -25,13 +23,14 @@ const {
   (state) => state?.landingPageAdmmin || {}
 );
 
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [selectedMember, setSelectedMember] = useState(null);
-  const [isAnimating, setIsAnimating] = useState(false);
+const [activeCategory, setActiveCategory] = useState("All");
+const [selectedMember, setSelectedMember] = useState(null);
+const [isAnimating, setIsAnimating] = useState(false);
 
-  useEffect(() => {
-    dispatch(getTeam());
-  }, [dispatch]);
+useEffect(() => {
+  dispatch(getTeam());
+}, [dispatch]);
+
 
   const teamMembers = useMemo(() => {
     if (!Array.isArray(teamData)) return [];
