@@ -16,7 +16,12 @@ export default async function HeroPage({footerData}) {
   const BaseUrl = process.env.BASE_CONTENT_URL;
   const BASE_API = process.env.BASE_API;
   try {
-      const heroData = await fetch(`${BASE_API}/api/admin/hero`)
+      const heroData = await fetch(`${BASE_API}/api/admin/hero`, {
+        cache: "no-store",
+      })
+      if (!heroData.ok) {
+        throw new Error(`API error: ${res.status}`);
+      }
       const heroDataJson = await heroData.json()
       data = heroDataJson?.data?.[0]
   } catch (error) {
@@ -26,7 +31,14 @@ console.log(error)
 
   // hero cards 
   try {
-      const heroCards = await fetch(`${BASE_API}/api/admin/hero/card`)
+      const heroCards = await fetch(`${BASE_API}/api/admin/hero/card`,
+        {
+          cache: "no-store",
+        }
+      )
+      if (!heroCards.ok) {
+        throw new Error(`API error: ${res.status}`);
+      }
       const heroCardJson = await heroCards.json()
       data2 = heroCardJson?.data
   } catch (error) {

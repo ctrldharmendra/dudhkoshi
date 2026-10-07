@@ -1,3 +1,7 @@
+export const dynamic = "force-dynamic";
+
+
+
 import Hero from '@/pages/landing/Hero'
 import TechnicalSpecification from '@/pages/landing/about/TechnicalSpecification'
 import React from 'react'
@@ -22,7 +26,12 @@ let data = null;
 
 
   try {
-      const res = await fetch(`${BASE_API}/api/admin/misc`)
+      const res = await fetch(`${BASE_API}/api/admin/misc`,{
+        cache: "no-store",
+      })
+      if (!res.ok) {
+        throw new Error(`API error: ${res.status}`);
+      }
       const json = await res.json()
       data = json?.data?.[0]
   } catch (error) {

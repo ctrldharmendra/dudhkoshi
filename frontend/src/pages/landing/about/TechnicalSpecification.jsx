@@ -57,7 +57,14 @@ const iconMap = {
   ];
 
   try {
-      const res = await fetch(`${BASE_API}/api/admin/aboutus/technicalspc`)
+      const res = await fetch(`${BASE_API}/api/admin/aboutus/technicalspc`,
+        {
+          cache: "no-store",
+        }
+      )
+      if (!res.ok) {
+        throw new Error(`API error: ${res.status}`);
+      }
       const json = await res.json()
       data = json?.data
   } catch (error) {
