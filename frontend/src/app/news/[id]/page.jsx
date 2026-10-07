@@ -39,7 +39,7 @@ export default async function NewsDets(props) {
         let resp  = await blogResponse.json();
         blog = resp?.data?.[0];
         
-        console.log(blog)
+        // console.log(blog)
         // Fetch all blogs for "Other Blogs" section
         const allBlogsApiUrl = `${process.env.BASE_API}/api/admin/blog/`;
         const allBlogsResponse = await fetch(allBlogsApiUrl, {
