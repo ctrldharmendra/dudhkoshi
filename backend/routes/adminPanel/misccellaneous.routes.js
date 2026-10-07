@@ -22,8 +22,7 @@ router.route('/').put(
     authenticateAccessToken,
   upload({ folder: 'landingPage/misc' }).fields([
     { name: 'logo', maxCount: 1 },
-    { name: 'inquiryImage', maxCount: 1 },
-    { name: 'contactWallpaper', maxCount: 1 }
+    { name: 'inquiryImage', maxCount: 1 }
   ]),
    misc.updateMiscellaneous
 );
