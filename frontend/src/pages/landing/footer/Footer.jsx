@@ -93,8 +93,8 @@ export default function Footer({ data }) {
                     </Link>
                   </li>
                   <li>
-                    <Link href="#" className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[#1E7EBB] transition-colors">
-                      Financial Overview
+                    <Link href="#projectOverview" className="font-[Hind] font-normal text-base leading-[140%] tracking-normal text-[#45484D] hover:text-[#1E7EBB] transition-colors">
+                      Project Overview
                     </Link>
                   </li>
                 </ul>

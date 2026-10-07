@@ -61,7 +61,7 @@ export default function ContactSection({data}) {
       className="max-w-[1440px] mx-auto space-y-10 font-body">
 
     <div 
-      className="min-h-screen bg-white flex flex-col antialiased "
+      className=" bg-white flex flex-col antialiased "
     >
 
       {/* Main Hero Wrapper */}

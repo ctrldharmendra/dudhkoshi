@@ -34,7 +34,7 @@ export default async function NewsDets(props) {
         });
         
         if (!blogResponse.ok) {
-            throw new Error(`Failed to fetch blog: ${blogResponse.status}`);
+          return <div>Error fetching blog data</div>;
         }
         let resp  = await blogResponse.json();
         blog = resp?.data?.[0];

@@ -265,23 +265,8 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
 
     if (!file) return;
 
-    // =====================================================
-    // VALIDATE FILE TYPE
-    // =====================================================
 
-    const allowedTypes = [
-      "image/png",
-      "image/jpeg",
-    ];
 
-    if (!allowedTypes.includes(file.type)) {
-      toast.error(
-        "Invalid image type. Please select a PNG or JPG image."
-      );
-
-      e.target.value = "";
-      return;
-    }
 
     // =====================================================
     // VALIDATE FILE SIZE
@@ -326,20 +311,7 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
 
     if (!file) return;
 
-    // Validate file type
-    const allowedTypes = [
-      "image/png",
-      "image/jpeg",
-    ];
 
-    if (!allowedTypes.includes(file.type)) {
-      toast.error(
-        "Invalid image type. Please select a PNG or JPG image."
-      );
-
-      e.target.value = "";
-      return;
-    }
 
     // Validate file size
     const maxSize = 5 * 1024 * 1024; // 5MB
@@ -377,20 +349,8 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
 
     if (!file) return;
 
-    // Validate file type
-    const allowedTypes = [
-      "image/png",
-      "image/jpeg",
-    ];
 
-    if (!allowedTypes.includes(file.type)) {
-      toast.error(
-        "Invalid image type. Please select a PNG or JPG image."
-      );
 
-      e.target.value = "";
-      return;
-    }
 
     // Validate file size
     const maxSize = 5 * 1024 * 1024; // 5MB
@@ -829,7 +789,6 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
                 <input
                   ref={logoInputRef}
                   type="file"
-                  accept="image/png,image/jpeg"
                   onChange={handleLogoChange}
                   className="hidden"
                 />
@@ -1435,7 +1394,6 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
                 <input
                   ref={inquiryImageInputRef}
                   type="file"
-                  accept="image/png,image/jpeg"
                   onChange={handleInquiryImageChange}
                   className="hidden"
                 />
@@ -1549,7 +1507,6 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
                 <input
                   ref={contactWallpaperInputRef}
                   type="file"
-                  accept="image/png,image/jpeg"
                   onChange={handleContactWallpaperChange}
                   className="hidden"
                 />

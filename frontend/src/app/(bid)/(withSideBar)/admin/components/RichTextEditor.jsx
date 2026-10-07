@@ -2,6 +2,8 @@
 
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import HardBreak from "@tiptap/extension-hard-break";
+
 import Link from "@tiptap/extension-link";
 import Image from "@tiptap/extension-image";
 import TextAlign from "@tiptap/extension-text-align";
@@ -24,18 +26,27 @@ import {
 export default function RichTextEditor({ value, onChange, placeholder }) {
   const editor = useEditor({
     immediatelyRender: false,
-    extensions: [
-      StarterKit,
-      Link.configure({
-        openOnClick: false,
-      }),
-      Image,
-      TextAlign.configure({
-        types: ["heading", "paragraph"],
-      }),
-      TextStyle,
-      Color,
-    ],
+extensions: [
+  StarterKit.configure({
+    hardBreak: false,
+  }),
+
+  HardBreak,
+
+  Link.configure({
+    openOnClick: false,
+  }),
+
+  Image,
+
+  TextAlign.configure({
+    types: ["heading", "paragraph"],
+  }),
+
+  TextStyle,
+  Color,
+],
+
     content: value || "",
     onUpdate: ({ editor }) => {
       onChange(editor.getHTML());
@@ -44,7 +55,25 @@ export default function RichTextEditor({ value, onChange, placeholder }) {
       attributes: {
         class: "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl focus:outline-none min-h-[200px] p-4",
       },
+    handleKeyDown: (view, event) => {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+
+        const { state, dispatch } = view;
+        const hardBreak = state.schema.nodes.hardBreak;
+
+        if (hardBreak) {
+          dispatch(
+            state.tr.replaceSelectionWith(hardBreak.create())
+          );
+        }
+
+        return true;
+      }
+
+      return false;
     },
+  },
   });
 
   // Sync external value changes to editor
