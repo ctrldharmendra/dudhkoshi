@@ -201,7 +201,7 @@ export default async function NewsDets(props) {
                                                 : ''
                                         )}
                                     </div>
-                                    <Link href={`/blog/${blogItem.id}`} className="text-blue-600 font-medium hover:text-blue-700 transition duration-150 self-start">
+                                    <Link href={`/news/${blogItem.id}`} className="text-blue-600 font-medium hover:text-blue-700 transition duration-150 self-start">
                                         Read more
                                     </Link>
                                 </div>

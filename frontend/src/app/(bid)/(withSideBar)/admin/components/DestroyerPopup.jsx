@@ -69,7 +69,7 @@ export default function DestroyerPopup({ isOpen, onClose, title, children, prima
                 <button
                   disabled={loading}
                   onClick={primaryAction}
-                  className="flex-1 px-6 py-3.5 bg-red-600 hover:bg-red-700 text-white font-bold rounded-2xl shadow-lg shadow-red-200 transition-all flex items-center justify-center gap-2"
+                  className="flex-1 px-6 py-3.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl shadow-lg shadow-red-200 transition-all flex items-center justify-center gap-2"
                 >
                   {loading ? <CgSpinner className="animate-spin" size={20} /> : actionText}
                 </button>

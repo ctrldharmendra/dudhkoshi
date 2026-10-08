@@ -75,7 +75,7 @@ export default function ContactSection({data}) {
           <div 
             className="relative w-full min-h-[790px] max-h-[790px] contactUsParentStyled overflow-hidden bg-cover bg-center flex flex-col items-center"
             style={{
-                         backgroundImage: `url('${BaseContentUrl}/${data?.inquiryImage}')` 
+                         backgroundImage: `url('${BaseContentUrl}/${data?.contactWallpaper}')` 
 
             }}
           >

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { HiLocationMarker } from "react-icons/hi";
-import mapImage from "../../../../public/landing/newMap.webp"
+import mapImage from "../../../../public/landing/newMap.png"
 
 
 export default function MapCard({

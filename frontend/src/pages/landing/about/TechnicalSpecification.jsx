@@ -109,17 +109,17 @@ console.log(error)
           
           {/* Left Column: Blue Feature Card (4 cols on lg screens) */}
           <div className="lg:col-span-4 bg-[var(--landingPagePrimaryColor)] text-white rounded-3xl p-10 flex flex-col justify-between shadow-sm" data-aos="zoom-in">
-            <div>
+           
               <p className="font-['Manrope'] font-bold font-[900px] text-[16px] leading-[20px] tracking-[0px] align-middle text-white uppercase mb-3">
                {data?.[0]?.title}
               </p>
-              <h3 className="font-['Manrope'] font-bold text-[24px] leading-[64px] tracking-[0%] mb-4"  >
+              <h3 className="font-['Manrope'] font-[500px] text-[24px] leading-[64px] tracking-[0%] mb-4"  >
               {data?.[0]?.title2}
               </h3>
               <p className="text-[20px] text-white leading-relaxed font-normal">
                 {data?.[0]?.title3}
               </p>
-            </div>
+            
 
             {/* Dam Image Thumbnail */}
             <div className="mt-8 rounded-2xl overflow-hidden shadow-inner border border-white/20 h-44">
