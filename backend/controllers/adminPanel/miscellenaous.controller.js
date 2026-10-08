@@ -23,11 +23,11 @@ const MISC_UPDATABLE_COLUMNS = [
     'fbLink', 'xLink', 'instaLink', 'ytLink', 'inquiryImage', 'phn2',
     'powerEvacuationTopNote', 'teamSecPara', 'mw', 'c02Reduced', 'longLat',
     'spatialTitle', 'spatialPara', 'estd', 'designDischarge', 'grossHead',
-    'aboutUsPara', 'contactWallpaper',
+    'aboutUsPara', 'contactWallpaper','SpatialMapImage',
 ];
 
 // Image columns that accept an uploaded file / can be cleared on demand.
-const MISC_IMAGE_COLUMNS = ['logo', 'inquiryImage', 'contactWallpaper'];
+const MISC_IMAGE_COLUMNS = ['logo', 'inquiryImage', 'contactWallpaper','SpatialMapImage'];
 
 // Body flag that clears each image column (only honoured when no replacement
 // file was uploaded).
@@ -35,6 +35,7 @@ const MISC_IMAGE_REMOVAL_FLAGS = {
     logo: 'removeLogo',
     inquiryImage: 'removeInquiryImage',
     contactWallpaper: 'removeContactWallpaper',
+    SpatialMapImage: 'removeSpatialMapImage',
 };
 
 // The settings table is a single row and its schema may not yet contain every

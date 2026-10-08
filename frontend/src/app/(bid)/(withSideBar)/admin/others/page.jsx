@@ -96,6 +96,8 @@ function normalizeData(data) {
 
     spatialTitle: source.spatialTitle ?? "",
     spatialPara: source.spatialPara ?? "",
+    spatialMapImage: source.spatialMapImage ?? "",
+
 
     estd: source.estd ?? "",
     designDischarge: source.designDischarge ?? "",
@@ -236,6 +238,11 @@ const contactWallpaperInputRef = useRef(null);
 const [selectedContactWallpaper, setSelectedContactWallpaper] =
   useState(null);
 
+const spatialMapImageInputRef = useRef(null);
+const [selectedSpatialMapImage, setSelectedSpatialMapImage] =
+  useState(null);
+
+
   /*
    * Load the stored configuration once the page mounts.
    */
@@ -256,7 +263,8 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
     setSelectedLogo(null);
     setSelectedInquiryImage(null);
     setSelectedContactWallpaper(null);
-  }, [misc]);
+    setSelectedSpatialMapImage(null);
+}, [misc]);
 
 
 
@@ -385,6 +393,49 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
     });
   };
 
+  const handleSpatialMapImageChange = (e) => {
+  const file = e.target.files?.[0];
+
+  if (!file) return;
+
+  // Validate file size
+  const maxSize = 5 * 1024 * 1024; // 5MB
+
+  if (file.size > maxSize) {
+    toast.error(
+      "Image is too large. Please select an image under 5MB."
+    );
+
+    e.target.value = "";
+    return;
+  }
+
+  // Optional image type validation
+  if (!file.type.startsWith("image/")) {
+    toast.error("Please select a valid image file.");
+
+    e.target.value = "";
+    return;
+  }
+
+  const preview = URL.createObjectURL(file);
+
+  // Clean previous temporary preview
+  if (
+    selectedSpatialMapImage?.preview &&
+    !selectedSpatialMapImage.isExisting
+  ) {
+    URL.revokeObjectURL(selectedSpatialMapImage.preview);
+  }
+
+  setSelectedSpatialMapImage({
+    file,
+    preview,
+    name: file.name,
+    isExisting: false,
+  });
+};
+
 
 
   const clearLogo = (e) => {
@@ -394,9 +445,9 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
       URL.revokeObjectURL(selectedLogo.preview);
     }
 
-    setSelectedLogo(null);
+    // setSelectedLogo(null);
 
-    handleInputChange("logo", "");
+    // handleInputChange("logo", "");
 
     if (logoInputRef.current) {
       logoInputRef.current.value = "";
@@ -443,6 +494,25 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
     }
   };
 
+  const clearSpatialMapImage = (e) => {
+  e.stopPropagation();
+
+  if (
+    selectedSpatialMapImage?.preview &&
+    !selectedSpatialMapImage.isExisting
+  ) {
+    URL.revokeObjectURL(selectedSpatialMapImage.preview);
+  }
+
+  setSelectedSpatialMapImage(null);
+
+  handleInputChange("spatialMapImage", "");
+
+  if (spatialMapImageInputRef.current) {
+    spatialMapImageInputRef.current.value = "";
+  }
+};
+
 
 
 
@@ -450,13 +520,27 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
      DIRTY STATE
   ========================================================== */
 
-  const isDirty = useMemo(() => {
-    return (
-      JSON.stringify(formData) !==
-      JSON.stringify(savedData)
-    );
-  }, [formData, savedData]);
+const hasImageChanges = useMemo(() => {
+  return (
+    !!selectedLogo?.file ||
+    !!selectedInquiryImage?.file ||
+    !!selectedContactWallpaper?.file ||
+    !!selectedSpatialMapImage?.file
+  );
+}, [
+  selectedLogo,
+  selectedInquiryImage,
+  selectedContactWallpaper,
+  selectedSpatialMapImage,
+]);
 
+const isDirty = useMemo(() => {
+  return (
+    JSON.stringify(formData) !==
+      JSON.stringify(savedData) ||
+    hasImageChanges
+  );
+}, [formData, savedData, hasImageChanges]);
   /* ==========================================================
      INPUT HANDLER
   ========================================================== */
@@ -517,7 +601,11 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
    * the stored image was cleared.
    */
   const IMAGE_FIELDS = [
-    { field: "logo", flag: "removeLogo", selected: selectedLogo },
+    {
+      field: "logo",
+      flag: "removeLogo",
+      selected: selectedLogo,
+    },
     {
       field: "inquiryImage",
       flag: "removeInquiryImage",
@@ -527,6 +615,11 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
       field: "contactWallpaper",
       flag: "removeContactWallpaper",
       selected: selectedContactWallpaper,
+    },
+    {
+      field: "spatialMapImage",
+      flag: "removeSpatialMapImage",
+      selected: selectedSpatialMapImage,
     },
   ];
 
@@ -582,6 +675,7 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
         setSelectedLogo(null);
         setSelectedInquiryImage(null);
         setSelectedContactWallpaper(null);
+        setSelectedSpatialMapImage(null);
 
         setIsEditing(false);
 
@@ -616,6 +710,7 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
     setSelectedLogo(null);
     setSelectedInquiryImage(null);
     setSelectedContactWallpaper(null);
+    setSelectedSpatialMapImage(null);
   };
 
   /* ==========================================================
@@ -637,6 +732,7 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
     setSelectedLogo(null);
     setSelectedInquiryImage(null);
     setSelectedContactWallpaper(null);
+    setSelectedSpatialMapImage(null);
 
     dispatch(getMisc());
 
@@ -1341,35 +1437,161 @@ const [selectedContactWallpaper, setSelectedContactWallpaper] =
             title="Spatial Information"
             description="Content describing the project's geographical location."
           >
-            <div className="space-y-5">
-              <FormField
-                label="Spatial Section Title"
-                value={formData.spatialTitle}
-                editing={isEditing}
-                onChange={(value) =>
-                  handleInputChange(
-                    "spatialTitle",
-                    value
-                  )
-                }
-                placeholder="Project Location"
-              />
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
 
-              <FormField
-                label="Spatial Description"
-                value={formData.spatialPara}
-                editing={isEditing}
-                textarea
-                rows={4}
-                maxLength={FIELD_LIMITS.spatialPara}
-                onChange={(value) =>
-                  handleInputChange(
-                    "spatialPara",
-                    value
-                  )
-                }
-                placeholder="Describe the project's location..."
-              />
+              {/* =================================================
+                  LEFT — SPATIAL CONTENT
+              ================================================= */}
+
+              <div className="space-y-5">
+                <FormField
+                  label="Spatial Section Title"
+                  value={formData.spatialTitle}
+                  editing={isEditing}
+                  onChange={(value) =>
+                    handleInputChange(
+                      "spatialTitle",
+                      value
+                    )
+                  }
+                  placeholder="Project Location"
+                />
+
+                <FormField
+                  label="Spatial Description"
+                  value={formData.spatialPara}
+                  editing={isEditing}
+                  textarea
+                  rows={7}
+                  maxLength={FIELD_LIMITS.spatialPara}
+                  onChange={(value) =>
+                    handleInputChange(
+                      "spatialPara",
+                      value
+                    )
+                  }
+                  placeholder="Describe the project's location..."
+                />
+              </div>
+
+
+              {/* =================================================
+                  RIGHT — PROJECT LOCATION MAP
+              ================================================= */}
+
+              <div>
+                <FieldLabel label="Project Location Map" />
+
+                <input
+                  ref={spatialMapImageInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/jpg,image/webp"
+                  onChange={handleSpatialMapImageChange}
+                  className="hidden"
+                />
+
+                {isEditing ? (
+                  <div
+                    onClick={() =>
+                      spatialMapImageInputRef.current?.click()
+                    }
+                    className="group relative mt-2 flex h-[250px] cursor-pointer items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 transition hover:border-indigo-300 hover:bg-indigo-50/40"
+                  >
+                    {!selectedSpatialMapImage &&
+                    !formData.spatialMapImage ? (
+                      /* EMPTY STATE */
+                      <div className="text-center">
+                        <HiOutlineLocationMarker
+                          className="mx-auto mb-3 h-12 w-12 text-slate-300 transition group-hover:text-indigo-400"
+                        />
+
+                        <p className="mb-1 text-sm font-semibold text-slate-600">
+                          Click to select map image
+                        </p>
+
+                        <p className="text-xs uppercase tracking-wider text-slate-400">
+                          PNG, JPG, WEBP (MAX 5MB)
+                        </p>
+                      </div>
+                    ) : (
+                      /* PREVIEW */
+                      <div className="relative flex h-full w-full items-center justify-center p-3">
+                        <img
+                          src={
+                            selectedSpatialMapImage?.preview ||
+                            resolveImageUrl(
+                              formData.spatialMapImage
+                            )
+                          }
+                          alt="Project location map preview"
+                          className="h-full w-full rounded-lg object-contain"
+                        />
+
+                        <button
+                          type="button"
+                          onClick={clearSpatialMapImage}
+                          className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-red-500 text-white shadow-md transition hover:bg-red-600"
+                        >
+                          <HiOutlineX className="h-4 w-4" />
+                        </button>
+
+                        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 rounded-md bg-slate-900/75 px-3 py-1.5 text-[10px] font-medium text-white opacity-0 transition group-hover:opacity-100">
+                          Click to change
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  /* VIEW MODE */
+                  <div className="mt-2 flex h-[250px] items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-3">
+                    {formData.spatialMapImage ? (
+                      <img
+                        src={resolveImageUrl(
+                          formData.spatialMapImage
+                        )}
+                        alt="Project location map"
+                        className="h-full w-full rounded-lg object-contain"
+                      />
+                    ) : (
+                      <div className="text-center">
+                        <HiOutlineLocationMarker className="mx-auto h-10 w-10 text-slate-300" />
+
+                        <p className="mt-2 text-sm text-slate-400">
+                          No project location map configured
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {/* INFO */}
+                {isEditing && (
+                  <div className="mt-4 rounded-xl border border-indigo-100 bg-indigo-50 p-4">
+                    <div className="flex items-start gap-3">
+                      <HiOutlineInformationCircle className="mt-0.5 h-5 w-5 shrink-0 text-indigo-600" />
+
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-indigo-900">
+                          Project Location Map
+                        </p>
+
+                        <p className="mt-1 text-xs leading-5 text-indigo-700">
+                          Upload a map showing the project's
+                          geographical location. PNG, JPG or WEBP
+                          images up to 5MB are supported.
+                        </p>
+
+                        {selectedSpatialMapImage && (
+                          <p className="mt-2 truncate text-xs font-medium text-indigo-800">
+                            Selected: {selectedSpatialMapImage.name}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
             </div>
           </ConfigSection>
 
