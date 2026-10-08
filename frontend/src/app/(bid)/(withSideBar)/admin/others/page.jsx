@@ -96,7 +96,7 @@ function normalizeData(data) {
 
     spatialTitle: source.spatialTitle ?? "",
     spatialPara: source.spatialPara ?? "",
-    spatialMapImage: source.spatialMapImage ?? "",
+    SpatialMapImage: source.SpatialMapImage ?? "",
 
 
     estd: source.estd ?? "",
@@ -238,7 +238,7 @@ const contactWallpaperInputRef = useRef(null);
 const [selectedContactWallpaper, setSelectedContactWallpaper] =
   useState(null);
 
-const spatialMapImageInputRef = useRef(null);
+const SpatialMapImageInputRef = useRef(null);
 const [selectedSpatialMapImage, setSelectedSpatialMapImage] =
   useState(null);
 
@@ -445,9 +445,9 @@ const [selectedSpatialMapImage, setSelectedSpatialMapImage] =
       URL.revokeObjectURL(selectedLogo.preview);
     }
 
-    // setSelectedLogo(null);
+    setSelectedLogo(null);
 
-    // handleInputChange("logo", "");
+    handleInputChange("logo", "");
 
     if (logoInputRef.current) {
       logoInputRef.current.value = "";
@@ -506,10 +506,10 @@ const [selectedSpatialMapImage, setSelectedSpatialMapImage] =
 
   setSelectedSpatialMapImage(null);
 
-  handleInputChange("spatialMapImage", "");
+  handleInputChange("SpatialMapImage", "");
 
-  if (spatialMapImageInputRef.current) {
-    spatialMapImageInputRef.current.value = "";
+  if (SpatialMapImageInputRef.current) {
+    SpatialMapImageInputRef.current.value = "";
   }
 };
 
@@ -617,7 +617,7 @@ const isDirty = useMemo(() => {
       selected: selectedContactWallpaper,
     },
     {
-      field: "spatialMapImage",
+      field: "SpatialMapImage",
       flag: "removeSpatialMapImage",
       selected: selectedSpatialMapImage,
     },
@@ -661,7 +661,7 @@ const isDirty = useMemo(() => {
           payload.append(flag, "true");
         }
       });
-
+console.log(payload, "PAYLOAD")
       const result = await dispatch(
         updateMisc({ formData: payload })
       );
@@ -1483,7 +1483,7 @@ const isDirty = useMemo(() => {
                 <FieldLabel label="Project Location Map" />
 
                 <input
-                  ref={spatialMapImageInputRef}
+                  ref={SpatialMapImageInputRef}
                   type="file"
                   accept="image/png,image/jpeg,image/jpg,image/webp"
                   onChange={handleSpatialMapImageChange}
@@ -1493,12 +1493,12 @@ const isDirty = useMemo(() => {
                 {isEditing ? (
                   <div
                     onClick={() =>
-                      spatialMapImageInputRef.current?.click()
+                      SpatialMapImageInputRef.current?.click()
                     }
                     className="group relative mt-2 flex h-[250px] cursor-pointer items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 transition hover:border-indigo-300 hover:bg-indigo-50/40"
                   >
                     {!selectedSpatialMapImage &&
-                    !formData.spatialMapImage ? (
+                    !formData.SpatialMapImage ? (
                       /* EMPTY STATE */
                       <div className="text-center">
                         <HiOutlineLocationMarker
@@ -1520,7 +1520,7 @@ const isDirty = useMemo(() => {
                           src={
                             selectedSpatialMapImage?.preview ||
                             resolveImageUrl(
-                              formData.spatialMapImage
+                              formData.SpatialMapImage
                             )
                           }
                           alt="Project location map preview"
@@ -1544,10 +1544,10 @@ const isDirty = useMemo(() => {
                 ) : (
                   /* VIEW MODE */
                   <div className="mt-2 flex h-[250px] items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-3">
-                    {formData.spatialMapImage ? (
+                    {formData.SpatialMapImage ? (
                       <img
                         src={resolveImageUrl(
-                          formData.spatialMapImage
+                          formData.SpatialMapImage
                         )}
                         alt="Project location map"
                         className="h-full w-full rounded-lg object-contain"

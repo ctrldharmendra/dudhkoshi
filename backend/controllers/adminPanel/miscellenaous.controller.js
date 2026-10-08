@@ -136,7 +136,7 @@ try {
         // the enumerable `errors` field so it actually reaches the client.
         return res.status(400).json(new ApiError(400, [], "No fields to update."));
     }
-
+console.log(values, "values")
     const [result] = await pool.query(
         `UPDATE landing_page_misc SET ${setClauses.join(', ')}`,
         values

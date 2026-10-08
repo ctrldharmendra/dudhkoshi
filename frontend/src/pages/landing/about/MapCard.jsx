@@ -1,8 +1,8 @@
 import Image from "next/image";
 import React from "react";
 import { HiLocationMarker } from "react-icons/hi";
-import mapImage from "../../../../public/landing/newMap11111.webp"
 
+const IMAGE_BASE_URL = process.env.BASE_CONTENT_URL;
 
 export default function MapCard({
   footerData,
@@ -32,7 +32,7 @@ export default function MapCard({
             referrerPolicy="strict-origin-when-cross-origin"
           /> */}
           <Image
-            src={mapImage}
+            src={`${IMAGE_BASE_URL}/${footerData?.SpatialMapImage}`}
             alt="Location map"
             width={1000}
             height={1000}
