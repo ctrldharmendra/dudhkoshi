@@ -79,7 +79,7 @@ const iconMap = {
           {/* Left Column: Details Grid & Solukhumbu Card (6 Cols) */}
           <div className="lg:col-span-6 mt-[50px] flex flex-col justify-between gap-6 h-[91%]">
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 ">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-[38px]">
 
   <div className="p-6 sm:border-r border-[#d1d1d63b] border-b border-[#d1d1d63b]">
     {/* Terrain */}

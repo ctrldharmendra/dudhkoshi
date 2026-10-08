@@ -1,7 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { HiLocationMarker } from "react-icons/hi";
-import mapImage from "../../../../public/landing/newMap.png"
+import mapImage from "../../../../public/landing/newMap11111.webp"
 
 
 export default function MapCard({
@@ -36,7 +36,7 @@ export default function MapCard({
             alt="Location map"
             width={1000}
             height={1000}
-            className="absolute inset-0 h-full w-full"
+            className="absolute inset-0 h-full w-full object-fill"
           />
         </div>
       </div>
